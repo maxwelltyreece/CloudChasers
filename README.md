@@ -10,15 +10,15 @@ A food logger for tracking food and water with a focus on self care and wellness
 ---   
  
 ### Team Members:
+Hussain Ben Alshaikh,  
+Matt Burton,  
+Lorenzo Cataldi,  
+Mohammed Fohpa,  
 Benjy Donoff,  
-Emily Lazenby,   
-Fohpa,   
-Hussain Ben Alshaikh,   
-Ian Li,   
-Lorenzo Cataldi,   
-Matt Burton,   
-Maxwell,    
-Sam Thomas   
+Ian Li,  
+Emily Lazenby,  
+Maxwell Martin,  
+Sam Thomas
 
 ---
 
