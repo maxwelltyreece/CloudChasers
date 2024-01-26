@@ -16,7 +16,7 @@ const DashboardScreen = () => {
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <ScrollView>
         {users.map((user, index) => (
-          <Text key={index}>{user.username}</Text> // Assuming 'user' has a 'username' field
+          <Text key={index}>{user.username}</Text>
         ))}
       </ScrollView>
     </View>
