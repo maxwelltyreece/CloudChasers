@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
 const Stats = () => (
   <View style={styles.container}>
     <Text>Welcome to the Stats!</Text>
-    <UserProfileButton />
   </View>
 );
 

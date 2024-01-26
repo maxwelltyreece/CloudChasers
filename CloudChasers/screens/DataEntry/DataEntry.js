@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
 const DataEntry = () => (
     <View style={styles.container}>
         <Text>Welcome to the Data Entry!</Text>
-        <UserProfileButton />
     </View>
 );
 

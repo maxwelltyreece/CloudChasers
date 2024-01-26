@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
 const Dashboard = () => (
   <View style={[globalStyles.container, styles.container]}>
     <Text style={globalStyles.globalFont}>Welcome to the Dashboard!</Text>
-    <UserProfileButton />
   </View>
 );
 

@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
 const Groups = () => (
     <View style={styles.container}>
         <Text>Welcome to the Groups!</Text>
-        <UserProfileButton />
     </View>
 );
 

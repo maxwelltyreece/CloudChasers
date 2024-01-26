@@ -3,6 +3,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import globalStyles from '../styles/global';
 import { Image, View } from 'react-native';
+import navbarStyles from '../styles/NavbarStyles';
+import CustomIcon from './AddButton';
 
 import Dashboard from '../screens/Dashboard/Dashboard';
 import Stats from '../screens/Stats/Stats';
@@ -11,20 +13,22 @@ import Groups from '../screens/Groups/Groups';
 import DataEntry from '../screens/DataEntry/DataEntry';
 
 const Tab = createBottomTabNavigator();
+const renderIcon = (name) => ({ color, size }) => (
+    <FontAwesome5 name={name} color={color} size={size} solid />
+);
 
 export default function MainTabNavigator() {
     return (
-        <View style={{ flex: 1, overflow: 'visible' }}>
+        <View style={navbarStyles.container}>
             <Tab.Navigator 
                 initialRouteName="Dashboard"
                 screenOptions={{ 
                     headerShown: false,
                     tabBarStyle: { 
-                        height: 90,
+                        ...navbarStyles.tabBarStyle,
                         backgroundColor: globalStyles.backgroundColor.backgroundColor,
-                        borderTopWidth: 1,
-                        borderTopColor: 'rgba(0, 0, 0, 0.1)',
                     },
+                    tabBarInactiveTintColor: globalStyles.secondaryColor.color,
                     tabBarActiveTintColor: globalStyles.primaryColor.color,
             }}
             >
@@ -32,18 +36,14 @@ export default function MainTabNavigator() {
                     name="Home" 
                     component={Dashboard} 
                     options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <FontAwesome5 name="home" color={color} size={size} />
-                        ),
+                        tabBarIcon: renderIcon("home"),
                     }}
                 />
                 <Tab.Screen 
                     name="Groups" 
                     component={Groups} 
                     options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <FontAwesome5 name="users" color={color} size={size} />
-                        ),
+                        tabBarIcon: renderIcon("users"),
                     }}
                 />
                 <Tab.Screen 
@@ -52,13 +52,7 @@ export default function MainTabNavigator() {
                     component={DataEntry}
                     options={{
                         tabBarIcon: ({ size }) => (
-                            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
-                                <Image
-                                    source={require('../assets/AddButton.png')}
-                                    style={{ width: 70, height: 70 }}
-                                    resizeMode='contain'
-                                />
-                            </View>
+                            <CustomIcon width={70} height={70} />
                         ),
                         tabBarLabel: () => null,
                     }}
@@ -67,18 +61,14 @@ export default function MainTabNavigator() {
                     name="Stats" 
                     component={Stats} 
                     options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <FontAwesome5 name="chart-pie" color={color} size={size} />
-                        ),
+                        tabBarIcon: renderIcon("chart-pie"),
                     }}
                 />
                 <Tab.Screen 
-                    name="Settings" 
+                    name="You" 
                     component={Settings} 
                     options={{
-                        tabBarIcon: ({ color, size }) => (
-                            <FontAwesome5 name="cog" color={color} size={size} />
-                        ),
+                        tabBarIcon: renderIcon("user"),
                     }}
                 />
             </Tab.Navigator>

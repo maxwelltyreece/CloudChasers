@@ -6,6 +6,9 @@ export default StyleSheet.create({
     primaryColor: {
         color: '#FF815E',
     },
+    secondaryColor: {
+        color: '#6B6868',
+    },
     backgroundColor: {
         backgroundColor: bgColor,
     },
