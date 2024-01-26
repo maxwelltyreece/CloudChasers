@@ -4,7 +4,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Navbar from './components/Navbar';
 import UserProfile from './screens/UserProfile/UserProfile';
-import UserProfileButton from './components/UserProfileButton';
 
 const Stack = createStackNavigator();
 
