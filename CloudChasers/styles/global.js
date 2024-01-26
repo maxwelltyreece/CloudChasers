@@ -13,7 +13,4 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: bgColor,
     },
-    globalFont: {
-        fontFamily: 'Montserrat', // replace with your font name
-    }
 });
