@@ -37,3 +37,5 @@ Sam Thomas
 
 [issues-shield]: https://img.shields.io/github/issues/maxwelltyreece/CloudChasers.svg?style=for-the-badge
 [issues-url]: https://github.com/maxwelltyreece/CloudChasers/issues
+
+[ER diagram link]: https://drive.google.com/file/d/1B7wU3uTnuo9ClXpSn8YOgKR0yjC2zjMk/view?usp=sharing
