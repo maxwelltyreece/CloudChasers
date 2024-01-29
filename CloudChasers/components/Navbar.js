@@ -6,11 +6,7 @@ import navbarStyles from '../styles/NavbarStyles';
 import { useNavigation } from '@react-navigation/native';
 import TabBarIcon from './TabBarIcon';
 
-import Dashboard from '../screens/Dashboard/Dashboard';
-import Stats from '../screens/Stats/Stats';
-import UserProfile from '../screens/UserProfile/UserProfile';
-import Groups from '../screens/Groups/Groups';
-import DataEntry from '../screens/DataEntry/DataEntry';
+import { Dashboard, Stats, UserProfile, Groups, DataEntry } from '../screens';
 
 const Tab = createBottomTabNavigator();
 
