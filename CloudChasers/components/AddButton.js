@@ -2,6 +2,16 @@ import React from 'react';
 import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
+/**
+ * CustomIcon is a component that renders a custom SVG icon.
+ * The icon is a circle with a '+' sign in the middle.
+ *
+ * @param {Object} props - Component props.
+ * @param {number} [props.width=80] - The width of the icon.
+ * @param {number} [props.height=82] - The height of the icon.
+ *
+ * @returns {React.Element} The rendered SVG icon.
+ */
 const CustomIcon = ({ width = 80, height = 82 }) => {
     return (
         <View>

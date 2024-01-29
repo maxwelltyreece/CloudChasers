@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons'; // make sure to install this package
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const styles = StyleSheet.create({
     container: {
@@ -16,6 +16,13 @@ const styles = StyleSheet.create({
     },
 });
 
+/**
+ * Settings is a component that renders a 'Settings!' message in the center of the screen.
+ * It also includes a back button in the top left corner that navigates to the previous screen.
+ * It uses styles from its own StyleSheet.
+ *
+ * @returns {React.Element} The rendered settings screen.
+ */
 const Settings = () => {
     const navigation = useNavigation();
 

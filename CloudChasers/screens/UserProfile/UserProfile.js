@@ -10,6 +10,13 @@ const styles = StyleSheet.create({
     },
 });
 
+/**
+ * UserProfile is a component that renders a 'UserProfile' message in the center of the screen.
+ * It also includes a SettingsButton component.
+ * It uses styles from its own StyleSheet.
+ *
+ * @returns {React.Element} The rendered user profile screen.
+ */
 const UserProfile = () => (
     <View style={styles.container}>
         <Text>UserProfile</Text>

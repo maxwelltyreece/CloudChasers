@@ -7,6 +7,15 @@ import Settings from './screens/Settings/Settings';
 
 const Stack = createStackNavigator();
 
+/**
+ * App is the root component of the application.
+ * It sets up a navigation container with a stack navigator.
+ * The stack navigator includes the 'Navbar' and 'Settings' screens.
+ * The 'Navbar' screen is set as the initial screen.
+ * The headers for both screens are hidden.
+ *
+ * @returns {React.Element} The rendered navigation container.
+ */
 export default function App() {
   return (
     <NavigationContainer>

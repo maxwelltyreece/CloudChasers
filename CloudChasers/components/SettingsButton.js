@@ -4,6 +4,12 @@ import globalStyles from '../styles/global';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
+/**
+ * SettingsButton is a component that renders a button with a settings icon.
+ * When pressed, it navigates to the 'Settings' screen.
+ *
+ * @returns {React.Element} The rendered button.
+ */
 export default function SettingsButton() {
     const navigation = useNavigation();
 

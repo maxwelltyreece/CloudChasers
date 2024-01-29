@@ -10,6 +10,10 @@ import { Dashboard, Stats, UserProfile, Groups, DataEntry } from '../screens';
 
 const Tab = createBottomTabNavigator();
 
+/**
+ * An array of screen configurations for the bottom tab navigator.
+ * Each configuration is an object with `name`, `component`, and `icon` properties.
+ */
 const screens = [
     { name: 'Home', component: Dashboard, icon: 'home' },
     { name: 'Groups', component: Groups, icon: 'users' },
@@ -17,6 +21,14 @@ const screens = [
     { name: 'Stats', component: Stats, icon: 'chart-pie' },
     { name: 'You', component: UserProfile, icon: 'user' },
 ];
+
+/**
+ * MainTabNavigator is a component that renders a bottom tab navigator.
+ * It maps over an array of screens and creates a Tab.Screen for each one.
+ * If the screen's icon is '+', it applies an animation when the icon is pressed.
+ *
+ * @returns {React.Element} The rendered bottom tab navigator.
+ */
 
 export default function MainTabNavigator() {
     const navigation = useNavigation();
