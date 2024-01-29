@@ -4,13 +4,13 @@ import globalStyles from '../styles/global';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
-export default function UserProfileButton() {
+export default function SettingsButton() {
     const navigation = useNavigation();
 
     return (
         <TouchableOpacity 
             style={styles.button}
-            onPress={() => navigation.navigate('UserProfile')}
+            onPress={() => navigation.navigate('Settings')}
         >
             <FontAwesome5 name="cog" size={24} color={globalStyles.secondaryColor.color} solid />
         </TouchableOpacity>

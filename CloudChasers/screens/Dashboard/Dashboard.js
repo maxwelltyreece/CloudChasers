@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import UserProfileButton from '../../components/UserProfileButton';
+import UserProfileButton from '../../components/SettingsButton';
 import globalStyles from '../../styles/global';
 
 const styles = StyleSheet.create({

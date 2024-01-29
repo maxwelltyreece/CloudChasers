@@ -1,7 +1,6 @@
 // Stats.js
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import UserProfileButton from '../../components/UserProfileButton';
 
 const styles = StyleSheet.create({
   container: {

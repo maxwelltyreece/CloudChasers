@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Navbar from './components/Navbar';
-import UserProfile from './screens/UserProfile/UserProfile';
+import Settings from './screens/Settings/Settings';
 
 const Stack = createStackNavigator();
 
@@ -21,8 +21,8 @@ export default function App() {
           }}
         />
         <Stack.Screen 
-          name="UserProfile" 
-          component={UserProfile} 
+          name="Settings" 
+          component={Settings} 
           options={{ 
             headerShown: false,
           }}
