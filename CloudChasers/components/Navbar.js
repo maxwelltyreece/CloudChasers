@@ -63,6 +63,7 @@ export default function MainTabNavigator() {
                                 name={icon} 
                                 animation={animation} 
                                 onPress={startAnimation} 
+                                navigation={navigation}
                             />
                         ),
                         tabBarLabel: name === '+' ? () => null : undefined,
