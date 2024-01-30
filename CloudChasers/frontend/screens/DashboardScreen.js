@@ -6,7 +6,7 @@ const DashboardScreen = () => {
 
   useEffect(() => {
     // Replace with local machine ip address
-    fetch('http://10.40.190.208:3000/users')
+    fetch('http://100.67.146.3:3000/users')
       .then(response => response.json())
       .then(data => setUsers(data))
       .catch(error => console.error('Error:', error));
