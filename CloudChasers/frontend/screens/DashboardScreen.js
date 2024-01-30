@@ -1,26 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; 
 
 const DashboardScreen = () => {
-  const [users, setUsers] = useState([]);
+	const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    // Replace with local machine ip address
-    fetch('http://100.67.146.3:3000/users')
-      .then(response => response.json())
-      .then(data => setUsers(data))
-      .catch(error => console.error('Error:', error));
-  }, []);
+	async function getData() {
+		AsyncStorage.getItem('token')
+			.then(token => {
+				console.log(token);
+				return fetch('http://100.67.146.3:3000/users', {
+					method: 'GET',
+					headers: {
+					'Authorization': `Bearer ${token}`
+					}
+				});
+			})
+			.then(response => response.json())
+			.then(data => {
+				console.log(data);
+				setUsers(data);
+			})
+			.catch(error => console.error(error));
+	  }
 
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <ScrollView>
-        {users.map((user, index) => (
-          <Text key={index}>{user.username}</Text>
-        ))}
-      </ScrollView>
-    </View>
-  );
+	useEffect(() => {
+		getData();
+	}, []);
+
+	return (
+		<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+			<ScrollView>
+				{users && users.map((user, index) => (
+					<Text key={index}>{user.username}</Text>
+				))}
+			</ScrollView>
+		</View>
+	);
 };
 
 export default DashboardScreen;

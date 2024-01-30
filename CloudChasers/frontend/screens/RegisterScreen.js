@@ -6,7 +6,7 @@ const RegisterScreen = ({ navigation }) => {
   const [password, setPassword] = useState('');
 
 	const handleRegister = () => {
-	// Replace with local machine ip address
+	// TODO: Replace with local machine ip address
 		fetch('http://100.67.146.3:3000/register', {
 		method: 'POST',
 		headers: {
