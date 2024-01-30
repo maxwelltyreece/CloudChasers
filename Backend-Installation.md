@@ -4,7 +4,7 @@ I did my work on Windows, so if you're using a Mac, you may need to run differen
 
 ## Installation
 
-1. Install MongoDB to host the database locally. You can download it from [here](https://www.mongodb.com/try/download/community-kubernetes-operator).
+Install MongoDB to host the database locally. You can download it from [here](https://www.mongodb.com/try/download/community-kubernetes-operator).
 
 To run the full program, you need three things running: 
 
@@ -13,7 +13,6 @@ To run the full program, you need three things running:
 - MongoDB for the database (usually starts with your computer)
 
 To run the Node.js server, use the following commands:
-
 
 ```bash
   cd .\CloudChasers\backend
@@ -25,9 +24,9 @@ For managing the DB I recommend using [MongoDBCompass](https://www.mongodb.com/p
 One small thing I haven't figured out yet is IP addresses, so in the meantime you need to run `ipconfig` in the terminal
 then update the IPv4 address in these files:
   
-    -`.\frontend\DashboardScreen.js`
-    -`.\frontend\LoginScreen.js`
-    -`.\frontend\RegisterScreen.js`
+    `.\frontend\DashboardScreen.js`
+    `.\frontend\LoginScreen.js`
+    `.\frontend\RegisterScreen.js`
 
 ## Documentation
 
