@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage'; 
-
+import { BACKEND_IP } from '@env';
 const DashboardScreen = () => {
 	const [users, setUsers] = useState([]);
 
@@ -9,7 +9,7 @@ const DashboardScreen = () => {
 		AsyncStorage.getItem('token')
 			.then(token => {
 				console.log(token);
-				return fetch('http://100.67.146.3:3000/users', {
+				return fetch(`http://100.67.146.3:3000/users`, {
 					method: 'GET',
 					headers: {
 					'Authorization': `Bearer ${token}`
