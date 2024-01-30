@@ -1,6 +1,7 @@
 import React from 'react';
 import { View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
+import PropTypes from 'prop-types';
 
 /**
  * CustomIcon is a component that renders a custom SVG icon.
@@ -29,6 +30,11 @@ const CustomIcon = ({ width = 80, height = 82 }) => {
             </Svg>
         </View>
     );
+};
+
+CustomIcon.propTypes = {
+    width: PropTypes.number,
+    height: PropTypes.number,
 };
 
 export default CustomIcon;

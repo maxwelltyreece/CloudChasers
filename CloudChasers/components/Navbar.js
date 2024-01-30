@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+// React related imports
+import React, { useState, useCallback, useMemo } from 'react';
 import { View, Animated } from 'react-native';
+
+// Navigation related imports
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native';
+
+// Style related imports
 import globalStyles from '../styles/global';
 import navbarStyles from '../styles/NavbarStyles';
-import { useNavigation } from '@react-navigation/native';
+
+// Component imports
 import TabBarIcon from './TabBarIcon';
 
+// Screen imports
 import { Dashboard, Stats, UserProfile, Groups, DataEntry } from '../screens';
 
 const Tab = createBottomTabNavigator();
@@ -22,19 +30,42 @@ const screens = [
     { name: 'You', component: UserProfile, icon: 'user' },
 ];
 
+const screenOptions = { 
+    headerShown: false,
+    tabBarStyle: { 
+        ...navbarStyles.tabBarStyle,
+        backgroundColor: globalStyles.backgroundColor.backgroundColor,
+    },
+    tabBarInactiveTintColor: globalStyles.secondaryColor.color,
+    tabBarActiveTintColor: globalStyles.primaryColor.color,
+};
+
+/**
+ * Returns a function that returns null if the name is '+', otherwise undefined meaning it uses the defaultabel (the name of the tab).
+ * This is used for the tabBarLabel option in Tab.Screen.
+ *
+ * @param {string} name - The name of the tab.
+ * @returns {function|null} - A function that returns null if the name is '+', otherwise undefined.
+ */
+const getTabBarLabel = (name) => name === '+' ? () => null : undefined;
+
 /**
  * MainTabNavigator is a component that renders a bottom tab navigator.
  * It maps over an array of screens and creates a Tab.Screen for each one.
  * If the screen's icon is '+', it applies an animation when the icon is pressed.
+ * The '+' tab does not have a label, hence the tabBarLabel is set to null for it.
  *
  * @returns {React.Element} The rendered bottom tab navigator.
  */
-
 export default function MainTabNavigator() {
     const navigation = useNavigation();
     const [animation] = useState(new Animated.Value(1));
 
-    const startAnimation = () => {
+    // startAnimation triggers a sequence of animations that first scales up
+    // the animation value to 1.1 over 100ms, then scales it back down to 1 over 100ms.
+    // This creates a "bounce" effect when the user interacts with the animated element.
+    // The function is memoized with useCallback and only updates when the `animation` state changes.
+    const startAnimation = useCallback(() => {
         Animated.sequence([
             Animated.timing(animation, {
                 toValue: 1.1,
@@ -47,21 +78,13 @@ export default function MainTabNavigator() {
                 useNativeDriver: true,
             }),
         ]).start();
-    };
+    }, [animation]);
 
     return (
         <View style={navbarStyles.container}>
             <Tab.Navigator 
                 initialRouteName="Dashboard"
-                screenOptions={{ 
-                    headerShown: false,
-                    tabBarStyle: { 
-                        ...navbarStyles.tabBarStyle,
-                        backgroundColor: globalStyles.backgroundColor.backgroundColor,
-                    },
-                    tabBarInactiveTintColor: globalStyles.secondaryColor.color,
-                    tabBarActiveTintColor: globalStyles.primaryColor.color,
-                }}
+                screenOptions={screenOptions}
             >
             {screens.map(({ name, component, icon }) => (
                 <Tab.Screen 
@@ -78,7 +101,7 @@ export default function MainTabNavigator() {
                                 navigation={navigation}
                             />
                         ),
-                        tabBarLabel: name === '+' ? () => null : undefined,
+                        tabBarLabel: getTabBarLabel(name),
                     }}
                 />
             ))}
