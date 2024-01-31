@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import { BACKEND_IP } from '@env';
+import { LocalIP } from './IPIndex';
 const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
 	const handleRegister = () => {
 	// TODO: Replace with local machine ip address
-		fetch(`http://100.67.146.3:3000/register`, {
+		fetch(`${LocalIP}/register`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

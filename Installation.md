@@ -28,7 +28,7 @@ Scan the QR code on your device and it should open in ExpoGo (Might be different
     
 ## Documentation
 
-Usefull Documentation:
+Useful Documentation:
 
 [React Native](https://reactnative.dev/)
 

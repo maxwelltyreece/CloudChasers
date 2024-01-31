@@ -22,15 +22,11 @@ To run the Node.js server, use the following commands:
 For managing the DB I recommend using [MongoDBCompass](https://www.mongodb.com/products/tools/compass)
 
 One small thing I haven't figured out yet is IP addresses, so in the meantime you need to run `ipconfig` in the terminal
-then update the IPv4 address in these files:
-  
-    `.\frontend\DashboardScreen.js`
-    `.\frontend\LoginScreen.js`
-    `.\frontend\RegisterScreen.js`
+then update the IPv4 address in the `IPIndex` file
 
 ## Documentation
 
-Usefull Documentation:
+Useful Documentation:
 
 [Mongoose](https://mongoosejs.com/docs/) -NodeJS interface with MongoDB
 

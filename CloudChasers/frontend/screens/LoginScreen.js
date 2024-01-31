@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BACKEND_IP } from '@env';
-
+import { LocalIP } from './IPIndex';
 const LoginScreen = ({ navigation }) => {
 const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 
 const handleLogin = () => {
 	// TODO: Replace with local machine ip address
-	fetch( `http://100.67.146.3:3000/login`, {
+	fetch( `${LocalIP}/login`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
