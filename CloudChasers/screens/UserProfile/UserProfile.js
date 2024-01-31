@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import SettingsButton from '../../components/SettingsButton';
+import globalStyles from '../../styles/global';
 
 const styles = StyleSheet.create({
     container: {
@@ -11,15 +12,14 @@ const styles = StyleSheet.create({
 });
 
 /**
- * UserProfile is a component that renders a 'UserProfile' message in the center of the screen.
- * It also includes a SettingsButton component.
- * It uses styles from its own StyleSheet.
+ * UserProfile is a screen component designed for displaying user profile information.
+ * It includes a SettingsButton component and uses styles from both the global styles and its own styles.
  *
- * @returns {React.Element} The rendered user profile screen.
+ * @returns {React.Element} The rendered UserProfile screen.
  */
 const UserProfile = () => (
     <View style={styles.container}>
-        <Text>UserProfile</Text>
+        <Text style={globalStyles.medium}>Placeholder for user profile</Text>
         <SettingsButton />
     </View>
 );

@@ -11,14 +11,14 @@ const styles = StyleSheet.create({
 });
 
 /**
- * Dashboard is a component that renders a welcome message in the center of the screen.
+ * Dashboard is a screen component that renders a centered view.
  * It uses styles from both the global styles and its own styles.
  *
- * @returns {React.Element} The rendered screen.
+ * @returns {React.Element} The rendered Dashboard screen.
  */
 const Dashboard = () => (
   <View style={[globalStyles.container, styles.container]}>
-    <Text style={globalStyles.globalFont}>Welcome to the Dashboard!</Text>
+    <Text style={globalStyles.medium}>Placeholder for dashboard</Text>
   </View>
 );
 

@@ -1,5 +1,5 @@
 // React related imports
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Animated } from 'react-native';
 
 // Navigation related imports
@@ -38,6 +38,9 @@ const screenOptions = {
     },
     tabBarInactiveTintColor: globalStyles.secondaryColor.color,
     tabBarActiveTintColor: globalStyles.primaryColor.color,
+    tabBarLabelStyle: {
+        fontFamily: globalStyles.medium.fontFamily
+    }
 };
 
 /**

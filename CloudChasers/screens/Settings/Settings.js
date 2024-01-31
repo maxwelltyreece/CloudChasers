@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
-
+import globalStyles from '../../styles/global';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -43,7 +43,7 @@ const Settings = () => {
 
     const renderItem = ({ item }) => (
         <TouchableOpacity activeOpacity={0.3} onPress={item.handler}>
-            <Text style={styles.item}>{item.name}</Text>
+            <Text style={[styles.item, globalStyles.medium]}>{item.name}</Text>
         </TouchableOpacity>
     );
 

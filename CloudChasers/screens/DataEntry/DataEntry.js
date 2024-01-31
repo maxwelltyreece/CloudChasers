@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import globalStyles from '../../styles/global';
 
 const styles = StyleSheet.create({
     container: {
@@ -10,14 +11,14 @@ const styles = StyleSheet.create({
 });
 
 /**
- * DataEntry is a component that renders a welcome message in the center of the screen.
- * It uses styles from its own StyleSheet.
+ * DataEntry is a screen component designed for user data entry.
+ * It uses styles from both the global styles and its own styles.
  *
- * @returns {React.Element} The rendered screen.
+ * @returns {React.Element} The rendered DataEntry screen.
  */
 const DataEntry = () => (
     <View style={styles.container}>
-        <Text>Welcome to the Data Entry!</Text>
+        <Text style={globalStyles.medium}>Placeholder for data entry</Text>
     </View>
 );
 

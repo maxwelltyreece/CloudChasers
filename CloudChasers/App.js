@@ -4,6 +4,20 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Navbar from './components/Navbar';
 import Settings from './screens/Settings/Settings';
+import {
+  useFonts,
+  Montserrat_100Thin,
+  Montserrat_200ExtraLight,
+  Montserrat_300Light,
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_600SemiBold,
+  Montserrat_700Bold,
+  Montserrat_800ExtraBold,
+  Montserrat_900Black,
+} from "@expo-google-fonts/montserrat";
+
+
 
 const Stack = createStackNavigator();
 
@@ -17,6 +31,17 @@ const Stack = createStackNavigator();
  * @returns {React.Element} The rendered navigation container.
  */
 export default function App() {
+  let [fontsLoaded] = useFonts({
+    Montserrat_100Thin,
+    Montserrat_200ExtraLight,
+    Montserrat_300Light,
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
+    Montserrat_700Bold,
+    Montserrat_800ExtraBold,
+    Montserrat_900Black,
+  });
   return (
     <NavigationContainer>
       <Stack.Navigator 

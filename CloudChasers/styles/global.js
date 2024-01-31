@@ -16,4 +16,13 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: bgColor,
     },
+    regular: {
+        fontFamily: 'Montserrat_400Regular',
+    },
+    medium: {
+        fontFamily: 'Montserrat_500Medium',
+    },
+    bold: {
+        fontFamily: 'Montserrat_700Bold',
+    },
 });
