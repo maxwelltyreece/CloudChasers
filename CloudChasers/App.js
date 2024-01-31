@@ -42,6 +42,10 @@ export default function App() {
     Montserrat_800ExtraBold,
     Montserrat_900Black,
   });
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator 
