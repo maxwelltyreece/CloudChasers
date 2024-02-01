@@ -30,5 +30,9 @@ module.exports = {
         allow: ['StatusBar'],
       },
     ],
+    'no-tabs': ['error',
+      { allowIndentationTabs: true }],
+    indent: ['warn', 'tab'],
+    'no-unused-vars': ['warn'],
   },
 };
