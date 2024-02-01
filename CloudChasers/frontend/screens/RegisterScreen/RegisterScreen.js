@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import { BACKEND_IP } from '@env';
-import { LocalIP } from './IPIndex';
+import { LocalIP } from '../IPIndex';
 const RegisterScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
