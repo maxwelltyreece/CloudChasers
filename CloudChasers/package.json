@@ -10,15 +10,26 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "1.18.2",
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/native-stack": "^6.9.17",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.1",
     "@expo-google-fonts/montserrat": "^0.2.3",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
     "expo": "~49.0.15",
     "expo-status-bar": "~1.6.0",
+    "express": "^4.18.2",
+    "express-jwt": "^8.4.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.1.1",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-paper": "^5.12.1",
+    "react-native-safe-area-context": "^4.6.3",
+    "react-native-screens": "~3.22.0",
     "react-native-safe-area-context": "^4.8.2",
     "react-native-svg": "^14.1.0",
     "react-native-vector-icons": "^10.0.3"
@@ -30,7 +41,8 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0"
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "react-native-dotenv": "^3.4.9"
   },
   "private": true
 }
