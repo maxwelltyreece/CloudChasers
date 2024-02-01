@@ -26,10 +26,6 @@ const SettingsOptions = (navigation) => [
         handler: () => { console.log('Display & Sound option selected'); },
     },
     {
-        name: 'Language & Region',
-        handler: () => { console.log('Language & Region option selected'); },
-    },
-    {
         name: 'Help & Support',
         handler: () => { console.log('Help & Support option selected'); },
     },
