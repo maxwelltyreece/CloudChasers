@@ -8,8 +8,10 @@ const [username, setUsername] = useState('');
 const [password, setPassword] = useState('');
 
 const handleLogin = () => {
+	console.log(LocalIP);
+	console.log(username);
 	// TODO: Replace with local machine ip address
-	fetch( `${LocalIP}:3000/login`, {
+	fetch( `http://${LocalIP}:3000/login`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
