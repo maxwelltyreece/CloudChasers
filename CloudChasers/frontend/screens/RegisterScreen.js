@@ -8,7 +8,7 @@ const RegisterScreen = ({ navigation }) => {
 
 	const handleRegister = () => {
 	// TODO: Replace with local machine ip address
-		fetch(`${LocalIP}/register`, {
+		fetch(`${LocalIP}:3000/register`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

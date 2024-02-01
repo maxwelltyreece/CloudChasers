@@ -10,7 +10,7 @@ const DashboardScreen = () => {
 		AsyncStorage.getItem('token')
 			.then(token => {
 				console.log(token);
-				return fetch(`${LocalIP}/users`, {
+				return fetch(`${LocalIP}:3000/users`, {
 					method: 'GET',
 					headers: {
 					'Authorization': `Bearer ${token}`

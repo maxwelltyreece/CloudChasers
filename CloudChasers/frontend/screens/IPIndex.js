@@ -1,2 +1,2 @@
-const LocalIP = 'http://100.67.146.3:3000';
+const LocalIP = 'PLEASE CHANGE THIS TO YOUR LOCAL IP ADDRESS';
 export {LocalIP}
