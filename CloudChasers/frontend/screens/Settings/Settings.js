@@ -1,16 +1,17 @@
 // Settings.js
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
+import Feather from 'react-native-vector-icons/Feather';
+import LogoutButton from './settingsComponents/LogoutButton';
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 100, // Add a top padding to the container
+        paddingTop: 0,
     },
     backButton: {
         position: 'absolute',
@@ -18,9 +19,29 @@ const styles = StyleSheet.create({
         left: 20,
     },
     item: {
-        padding: 10,
-        fontSize: 18,
-        height: 44,
+        paddingVertical: 24,
+        fontSize: 14,
+    },
+    separator: {
+        height: 2, 
+        backgroundColor: '#A9A9A9', 
+        width: '100%',
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+    },
+    usernameHeader: {
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 30,
+    },
+    usernameText: {
+        fontSize: 14,
+        textAlign: 'center',
+        marginTop: 10,
     },
 });
 
@@ -40,22 +61,32 @@ const styles = StyleSheet.create({
  */
 const Settings = () => {
     const navigation = useNavigation();
+    const username = 'TestUser';
 
     const renderItem = ({ item }) => (
         <TouchableOpacity activeOpacity={0.3} onPress={item.handler}>
-            <Text style={[styles.item, globalStyles.medium]}>{item.name}</Text>
+            <View style={styles.itemContainer}>
+                <Text style={[styles.item, globalStyles.bold]}>{item.name}</Text>
+                <Feather name="chevron-right" size={25} color="#6B6868" />            
+            </View>
         </TouchableOpacity>
     );
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                <Icon name="chevron-back" size={35} color="#000" />
-            </TouchableOpacity>
             <FlatList
                 data={SettingsOptions(navigation)}
                 renderItem={renderItem}
                 keyExtractor={item => item.name}
+                ItemSeparatorComponent={() => <View style={styles.separator} />}  // Use the separator style here
+                ListFooterComponent={() => (  // Add the logout button here
+                    <View>
+                        <View style={styles.separator} /> 
+                        <Text style={[styles.usernameHeader, globalStyles.bold]}>Logged in as</Text> 
+                        <Text style={[styles.usernameText, globalStyles.medium]}>{username}</Text>
+                        <LogoutButton onPress={() => console.log('SIGNED OUT')} />
+                    </View>
+                )}
             />
         </View>
     );

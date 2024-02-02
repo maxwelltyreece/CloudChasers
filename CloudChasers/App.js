@@ -6,6 +6,8 @@ import Landing from './frontend/screens/Landing/Landing';
 import Login from './frontend/screens/Login/Login';
 import Register from './frontend/screens/Register/Register';
 import { NavigationContainer } from '@react-navigation/native';
+import Feather from 'react-native-vector-icons/Feather';
+import { View } from 'react-native';
 import {
 	useFonts,
 	Montserrat_100Thin,
@@ -85,7 +87,16 @@ export default function App() {
 					name="Settings" 
 					component={Settings} 
 					options={{ 
-						headerShown: false,
+						headerShown: true,
+						headerStyle: {
+							backgroundColor: '#F0F0F0',
+						},
+						headerBackImage: () => (
+							<View style={{ paddingLeft: 10 }}>  
+								<Feather name="chevron-left" size={25} color="#6B6868" />
+							</View>
+						),
+						headerBackTitleVisible: false, 
 					}}
 				/>
 			</Stack.Navigator>
