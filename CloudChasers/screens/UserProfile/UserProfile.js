@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, ImageBackground } from 'react-native';
 import SettingsButton from '../../components/SettingsButton';
-import Svg, {G, Rect, Path, Defs, ClipPath} from 'react-native-svg';
+import Svg, {G, Rect, Defs, ClipPath, Circle} from 'react-native-svg';
 import globalStyles from '../../styles/global';
 
 /**
@@ -11,36 +11,40 @@ import globalStyles from '../../styles/global';
  * @returns {React.Element} The rendered UserProfile screen.
  */
 
-const {width, height} = Dimensions.get('window');
 
-const BackgroundSvg = () => (
-<Svg width={width} height={height} viewBox="0 0 390 844" fill="none">
-    <G clipPath="url(#clip0_113_195)">
-      <Rect width="390" height="844" fill="#FF815E" />
-      <Path
-        d="M386.942 253.441C433.649 312.804 437.712 392.814 421.071 467.934C404.522 542.635 367.223 613.443 299.895 646.569C232.689 679.636 153.671 666.442 84.9195 633.37C17.3257 600.855 -38.6748 546.812 -56.5875 474.97C-74.7386 402.171 -53.1673 325.783 -6.75348 266.141C39.6967 206.453 108.551 168.531 183.88 166.144C261.684 163.68 339.206 192.769 386.942 253.441Z"
-        fill="white"
-        stroke="#E7E7E7"
-        strokeWidth="10"
-      />
-      <Rect y="267" width="390" height="577" fill="white" />
-    </G>
-    <Defs>
-      <ClipPath id="clip0_113_195">
-        <Rect width="390" height="844" fill="white" />
-      </ClipPath>
-    </Defs>
-  </Svg>
-);
 
 const UserProfile = () => {
   return (
     <View style={styles.container}>
       <BackgroundSvg />
-      {/* Your page content goes here */}
+      <Image
+        source={{uri: 'https://placekitten.com/200/200'}}
+        style={styles.profilePic}
+      />
+      <Text style={styles.username}>Maxwell Martin</Text>
+      {/*style this below*/}
+      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore.</Text> 
+      <SettingsButton/>
     </View>
   );
 };
+
+const {width, height} = Dimensions.get('window');
+
+const BackgroundSvg = () => (
+  <Svg width={width} height={height} viewBox="0 0 390 844" fill="none">
+    <Defs>
+      <ClipPath id="clip0_113_195">
+        <Rect width="390" height="844" fill="white" />
+      </ClipPath>
+    </Defs>
+    <G clipPath="url(#clip0_113_195)">
+      <Rect width="390" height="844" fill="#FF815E" />
+      <Circle cx="194.5" cy="430.5" r="264.5" fill="white" stroke="#CFCDCD" strokeWidth="8" />
+      <Rect y="267" width="390" height="577" fill="white" />
+    </G>
+  </Svg>
+);
 
 const styles = StyleSheet.create({
   container: {
@@ -48,6 +52,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+   profilePic: {
+    width: 120,
+    height: 120, 
+    borderRadius: 60, 
+    position: 'absolute',
+    top: '10%',
+    left: (width / 2) - (120 / 2),
+  },
+  username: {
+    position: 'absolute',
+    top: '28%',
+    fontSize: 30,
+    color: '#6B6868',
+    fontFamily: 'Montserrat_400Regular'
   },
 });
 
