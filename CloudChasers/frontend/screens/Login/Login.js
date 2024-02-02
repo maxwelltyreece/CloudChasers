@@ -1,16 +1,32 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LocalIP } from '../IPIndex';
 
 const Login = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        // Here you can add your login logic
-        // After successful login, navigate to Navbar
-        navigation.reset({
-            index: 0,
-            routes: [{ name: 'Navbar' }],
+        axios.post(`http://${LocalIP}:3000/login`, {
+            username: username,
+            password: password
+        })
+        .then(function (response) {
+            // handle success
+            if(response.data.data) {
+                AsyncStorage.setItem('token', response.data.data);
+                // Navigate to Dashboard
+                navigation.navigate('Navbar');
+            } else {
+                // Handle login failure
+                console.error('Login failed');
+            }
+        })
+        .catch(function (error) {
+            // handle error
+            console.error('Error:', error);
         });
     };
 
