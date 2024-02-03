@@ -1,11 +1,25 @@
-// Account.js
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import globalStyles from '../../../styles/global';
 
-export default function Account() {
-    return (
-        <View>
-            <Text>Account Screen</Text>
-        </View>
-    );
-}
+const styles = StyleSheet.create({
+    container: {
+        marginTop: 50,
+        flex: 1,
+        alignItems: 'center',
+    },
+});
+
+/**
+ * Account is a screen component designed for displaying and managing user account information.
+ * It uses styles from both the global styles and its own styles.
+ *
+ * @returns {React.Element} The rendered Account screen.
+ */
+const Account = () => (
+    <View style={styles.container}>
+        <Text style={globalStyles.medium}>Placeholder for Account</Text>
+    </View>
+);
+
+export default Account;
