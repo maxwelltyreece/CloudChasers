@@ -11,27 +11,27 @@
 const SettingsOptions = (navigation) => [
     {
         name: 'Account',
-        handler: () => { console.log('Account option selected'); },
+        handler: () => navigation.navigate('Account'),
     },
     {
         name: 'Notifications',
-        handler: () => { console.log('Notifications option selected'); },
+        handler: () => navigation.navigate('Notifications'),
     },
     {
         name: 'Privacy',
-        handler: () => { console.log('Privacy option selected'); },
+        handler: () => navigation.navigate('Privacy'),
     },
     {
         name: 'Display & Sound',
-        handler: () => { console.log('Display & Sound option selected'); },
+        handler: () => navigation.navigate('DisplayAndSound'),
     },
     {
         name: 'Help & Support',
-        handler: () => { console.log('Help & Support option selected'); },
+        handler: () => navigation.navigate('HelpAndSupport'),
     },
     {
         name: 'About',
-        handler: () => { console.log('About option selected'); },
+        handler: () => navigation.navigate('About'),
     },
 ];
 
