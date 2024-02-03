@@ -26,7 +26,7 @@ const Register = ({ navigation }) => {
             // handle success
             if(response.data.success) {
                 AsyncStorage.setItem('token', response.data.data);
-                navigation.navigate('Navbar');
+                navigation.navigate('Main');
             } else {
                 // Handle registration failure
                 console.error('Registration failed');

@@ -8,6 +8,9 @@ import Register from './frontend/screens/Register/Register';
 import { NavigationContainer } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import { View } from 'react-native';
+import globalStyles from './frontend/styles/global';
+import AuthNavigator from './frontend/navigation/AuthNavigator';
+import MainNavigator from './frontend/navigation/MainNavigator';
 import {
 	useFonts,
 	Montserrat_100Thin,
@@ -20,7 +23,6 @@ import {
 	Montserrat_800ExtraBold,
 	Montserrat_900Black,
 } from "@expo-google-fonts/montserrat";
-
 
 
 const Stack = createStackNavigator();
@@ -52,53 +54,9 @@ export default function App() {
 
 	return (
 		<NavigationContainer>
-			<Stack.Navigator 
-				initialRouteName="Landing"
-			>
-				<Stack.Screen 
-                name="Landing" 
-                component={Landing} 
-                options={{ 
-                    headerShown: false
-                }}
-			    />
-				<Stack.Screen 
-					name="Login" 
-					component={Login} 
-					options={{ 
-						headerShown: false
-					}}
-				/>
-				<Stack.Screen 
-					name="Register" 
-					component={Register} 
-					options={{ 
-						headerShown: false
-					}}
-				/>
-				<Stack.Screen 
-					name="Navbar" 
-					component={Navbar} 
-					options={{ 
-						headerShown: false
-					}}
-				/>
-				<Stack.Screen 
-					name="Settings" 
-					component={Settings} 
-					options={{ 
-						headerShown: true,
-						headerStyle: {
-							backgroundColor: '#F0F0F0',
-						},
-						headerBackImage: () => (
-							<View style={{ paddingLeft: 10 }}>  
-								<Feather name="chevron-left" size={25} color="#6B6868" />
-							</View>
-						),
-						headerBackTitleVisible: false, 
-					}}
-				/>
+			<Stack.Navigator initialRouteName="Main">
+				<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+				<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
 			</Stack.Navigator>
 		</NavigationContainer>
 	);

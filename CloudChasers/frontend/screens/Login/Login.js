@@ -18,7 +18,7 @@ const Login = ({ navigation }) => {
             if(response.data.data) {
                 AsyncStorage.setItem('token', response.data.data);
                 // Navigate to Dashboard
-                navigation.navigate('Navbar');
+                navigation.navigate('Main');
             } else {
                 // Handle login failure
                 console.error('Login failed');
