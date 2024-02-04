@@ -6,6 +6,7 @@ import { LocalIP } from '../IPIndex';
 
 const Register = ({ navigation }) => {
     const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -17,6 +18,7 @@ const Register = ({ navigation }) => {
 
         axios.post(`http://${LocalIP}:3000/register`, {
             username: username,
+            email: email,
             password: password
         })
         .then(function (response) {
@@ -31,8 +33,18 @@ const Register = ({ navigation }) => {
             }
         })
         .catch(function (error) {
-            // handle error
-            console.error('Error:', error);
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.error('Response data:', error.response.data);
+                console.error('Response status:', error.response.status);
+                console.error('Response headers:', error.response.headers);
+            } else if (error.request) {
+                console.error('Request:', error.request);
+            } else {
+                console.error('Error message:', error.message);
+            }
+            console.error('Error config:', error.config);
         });
     };
 
@@ -43,6 +55,12 @@ const Register = ({ navigation }) => {
                 placeholder="Username" 
                 value={username} 
                 onChangeText={setUsername} 
+            />
+            <TextInput 
+                style={styles.input} 
+                placeholder="Email"  // Add this TextInput
+                value={email} 
+                onChangeText={setEmail} 
             />
             <TextInput 
                 style={styles.input} 
