@@ -60,29 +60,31 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.getUserDetail =  async (req, res) => {
-	const { token } = req.body;
+	const {token} = req.body;
 	try {
-		const user = jwt.verify(token, JWT_SECRET);
-		const userID = user._id;
+		const decoded = jwt.verify(token, process.env.SECRET_KEY);
+		const user = await User.findById(decoded.userId);
 
-		User.findOne({ _id: userID }).then((data) => {
-			return res.status(200).json({data: data});
-		});
+		if(!user) {
+			return res.status(404).send({ message: 'User not found' });
+		}else{
+			return res.status(200).json({data: user});
+		}
+
 	} catch (error) {
 		return res.status(500).json({error: error.toString()});
 	}
 };
 
 exports.updateProfile = async (req, res) => {
-	const { token , height, weight } = req.body;
-  
-	try {
-		const authenticationUser = jwt.verify(token, JWT_SECRET);
-		const userID = authenticationUser._id;
+	const {token, height, weight} = req.body;
 
-		const user = User.findOne({ _id: userID })
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY);
+		const user = await User.findById(decoded.userId);
+
 		if (!user) {
-		return res.status(404).send({ message: 'User not found' });
+			return res.status(404).send({ message: 'User not found' });
 		}
 
 		user.height = height;
