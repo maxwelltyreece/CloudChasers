@@ -6,9 +6,12 @@ import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
 import Feather from 'react-native-vector-icons/Feather';
 import LogoutButton from './settingsComponents/LogoutButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ICON_SIZE = 25;
 const USERNAME = 'test@email.com';
+
+
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -21,12 +24,23 @@ const SettingsItem = ({ item }) => (
     </Pressable>
 );
 
-const SettingsFooter = ({ username }) => (
+const SettingsFooter = ({ username, navigation }) => (
     <View>
         <View style={styles.separator} /> 
         <Text style={[styles.usernameHeader, globalStyles.bold]}>Logged in as</Text> 
         <Text style={[styles.usernameText, globalStyles.medium]}>{username}</Text>
-        <LogoutButton onPress={() => console.log('SIGNED OUT')} />
+        <LogoutButton onPress={async () => {
+            try {
+                await AsyncStorage.removeItem('token');
+                console.log('Token removed!');
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Auth' }],
+                });
+            } catch (error) {
+                console.error('Failed to remove the token.', error);
+            }
+        }} />
     </View>
 );
 
@@ -88,7 +102,7 @@ const Settings = () => {
                 renderItem={SettingsItem}
                 keyExtractor={keyExtractor}
                 ItemSeparatorComponent={ItemSeparator}
-                ListFooterComponent={<SettingsFooter username={USERNAME} />}
+                ListFooterComponent={<SettingsFooter username={USERNAME} navigation={navigation} />}
             />
         </View>
     );

@@ -11,6 +11,8 @@ import { View } from 'react-native';
 import globalStyles from './frontend/styles/global';
 import AuthNavigator from './frontend/navigation/AuthNavigator';
 import MainNavigator from './frontend/navigation/MainNavigator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState, useEffect } from 'react';
 import {
 	useFonts,
 	Montserrat_100Thin,
@@ -48,17 +50,33 @@ export default function App() {
 		Montserrat_800ExtraBold,
 		Montserrat_900Black,
 	});
-	if (!fontsLoaded) {
-		return null;
-	}
 
+	const [initialRoute, setInitialRoute] = useState(null);
+
+	useEffect(() => {
+		const checkToken = async () => {
+			try {
+			const token = await AsyncStorage.getItem('token');
+			setInitialRoute(token ? 'Main' : 'Auth');
+			} catch (error) {
+			console.error(error);
+			}
+		};
+		
+		checkToken();
+	}, []);
+  
+	if (!fontsLoaded || !initialRoute) {
+	  return null;
+	}
+  
 	return (
-		<NavigationContainer>
-			<Stack.Navigator initialRouteName="Main">
-				<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-				<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-			</Stack.Navigator>
-		</NavigationContainer>
+	  <NavigationContainer>
+		<Stack.Navigator initialRouteName={initialRoute}>
+		  <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+		  <Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+		</Stack.Navigator>
+	  </NavigationContainer>
 	);
-}
+  }
 
