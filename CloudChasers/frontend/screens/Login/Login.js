@@ -25,27 +25,29 @@ const Login = ({ navigation }) => {
             }
         })
         .catch(function (error) {
-            // handle error
             console.error('Error:', error);
         });
     };
 
     return (
         <View style={styles.container}>
-            <TextInput 
-                style={styles.input} 
-                placeholder="Username" 
-                value={username} 
-                onChangeText={setUsername} 
-            />
-            <TextInput 
-                style={styles.input} 
-                placeholder="Password" 
-                value={password} 
-                onChangeText={setPassword} 
-                secureTextEntry 
-            />
-            <Button title="Login" onPress={handleLogin} />
+            <View style={styles.orangeBlock} />
+            <View style={styles.whiteBlock}>
+                <TextInput 
+                    style={styles.input} 
+                    placeholder="Username" 
+                    value={username} 
+                    onChangeText={setUsername} 
+                />
+                <TextInput 
+                    style={styles.input} 
+                    placeholder="Password" 
+                    value={password} 
+                    onChangeText={setPassword} 
+                    secureTextEntry 
+                />
+                <Button title="Login" onPress={handleLogin} />
+            </View>
         </View>
     );
 };
@@ -53,8 +55,23 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white',
+    },
+    orangeBlock: {
+        position: 'absolute',
+        backgroundColor: '#FF815E', // Updated color
+        width: '120%',
+        height: '120%',
+        top: '-40%',
+        left: '-10%',
+        transform: [{ rotate: '-60deg' }],
+    },
+    whiteBlock: {
+        flex: 1,
+        backgroundColor: 'transparent',
         justifyContent: 'center',
         padding: 16,
+        zIndex: 1,
     },
     input: {
         height: 40,
