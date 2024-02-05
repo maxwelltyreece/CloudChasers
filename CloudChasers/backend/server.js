@@ -50,8 +50,8 @@ const os = require('os');
 const networkInterfaces = os.networkInterfaces();
 
 let serverIP;
-for (let interface in networkInterfaces) {
-    for (let networkInterface of networkInterfaces[interface]) {
+for (let netInterface in networkInterfaces) {
+    for (let networkInterface of networkInterfaces[netInterface]) {
         if (networkInterface.family === 'IPv4' && !networkInterface.internal) {
             serverIP = networkInterface.address;
             break;
@@ -63,3 +63,5 @@ for (let interface in networkInterfaces) {
 app.listen(3000, () => {
     console.log(`Server is running on ${serverIP}:3000`);
 });
+
+module.exports = app;

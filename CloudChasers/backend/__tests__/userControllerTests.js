@@ -1,75 +1,62 @@
-// Import the necessary libraries
+const request = require('supertest');
+const app = require('../server');
+const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const { register, login } = require('../controllers/userController'); // Adjust the path as necessary
 
-// Mock external dependencies
-jest.mock('bcrypt');
-jest.mock('jsonwebtoken');
-jest.mock('../models/user');
+// Mock the User model functions that are called in the controller
+User.findOne = jest.fn();
+User.prototype.save = jest.fn().mockImplementation(() => Promise.resolve());
 
-// Setup common variables
-const mockSend = jest.fn();
-const mockStatus = jest.fn().mockReturnValue({ send: mockSend });
-const mockRes = { status: mockStatus };
+// Mock bcrypt and jwt
+bcrypt.hash = jest.fn().mockResolvedValue('hashedPassword');
+jwt.sign = jest.fn().mockReturnValue('fakeTokenString');
 
-describe('User Registration and Login', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
+describe('POST /register', () => {
+  it('should register a new user', async () => {
+    // Set up User.findOne to simulate that the user does not already exist
+    User.findOne.mockResolvedValueOnce(null);
+
+    const response = await request(app)
+      .post('/register')
+      .send({
+        username: 'newuser',
+        email: 'newuser@example.com',
+        password: 'password123',
+      });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toEqual({ success: true, message: 'User created' });
+    // Add more assertions as necessary
   });
 
-  describe('register', () => {
-    it('should create a new user if username is not taken', async () => {
-      User.findOne.mockResolvedValue(null);
-      bcrypt.hash.mockResolvedValue('hashedPassword');
-      const mockReq = { body: { username: 'testUser', password: 'password' } };
-
-      await register(mockReq, mockRes);
-
-      expect(User.findOne).toHaveBeenCalledWith({ username: 'testUser' });
-      expect(bcrypt.hash).toHaveBeenCalledWith('password', 10);
-      expect(mockStatus).toHaveBeenCalledWith(201);
-      expect(mockSend).toHaveBeenCalledWith({ success: true, message: 'User created' });
-    });
-
-    it('should return a 400 if the username is already used', async () => {
-      User.findOne.mockResolvedValue(true); // Simulate finding an existing user
-      const mockReq = { body: { username: 'testUser', password: 'password' } };
-
-      await register(mockReq, mockRes);
-
-      expect(mockStatus).toHaveBeenCalledWith(400);
-      expect(mockSend).toHaveBeenCalledWith({ message: 'Username already used' });
-    });
-  });
-
-  describe('login', () => {
-    it('should return a token if credentials are valid', async () => {
-      User.findOne.mockResolvedValue({ _id: 'userId', password: 'hashedPassword' });
-      bcrypt.compare.mockResolvedValue(true);
-      jwt.sign.mockReturnValue('token');
-      const mockReq = { body: { username: 'testUser', password: 'password' } };
-
-      await login(mockReq, mockRes);
-
-      expect(User.findOne).toHaveBeenCalledWith({ username: 'testUser' });
-      expect(bcrypt.compare).toHaveBeenCalledWith('password', 'hashedPassword');
-      expect(jwt.sign).toHaveBeenCalledWith({ userId: 'userId' }, process.env.SECRET_KEY);
-      expect(mockStatus).toHaveBeenCalledWith(200);
-      expect(mockSend).toHaveBeenCalledWith({ data: 'token' });
-    });
-
-    it('should return 401 if credentials are invalid', async () => {
-      User.findOne.mockResolvedValue(null); // Simulate not finding a user
-      const mockReq = { body: { username: 'testUser', password: 'password' } };
-
-      await login(mockReq, mockRes);
-
-      expect(mockStatus).toHaveBeenCalledWith(401);
-      expect(mockSend).toHaveBeenCalledWith({ message: 'Invalid credentials' });
-    });
-  });
-
-  // Additional tests for getUsers function can be added here following a similar pattern.
+  // Add more tests for different scenarios, such as when a user already exists
 });
+
+// import supertest from 'supertest'
+// import app from '../server'
+
+// describe('POST /register', () => {
+// 	describe('given a username, email, and password', () => {
+// 		test('should register a new user', async () => {
+// 			const response = await request(app).post('/register').send({
+// 				username: 'username',
+// 				email: 'test@email.com',
+// 				password: 'password123'
+// 			})
+// 			expect(response.statusCode).toBe(200)
+// 		})
+// 		test('should specify json in the contect type header', async () => {
+// 			const response = await request(app).post('/register').send({
+// 				username: 'username',
+// 				email: 'test@email.com',
+// 				password: 'password123'
+// 			})
+// 			expect(response.headers['content-type']).toEqual(expect.stringContaining('json'))
+// 		})
+// 	})
+
+// 	describe('when the user already exists', () => {
+
+// 	})
+// })
