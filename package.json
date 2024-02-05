@@ -1,8 +1,0 @@
-{
-  "devDependencies": {
-    "react-native-dotenv": "^3.4.9"
-  },
-  "dependencies": {
-    "mongodb": "^6.3.0"
-  }
-}
