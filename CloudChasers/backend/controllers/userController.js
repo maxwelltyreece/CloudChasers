@@ -26,7 +26,7 @@ exports.register = async (req, res) => {
 		console.log(newUser);
 		await newUser.save();
 		console.log('User created');
-		return res.status(201).json({ success: true, message: 'User created' });	
+		return res.status(200).json({ success: true, message: 'User created' });	
 	} catch (error) {
 		return res.status(400).json({ error: error.toString() });
 	}
@@ -58,3 +58,39 @@ exports.getUsers = async (req, res) => {
 		return res.status(500).json({error: error.toString()});
 	}
 };
+
+exports.getUserDetail =  async (req, res) => {
+	const { token } = req.body;
+	try {
+		const user = jwt.verify(token, JWT_SECRET);
+		const userID = user._id;
+
+		User.findOne({ _id: userID }).then((data) => {
+			return res.status(200).json({data: data});
+		});
+	} catch (error) {
+		return res.status(500).json({error: error.toString()});
+	}
+};
+
+exports.updateProfile = async (req, res) => {
+	const { token , height, weight } = req.body;
+  
+	try {
+		const authenticationUser = jwt.verify(token, JWT_SECRET);
+		const userID = authenticationUser._id;
+
+		const user = User.findOne({ _id: userID })
+		if (!user) {
+		return res.status(404).send({ message: 'User not found' });
+		}
+
+		user.height = height;
+		user.weight = weight;
+		await user.save();
+
+		return res.status(200).send({ message: 'Profile updated' });
+	} catch (error) {
+		return res.status(500).send({ error: error.toString() });
+	}
+	};

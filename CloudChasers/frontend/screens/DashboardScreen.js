@@ -23,7 +23,7 @@ const DashboardScreen = () => {
 				setUsers(data);
 			})
 			.catch(error => console.error(error));
-	  }
+	}
 
 	useEffect(() => {
 		getData();
