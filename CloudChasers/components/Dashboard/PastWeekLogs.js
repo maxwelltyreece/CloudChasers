@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native';
 
 //Style Imports
-import dashboardStyles from '../styles/dashboardStyles';
+import dashboardStyles from '../../styles/DashboardStyles';
 
 
 const getLastSevenDays = () => {
@@ -40,7 +40,7 @@ export const PastWeekLogs = ({ meals }) => {
   }, [meals]);
 
   return (
-    <View>
+    <View style={dashboardStyles.pastWeekContainer}>
       <Text style={dashboardStyles.weeklyLogTitle}>Weekly Log:</Text>
       <View style={dashboardStyles.weeklyLogDaysContainer}>
         {lastSevenDays.map((day, index) => (
@@ -50,3 +50,5 @@ export const PastWeekLogs = ({ meals }) => {
     </View>
   );
 };
+
+export default PastWeekLogs;
