@@ -1,7 +1,7 @@
 
 // React related imports
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet} from 'react-native';
+import { View, Text, ScrollView, StyleSheet, SafeAreaView} from 'react-native';
 
 // Dashboard related imports
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,7 +16,7 @@ import dashboardStyles from '../../styles/DashboardStyles';
 // Component imports
 // import WelcomeBar from '../../components/Dashboard/WelcomeBar';
 // import { PastWeekLogs } from '../../../components/Dashboard/PastWeekLogs.js';
-import { WelcomeBar, PastWeekLogs, CurrentStreak } from '../../components/Dashboard';
+import { WelcomeBar, PastWeekLogs, CurrentStreak, RecentMealLog, LearnMore, CurrentGoalProgress} from '../../components/Dashboard';
 
 
 
@@ -44,23 +44,33 @@ const Dashboard = () => {
   const [streak, setStreak] = useState(fakeDB.currentStreak);
 
   return (
-    <ScrollView style={dashboardStyles.container}>
-    
-    <View>
-      <WelcomeBar name="Lorenzo" />
-    </View>
-    <View>
-      <PastWeekLogs meals={meals} /> 
-    </View>
-    <View style={dashboardStyles.componentContainer}>
-      <CurrentStreak streak={streak} />
-    </View>
-    <View>
-      
-    </View>
-    
+  
+    <SafeAreaView style={dashboardStyles.dashboardContainer}>
 
-    </ScrollView>
+      <View style={dashboardStyles.dashboardHeader}>
+        <WelcomeBar name="Lorenzo" />
+      </View>
+
+      <PastWeekLogs meals={meals} />
+
+      <View style={dashboardStyles.middleDashboardContainer}>
+
+        <View style={dashboardStyles.leftComponentContainer}>
+          <CurrentStreak streak={streak} />
+          <LearnMore />
+        </View>
+      
+        <View style={dashboardStyles.rightComponentContainer}>
+          <RecentMealLog />
+        </View>
+
+      </View>
+
+      <CurrentGoalProgress goal={120} current={80} />
+      
+    
+    </SafeAreaView>
+
   );
 };
 

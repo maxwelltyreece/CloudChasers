@@ -40,12 +40,14 @@ export const PastWeekLogs = ({ meals }) => {
   }, [meals]);
 
   return (
-    <View style={dashboardStyles.pastWeekContainer}>
+    <View style={dashboardStyles.wholePastLogsContainer}>
       <Text style={dashboardStyles.weeklyLogTitle}>Weekly Log:</Text>
-      <View style={dashboardStyles.weeklyLogDaysContainer}>
-        {lastSevenDays.map((day, index) => (
-          <DailyCheckmark key={index} logged={day.logged} dayName={day.dayName} />
-        ))}
+      <View style={dashboardStyles.weekContainer}>
+        <View style={dashboardStyles.weeklyLogDaysContainer}>
+          {lastSevenDays.map((day, index) => (
+            <DailyCheckmark key={index} logged={day.logged} dayName={day.dayName} />
+          ))}
+        </View>
       </View>
     </View>
   );

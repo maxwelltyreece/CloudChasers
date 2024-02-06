@@ -6,9 +6,9 @@ import { View, Text } from 'react-native';
 import dashboardStyles from '../../styles/DashboardStyles';
 
 const CurrentStreak = ({ streak }) => (
-    <View style={dashboardStyles.streakContainer}>
-      <Text style={dashboardStyles.streakText}>Current Streak:</Text>
-      <Text style={dashboardStyles.streakText}>{streak} days</Text>
+    <View style={dashboardStyles.currentStreakContainer}>
+      <Text style={dashboardStyles.streakTextTitle}>Current Streak:</Text>
+      <Text style={dashboardStyles.currentStreakText}>{streak} days</Text>
     </View>
 );
 
