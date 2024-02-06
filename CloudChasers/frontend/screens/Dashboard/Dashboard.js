@@ -14,10 +14,9 @@ import dashboardStyles from '../../styles/DashboardStyles';
 
 
 // Component imports
-import { WelcomeBar } from '../../../components/Dashboard/WelcomeBar.js';
-// import WelcomeBar from '../../../components/Dashboard/WelcomeBar';
-import { PastWeekLogs } from '../../../components/Dashboard/PastWeekLogs.js';
-import { CurrentStreak } from '../../../components/Dashboard/CurrentStreak.js';
+// import WelcomeBar from '../../components/Dashboard/WelcomeBar';
+// import { PastWeekLogs } from '../../../components/Dashboard/PastWeekLogs.js';
+import { WelcomeBar, PastWeekLogs, CurrentStreak } from '../../components/Dashboard';
 
 
 
@@ -31,30 +30,42 @@ const fakeDB = {
 };
 
 
+// const CurrentStreak = ({ streak }) => (
+//   <View style={dashboardStyles.currentStreakContainer}>
+//     <Text style={dashboardStyles.streakText}>Current Streak:</Text>
+//     <Text style={dashboardStyles.streakText}>{streak} days</Text>
+//   </View>
+// );
+
+
 // Dashboard screen
 const Dashboard = () => {
   const [meals, setMeals] = useState(fakeDB.recentMeals);
   const [streak, setStreak] = useState(fakeDB.currentStreak);
 
   return (
-    <ScrollView contentContainerStyle={dashboardStyles.container}>
-      <View style={dashboardStyles.welcomeContainer}>
-        <WelcomeBar name="Lorenzo"/> {/* Replace with actual user name */}
-      </View>
-      <View style={dashboardStyles.pastWeekContainer}>
-        <PastWeekLogs meals={meals} />
-      </View>
-      <View style={dashboardStyles.currentStreakContainer}>
-        <CurrentStreak streak={streak} />
-      </View>
+    <ScrollView style={dashboardStyles.container}>
+    
+    <View>
+      <WelcomeBar name="Lorenzo" />
+    </View>
+    <View>
+      <PastWeekLogs meals={meals} /> 
+    </View>
+    <View style={dashboardStyles.componentContainer}>
+      <CurrentStreak streak={streak} />
+    </View>
+    <View>
       
-      {/* add more components... */}
+    </View>
+    
 
     </ScrollView>
   );
 };
 
 export default Dashboard;
+
 
 
 

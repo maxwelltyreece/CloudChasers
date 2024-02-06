@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 
 // Style Imports
-import dashboardStyles from '../styles/dashboardStyles';
+import dashboardStyles from '../../styles/DashboardStyles';
 
 const CurrentStreak = ({ streak }) => (
     <View style={dashboardStyles.streakContainer}>

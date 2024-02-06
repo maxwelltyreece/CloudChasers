@@ -8,7 +8,13 @@ export default StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'flex-start',
     padding: 20,
-    backgroundColor: '#FF815E'
+    // backgroundColor: '#FF815E'
+  },
+  componentContainer: { 
+    backgroundColor: '#FF815E',
+    margin: 10,
+    borderRadius: 10,
+    padding: 20,
   },
 
   //-------Weclome Bar-------//
@@ -23,7 +29,7 @@ export default StyleSheet.create({
     fontSize: 35,
     fontWeight: 'bold',
     color: '#333',
-    fontFamily: 'Montserrat_700Bold',
+    // fontFamily: 'Montserrat_700Bold',
   },
 
   //-------Past Week Logs-------//
@@ -69,7 +75,7 @@ export default StyleSheet.create({
   streakText: {
     fontSize: 18,
     fontWeight: 'bold',
-    fontFamily: 'Montserrat_700Bold',
+    // fontFamily: 'Montserrat_700Bold',
   },
   
 });
