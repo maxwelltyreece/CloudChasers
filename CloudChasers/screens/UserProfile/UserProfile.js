@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Image, Dimensions, FlatList, TouchableOpacity } from 'react-native';
 import SettingsButton from '../../components/SettingsButton';
 import Svg, {G, Rect, Defs, ClipPath, Circle} from 'react-native-svg';
+import { useNavigation } from '@react-navigation/native';
 import globalStyles from '../../styles/global';
+import UserProfileOptions from './UserProfileOptions';
 
 /**
  * UserProfile is a screen component designed for displaying user profile information.
@@ -14,9 +16,16 @@ import globalStyles from '../../styles/global';
 
 
 const UserProfile = () => {
+  const navigation = useNavigation();
+
+  const renderItem = ({ item }) => (
+      <TouchableOpacity activeOpacity={0.3} onPress={item.handler}>
+          <Text style={[styles.item, globalStyles.medium]}>{item.name}</Text>
+      </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
-      <BackgroundSvg />
       <Image
         source={{uri: 'https://placekitten.com/200/200'}}
         style={styles.profilePic}
@@ -24,27 +33,19 @@ const UserProfile = () => {
       <Text style={styles.username}>Maxwell Martin</Text>
       {/*style this below*/}
       <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore.</Text> 
+      <FlatList
+                data={UserProfileOptions(navigation)}
+                renderItem={renderItem}
+                keyExtractor={item => item.name}
+            />
       <SettingsButton/>
     </View>
   );
 };
 
+
 const {width, height} = Dimensions.get('window');
 
-const BackgroundSvg = () => (
-  <Svg width={width} height={height} viewBox="0 0 390 844" fill="none">
-    <Defs>
-      <ClipPath id="clip0_113_195">
-        <Rect width="390" height="844" fill="white" />
-      </ClipPath>
-    </Defs>
-    <G clipPath="url(#clip0_113_195)">
-      <Rect width="390" height="844" fill="#FF815E" />
-      <Circle cx="194.5" cy="430.5" r="264.5" fill="white" stroke="#CFCDCD" strokeWidth="8" />
-      <Rect y="267" width="390" height="577" fill="white" />
-    </G>
-  </Svg>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -57,17 +58,19 @@ const styles = StyleSheet.create({
     width: 120,
     height: 120, 
     borderRadius: 60, 
-    position: 'absolute',
     top: '10%',
     left: (width / 2) - (120 / 2),
   },
   username: {
-    position: 'absolute',
-    top: '28%',
     fontSize: 30,
     color: '#6B6868',
     fontFamily: 'Montserrat_400Regular'
   },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+},
 });
 
 export default UserProfile;
