@@ -1,12 +1,16 @@
 const UserProfileOptions = (navigation) => [
     {
         name: 'My Meals',
-        handler: () => { console.log('My meals option selected'); },
+        handler: () => navigation.navigate('MyMeals'),
 
     },
     {
         name: 'Reminders',
-        handler: () => { console.log('Reminders option selected'); },
+        handler: () => navigation.navigate('Reminders'),
+    },
+    {
+        name: 'Goals',
+        handler: () => navigation.navigate('Goals'),
     },
 
 ];
