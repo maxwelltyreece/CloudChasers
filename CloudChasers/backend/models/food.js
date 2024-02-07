@@ -16,6 +16,7 @@ const foodSchema = new mongoose.Schema({
     fat : { type: Number, required: true, validate : [zeroToHunderedRangeValidator, "There must be within 0-100g of fat in this food"] },
     sugar : { type: Number, required: true, validate : [zeroToHunderedRangeValidator, "There must be within 0-100g of sugar in this food"] },
     salt : { type: Number, required: true, validate : [zeroToHunderedRangeValidator, "There must be within 0-100g of salt in this food"] },
+    fibre : { type: Number, required: true, validate : [zeroToHunderedRangeValidator, "There must be within 0-100g of fibre in this food"] },
     addedBy : { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: false },	
 });
 
