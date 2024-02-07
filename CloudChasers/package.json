@@ -47,5 +47,8 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "react-native-dotenv": "^3.4.9"
   },
+  "jest": {
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
+  },
   "private": true
 }
