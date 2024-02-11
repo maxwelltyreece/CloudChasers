@@ -1,7 +1,7 @@
 const {MongoClient} = require("mongodb")
 const foodTable = require("./nutrients.json") // won't work becacuse file is not on git (too large)
 
-const connectionString = "mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/?retryWrites=true&w=majority"
+const connectionString = "mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/seeded?retryWrites=true&w=majority"
 connect()
 
 dbSize = 0;
