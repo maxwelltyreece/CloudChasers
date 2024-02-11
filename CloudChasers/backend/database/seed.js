@@ -119,6 +119,71 @@ async function seed() {
     }
     console.log("Goal_Items Seeded");
 
+    //Personal_Awards Seeding
+    for (let i = 0; i < 10; i++) {
+        var newPersonalAward = new Personal_Awards({
+            name: "Award" + i,
+            description: "personal award " + i,
+        });
+        await newPersonalAward.save();
+    }
+    console.log("Personal_Awards Seeded");
+
+    //Personal_Award_Items Seeding
+    for (let i = 0; i < 10; i++) {
+        var newPersonalAwardItem = new Personal_Award_Items({
+            personalAwardID: await newPersonalAward._id,
+            userID: await newUser._id,
+            date : new Date(2021, 1, 1 + i)
+        });
+        await newPersonalAwardItem.save();
+    }
+    console.log("Personal_Award_Items Seeded");
+
+    //Communites Seeding
+    for (let i = 0; i < 10; i++) {
+        var newCommunity = new Communties({
+            name: "Community" + i,
+            description: "Community " + i,
+            joinPrivacy: "public",
+            recipePrivacy: "public",
+        });
+        await newCommunity.save();
+    }
+    console.log("Communities Seeded");
+
+    //Community_Awards Seeding
+    for (let i = 0; i < 10; i++) {
+        var newCommunityAward = new Community_Awards({
+            name: "Award" + i,
+            description: "Community award " + i,
+        });
+        await newCommunityAward.save();
+    }
+    console.log("Community_Awards Seeded");
+
+    //Community_Award_Items Seeding
+    for (let i = 0; i < 10; i++) {
+        var newCommunityAwardItem = new Community_Award_Items({
+            communityAwardID: await newCommunityAward._id,
+            communityID: await newCommunity._id,
+            userID: await newUser._id,
+            date : new Date(2021, 1, 1 + i)
+        });
+        await newCommunityAwardItem.save();
+    }
+    console.log("Community_Award_Items Seeded");
+
+    //Community_Users Seeding
+    for (let i = 0; i < 10; i++) {
+        var newCommunityUser = new Community_Users({
+            communityID: await newCommunity._id,
+            userID: await newUser._id,
+            role: "member",
+        });
+        await newCommunityUser.save();
+    }
+    console.log("Community_Users Seeded");
 
     await mongoose.disconnect();
 
