@@ -24,6 +24,7 @@
     "expo-status-bar": "~1.6.0",
     "express": "^4.18.2",
     "express-jwt": "^8.4.1",
+    "faker": "^6.6.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.1",
     "react": "18.2.0",
@@ -36,6 +37,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@faker-js/faker": "^8.4.1",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.29.1",

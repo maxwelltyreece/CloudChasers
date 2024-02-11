@@ -8,7 +8,6 @@ function zeroToHunderedRangeValidator(macroContent) {
 const foodSchema = new mongoose.Schema({
     name : { type: String, required: true },
     group : { type: String, required: true },
-    subGroup : { type: String, required: true },
     calories : { type: Number, required: true },
     water : { type: Number, required: false, validate : [zeroToHunderedRangeValidator, "There must be within 0-100g of water in this food"] },
     protein : { type: Number, required: false, validate : [zeroToHunderedRangeValidator, "There must be within 0-100g of protein in this food"] },
