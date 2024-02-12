@@ -1,24 +1,13 @@
-
 // React related imports
-import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, SafeAreaView} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 
 // Dashboard related imports
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 
-// Style related imports
-import globalStyles from '../../styles/global';
-import dashboardStyles from '../../styles/DashboardStyles';
-
-
-
 // Component imports
-// import WelcomeBar from '../../components/Dashboard/WelcomeBar';
-// import { PastWeekLogs } from '../../../components/Dashboard/PastWeekLogs.js';
-import { WelcomeBar, PastWeekLogs, CurrentStreak, RecentMealLog, LearnMore, CurrentGoalProgress} from '../../components/Dashboard';
-
-
+import { WelcomeBar, NotificationBadge, PastWeekLogs, CurrentStreak, RecentLog, LearnMore, CommunityStatus, CurrentGoalProgress } from '../../components/Dashboard';
 
 // Fake database
 const fakeDB = {
@@ -29,58 +18,87 @@ const fakeDB = {
   currentStreak: 5, // Example streak
 };
 
-
-// const CurrentStreak = ({ streak }) => (
-//   <View style={dashboardStyles.currentStreakContainer}>
-//     <Text style={dashboardStyles.streakText}>Current Streak:</Text>
-//     <Text style={dashboardStyles.streakText}>{streak} days</Text>
-//   </View>
-// );
-
-
 // Dashboard screen
 const Dashboard = () => {
   const [meals, setMeals] = useState(fakeDB.recentMeals);
   const [streak, setStreak] = useState(fakeDB.currentStreak);
 
   return (
-  
-    <SafeAreaView style={dashboardStyles.dashboardContainer}>
-
-      <View style={dashboardStyles.dashboardHeader}>
+    <SafeAreaView style={styles.dashboardContainer}>
+      <View style={styles.dashboardHeader}>
         <WelcomeBar name="Lorenzo" />
+        <View style={styles.notificationBadgeContainer}>
+          <NotificationBadge count={3} />
+        </View>
       </View>
 
       <PastWeekLogs meals={meals} />
 
-      <View style={dashboardStyles.middleDashboardContainer}>
-
-        <View style={dashboardStyles.leftComponentContainer}>
+      <View style={styles.middleDashboardContainer}>
+        <View style={styles.leftComponentContainer}>
           <CurrentStreak streak={streak} />
           <LearnMore />
         </View>
       
-        <View style={dashboardStyles.rightComponentContainer}>
-          <RecentMealLog />
+        <View style={styles.rightComponentContainer}>
+          <RecentLog />
         </View>
-
       </View>
 
-      <CurrentGoalProgress goal={120} current={80} />
-      
-    
-    </SafeAreaView>
+      <CommunityStatus />
 
+      <CurrentGoalProgress goal={120} current={80} />
+
+
+    </SafeAreaView>
   );
 };
 
+const styles = StyleSheet.create({
+  dashboardHeader: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+  },
+  notificationBadgeContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 20,
+  },
+  dashboardContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F0F0F0',
+    flexWrap: 'wrap',
+  },
+  middleDashboardContainer: {
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    backgroundColor: '#F0F0F0',
+    marginVertical: 10,
+  },
+  leftComponentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  rightComponentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  bottomDashboardContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignContent: 'center',
+    width: '100%',
+    backgroundColor: '#F12A2A',
+  },
+});
+
 export default Dashboard;
-
-
-
-
-
-
-
-
-

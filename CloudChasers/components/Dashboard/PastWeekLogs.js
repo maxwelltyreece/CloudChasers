@@ -1,9 +1,6 @@
 // React Imports
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
-
-//Style Imports
-import dashboardStyles from '../../styles/DashboardStyles';
+import { View, Text, StyleSheet } from 'react-native';
 
 
 const getLastSevenDays = () => {
@@ -13,15 +10,15 @@ const getLastSevenDays = () => {
     date.setDate(date.getDate() - i);
     return {
       dayName: days[date.getDay()],
-      logged: false, // Placeholder value
+      logged: false,
     };
   }).reverse();
 };
 
 const DailyCheckmark = ({ logged, dayName }) => (
-  <View style={dashboardStyles.dayContainer}>
-    <Text style={dashboardStyles.dayName}>{dayName}</Text>
-    <View style={dashboardStyles.dailyCheckmarkContainer}>
+  <View style={styles.dayContainer}>
+    <Text style={styles.dayName}>{dayName}</Text>
+    <View style={styles.dailyCheckmarkContainer}>
       <Text>{logged ? '✅' : '❌'}</Text>
     </View>
   </View>
@@ -40,10 +37,10 @@ export const PastWeekLogs = ({ meals }) => {
   }, [meals]);
 
   return (
-    <View style={dashboardStyles.wholePastLogsContainer}>
-      <Text style={dashboardStyles.weeklyLogTitle}>Weekly Log:</Text>
-      <View style={dashboardStyles.weekContainer}>
-        <View style={dashboardStyles.weeklyLogDaysContainer}>
+    <View style={styles.wholePastLogsContainer}>
+      <Text style={styles.weeklyLogTitle}>Weekly Log:</Text>
+      <View style={styles.weekContainer}>
+        <View style={styles.weeklyLogDaysContainer}>
           {lastSevenDays.map((day, index) => (
             <DailyCheckmark key={index} logged={day.logged} dayName={day.dayName} />
           ))}
@@ -52,5 +49,68 @@ export const PastWeekLogs = ({ meals }) => {
     </View>
   );
 };
+
+
+
+const styles = StyleSheet.create({
+  wholePastLogsContainer: {
+    padding: 20,
+    backgroundColor: '#EC6641', 
+    borderRadius: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+    borderRadius: 15,
+    width: '95%'
+  },
+  weeklyLogTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 15,
+    color: '#000',
+  },
+  weekContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    backgroundColor: '#F7F7F7',
+    borderRadius: 8,
+    padding: 8,
+
+  },
+  weeklyLogDaysContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  dayContainer: {
+    alignItems: 'center',
+    padding: 10,
+  },
+  dayName: {
+    fontSize: 15,
+    fontWeight: '500',
+    color: '#333',
+    marginBottom: 5,
+    textTransform: 'uppercase',
+  },
+  dailyCheckmarkContainer: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 15,
+    backgroundColor: '#FFF',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+});
+
 
 export default PastWeekLogs;
