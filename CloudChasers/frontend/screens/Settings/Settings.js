@@ -1,26 +1,81 @@
 // Settings.js
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/Ionicons';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
+import Feather from 'react-native-vector-icons/Feather';
+import LogoutButton from './settingsComponents/LogoutButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const ICON_SIZE = 25;
+const USERNAME = 'test@email.com';
+
+
+
+const ItemSeparator = () => <View style={styles.separator} />;
+
+const SettingsItem = ({ item }) => (
+    <Pressable onPress={item.handler}>
+        <View style={styles.itemContainer}>
+            <Text style={[styles.item, globalStyles.bold]}>{item.name}</Text>
+            <Feather name="chevron-right" size={ICON_SIZE} color="#6B6868" />            
+        </View>
+    </Pressable>
+);
+
+const SettingsFooter = ({ username, navigation }) => (
+    <View>
+        <View style={styles.separator} /> 
+        <Text style={[styles.usernameHeader, globalStyles.bold]}>Logged in as</Text> 
+        <Text style={[styles.usernameText, globalStyles.medium]}>{username}</Text>
+        <LogoutButton onPress={async () => {
+            try {
+                await AsyncStorage.removeItem('token');
+                console.log('Token removed!');
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Auth' }],
+                });
+            } catch (error) {
+                console.error('Failed to remove the token.', error);
+            }
+        }} />
+    </View>
+);
+
+const keyExtractor = item => item.name;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center',
-        paddingTop: 100, // Add a top padding to the container
-    },
-    backButton: {
-        position: 'absolute',
-        top: 60,
-        left: 20,
+        paddingTop: 0,
     },
     item: {
-        padding: 10,
-        fontSize: 18,
-        height: 44,
+        paddingVertical: 24,
+        fontSize: 14,
+    },
+    separator: {
+        height: 1, 
+        backgroundColor: '#A9A9A9', 
+        width: '100%',
+    },
+    itemContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
+    },
+    usernameHeader: {
+        fontSize: 12,
+        textAlign: 'center',
+        marginTop: 30,
+    },
+    usernameText: {
+        fontSize: 14,
+        textAlign: 'center',
+        marginTop: 10,
     },
 });
 
@@ -40,22 +95,14 @@ const styles = StyleSheet.create({
  */
 const Settings = () => {
     const navigation = useNavigation();
-
-    const renderItem = ({ item }) => (
-        <TouchableOpacity activeOpacity={0.3} onPress={item.handler}>
-            <Text style={[styles.item, globalStyles.medium]}>{item.name}</Text>
-        </TouchableOpacity>
-    );
-
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                <Icon name="chevron-back" size={35} color="#000" />
-            </TouchableOpacity>
             <FlatList
                 data={SettingsOptions(navigation)}
-                renderItem={renderItem}
-                keyExtractor={item => item.name}
+                renderItem={SettingsItem}
+                keyExtractor={keyExtractor}
+                ItemSeparatorComponent={ItemSeparator}
+                ListFooterComponent={<SettingsFooter username={USERNAME} navigation={navigation} />}
             />
         </View>
     );
