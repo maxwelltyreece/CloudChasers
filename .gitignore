@@ -39,3 +39,5 @@ yarn-error.*
 
 # jest
 coverage/
+
+nutrients.json
