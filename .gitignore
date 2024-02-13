@@ -34,7 +34,8 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# vscode
 .vscode/
 
-coverage
-
+# jest
+coverage/
