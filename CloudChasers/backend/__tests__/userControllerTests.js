@@ -59,3 +59,58 @@ describe('POST /register', () => {
 
   });
 });
+
+describe('POST /login', () => {
+  describe('given a username and password', () => {
+    test('should login a user', async () => {
+      // Set up User.findOne to simulate that the user exists
+      User.findOne.mockResolvedValueOnce({ username: 'username', password: 'hashedPassword' });
+      // Set up bcrypt.compare to simulate that the password is correct
+      bcrypt.compare.mockResolvedValueOnce(true);
+      const response = await request(app).post('/login').send({
+        username: 'username',
+        password: 'password123'
+      });
+      expect(response.statusCode).toBe(200);
+      expect(response.body).toEqual({ data: 'fakeTokenString' });
+    });
+
+    test('should specify json in the content type header', async () => {
+      // Set up User.findOne to simulate that the user exists
+      User.findOne.mockResolvedValueOnce({ username: 'username', password: 'hashedPassword' });
+      // Set up bcrypt.compare to simulate that the password is correct
+      bcrypt.compare.mockResolvedValueOnce(true);
+      const response = await request(app).post('/login').send({
+        username: 'username',
+        password: 'password123'
+      });
+      expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));
+    });
+
+    test('when user does not exist', async () => {
+      // Set up User.findOne to simulate that the user does not exist
+      User.findOne.mockResolvedValueOnce(null);
+      const response = await request(app).post('/login').send({
+        username: 'username',
+        password: 'password123'
+      });
+      expect(response.statusCode).toBe(401);
+      expect(response.body).toEqual({ message: 'Invalid credentials' });
+    });
+
+    test('when password is incorrect', async () => {
+      // Set up User.findOne to simulate that the user exists
+      User.findOne.mockResolvedValueOnce({ username: 'username', password: 'hashedPassword' });
+      // Set up bcrypt.compare to simulate that the password is incorrect
+      bcrypt.compare.mockResolvedValueOnce(false);
+      const response = await request(app).post('/login').send({
+        username: 'username',
+        password: 'password123'
+      });
+      expect(response.statusCode).toBe(401);
+      expect(response.body).toEqual({ message: 'Invalid credentials' });
+    });
+    // test('return 500 if an error occurs', async () => {
+
+  });
+});
