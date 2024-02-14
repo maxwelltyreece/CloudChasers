@@ -111,3 +111,21 @@ exports.updateProfile = async (req, res) => {
 	}
 };
 
+exports.deleteUser = async (req, res) => {
+	const { token } = req.body;
+	try {
+		const decoded = jwt.verify(token, process.env.SECRET_KEY);
+		const user = await User.findById(decoded.userId);
+
+		if (!user) {
+			return res.status(404).send({ message: 'User not found' });
+		}
+		await user.deleteOne();
+		return res.status(200).send({ message: 'User deleted' });
+	} catch (error) {
+		return res.status(500).send({ error: error.toString() });
+	}
+};
+
+
+
