@@ -2,6 +2,7 @@ const express = require('express');
 const { expressjwt: jwt } = require("express-jwt");
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const foodRoutes = require('./routes/foodRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -43,9 +44,10 @@ const conditionalAuth = (req, res, next) => {
 // Apply the conditionalAuth middleware
 app.use(conditionalAuth);
 
-// User routes
-app.use(userRoutes);
+// API url routes
+app.use('/food', foodRoutes);
 app.use('/', userRoutes);
+
 const os = require('os');
 const networkInterfaces = os.networkInterfaces();
 

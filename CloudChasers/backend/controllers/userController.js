@@ -4,13 +4,7 @@ const User = require('../models/user');
 const UserDay = require('../models/userDay');
 const UserDayMeal = require('../models/userDayMeal');
 const MealItem = require('../models/mealItem');
-const Food = require('../models/food');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const UserDay = require('../models/userDay');
-const UserDayMeal = require('../models/userDayMeal');
-const MealItem = require('../models/mealItem');
+const FoodItem = require('../models/foodItem');
 const Food = require('../models/food');
 
 exports.register = async (req, res) => {
@@ -94,18 +88,21 @@ exports.getUserDetail =  async (req, res) => {
 };
 
 exports.updateProfile = async (req, res) => {
-	const {token, height, weight} = req.body;
-
+	const { token, ...updates } = req.body;
+	console.log('Updates', updates);
 	try {
 		const decoded = jwt.verify(token, process.env.SECRET_KEY);
 		const user = await User.findById(decoded.userId);
 
+		console.log('User', user);
 		if (!user) {
 			return res.status(404).send({ message: 'User not found' });
 		}
-
-		user.height = height;
-		user.weight = weight;
+		console.log('Updating user');
+		// Loop over the updates object and update the user
+		Object.keys(updates).forEach((update) => {
+			user[update] = updates[update];
+		});
 		await user.save();
 
 		return res.status(200).send({ message: 'Profile updated' });
@@ -114,48 +111,3 @@ exports.updateProfile = async (req, res) => {
 	}
 };
 
-exports.logFood = async (req, res) => {
-	const { token, mealType, food_id } = req.body;
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY);
-		const user = await User.findById(decoded.userId);
-		const food = await Food.findById(food_id);
-
-		const today = new Date();
-		today.setHours(0, 0, 0, 0);
-
-		
-		if (!user) {
-			return res.status(404).send({ message: 'User not found' });
-		}
-		
-		if (!UserDay.findOne({ userID: user._id, date: today })) {
-			const newUserDay = new UserDay({
-				date: today,
-				userID: user._id
-			});
-			await newUserDay.save();
-		}
-
-		if (!userDayMeal.findOne({ name: name, userDayID: newUserDay._id })) {
-			const newUserDayMeal = new userDayMeal({
-				name: mealType,
-				userDayID: newUserDay._id
-			});
-			await newUserDayMeal.save();
-		}
-	
-		const mealItem = new MealItem({
-			name: food.name,
-			foodItemID: foodItemID,
-			receipeID: null,
-			userDayMealID: newUserDayMeal._id
-		});
-		await mealItem.save();
-	
-		return res.status(200).send({ message: 'Food logged' });
-	} catch (error) {
-		return res.status(500).send({ error: error.toString() });
-	}
-
-};
