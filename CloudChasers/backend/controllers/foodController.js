@@ -70,3 +70,24 @@ exports.logDatabaseFood = async (req, res) => {
 		return res.status(500).send({ error: error.toString() });
 	}
 };
+
+exports.getFoods = async (req, res) => {
+	const page = parseInt(req.query.page) || 1;
+	const limit = parseInt(req.query.limit) || 50;
+
+	try {
+		const foods = await Food.find()
+			.skip((page - 1) * limit)
+			.limit(limit);
+
+		const total = await Food.countDocuments();
+
+		res.status(200).send({
+			foods,
+			totalPages: Math.ceil(total / limit),
+			currentPage: page
+		});
+	} catch (error) {
+		res.status(500).send({ error: error.toString() });
+	}
+};
