@@ -2,11 +2,14 @@ const express = require('express');
 
 const router = express.Router();
 const userController = require('../controllers/userController');
+const communityController = require('../controllers/communityController');
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/users', userController.getUsers);
-router.get('/userDetails', userController.getUserDetail)
-router.put('/updateProfile', userController.updateProfile)
+router.get('/userDetails', userController.getUserDetail);
+router.put('/updateProfile', userController.updateProfile);
+
+router.put('/createCommunity', communityController.createCommunity);
 
 module.exports = router;
