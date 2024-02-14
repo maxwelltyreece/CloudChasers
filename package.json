@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@react-native-community/slider": "^4.5.0"
+  }
+}
