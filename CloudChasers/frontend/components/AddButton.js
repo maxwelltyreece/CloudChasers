@@ -1,21 +1,16 @@
-import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableWithoutFeedback, StyleSheet, Modal } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import PropTypes from 'prop-types';
-import { useFocusEffect } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 const CustomIcon = ({ width = 80, height = 82 }) => {
     const [bubbleVisible, setBubbleVisible] = useState(false);
-
-    useFocusEffect(
-        useCallback(() => {
-            return () => setBubbleVisible(false);
-        }, [])
-    );
+    const navigation = useNavigation();
 
     return (
         <View>
-            <TouchableOpacity onPress={() => setBubbleVisible(!bubbleVisible)}>
+            <TouchableWithoutFeedback onPress={() => setBubbleVisible(true)}>
                 <Svg width={width} height={height} viewBox="0 0 80 82" fill="none">
                     <Path
                         d="M72.9816 14.2106C80.6197 23.9184 81.2327 36.9284 78.561 48.9885C75.9048 60.9786 69.8823 72.5196 58.8632 77.9412C47.8655 83.3523 35.0218 81.1582 23.9765 75.8451C13.0869 70.6068 3.96698 61.8531 1.04351 50.128C-1.91256 38.2721 1.6092 25.8768 9.11341 16.2339C16.6332 6.57095 27.7974 0.411021 40.0353 0.023339C52.6089 -0.374977 65.2027 4.32393 72.9816 14.2106Z"
@@ -28,17 +23,36 @@ const CustomIcon = ({ width = 80, height = 82 }) => {
                         fill="white"
                     />
                 </Svg>
-            </TouchableOpacity>
-            {bubbleVisible && (
-                <View style={styles.bubble}>
-                    <Text>This is a bubble!</Text>
-                </View>
-            )}
+            </TouchableWithoutFeedback>
+            <Modal
+                animationType="none"
+                transparent={true}
+                visible={bubbleVisible}
+                onRequestClose={() => setBubbleVisible(false)}
+            >
+                <TouchableWithoutFeedback onPress={() => setBubbleVisible(false)}>
+                    <View style={styles.modal}>
+                        <TouchableWithoutFeedback onPress={() => {
+                            setBubbleVisible(false);
+                            navigation.navigate('+'); 
+                        }}>
+                            <View style={styles.bubble}>
+                                <Text>This is a bubble!</Text>
+                            </View>
+                        </TouchableWithoutFeedback>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    modal: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     bubble: {
         position: 'absolute',
         width: 200,
@@ -53,6 +67,7 @@ const styles = StyleSheet.create({
         // Removed borderColor and borderWidth
     },
 });
+
 CustomIcon.propTypes = {
     width: PropTypes.number,
     height: PropTypes.number,
