@@ -1,21 +1,19 @@
 const {MongoClient} = require("mongodb")
 const foodTable = require("./nutrients.json") // won't work becacuse file is not on git (too large)
+const Food = require("../models/food")
+const mongoose = require('mongoose');
 
-const connectionString = "mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/seeded?retryWrites=true&w=majority"
+collection = "test" //Change this to be the name of the collection you want to seed with the food data
+const url = "mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/" + collection + "?retryWrites=true&w=majority"
 connect()
 
 dbSize = 0;
 
 async function connect() {
-    const client = new MongoClient(connectionString)
+    await mongoose.connect(url).then(() => {console.log("Connected to the database")}).catch((err) => {console.error(`Error connecting to the database. n${err}`)})
     try {
-        await client.connect()
-        const db = client.db("test")
-        console.log("connected...")
-        const foods = db.collection("foods")
-
         for (entry of foodTable) {
-            const food = {
+            const food = new Food({
             "name" : entry["name"]["long"],
             "group" : entry["group"],
             "calories" : getValue(entry, "Energy"),
@@ -26,10 +24,11 @@ async function connect() {
             "sodium" : getValue(entry, "Sodium, Na") / 1000,
             "fibre" : getValue(entry, "Fiber, total dietary"),
             "water" : getValue(entry, "Water"),
-            "privacy" : "public"
-            }
+            "privacy" : "public",
+            "addedBy" : null
+            })
 
-            await foods.insertOne(food)
+            await food.save()
             dbSize++
         }
 
@@ -42,7 +41,7 @@ async function connect() {
         if (dbSize == foodTable.length) {
             console.log("All foods added succesfully")
         }
-        client.close()
+        await mongoose.disconnect();
 
     }
 }
