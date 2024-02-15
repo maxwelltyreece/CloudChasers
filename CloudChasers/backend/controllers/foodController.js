@@ -91,3 +91,58 @@ exports.getFoods = async (req, res) => {
 		res.status(500).send({ error: error.toString() });
 	}
 };
+
+// exports.searchFoods = async (req, res) => {
+// 	const { name } = req.query;
+
+// 	try {
+// 		const foods = await Food.find({
+// 			name: { $regex: new RegExp(name, "i") }
+// 		});
+
+// 		res.status(200).send({ foods });
+// 	} catch (error) {
+// 		res.status(500).send({ error: error.toString() });
+// 	}
+// };
+exports.searchFoodsByName = async (req, res) => {
+	const { name } = req.query;
+	const page = Number(req.query.page) || 1;
+	const limit = Number(req.query.limit) || 50;
+	const skip = (page - 1) * limit;
+
+	try {
+		const foods = await Food.find({
+			name: { $regex: new RegExp(name, "i") }
+		})
+		.skip(skip)
+		.limit(limit);
+
+		if (foods.length === 0) {
+			return res.status(404).send({ message: 'No foods found' });
+		}
+
+		const total = await Food.countDocuments({
+			name: { $regex: new RegExp(name, "i") }
+		});
+
+		res.status(200).send({ foods, total, page, limit });
+	} catch (error) {
+		res.status(500).send({ error: error.toString() });
+	}
+};
+exports.getFood = async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		const food = await Food.findById(id);
+
+		if (!food) {
+			return res.status(404).send({ message: 'Food not found' });
+		}
+
+		res.status(200).send({ food });
+	} catch (error) {
+		res.status(500).send({ error: error.toString() });
+	}
+};

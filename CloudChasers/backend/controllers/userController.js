@@ -111,7 +111,36 @@ exports.updateProfile = async (req, res) => {
 	}
 };
 
-exports.deleteUser = async (req, res) => {
+// exports.deleteUser = async (req, res) => {
+// 	const { token } = req.body;
+// 	try {
+// 		const decoded = jwt.verify(token, process.env.SECRET_KEY);
+// 		const user = await User.findById(decoded.userId);
+
+// 		if (!user) {
+// 			return res.status(404).send({ message: 'User not found' });
+// 		}
+
+// 		// Delete the user's UserDays
+// 		await UserDay.deleteMany({ userID: user._id });
+
+// 		// Delete the user's Recipes
+// 		await Recipe.deleteMany({ createdBy: user._id });
+
+// 		// TODO
+// 		// Remove the user from all Communities
+// 		await Community.updateMany({}, { $pull: { members: user._id } });
+
+// 		// Delete the user
+// 		await user.deleteOne();
+
+// 		return res.status(200).send({ message: 'User deleted' });
+// 	} catch (error) {
+// 		return res.status(500).send({ error: error.toString() });
+// 	}
+// };
+
+exports.getUserDays = async (req, res) => {
 	const { token } = req.body;
 	try {
 		const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -120,12 +149,14 @@ exports.deleteUser = async (req, res) => {
 		if (!user) {
 			return res.status(404).send({ message: 'User not found' });
 		}
-		await user.deleteOne();
-		return res.status(200).send({ message: 'User deleted' });
+
+		const userDays = await UserDay.find({ userID: user._id });
+
+		return res.status(200).json(userDays);
 	} catch (error) {
 		return res.status(500).send({ error: error.toString() });
 	}
-};
+}
 
 
 
