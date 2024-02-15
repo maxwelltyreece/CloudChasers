@@ -105,32 +105,46 @@ exports.getFoods = async (req, res) => {
 // 		res.status(500).send({ error: error.toString() });
 // 	}
 // };
-exports.searchFoodsByName = async (req, res) => {
-	const { name } = req.query;
-	const page = Number(req.query.page) || 1;
-	const limit = Number(req.query.limit) || 50;
+//
+
+//TODO: check credintials to not display food created by others
+exports.getFoodByName = async (req, res) => {
+	const { page = 1, limit = 50, ...searchParams } = req.body;
 	const skip = (page - 1) * limit;
 
+	
+	// List of valid fields
+	const validFields = ['name', 'group', 'calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre', 'privacy', 'addedBy'];
+
+	// Check for invalid fields
+	const invalidFields = Object.keys(searchParams).filter(field => !validFields.includes(field));
+	if (invalidFields.length > 0) {
+		return res.status(400).send({ error: `Invalid field(s): ${invalidFields.join(', ')}` });
+	}
+
+	// Create a query object with regex for each search parameter
+	const query = Object.entries(searchParams).reduce((acc, [key, value]) => {
+		acc[key] = { $regex: new RegExp(value, "i") };
+		return acc;
+	}, {});
+
 	try {
-		const foods = await Food.find({
-			name: { $regex: new RegExp(name, "i") }
-		})
-		.skip(skip)
-		.limit(limit);
+		const foods = await Food.find(query)
+			.skip(skip)
+			.limit(limit);
 
 		if (foods.length === 0) {
 			return res.status(404).send({ message: 'No foods found' });
 		}
 
-		const total = await Food.countDocuments({
-			name: { $regex: new RegExp(name, "i") }
-		});
+		const totalPages = await Food.countDocuments(query)/limit;
 
-		res.status(200).send({ foods, total, page, limit });
+		res.status(200).send({ foods, totalPages, page, limit });
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}
 };
+
 exports.getFood = async (req, res) => {
 	const { id } = req.params;
 
