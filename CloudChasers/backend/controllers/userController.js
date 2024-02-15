@@ -7,6 +7,19 @@ const MealItem = require('../models/mealItem');
 const FoodItem = require('../models/foodItem');
 const Food = require('../models/food');
 
+/**
+ * Registers a new user.
+ * 
+ * @param {string} req.body.forename - The user's forename.
+ * @param {string} req.body.surname - The user's surname.
+ * @param {number} req.body.height - The user's height.
+ * @param {string} req.body.username - The user's username. Must be unique.
+ * @param {string} req.body.email - The user's email. Must be unique.
+ * @param {string} req.body.password - The user's password. Will be hashed before storing.
+ * @param {Date} req.body.dateOfBirth - The user's date of birth.
+ * @param {Date} req.body.lastLogin - The user's last login date.
+ * @param {string} req.body.profilePictureLink - The link to the user's profile picture.
+ */
 exports.register = async (req, res) => {
 	const {forename, surname, height, username, email, password, dateOfBirth, lastLogin, profilePictureLink} = req.body;
 	try {
@@ -43,6 +56,14 @@ exports.register = async (req, res) => {
 	}
 };
 
+/**
+ * Logs in a user. returns a JWT token.
+ * 
+ * @param {string} req.body.username - The username of the user.
+ * @param {string} req.body.password - The password of the user.
+ * @returns {Object} res - The response object.
+ * @returns {string} res.data - The JWT token for the authenticated user.
+ */
 exports.login = async (req, res) => {
 	try {
 		// Find user
@@ -61,6 +82,12 @@ exports.login = async (req, res) => {
 	}
 };
 
+/**
+ * Retrieves all users.
+ * 
+ * @returns {Object} res - The response object.
+ * @returns {Array} res.data - An array of user objects.
+ */
 exports.getUsers = async (req, res) => {
 	try {
 		const users = await User.find();
@@ -70,6 +97,13 @@ exports.getUsers = async (req, res) => {
 	}
 };
 
+/**
+ * Retrieves details of a user given his token.
+ * 
+ * @param {string} req.body.token - The JWT token of the user.
+ * @returns {Object} res - The response object.
+ * @returns {Object} res.data - The user object.
+ */
 exports.getUserDetail =  async (req, res) => {
 	const {token} = req.body;
 	try {
@@ -87,7 +121,16 @@ exports.getUserDetail =  async (req, res) => {
 	}
 };
 
+/**
+ * Updates the profile of a user given his token and the fields to be updated.
+ * 
+ * @param {string} req.body.token - The JWT token of the user.
+ * @param {Object} req.body.updates - An object containing the fields to update and their new values.
+ * @returns {Object} res - The response object.
+ * @returns {string} res.message - A message indicating the result of the operation.
+ */
 exports.updateProfile = async (req, res) => {
+	//TODO: Add guard for updating fields that are not allowed to be updated
 	const { token, ...updates } = req.body;
 	console.log('Updates', updates);
 	try {
@@ -140,6 +183,13 @@ exports.updateProfile = async (req, res) => {
 // 	}
 // };
 
+/**
+ * Retrieves all days of a user.
+ * 
+ * @param {string} req.body.token - The JWT token of the user.
+ * @returns {Object} res - The response object.
+ * @returns {Array} res.data - An array of user day objects.
+ */
 exports.getUserDays = async (req, res) => {
 	const { token } = req.body;
 	try {
@@ -156,7 +206,7 @@ exports.getUserDays = async (req, res) => {
 	} catch (error) {
 		return res.status(500).send({ error: error.toString() });
 	}
-}
+};
 
 
 

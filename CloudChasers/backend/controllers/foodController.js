@@ -7,6 +7,16 @@ const MealItem = require('../models/mealItem');
 const FoodItem = require('../models/foodItem');
 const Food = require('../models/food');
 
+/**
+ * Logs a food item to the database for a specific user and meal type.
+ * 
+ * @param {string} req.body.token - The JWT token of the user.
+ * @param {string} req.body.mealType - The type of meal (e.g., "breakfast", "lunch", "dinner").
+ * @param {string} req.body.food_id - The ID of the food item.
+ * @param {number} req.body.weight - The weight of the food item.
+ * @returns {string} res.message - A message indicating the result of the operation.
+ * @throws {Error} If an error occurs during the operation.
+ */
 exports.logDatabaseFood = async (req, res) => {
 	const { token, mealType, food_id, weight} = req.body;
 	try {
@@ -71,7 +81,16 @@ exports.logDatabaseFood = async (req, res) => {
 	}
 };
 
-exports.getFoods = async (req, res) => {
+/**
+ * Retrieves all food items with pagination.
+ * 
+ * @param {string} req.query.page - The page number for pagination. Defaults to 1.
+ * @param {string} req.query.limit - The number of items per page for pagination. Defaults to 50.
+ * @returns {Array} res.data.foods - An array of food objects.
+ * @returns {number} res.data.totalPages - The total number of pages.
+ * @returns {number} res.data.currentPage - The current page number.
+ */
+exports.getFood = async (req, res) => {
 	const page = parseInt(req.query.page) || 1;
 	const limit = parseInt(req.query.limit) || 50;
 
@@ -107,8 +126,20 @@ exports.getFoods = async (req, res) => {
 // };
 //
 
+
 //TODO: check credintials to not display food created by others
-exports.getFoodByName = async (req, res) => {
+/**
+ * Retrieves food items based on search parameters.
+ * 
+ * @param {number} req.body.page - The page number for pagination. Defaults to 1.
+ * @param {number} req.body.limit - The number of items per page for pagination. Defaults to 50.
+ * @param {Object} req.body.searchParams - An object containing the fields to search and their values.
+ * @returns {Array} res.data.foods - An array of food objects.
+ * @returns {number} res.data.totalPages - The total number of pages.
+ * @returns {number} res.data.page - The current page number.
+ * @returns {number} res.data.limit - The number of items per page.
+ */
+exports.searchFoods = async (req, res) => {
 	const { page = 1, limit = 50, ...searchParams } = req.body;
 	const skip = (page - 1) * limit;
 
@@ -140,22 +171,6 @@ exports.getFoodByName = async (req, res) => {
 		const totalPages = await Food.countDocuments(query)/limit;
 
 		res.status(200).send({ foods, totalPages, page, limit });
-	} catch (error) {
-		res.status(500).send({ error: error.toString() });
-	}
-};
-
-exports.getFood = async (req, res) => {
-	const { id } = req.params;
-
-	try {
-		const food = await Food.findById(id);
-
-		if (!food) {
-			return res.status(404).send({ message: 'Food not found' });
-		}
-
-		res.status(200).send({ food });
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}

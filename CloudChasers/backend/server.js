@@ -50,6 +50,7 @@ app.use(conditionalAuth);
 app.use('/food', foodRoutes);
 app.use('/', userRoutes);
 
+const { login } = require('./controllers/userController');
 const os = require('os');
 const networkInterfaces = os.networkInterfaces();
 
