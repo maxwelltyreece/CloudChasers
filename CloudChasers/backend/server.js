@@ -1,7 +1,10 @@
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const { expressjwt: jwt } = require("express-jwt");
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const foodRoutes = require('./routes/foodRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -43,9 +46,11 @@ const conditionalAuth = (req, res, next) => {
 // Apply the conditionalAuth middleware
 app.use(conditionalAuth);
 
-// User routes
-app.use(userRoutes);
+// API url routes
+app.use('/food', foodRoutes);
 app.use('/', userRoutes);
+
+const { login } = require('./controllers/userController');
 const os = require('os');
 const networkInterfaces = os.networkInterfaces();
 
@@ -61,7 +66,10 @@ for (let netInterface in networkInterfaces) {
 }
 
 app.listen(3000, () => {
-    console.log(`Server is running on ${serverIP}:3000`);
+    console.log(`Server is running on ${serverIP}`);
+
+    // Write the server IP to a file
+    fs.writeFileSync(path.join(__dirname, '../frontend/screens/IPIndex.js'), `export const LocalIP = '${serverIP}';\n`);
 });
 
 module.exports = app;

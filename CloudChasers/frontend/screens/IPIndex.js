@@ -1,2 +1,1 @@
-const LocalIP = '192.168.1.123';
-export {LocalIP}
+export const LocalIP = '10.40.40.129';
