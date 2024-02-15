@@ -36,7 +36,5 @@ Sam Thomas
 [contributors-url]: https://github.com/maxwelltyreece/CloudChasers/graphs/contributors
 
 [issues-shield]: https://img.shields.io/github/issues/maxwelltyreece/CloudChasers.svg?style=for-the-badge
-[issues-url]: https://github.com/maxwelltyreece/CloudChasers/issues
 
-Useful Links :
-Food Macros Database - https://www.kaggle.com/datasets/pyvalentin/full-food-nutrients-composition
+[issues-url]: https://github.com/maxwelltyreece/CloudChasers/issues
