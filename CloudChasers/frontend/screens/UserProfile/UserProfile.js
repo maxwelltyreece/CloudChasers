@@ -4,7 +4,7 @@ import SettingsButton from '../../components/SettingsButton';
 import Svg, {G, Rect, Defs, ClipPath, Circle} from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from '../../styles/global';
-import UserProfileOptions from './UserProfileOptions';
+import {Goals} from './Subscreens/Goals'
 
 /**
  * UserProfile is a screen component designed for displaying user profile information.
@@ -24,6 +24,21 @@ const UserProfile = () => {
       </TouchableOpacity>
   );
 
+  const UserProfileOptions = [
+    {
+      name: 'My Meals',
+      handler: () => navigation.navigate('MyMeals'),
+    },
+    {
+      name: 'Reminders',
+      handler: () => navigation.navigate('Reminders'),
+    },
+    {
+      name: 'Goals',
+      handler: () => navigation.navigate('Goals'),
+    },
+  ];
+
   return (
     <View style={styles.container}>
       <Image
@@ -34,9 +49,10 @@ const UserProfile = () => {
       {/*style this below*/}
       <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore.</Text> 
       <FlatList
-                data={UserProfileOptions(navigation)}
+                data={UserProfileOptions}
                 renderItem={renderItem}
                 keyExtractor={item => item.name}
+                
             />
       <SettingsButton/>
     </View>
@@ -44,22 +60,21 @@ const UserProfile = () => {
 };
 
 
-const {width, height} = Dimensions.get('window');
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f0f0f0',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingTop: '20%',
+    marginHorizontal: '5%'
   },
    profilePic: {
     width: 120,
     height: 120, 
-    borderRadius: 60, 
-    top: '10%',
-    left: (width / 2) - (120 / 2),
+    borderRadius: 60,
   },
   username: {
     fontSize: 30,
@@ -70,7 +85,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     height: 44,
-},
+  },
 });
 
 export default UserProfile;
