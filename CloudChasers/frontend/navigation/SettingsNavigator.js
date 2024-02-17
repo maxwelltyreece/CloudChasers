@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import Settings from '../screens/Settings/Settings';
-import { About, Account, DisplayAndSound, HelpAndSupport, Notifications, Privacy } from '../screens/Settings/Subscreens';
+import { About, Account, DisplayAndSound, HelpAndSupport, Notifications, Privacy, EditPage } from '../screens/Settings/Subscreens';
 const Stack = createStackNavigator();
 
 const commonOptions = {
@@ -41,6 +41,7 @@ export default function SettingsNavigator() {
             <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} options={{ ...commonOptions, title: 'Help & Support' }} />
             <Stack.Screen name="Notifications" component={Notifications} options={{ ...commonOptions, title: 'Notifications' }} />
             <Stack.Screen name="Privacy" component={Privacy} options={{ ...commonOptions, title: 'Privacy' }} />
+            <Stack.Screen name="EditPage" component={EditPage} options={{ ...commonOptions, title: 'Edit Page' }} />
         </Stack.Navigator>
     );
 }

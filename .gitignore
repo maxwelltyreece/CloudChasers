@@ -34,5 +34,10 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# vscode
 .vscode/
 
+# jest
+coverage/
+CloudChasers/frontend/screens/IPIndex.js
+nutrients.json
