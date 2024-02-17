@@ -1,10 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import SettingsButton from '../../components/SettingsButton';
-import Svg, {G, Rect, Defs, ClipPath, Circle} from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 import globalStyles from '../../styles/global';
-import {Goals} from './Subscreens/Goals'
 
 /**
  * UserProfile is a screen component designed for displaying user profile information.
@@ -47,7 +45,7 @@ const UserProfile = () => {
       />
       <Text style={styles.username}>Maxwell Martin</Text>
       {/*style this below*/}
-      <Text>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore.</Text> 
+      <Text style={styles.bio}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ut labore et dolore.</Text> 
       <FlatList
                 data={UserProfileOptions}
                 renderItem={renderItem}
@@ -68,7 +66,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingTop: '20%',
+    paddingTop: '30%',
     marginHorizontal: '5%'
   },
    profilePic: {
@@ -79,10 +77,18 @@ const styles = StyleSheet.create({
   username: {
     fontSize: 30,
     color: '#6B6868',
-    fontFamily: 'Montserrat_400Regular'
+    fontFamily: 'Montserrat_400Regular',
+    paddingTop: '8%',
+  },
+
+  bio: {
+    fontSize: 12,
+    color: '#000000',
+    fontFamily: 'Montserrat_400Regular',
+    padding: '2%',
   },
   item: {
-    padding: 10,
+    padding: 30,
     fontSize: 18,
     height: 44,
   },

@@ -1,18 +1,39 @@
 import React from 'react';
+import { View } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer } from '@react-navigation/native';
 import UserProfile from '../screens/UserProfile/UserProfile';
-import Goals from '../screens/UserProfile/Subscreens/Goals';
+import { Goals, MyMeals, Reminders } from '../screens/UserProfile/Subscreens';
 
 const Stack = createStackNavigator();
 
-const UserNavigator = () => (
-  <NavigationContainer>
-    <Stack.Navigator initialRouteName="UserProfile">
-      <Stack.Screen name="UserProfile" component={UserProfile} />
-      <Stack.Screen name="Goals" component={Goals} options={{ ...commonOptions, title: 'Goals' }}/>
-    </Stack.Navigator>
-  </NavigationContainer>
-);
+const commonOptions = {
+  headerShown: true,
+  headerStyle: {
+      backgroundColor: '#F0F0F0',
+  },
+  headerTitleStyle: {
+      fontFamily: 'Montserrat_700Bold',
+      fontSize: 14,
+  },
+  headerBackImage: () => (
+      <View style={{ paddingLeft: 10 }}>  
+          <Feather name="chevron-left" size={25} color="#6B6868" />
+      </View>
+  ),
+  headerBackTitleVisible: false, 
+};
 
-export default UserNavigator;
+export default function UserNavigator () {
+  return (
+    <Stack.Navigator initialRouteName="UserProfile">
+      <Stack.Screen name="UserProfile" component={UserProfile} options={{headerShown: false}}/>
+      <Stack.Screen name='MyMeals' component={MyMeals} options={{ ...commonOptions, title: 'My Meals' }} />
+      <Stack.Screen name='Reminders' component={Reminders} options={{ ...commonOptions, title: 'Reminders' }}/>
+      <Stack.Screen name='Goals' component={Goals} options={{ ...commonOptions, title: 'Goals' }}/>
+    </Stack.Navigator>
+    
+  );
+    
+}
+
