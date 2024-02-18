@@ -1,15 +1,17 @@
 // Settings.js
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList, Pressable } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import SettingsOptions from './SettingsOptions'; // Import the settings options
+import SettingsOptions from './SettingsOptions';
 import globalStyles from '../../styles/global';
 import Feather from 'react-native-vector-icons/Feather';
 import LogoutButton from './settingsComponents/LogoutButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LocalIP } from '../IPIndex';
+import { fetchUserDetails } from '../../services/fetchUserDetails';
 
 const ICON_SIZE = 25;
-const USERNAME = 'test@email.com';
+
 
 
 
@@ -94,7 +96,13 @@ const styles = StyleSheet.create({
  * @returns {React.Element} The rendered settings screen.
  */
 const Settings = () => {
+    const [userDetails, setUserDetails] = useState(null);
     const navigation = useNavigation();
+
+    useEffect(() => {
+        fetchUserDetails().then(setUserDetails);
+    }, []);
+
     return (
         <View style={styles.container}>
             <FlatList
@@ -102,10 +110,9 @@ const Settings = () => {
                 renderItem={SettingsItem}
                 keyExtractor={keyExtractor}
                 ItemSeparatorComponent={ItemSeparator}
-                ListFooterComponent={<SettingsFooter username={USERNAME} navigation={navigation} />}
+                ListFooterComponent={<SettingsFooter username={userDetails?.email} navigation={navigation} />}
             />
         </View>
     );
 };
-
 export default Settings;

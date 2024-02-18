@@ -105,20 +105,20 @@ exports.getUsers = async (req, res) => {
  * @returns {Object} res.data - The user object.
  */
 exports.getUserDetail =  async (req, res) => {
-	const {token} = req.body;
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY);
-		const user = await User.findById(decoded.userId);
+    const token = req.headers.authorization.split(' ')[1];
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await User.findById(decoded.userId);
 
-		if(!user) {
-			return res.status(404).send({ message: 'User not found' });
-		}else{
-			return res.status(200).json({data: user});
-		}
+        if(!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }else{
+            return res.status(200).json({data: user});
+        }
 
-	} catch (error) {
-		return res.status(500).json({error: error.toString()});
-	}
+    } catch (error) {
+        return res.status(500).json({error: error.toString()});
+    }
 };
 
 /**
