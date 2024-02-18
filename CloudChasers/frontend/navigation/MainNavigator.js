@@ -1,7 +1,5 @@
 // MainNavigator.js
 import React from 'react';
-import { View } from 'react-native';
-import { Feather } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import Navbar from '../components/Navbar'; // Update this path if necessary
 import SettingsNavigator from './SettingsNavigator';
