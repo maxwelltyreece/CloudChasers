@@ -55,7 +55,6 @@ async function seed() {
         var newUser = new User({
             forename: "User" + i,
             surname : "Test",
-            height  : 180,
             username : "User" + i + "SEED",
             email : "User" + i+ "@test.com",
             password: await bcrypt.hash("password123", 10),
@@ -162,6 +161,9 @@ async function seed() {
         await newCommunityAward.save();
     }
     console.log("Community_Awards Seeded");
+
+    var user1 = await User.findOne({username: "User0SEED"})
+    user1 = await user1._id;
 
     //Community_Award_Items Seeding
     for (let i = 0; i < 10; i++) {
