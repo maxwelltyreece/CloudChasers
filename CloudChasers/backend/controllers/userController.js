@@ -12,7 +12,6 @@ const Food = require('../models/food');
  * 
  * @param {string} req.body.forename - The user's forename.
  * @param {string} req.body.surname - The user's surname.
- * @param {number} req.body.height - The user's height.
  * @param {string} req.body.username - The user's username. Must be unique.
  * @param {string} req.body.email - The user's email. Must be unique.
  * @param {string} req.body.password - The user's password. Will be hashed before storing.
