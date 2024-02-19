@@ -10,6 +10,7 @@ router.get('/users', userController.getUsers);
 router.get('/userDetails', userController.getUserDetail);
 router.put('/updateProfile', userController.updateProfile);
 
-router.put('/createCommunity', communityController.createCommunity);
+router.post('/createCommunity', communityController.createCommunity);
+router.post('/joinCommunity', communityController.joinCommunity);
 
 module.exports = router;
