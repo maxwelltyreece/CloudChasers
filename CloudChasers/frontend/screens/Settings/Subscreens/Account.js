@@ -4,6 +4,8 @@ import globalStyles from '../../../styles/global';
 import { Pressable } from 'react-native';
 import { useState, useEffect } from 'react';
 import { fetchUserDetails } from '../../../services/fetchUserDetails';
+import { UserContext } from '../../../context/UserContext';
+import { useContext } from 'react';
 
 const styles = StyleSheet.create({
     container: {
@@ -28,25 +30,33 @@ const styles = StyleSheet.create({
     },
 });
 
-const data = [
-    { field: 'First Name', value: 'John' },
-    { field: 'Last Name', value: 'Doe' },
-    { field: 'Email', value: 'john.doe@example.com' },
-    { field: 'Username', value: '@johndoe' },
-];
-
+/**
+ * Account component
+ * 
+ * This component is responsible for displaying the user's account details. It fetches the user's details from the UserContext
+ * and displays them in a FlatList. Each row in the list shows a field of the user's details (first name, last name, email, and username),
+ * and an "Edit" button that navigates to the EditPage for that field.
+ * 
+ * If the user details are not yet loaded, it displays a "Loading..." message.
+ * 
+ * @param {Object} props - The properties passed to the component.
+ * @param {Object} props.navigation - The navigation object from react-navigation. This is used to navigate to the EditPage when the "Edit" button is clicked.
+ * 
+ * @returns {React.Component} The rendered Account component.
+ */
 const Account = ({ navigation }) => {
-    const [userDetails, setUserDetails] = useState(null);
-
-    useEffect(() => {
-        fetchUserDetails().then(setUserDetails);
-    }, []);
+    const { user } = useContext(UserContext); // use the UserContext
 
     return (
         <View style={styles.container}>
-            {userDetails ? (
+            {user ? (
                 <FlatList
-                    data={userDetails}
+                data={[
+                        { field: 'Username', value: user.username },
+                        { field: 'First Name', value: user.firstName },
+                        { field: 'Last Name', value: user.lastName },
+                        { field: 'Email', value: user.email },
+                    ]}
                     keyExtractor={(item) => item.field}
                     renderItem={({ item }) => (
                         <View style={styles.row}>

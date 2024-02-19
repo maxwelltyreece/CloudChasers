@@ -13,6 +13,7 @@ import AuthNavigator from './frontend/navigation/AuthNavigator';
 import MainNavigator from './frontend/navigation/MainNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
+import { ContextProvider } from './frontend/context/ContextProvider';
 import {
 	useFonts,
 	Montserrat_100Thin,
@@ -25,7 +26,6 @@ import {
 	Montserrat_800ExtraBold,
 	Montserrat_900Black,
 } from "@expo-google-fonts/montserrat";
-
 
 const Stack = createStackNavigator();
 
@@ -71,12 +71,14 @@ export default function App() {
 	}
   
 	return (
-	  <NavigationContainer>
-		<Stack.Navigator initialRouteName={initialRoute}>
-		  <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-		  <Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-		</Stack.Navigator>
-	  </NavigationContainer>
+	  <ContextProvider>
+          <NavigationContainer>
+                <Stack.Navigator initialRouteName={initialRoute}>
+                  <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+                  <Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+                </Stack.Navigator>
+          </NavigationContainer>
+      </ContextProvider>
 	);
   }
 

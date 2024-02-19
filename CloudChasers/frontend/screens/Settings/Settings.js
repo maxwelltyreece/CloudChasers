@@ -8,7 +8,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import LogoutButton from './settingsComponents/LogoutButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../IPIndex';
-import { fetchUserDetails } from '../../services/fetchUserDetails';
+import { UserContext } from '../../context/UserContext';
+import { useContext } from 'react';
 
 const ICON_SIZE = 25;
 
@@ -96,12 +97,8 @@ const styles = StyleSheet.create({
  * @returns {React.Element} The rendered settings screen.
  */
 const Settings = () => {
-    const [userDetails, setUserDetails] = useState(null);
+    const { user } = useContext(UserContext); // use the UserContext
     const navigation = useNavigation();
-
-    useEffect(() => {
-        fetchUserDetails().then(setUserDetails);
-    }, []);
 
     return (
         <View style={styles.container}>
@@ -110,7 +107,7 @@ const Settings = () => {
                 renderItem={SettingsItem}
                 keyExtractor={keyExtractor}
                 ItemSeparatorComponent={ItemSeparator}
-                ListFooterComponent={<SettingsFooter email={userDetails?.email} navigation={navigation} />}
+                ListFooterComponent={<SettingsFooter email={user?.email} navigation={navigation} />}
             />
         </View>
     );
