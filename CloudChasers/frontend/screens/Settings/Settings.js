@@ -1,23 +1,29 @@
+const ICON_SIZE = 25;
+const AUTH_ROUTE = 'Auth';
+
 // Settings.js
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Pressable } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SettingsOptions from './SettingsOptions';
 import globalStyles from '../../styles/global';
+import styles from '../../styles/SettingsStyles';
 import Feather from 'react-native-vector-icons/Feather';
 import LogoutButton from './settingsComponents/LogoutButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../IPIndex';
-import { UserContext } from '../../context/UserContext';
-import { useContext } from 'react';
+import { useUser } from '../hooks/useUser';
 
-const ICON_SIZE = 25;
-
-
-
-
+/**
+ * A component that renders a separator line.
+ * @returns {React.Element} A view component with separator style.
+ */
 const ItemSeparator = () => <View style={styles.separator} />;
 
+/**
+ * A component that renders a settings item.
+ * @param {Object} props The component props.
+ * @param {Object} props.item The item to be rendered.
+ * @returns {React.Element} A pressable component with item details.
+ */
 const SettingsItem = ({ item }) => (
     <Pressable onPress={item.handler}>
         <View style={styles.itemContainer}>
@@ -27,77 +33,52 @@ const SettingsItem = ({ item }) => (
     </Pressable>
 );
 
-const SettingsFooter = ({ email, navigation }) => (
-    <View>
-        <View style={styles.separator} /> 
-        <Text style={[styles.emailHeader, globalStyles.bold]}>Logged in as</Text> 
-        <Text style={[styles.emailText, globalStyles.medium]}>{email}</Text>
-        <LogoutButton onPress={async () => {
-            try {
-                await AsyncStorage.removeItem('token');
-                console.log('Token removed!');
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'Auth' }],
-                });
-            } catch (error) {
-                console.error('Failed to remove the token.', error);
-            }
-        }} />
-    </View>
-);
+/**
+ * A component that renders the footer of the settings screen.
+ * @param {Object} props The component props.
+ * @param {string} props.email The email of the logged-in user.
+ * @param {Object} props.navigation The navigation object from react-navigation.
+ * @returns {React.Element} A view component with logout button and user details.
+ */
+const SettingsFooter = ({ email, navigation }) => {
+    const { logout } = useUser();
 
-const keyExtractor = item => item.name;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        paddingTop: 0,
-    },
-    item: {
-        paddingVertical: 24,
-        fontSize: 14,
-    },
-    separator: {
-        height: 1, 
-        backgroundColor: '#A9A9A9', 
-        width: '100%',
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 10,
-    },
-    emailHeader: {
-        fontSize: 12,
-        textAlign: 'center',
-        marginTop: 30,
-    },
-    emailText: {
-        fontSize: 14,
-        textAlign: 'center',
-        marginTop: 10,
-    },
-});
+    return (
+        <View>
+            <View style={styles.separator} /> 
+            <Text style={[styles.emailHeader, globalStyles.bold]}>Logged in as</Text> 
+            <Text style={[styles.emailText, globalStyles.medium]}>{email}</Text>
+            <LogoutButton onPress={async () => {
+                try {
+                    await logout();
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: AUTH_ROUTE }],
+                    });
+                } catch (error) {
+                    console.error('Failed to logout.', error);
+                }
+            }} />
+        </View>
+    );
+};
 
 /**
- * Settings is a component that renders a list of settings options in the center of the screen.
- * It also includes a back button in the top left corner that navigates to the previous screen.
- * It uses styles from its own StyleSheet.
- *
- * The list of settings options is rendered using a FlatList, which takes an array of data and
- * a function for rendering each item in the data. The data is provided by the SettingsOptions array,
- * and the renderItem function describes how to render each item.
- *
- * Each item in the list is a TouchableOpacity that displays the name of the setting option and
- * calls the option's handler function when pressed.
- *
- * @returns {React.Element} The rendered settings screen.
+ * A function that extracts the key from an item.
+ * @param {Object} item The item from which to extract the key.
+ * @returns {string} The key of the item.
+ */
+const keyExtractor = item => item.name;
+
+/**
+ * A component that renders a list of settings options.
+ * It uses the useUser hook to get the current user and the useNavigation hook to navigate between screens.
+ * It renders a FlatList with settings options, each option being a SettingsItem.
+ * It also renders a SettingsFooter with the email of the current user and a logout button.
+ * @returns {React.Element} A view component with a list of settings options.
  */
 const Settings = () => {
-    const { user } = useContext(UserContext); // use the UserContext
+    const { user } = useUser();
     const navigation = useNavigation();
 
     return (

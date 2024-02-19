@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { fetchUserDetails } from '../services/fetchUserDetails';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * UserContext
@@ -42,8 +43,14 @@ export const UserProvider = ({ children }) => {
         updateDetails();
     };
 
-    const logout = () => {
-        setUser(null);
+    const logout = async () => {
+        try {
+            await AsyncStorage.removeItem('token');
+            console.log('Token removed!');
+            setUser(null);
+        } catch (error) {
+            console.error('Failed to remove the token.', error);
+        }
     };
 
     return (
