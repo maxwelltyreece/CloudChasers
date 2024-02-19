@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "@react-native-community/slider": "^4.5.0"
+  },
+  "devDependencies": {
+    "documentation": "^14.0.3"
   }
 }
