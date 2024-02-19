@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Button, FlatList } from 'react-native';
 import globalStyles from '../../../styles/global';
 import { Pressable } from 'react-native';
+import { useState, useEffect } from 'react';
+import { fetchUserDetails } from '../../../services/fetchUserDetails';
 
 const styles = StyleSheet.create({
     container: {
@@ -33,23 +35,35 @@ const data = [
     { field: 'Username', value: '@johndoe' },
 ];
 
-const Account = ({ navigation }) => (
-    <View style={styles.container}>
-        <FlatList
-            data={data}
-            keyExtractor={(item) => item.field}
-            renderItem={({ item }) => (
-                <View style={styles.row}>
-                    <Text style={styles.label}>{`${item.field.charAt(0).toUpperCase() + item.field.slice(1)}: ${item.value}`}</Text>
-                    <Pressable onPress={() => navigation.navigate('EditPage', { field: item.field })}>
-                        <Text>Edit</Text>
-                    </Pressable>
-                </View>
+const Account = ({ navigation }) => {
+    const [userDetails, setUserDetails] = useState(null);
+
+    useEffect(() => {
+        fetchUserDetails().then(setUserDetails);
+    }, []);
+
+    return (
+        <View style={styles.container}>
+            {userDetails ? (
+                <FlatList
+                    data={userDetails}
+                    keyExtractor={(item) => item.field}
+                    renderItem={({ item }) => (
+                        <View style={styles.row}>
+                            <Text style={styles.label}>{`${item.field.charAt(0).toUpperCase() + item.field.slice(1)}: ${item.value}`}</Text>
+                            <Pressable onPress={() => navigation.navigate('EditPage', { field: item.field })}>
+                                <Text>Edit</Text>
+                            </Pressable>
+                        </View>
+                    )}
+                    ItemSeparatorComponent={() => <View style={styles.separator} />}
+                    ListFooterComponent={() => <View style={styles.separator} />} // Added this line
+                />
+            ) : (
+                <Text>Loading...</Text>
             )}
-            ItemSeparatorComponent={() => <View style={styles.separator} />}
-            ListFooterComponent={() => <View style={styles.separator} />} // Added this line
-        />
-    </View>
-);
+        </View>
+    );
+};
 
 export default Account;

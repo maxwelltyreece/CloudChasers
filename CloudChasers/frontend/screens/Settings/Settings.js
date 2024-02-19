@@ -26,11 +26,11 @@ const SettingsItem = ({ item }) => (
     </Pressable>
 );
 
-const SettingsFooter = ({ username, navigation }) => (
+const SettingsFooter = ({ email, navigation }) => (
     <View>
         <View style={styles.separator} /> 
-        <Text style={[styles.usernameHeader, globalStyles.bold]}>Logged in as</Text> 
-        <Text style={[styles.usernameText, globalStyles.medium]}>{username}</Text>
+        <Text style={[styles.emailHeader, globalStyles.bold]}>Logged in as</Text> 
+        <Text style={[styles.emailText, globalStyles.medium]}>{email}</Text>
         <LogoutButton onPress={async () => {
             try {
                 await AsyncStorage.removeItem('token');
@@ -69,12 +69,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 10,
     },
-    usernameHeader: {
+    emailHeader: {
         fontSize: 12,
         textAlign: 'center',
         marginTop: 30,
     },
-    usernameText: {
+    emailText: {
         fontSize: 14,
         textAlign: 'center',
         marginTop: 10,
@@ -110,7 +110,7 @@ const Settings = () => {
                 renderItem={SettingsItem}
                 keyExtractor={keyExtractor}
                 ItemSeparatorComponent={ItemSeparator}
-                ListFooterComponent={<SettingsFooter username={userDetails?.email} navigation={navigation} />}
+                ListFooterComponent={<SettingsFooter email={userDetails?.email} navigation={navigation} />}
             />
         </View>
     );
