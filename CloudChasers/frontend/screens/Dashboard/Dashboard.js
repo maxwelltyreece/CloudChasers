@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F0F0F0',
     flexWrap: 'wrap',
+    backgroundColor: '#F9D3C8',
   },
   middleDashboardContainer: {
     justifyContent: 'flex-start',
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#F0F0F0',
     marginVertical: 10,
+    backgroundColor: '#F9D3C8',
   },
   leftComponentContainer: {
     flex: 1,

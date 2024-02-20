@@ -16,6 +16,7 @@ const LearnMore = () => {
         transparent={true} 
         visible={modalVisible} 
         onRequestClose={() => setModalVisible(!modalVisible)}>
+
           <View style={styles.modalContainer}>
             <ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
               <Text style={styles.modalHeaderText}>Understanding Nutrition</Text>
@@ -69,7 +70,9 @@ const LearnMore = () => {
             </Pressable>
             
           </View>
+          
       </Modal>
+
     </View>
   );
 };
