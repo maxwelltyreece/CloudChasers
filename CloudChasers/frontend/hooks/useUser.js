@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { UserContext } from '../../context/UserContext';
+import { UserContext } from '../context/UserContext';
 
 /**
  * Custom hook to access the user data and logout function from UserContext.

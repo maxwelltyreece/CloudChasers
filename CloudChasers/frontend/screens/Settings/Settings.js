@@ -10,7 +10,7 @@ import globalStyles from '../../styles/global';
 import styles from '../../styles/SettingsStyles';
 import Feather from 'react-native-vector-icons/Feather';
 import LogoutButton from './settingsComponents/LogoutButton';
-import { useUser } from '../hooks/useUser';
+import { useUser } from '../../hooks/useUser';
 
 /**
  * A component that renders a separator line.
