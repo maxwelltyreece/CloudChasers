@@ -16,15 +16,9 @@ const CommunityUser = require('../models/communityUser');
 // - Update community details
 
 exports.createCommunity = async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
     const { name, description, recipePrivacy, joinPrivacy } = req.body;
     try {
-        // Get user from token
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-		const user = await User.findById(decoded.userId);
-        if (!user) {
-            return res.status(404).send({ message: 'User not found' });
-        }
+        const user = req.user;
         const community = await Community.findOne({ name });
         if (community) {
             return res.status(400).send({ message: 'Community already exists' });
@@ -57,15 +51,10 @@ exports.createCommunity = async (req, res) => {
 };
 
 exports.joinCommunity = async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
     const { communityId } = req.body;
     try {
         // Get user from token
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        const user = await User.findById(decoded.userId);
-        if (!user) {
-            return res.status(404).send({ message: 'User not found' });
-        }
+        const user = req.user; 
         // Get community
         const community = await Community.findById(communityId);
         if (!community) {
@@ -97,15 +86,9 @@ exports.joinCommunity = async (req, res) => {
 };
 
 exports.getCommunityDetails = async (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
     const { communityId } = req.body;
     try {
-        // Get user from token
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        const user = await User.findById(decoded.userId);
-        if (!user) {
-            return res.status(404).send({ message: 'User not found' });
-        }
+        const user = req.user;
         // Get community
         const community = await Community.findById(communityId);
         if (!community) {

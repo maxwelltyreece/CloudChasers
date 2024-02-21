@@ -18,18 +18,13 @@ const Food = require('../models/food');
  * @throws {Error} If an error occurs during the operation.
  */
 exports.logDatabaseFood = async (req, res) => {
-	const { token, mealType, food_id, weight} = req.body;
+	const { mealType, food_id, weight } = req.body;
 	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY);
-		const user = await User.findById(decoded.userId);
+		const user = req.user;
 		const food = await Food.findById(food_id);
 
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
-
-		if (!user) {
-			return res.status(404).send({ message: 'User not found' });
-		}
 		
 		const session = await mongoose.startSession();
 		session.startTransaction();
@@ -92,7 +87,7 @@ exports.logDatabaseFood = async (req, res) => {
  */
 exports.getFood = async (req, res) => {
 	const { page = 1, limit = 50 } = req.body;
-	
+
 	try {
 		const foods = await Food.find()
 			.skip((page - 1) * limit)
