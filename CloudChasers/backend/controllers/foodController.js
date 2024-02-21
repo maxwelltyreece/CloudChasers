@@ -91,9 +91,8 @@ exports.logDatabaseFood = async (req, res) => {
  * @returns {number} res.data.currentPage - The current page number.
  */
 exports.getFood = async (req, res) => {
-	const page = parseInt(req.query.page) || 1;
-	const limit = parseInt(req.query.limit) || 50;
-
+	const { page = 1, limit = 50 } = req.body;
+	
 	try {
 		const foods = await Food.find()
 			.skip((page - 1) * limit)
@@ -130,10 +129,9 @@ exports.getFood = async (req, res) => {
 //TODO: check credintials to not display food created by others
 /**
  * Retrieves food items based on search parameters.
- * 
  * @param {number} req.body.page - The page number for pagination. Defaults to 1.
  * @param {number} req.body.limit - The number of items per page for pagination. Defaults to 50.
- * @param {Object} req.body.searchParams - An object containing the fields to search and their values.
+ * @param {Object} req.body.searchParams - Object containing the fields to search and their values.
  * @returns {Array} res.data.foods - An array of food objects.
  * @returns {number} res.data.totalPages - The total number of pages.
  * @returns {number} res.data.page - The current page number.
@@ -143,7 +141,6 @@ exports.searchFoods = async (req, res) => {
 	const { page = 1, limit = 50, ...searchParams } = req.body;
 	const skip = (page - 1) * limit;
 
-	
 	// List of valid fields
 	const validFields = ['name', 'group', 'calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre', 'privacy', 'addedBy'];
 
@@ -176,5 +173,5 @@ exports.searchFoods = async (req, res) => {
 	}
 };
 
-
 //TODO ask matt about the fixed amount of recipes
+
