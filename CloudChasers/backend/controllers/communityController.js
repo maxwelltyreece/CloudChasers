@@ -4,8 +4,20 @@ const User = require('../models/user');
 const Community = require('../models/community');
 const CommunityUser = require('../models/communityUser');
 
+// TODO:
+// - Join private community
+// - Get admin status
+// - Get member status
+// - Get pending requests
+// - Get community members
+// - Get community posts
+// - Delete community
+// - Leave community
+// - Update community details
+
 exports.createCommunity = async (req, res) => {
-    const { token, name, description, recipePrivacy, joinPrivacy } = req.body;
+    const token = req.headers.authorization.split(' ')[1];
+    const { name, description, recipePrivacy, joinPrivacy } = req.body;
     try {
         // Get user from token
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -45,7 +57,8 @@ exports.createCommunity = async (req, res) => {
 };
 
 exports.joinCommunity = async (req, res) => {
-    const { token, communityId } = req.body;
+    const token = req.headers.authorization.split(' ')[1];
+    const { communityId } = req.body;
     try {
         // Get user from token
         const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -77,6 +90,28 @@ exports.joinCommunity = async (req, res) => {
 
         console.log('Community joined');
         return res.status(200).json({ success: true, message: 'Community joined', data: newCommunityUser });
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.toString() });
+    }
+};
+
+exports.getCommunityDetails = async (req, res) => {
+    const token = req.headers.authorization.split(' ')[1];
+    const { communityId } = req.body;
+    try {
+        // Get user from token
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const user = await User.findById(decoded.userId);
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+        // Get community
+        const community = await Community.findById(communityId);
+        if (!community) {
+            return res.status(404).send({ message: 'Community not found' });
+        }
+        return res.status(200).json({ success: true, data: community });
     }
     catch (error) {
         return res.status(400).json({ error: error.toString() });

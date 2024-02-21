@@ -66,7 +66,7 @@ exports.getUsers = async (req, res) => {
 };
 
 exports.getUserDetail =  async (req, res) => {
-	const {token} = req.body;
+	const token = req.headers.authorization.split(' ')[1];
 	try {
 		const decoded = jwt.verify(token, process.env.SECRET_KEY);
 		const user = await User.findById(decoded.userId);

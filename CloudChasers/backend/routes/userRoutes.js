@@ -12,5 +12,6 @@ router.put('/updateProfile', userController.updateProfile);
 
 router.post('/createCommunity', communityController.createCommunity);
 router.post('/joinCommunity', communityController.joinCommunity);
+router.get('/communityDetails', communityController.getCommunityDetails);
 
 module.exports = router;
