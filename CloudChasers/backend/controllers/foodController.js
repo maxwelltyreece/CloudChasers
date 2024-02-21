@@ -6,6 +6,41 @@ const UserDayMeal = require('../models/userDayMeal');
 const MealItem = require('../models/mealItem');
 const FoodItem = require('../models/foodItem');
 const Food = require('../models/food');
+const mongoose = require('mongoose');
+
+async function createUserDay(userID, date){
+	try {
+		const existingUserDay = await UserDay.findOne({ userID, date });
+		if (!existingUserDay) {
+			const newUserDay = new UserDay({
+				date,
+				userID
+			});
+			await newUserDay.save();
+			return newUserDay; // Return the newly created UserDay object
+		}
+	} catch (error) {
+		throw new Error('Failed to create UserDay');
+	}
+};
+
+async function createUserDayMeal(mealType, userDay) {
+	try {
+		let userDayMeal = await userDayMeal.findOne({ name: mealType, userDayID: userDay._id });
+
+		if (!userDayMeal) {
+			userDayMeal = new UserDayMeal({
+				name: mealType,
+				userDayID: userDay._id
+			});
+			await userDayMeal.save();
+		}
+
+		return userDayMeal;
+	} catch (error) {
+		throw new Error('Failed to create UserDayMeal');
+	}
+}
 
 /**
  * Logs a food item to the database for a specific user and meal type.
@@ -30,25 +65,11 @@ exports.logDatabaseFood = async (req, res) => {
 		session.startTransaction();
 		
 		// Check if user day exists, if not create it
-		const newUserDay = await UserDay.findOne({ userID: user._id, date: today });
-		if (!newUserDay) {
-			const newUserDay = new UserDay({
-				date: today,
-				userID: user._id
-			});
-			await newUserDay.save();
-		}
+		const newUserDay = createUserDay(user._id, today);
 
 		// Check if user day meal exists, if not create it
 		// TODO: Can change behaviour to allow multiple meals of the same type
-		const newUserDayMeal = await userDayMeal.findOne({ name: mealType, userDayID: newUserDay._id });
-		if (!newUserDayMeal) {
-			const newUserDayMeal = new userDayMeal({
-				name: mealType,
-				userDayID: newUserDay._id
-			});
-			await newUserDayMeal.save();
-		}
+		const newUserDayMeal = createUserDayMeal(mealType, newUserDay);
 
 		const newFoodItem = new FoodItem({
 			foodID: food._id,
