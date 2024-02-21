@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
 
 // Component imports
-import { WelcomeBar, NotificationBadge, PastWeekLogs, CurrentStreak, RecentLog, LearnMore, CommunityStatus, CurrentGoalProgress } from '../../components/Dashboard';
+import { WelcomeBar, NotificationBadge, PastWeekLogs, CurrentStreak, RecentLog, LearnMore, CommunityStatus, CurrentGoalProgress } from '../../../frontend/components/Dashboard';
 
 // Fake database
 const fakeDB = {
