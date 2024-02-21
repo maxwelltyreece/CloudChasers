@@ -15,6 +15,7 @@ const Community_Award_Items = require('../models/communityAwardItem');
 const Community_Awards = require('../models/communityAward');
 const Communties = require('../models/community');
 const Community_Users = require('../models/communityUser');
+const Recipe_Quantities = require('../models/recipeQuantity');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -48,6 +49,7 @@ async function seed() {
     await Community_Awards.collection.drop();
     await Communties.collection.drop();
     await Community_Users.collection.drop();
+    await Recipe_Quantities.collection.drop();
     
 
     // User Seeding
@@ -222,13 +224,24 @@ async function seed() {
     }
     console.log("Recipe_Items Seeded");
 
+    //Recipe_Quantities Seeding
+    for (let i = 0; i < 10; i++) {
+        var newRecipeQuantity = new Recipe_Quantities({
+            mealItemID: await newUserDayMeal._id,
+            recipeID: await newRecipe._id,
+            totalRecipeWeight: 300,
+        });
+        await newRecipeQuantity.save();
+    }
+    console.log("Recipe_Quantities Seeded");
+
     //Meal_Items Seeding
     for (let i = 0; i < 10; i++) {
         var newMealItem = new Meal_Items({
             name: "Meal" + i,
             userDayMealID: await newUserDayMeal._id,
             foodItemID: await newFoodItem._id,
-            receipeID: await newRecipe._id,
+            recipeQuantityID: await newRecipeQuantity._id,
         });
         await newMealItem.save();
     }
