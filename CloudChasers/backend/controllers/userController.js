@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 exports.register = async (req, res) => {
-	const {forename, surname, height, username, email, password, dateOfBirth, lastLogin, profilePictureLink} = req.body;
+	const {forename, surname, username, email, password, dateOfBirth, lastLogin, profilePictureLink} = req.body;
 	try {
 		// Check if user exists
 		const user = await User.findOne({ username: username });
@@ -15,7 +15,13 @@ exports.register = async (req, res) => {
 		const hashedPassword = await bcrypt.hash(password, 10);
 
 		const newUser = new User({
-			username,
+			forename: forename,
+			surname: surname,
+			username: username,
+			email: email,
+			dateOfBirth: dateOfBirth,
+			lastLogin: lastLogin,
+			profilePictureLink: profilePictureLink,
 			password: hashedPassword,
 		});
 		console.log(newUser);
