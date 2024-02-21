@@ -71,7 +71,7 @@ exports.login = async (req, res) => {
 			console.log('Invalid credentials');
 			return res.status(401).json({ message:'Invalid credentials' });
 		}
-
+		//TODO: Add last login date
 		// Generate and send token
 		const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
 		return res.status(200).json({ data: token });
