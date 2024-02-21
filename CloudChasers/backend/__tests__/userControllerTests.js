@@ -6,7 +6,6 @@ const jwt = require('jsonwebtoken');
 
 jest.mock('../models/user');
 
-// Mock bcrypt and jwt
 bcrypt.hash = jest.fn().mockResolvedValue('hashedPassword');
 jwt.sign = jest.fn().mockReturnValue('fakeTokenString');
 
