@@ -241,7 +241,7 @@ async function seed() {
             name: "Meal" + i,
             userDayMealID: await newUserDayMeal._id,
             foodItemID: await newFoodItem._id,
-            recipeQuantityID: await newRecipeQuantity._id,
+            recipeQuantityID: null,
         });
         await newMealItem.save();
     }
