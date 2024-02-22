@@ -45,12 +45,11 @@ async function createUserDayMeal(mealType, userDay) {
 /**
  * Logs a food item to the database for a specific user and meal type.
  * 
- * @param {string} req.body.token - The JWT token of the user.
+ * @param {string} req.headers.authorization - The JWT token of the user.
  * @param {string} req.body.mealType - The type of meal (e.g., "breakfast", "lunch", "dinner").
  * @param {string} req.body.food_id - The ID of the food item.
  * @param {number} req.body.weight - The weight of the food item.
  * @returns {string} res.message - A message indicating the result of the operation.
- * @throws {Error} If an error occurs during the operation.
  */
 exports.logDatabaseFood = async (req, res) => {
 	const { mealType, food_id, weight } = req.body;
@@ -126,22 +125,6 @@ exports.getFood = async (req, res) => {
 	}
 };
 
-// exports.searchFoods = async (req, res) => {
-// 	const { name } = req.query;
-
-// 	try {
-// 		const foods = await Food.find({
-// 			name: { $regex: new RegExp(name, "i") }
-// 		});
-
-// 		res.status(200).send({ foods });
-// 	} catch (error) {
-// 		res.status(500).send({ error: error.toString() });
-// 	}
-// };
-//
-
-
 //TODO: check credintials to not display food created by others
 /**
  * Retrieves food items based on search parameters.
@@ -189,5 +172,4 @@ exports.searchFoods = async (req, res) => {
 	}
 };
 
-//TODO ask matt about the fixed amount of recipes
 
