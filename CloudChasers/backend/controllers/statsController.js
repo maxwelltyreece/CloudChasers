@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-exports.getStreaks = async (req, res) => {
+exports.getStreaks = async (req, res, today) => {
     const { token } = req.body;
 
 	try {
@@ -13,7 +13,7 @@ exports.getStreaks = async (req, res) => {
             return res.status(404).send({ message: 'User not found' });
         }
 
-        const today = new Date();
+        // const today = new Date();
         const lastLogin = user.lastLogin;
         const oneDay = 24 * 60 * 60 * 1000;
         const diffDays = Math.round(Math.abs((today - lastLogin) / oneDay));

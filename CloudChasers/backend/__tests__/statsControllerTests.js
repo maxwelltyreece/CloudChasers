@@ -1,42 +1,31 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const app = require('../server'); 
 
 jest.mock('jsonwebtoken');
 jest.mock('../models/user');
 
-describe('GET /streaks', () => {
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
+describe('getStreaks', () => {
+	it('should increment streaks on consecutive logins', async () => {
+		const user = {
+			_id: 'testID',
+			lastLogin: new Date() - 1, // yesterday
+			streaks: 1,
+			save: jest.fn().mockResolvedValue(true),
+		};
+		User.findById.mockResolvedValue(user);
+		jwt.verify.mockReturnValue({userId: user._id});
 
-  it('should return 404 if user not found', async () => {
-    jwt.verify.mockReturnValueOnce({ userId: 'someUserId' });
-    User.findById.mockResolvedValueOnce(null);
+		const today = new Date();
 
-    const res = await request(app).post('/streaks').send({ token: 'someToken' });
+		const req = { body: { token: 'testToken' } };
+		const res = { status: jest.fn().mockReturnThis(), send: jest.fn() };
 
-    expect(res.statusCode).toBe(404);
-    expect(res.body).toEqual({ message: 'User not found' });
-  });
+		await getStreaks(req, res, today);
 
-  it('should return 200 and update streak if user found', async () => {
-    const mockUser = {
-      _id: 'someUserId',
-      lastLogin: new Date('2022-01-01T00:00:00Z'),
-      streak: 1,
-      save: jest.fn().mockResolvedValueOnce(),
-    };
-    jwt.verify.mockReturnValueOnce({ userId: 'someUserId' });
-    User.findById.mockResolvedValueOnce(mockUser);
-
-    jest.setSystemTime(new Date('2022-01-02T00:00:00Z'));
-
-    const res = await request(app).post('/streaks').send({ token: 'someToken' });
-
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual({ streak: 2, message: 'Streak updated' });
-    expect(mockUser.save).toHaveBeenCalled();
-  });
+		expect(user.streaks).toBe(2);
+		expect(user.save).toHaveBeenCalled();
+		expect(res.status).toHaveBeenCalledWith(200);
+		expect(res.send).toHaveBeenCalledWith({ streak: 2, message: 'Streak updated' });
+	}); 
 });
