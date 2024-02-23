@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BACKEND_IP } from '@env';
 import { LocalIP } from './IPIndex';
-const DashboardScreen = () => {
+
+function DashboardScreen() {
 	const [users, setUsers] = useState([]);
 
 	async function getData() {
 		AsyncStorage.getItem('token')
-			.then(token => {
+			.then((token) => {
 				console.log(token);
 				return fetch(`${LocalIP}:3000/users`, {
 					method: 'GET',
 					headers: {
-					'Authorization': `Bearer ${token}`
-					}
+						Authorization: `Bearer ${token}`,
+					},
 				});
 			})
-			.then(response => response.json())
-			.then(data => {
+			.then((response) => response.json())
+			.then((data) => {
 				console.log(data);
 				setUsers(data);
 			})
-			.catch(error => console.error(error));
+			.catch((error) => console.error(error));
 	}
 
 	useEffect(() => {
@@ -38,6 +39,6 @@ const DashboardScreen = () => {
 			</ScrollView>
 		</View>
 	);
-};
+}
 
 export default DashboardScreen;

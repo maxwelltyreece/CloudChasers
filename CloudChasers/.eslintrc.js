@@ -24,6 +24,9 @@ module.exports = {
 	rules: {
 		'react/react-in-jsx-scope': 'off',
 		'react/jsx-filename-extension': 'off',
+		'react/jsx-indent': 'off',
+		'react/jsx-indent-props': 'off',
+		'react/prop-types': 'off',
 		'react/style-prop-object': ['error', { allow: ['StatusBar'] }],
 		'no-tabs': ['error', { allowIndentationTabs: true }],
 		indent: ['warn', 'tab'],
