@@ -8,5 +8,6 @@ router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/users', userController.getUsers);
 router.get('/getProfilePicURL', firebaseController.getProfilePicURL);
+router.post('/uploadProfilePic', firebaseController.uploadProfilePic);
 
 module.exports = router;
