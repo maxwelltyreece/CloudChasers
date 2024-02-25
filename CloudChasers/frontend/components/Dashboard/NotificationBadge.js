@@ -6,80 +6,6 @@ import {
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-// Mock data
-const notifications = [
-	{
-		id: '1', title: 'New Message', message: 'You have a new message from John.', timestamp: '10 mins ago',
-	},
-	{
-		id: '2', title: 'New Friend Request', message: 'You have a new friend request from Jane.', timestamp: '1 hour ago',
-	},
-	{
-		id: '3', title: 'New Message', message: 'You have a new message from John.', timestamp: '10 mins ago',
-	},
-	{
-		id: '4', title: 'New Friend Request', message: 'You have a new friend request from Jane.', timestamp: '1 hour ago',
-	},
-];
-
-// Notification item component
-function NotificationItem({ title, message, timestamp }) {
-	return (
-		<View style={styles.notificationItem}>
-			<Text style={styles.title}>{title}</Text>
-			<Text>{message}</Text>
-			<Text style={styles.timestamp}>{timestamp}</Text>
-		</View>
-	);
-}
-
-function NotificationBadge({ count }) {
-	const [modalVisible, setModalVisible] = useState(false);
-
-	return (
-		<View style={styles.container}>
-
-			<Pressable onPress={() => setModalVisible(true)}>
-				<Icon name="bell" size={28} color="black" />
-				{count > 0 && (
-					<View style={styles.badge}>
-						<Text style={styles.text}>{count}</Text>
-					</View>
-				)}
-			</Pressable>
-
-			<Modal
-				animationType="slide"
-				// animationIn="slideInRight"
-				// animationOut="slideOutRight"
-				// backdropTransitionOutTiming={0}
-				transparent
-				visible={modalVisible}
-				onRequestClose={() => setModalVisible(!modalVisible)}
-			>
-
-				<View style={styles.modalContainer}>
-
-					<Text style={styles.modalTitle}>Your Notifications</Text>
-
-					<FlatList
-						data={notifications}
-						renderItem={({ item }) => <NotificationItem {...item} />}
-						keyExtractor={(item) => item.id}
-						style={styles.notificationListContainer}
-					/>
-
-					<Pressable onPress={() => setModalVisible(!modalVisible)}>
-						<Text style={styles.modalCloseButtonText}>Close</Text>
-					</Pressable>
-
-				</View>
-			</Modal>
-
-		</View>
-	);
-}
-
 const styles = StyleSheet.create({
 	container: {
 		width: '75%',
@@ -183,5 +109,79 @@ const styles = StyleSheet.create({
 		opacity: 0.9,
 	},
 });
+
+// Mock data
+const notifications = [
+	{
+		id: '1', title: 'New Message', message: 'You have a new message from John.', timestamp: '10 mins ago',
+	},
+	{
+		id: '2', title: 'New Friend Request', message: 'You have a new friend request from Jane.', timestamp: '1 hour ago',
+	},
+	{
+		id: '3', title: 'New Message', message: 'You have a new message from John.', timestamp: '10 mins ago',
+	},
+	{
+		id: '4', title: 'New Friend Request', message: 'You have a new friend request from Jane.', timestamp: '1 hour ago',
+	},
+];
+
+// Notification item component
+function NotificationItem({ title, message, timestamp }) {
+	return (
+		<View style={styles.notificationItem}>
+			<Text style={styles.title}>{title}</Text>
+			<Text>{message}</Text>
+			<Text style={styles.timestamp}>{timestamp}</Text>
+		</View>
+	);
+}
+
+function NotificationBadge({ count }) {
+	const [modalVisible, setModalVisible] = useState(false);
+
+	return (
+		<View style={styles.container}>
+
+			<Pressable onPress={() => setModalVisible(true)}>
+				<Icon name="bell" size={28} color="black" />
+				{count > 0 && (
+					<View style={styles.badge}>
+						<Text style={styles.text}>{count}</Text>
+					</View>
+				)}
+			</Pressable>
+
+			<Modal
+				animationType="slide"
+				// animationIn="slideInRight"
+				// animationOut="slideOutRight"
+				// backdropTransitionOutTiming={0}
+				transparent
+				visible={modalVisible}
+				onRequestClose={() => setModalVisible(!modalVisible)}
+			>
+
+				<View style={styles.modalContainer}>
+
+					<Text style={styles.modalTitle}>Your Notifications</Text>
+
+					<FlatList
+						data={notifications}
+						renderItem={({ item }) => <NotificationItem {...item} />}
+						keyExtractor={(item) => item.id}
+						style={styles.notificationListContainer}
+					/>
+
+					<Pressable onPress={() => setModalVisible(!modalVisible)}>
+						<Text style={styles.modalCloseButtonText}>Close</Text>
+					</Pressable>
+
+				</View>
+			</Modal>
+
+		</View>
+	);
+}
 
 export default NotificationBadge;

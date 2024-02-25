@@ -2,18 +2,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-function WelcomeBar({ name }) {
-	return (
-		<View style={styles.welcomeContainer}>
-			<Text style={styles.welcomeText}>
-  Welcome,
-				{name}
-  !
-			</Text>
-		</View>
-	);
-}
-
 const styles = StyleSheet.create({
 	// -------Weclome Bar-------//
 	welcomeContainer: {
@@ -30,5 +18,17 @@ const styles = StyleSheet.create({
 	},
 
 });
+
+function WelcomeBar({ name }) {
+	return (
+		<View style={styles.welcomeContainer}>
+			<Text style={styles.welcomeText}>
+  Welcome,
+				{name}
+  !
+			</Text>
+		</View>
+	);
+}
 
 export default WelcomeBar;

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { BACKEND_IP } from '@env';
 import { LocalIP } from './IPIndex';
 
 function DashboardScreen() {
@@ -33,8 +32,8 @@ function DashboardScreen() {
 	return (
 		<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 			<ScrollView>
-				{users && users.map((user, index) => (
-					<Text key={index}>{user.username}</Text>
+				{users && users.map((user) => (
+					<Text key={user.id}>{user.username}</Text>
 				))}
 			</ScrollView>
 		</View>

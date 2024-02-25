@@ -4,89 +4,6 @@ import {
 	View, Text, StyleSheet, Modal, Pressable, FlatList,
 } from 'react-native';
 
-function GoalProgressBar({ current }) {
-	const [modalVisible, setModalVisible] = useState(false);
-	const [selectedGoal, setSelectedGoal] = useState({
-		id: 0,
-		description: '160g Protein',
-		frequency: 'per day',
-	});
-
-	// Mock database of dietary goals
-	const goals = [
-		{ id: 1, description: '2000ml Water', frequency: 'per day' },
-		{ id: 2, description: '150g Protein', frequency: 'per day' },
-		{ id: 3, description: '80g Carbohydrates', frequency: 'per day' },
-		{ id: 4, description: '1000mg Sodium', frequency: 'per day' },
-		{ id: 5, description: '75g Fat', frequency: 'per day' },
-	];
-
-	const progressPercent = Math.min((current / selectedGoal.id) * 100, 100); // This calculation might need to be adjusted based on real data
-
-	const selectGoal = (goal) => {
-		setSelectedGoal(goal);
-		setModalVisible(false);
-	};
-
-	return (
-		<View style={styles.progressBarComponentContainer}>
-			{/* Title and Goal Info */}
-			<View style={styles.topSection}>
-				<Text style={styles.progressBarTitle}>Current Progress:</Text>
-				<View style={styles.goalInfoSection}>
-					<Text style={styles.currentGoalTitle}>
-						{selectedGoal.description}
-						{' '}
-						{selectedGoal.frequency}
-					</Text>
-					<Pressable style={styles.selectGoalButton} onPress={() => setModalVisible(true)}>
-						<Text style={styles.selectGoalButtonText}>Select Other Goal</Text>
-					</Pressable>
-				</View>
-			</View>
-
-			{/* Progress Bar */}
-			<View style={styles.progressBarContainer}>
-				<View style={[styles.filledProgressBar, { width: `${progressPercent}%` }]} />
-			</View>
-
-			<Text style={styles.currentProgressBarText}>
-				{current}
-    /
-				{selectedGoal.description}
-			</Text>
-
-			<Modal
-				animationType="slide"
-				transparent
-				visible={modalVisible}
-				onRequestClose={() => setModalVisible(!modalVisible)}
-			>
-				<View style={styles.modalContainer}>
-					<Text style={styles.modalTitle}>Select a Goal</Text>
-					<FlatList
-						data={goals}
-						renderItem={({ item }) => (
-							<Pressable style={styles.goalItem} onPress={() => selectGoal(item)}>
-								<Text style={styles.goalItemText}>
-									{item.description}
-									{' '}
-									{item.frequency}
-								</Text>
-							</Pressable>
-						)}
-						keyExtractor={(item) => item.id.toString()}
-						style={styles.goalListContainer}
-					/>
-					<Pressable onPress={() => setModalVisible(!modalVisible)}>
-						<Text style={styles.modalCloseButtonText}>Close</Text>
-					</Pressable>
-				</View>
-			</Modal>
-		</View>
-	);
-}
-
 const styles = StyleSheet.create({
 	// -------Goal Progress Bar-------//
 	progressBarComponentContainer: {
@@ -105,7 +22,6 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.22,
 		shadowRadius: 2.22,
 		elevation: 3,
-		borderRadius: 15,
 
 	},
 	topSection: {
@@ -225,5 +141,89 @@ const styles = StyleSheet.create({
 		opacity: 0.9,
 	},
 });
+
+function GoalProgressBar({ current }) {
+	const [modalVisible, setModalVisible] = useState(false);
+	const [selectedGoal, setSelectedGoal] = useState({
+		id: 0,
+		description: '160g Protein',
+		frequency: 'per day',
+	});
+
+	// Mock database of dietary goals
+	const goals = [
+		{ id: 1, description: '2000ml Water', frequency: 'per day' },
+		{ id: 2, description: '150g Protein', frequency: 'per day' },
+		{ id: 3, description: '80g Carbohydrates', frequency: 'per day' },
+		{ id: 4, description: '1000mg Sodium', frequency: 'per day' },
+		{ id: 5, description: '75g Fat', frequency: 'per day' },
+	];
+
+	const progressPercent = Math.min((current / selectedGoal.id) * 100, 100);
+	// This calculation might need to be adjusted based on real data
+
+	const selectGoal = (goal) => {
+		setSelectedGoal(goal);
+		setModalVisible(false);
+	};
+
+	return (
+		<View style={styles.progressBarComponentContainer}>
+			{/* Title and Goal Info */}
+			<View style={styles.topSection}>
+				<Text style={styles.progressBarTitle}>Current Progress:</Text>
+				<View style={styles.goalInfoSection}>
+					<Text style={styles.currentGoalTitle}>
+						{selectedGoal.description}
+						{' '}
+						{selectedGoal.frequency}
+					</Text>
+					<Pressable style={styles.selectGoalButton} onPress={() => setModalVisible(true)}>
+						<Text style={styles.selectGoalButtonText}>Select Other Goal</Text>
+					</Pressable>
+				</View>
+			</View>
+
+			{/* Progress Bar */}
+			<View style={styles.progressBarContainer}>
+				<View style={[styles.filledProgressBar, { width: `${progressPercent}%` }]} />
+			</View>
+
+			<Text style={styles.currentProgressBarText}>
+				{current}
+    /
+				{selectedGoal.description}
+			</Text>
+
+			<Modal
+				animationType="slide"
+				transparent
+				visible={modalVisible}
+				onRequestClose={() => setModalVisible(!modalVisible)}
+			>
+				<View style={styles.modalContainer}>
+					<Text style={styles.modalTitle}>Select a Goal</Text>
+					<FlatList
+						data={goals}
+						renderItem={({ item }) => (
+							<Pressable style={styles.goalItem} onPress={() => selectGoal(item)}>
+								<Text style={styles.goalItemText}>
+									{item.description}
+									{' '}
+									{item.frequency}
+								</Text>
+							</Pressable>
+						)}
+						keyExtractor={(item) => item.id.toString()}
+						style={styles.goalListContainer}
+					/>
+					<Pressable onPress={() => setModalVisible(!modalVisible)}>
+						<Text style={styles.modalCloseButtonText}>Close</Text>
+					</Pressable>
+				</View>
+			</Modal>
+		</View>
+	);
+}
 
 export default GoalProgressBar;

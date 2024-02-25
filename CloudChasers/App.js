@@ -1,7 +1,6 @@
+/* eslint-disable camelcase */
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import Feather from 'react-native-vector-icons/Feather';
-import { View } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import {
@@ -16,12 +15,7 @@ import {
 	Montserrat_800ExtraBold,
 	Montserrat_900Black,
 } from '@expo-google-fonts/montserrat';
-import Navbar from './frontend/components/Navbar';
-import Settings from './frontend/screens/Settings/Settings';
-import Landing from './frontend/screens/Landing/Landing';
-import Login from './frontend/screens/Login/Login';
-import Register from './frontend/screens/Register/Register';
-import globalStyles from './frontend/styles/global';
+
 import AuthNavigator from './frontend/navigation/AuthNavigator';
 import MainNavigator from './frontend/navigation/MainNavigator';
 
@@ -65,7 +59,7 @@ export default function App() {
 	}, []);
 
 	if (!fontsLoaded || !initialRoute) {
-	  return null;
+		return null;
 	}
 
 	return (

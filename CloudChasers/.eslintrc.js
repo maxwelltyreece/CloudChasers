@@ -32,5 +32,6 @@ module.exports = {
 		indent: ['warn', 'tab'],
 		'no-unused-vars': ['warn'],
 		'linebreak-style': 'off',
+		'no-console': 'off',
 	},
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-	View, Text, StyleSheet, Button, FlatList,
+	View, Text, StyleSheet, FlatList,
 	Pressable,
 } from 'react-native';
 

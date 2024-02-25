@@ -3,92 +3,6 @@ import {
 	View, Text, Pressable, Modal, StyleSheet, ScrollView,
 } from 'react-native';
 
-function LearnMore() {
-	const [modalVisible, setModalVisible] = useState(false);
-
-	return (
-		<View style={styles.learnMoreContainer}>
-			<Pressable onPress={() => setModalVisible(true)}>
-				<Text style={styles.learnMoreTitle}>
-    Learn More
-					{'>'}
-				</Text>
-			</Pressable>
-
-			<Modal
-				animationType="slide"
-				transparent
-				visible={modalVisible}
-				onRequestClose={() => setModalVisible(!modalVisible)}
-			>
-
-				<View style={styles.modalContainer}>
-					<ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
-						<Text style={styles.modalHeaderText}>Understanding Nutrition</Text>
-
-						{/* Calories */}
-						<Text style={styles.modalContentText}>
-							<Text style={styles.modalSubheaderText}>Calories (kcal):</Text>
-							{'\n'}
-    Calories are units of energy that measure how much energy food provides to the body. They are essential for daily activities and bodily functions.
-						</Text>
-
-						{/* Carbohydrates */}
-						<Text style={styles.modalContentText}>
-							<Text style={styles.modalSubheaderText}>Carbohydrates:</Text>
-							{'\n'}
-    The body's main source of energy, broken down into glucose. Found in fruits, vegetables, breads, and cereals.
-						</Text>
-
-						{/* Proteins */}
-						<Text style={styles.modalContentText}>
-							<Text style={styles.modalSubheaderText}>Proteins:</Text>
-							{'\n'}
-    Essential for building tissues, making enzymes, and supporting immune function. Good sources include meat, fish, dairy, legumes, and nuts.
-						</Text>
-
-						{/* Fats */}
-						<Text style={styles.modalContentText}>
-							<Text style={styles.modalSubheaderText}>Fats:</Text>
-							{'\n'}
-    Important for cell growth, organ protection, and nutrient absorption. Includes saturated and unsaturated fats, found in oils, butter, avocado, and fish.
-						</Text>
-
-						{/* Fiber */}
-						<Text style={styles.modalContentText}>
-							<Text style={styles.modalSubheaderText}>Fiber:</Text>
-							{'\n'}
-    A type of carbohydrate that the body can't digest. It helps regulate the body's use of sugars, helping to keep hunger and blood sugar in check.
-						</Text>
-
-						{/* Water */}
-						<Text style={styles.modalContentText}>
-							<Text style={styles.modalSubheaderText}>Water:</Text>
-							{'\n'}
-    Crucial for life, water aids in digestion, absorption, circulation, and excretion. It regulates body temperature and maintains electrolyte balance.
-						</Text>
-
-						{/* Micronutrients */}
-						<Text style={styles.modalContentText}>
-							<Text style={styles.modalSubheaderText}>Micronutrients (Vitamins & Minerals):</Text>
-							{'\n'}
-    Vital for health, development, and disease prevention. Vitamins support immune function and energy production, while minerals are important for growth, bone health, and fluid balance.
-						</Text>
-
-					</ScrollView>
-
-					<Pressable onPress={() => setModalVisible(!modalVisible)}>
-						<Text style={styles.modalCloseButtonText}>Close</Text>
-					</Pressable>
-
-				</View>
-
-			</Modal>
-
-		</View>
-	);
-}
-
 const styles = StyleSheet.create({
 	learnMoreContainer: {
 		flex: 1,
@@ -104,7 +18,6 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.22,
 		shadowRadius: 2.22,
 		elevation: 3,
-		borderRadius: 15,
 	},
 	learnMoreTitle: {
 		fontSize: 20,
@@ -172,5 +85,103 @@ const styles = StyleSheet.create({
 		opacity: 0.9,
 	},
 });
+
+function LearnMore() {
+	const [modalVisible, setModalVisible] = useState(false);
+
+	return (
+		<View style={styles.learnMoreContainer}>
+			<Pressable onPress={() => setModalVisible(true)}>
+				<Text style={styles.learnMoreTitle}>
+    Learn More
+					{'>'}
+				</Text>
+			</Pressable>
+
+			<Modal
+				animationType="slide"
+				transparent
+				visible={modalVisible}
+				onRequestClose={() => setModalVisible(!modalVisible)}
+			>
+
+				<View style={styles.modalContainer}>
+					<ScrollView showsVerticalScrollIndicator={false} style={styles.scrollView}>
+						<Text style={styles.modalHeaderText}>Understanding Nutrition</Text>
+
+						{/* Calories */}
+						<Text style={styles.modalContentText}>
+							<Text style={styles.modalSubheaderText}>Calories (kcal):</Text>
+							{'\n'}
+                            Calories are units of energy that measure how much energy food provides
+                            to the body. They are essential for daily activities and bodily
+                            functions.
+						</Text>
+
+						{/* Carbohydrates */}
+						<Text style={styles.modalContentText}>
+							<Text style={styles.modalSubheaderText}>Carbohydrates:</Text>
+							{'\n'}
+                            The body&apos;s main source of energy, broken down into glucose.
+                            Found in fruits, vegetables, breads, and cereals.
+						</Text>
+
+						{/* Proteins */}
+						<Text style={styles.modalContentText}>
+							<Text style={styles.modalSubheaderText}>Proteins:</Text>
+							{'\n'}
+                            Essential for building tissues, making enzymes, and supporting immune
+                            function. Good sources include meat, fish, dairy, legumes, and nuts.
+						</Text>
+
+						{/* Fats */}
+						<Text style={styles.modalContentText}>
+							<Text style={styles.modalSubheaderText}>Fats:</Text>
+							{'\n'}
+                            Important for cell growth, organ protection, and nutrient absorption.
+                            Includes saturated and unsaturated fats, found in oils, butter, avocado,
+                            and fish.
+						</Text>
+
+						{/* Fiber */}
+						<Text style={styles.modalContentText}>
+							<Text style={styles.modalSubheaderText}>Fiber:</Text>
+							{'\n'}
+                            A type of carbohydrate that the body can&apos;t digest. It helps
+                            regulate the body&apos;s use of sugars, helping to keep hunger
+                            and blood sugar in check.
+						</Text>
+
+						{/* Water */}
+						<Text style={styles.modalContentText}>
+							<Text style={styles.modalSubheaderText}>Water:</Text>
+							{'\n'}
+                            Crucial for life, water aids in digestion, absorption,
+                            circulation, and excretion. It regulates body temperature and
+                            maintains electrolyte balance.
+						</Text>
+
+						{/* Micronutrients */}
+						<Text style={styles.modalContentText}>
+							<Text style={styles.modalSubheaderText}>Micronutrients (Vitamins & Minerals):</Text>
+							{'\n'}
+                            Vital for health, development, and disease prevention. Vitamins
+                            support immune function and energy production, while minerals
+                            are important for growth, bone health, and fluid balance.
+						</Text>
+
+					</ScrollView>
+
+					<Pressable onPress={() => setModalVisible(!modalVisible)}>
+						<Text style={styles.modalCloseButtonText}>Close</Text>
+					</Pressable>
+
+				</View>
+
+			</Modal>
+
+		</View>
+	);
+}
 
 export default LearnMore;

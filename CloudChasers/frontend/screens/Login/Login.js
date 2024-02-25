@@ -6,6 +6,21 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../IPIndex';
 
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		padding: 16,
+	},
+	input: {
+		height: 40,
+		borderColor: 'gray',
+		borderWidth: 1,
+		marginBottom: 16,
+		padding: 8,
+	},
+});
+
 function Login({ navigation }) {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -51,20 +66,5 @@ function Login({ navigation }) {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		padding: 16,
-	},
-	input: {
-		height: 40,
-		borderColor: 'gray',
-		borderWidth: 1,
-		marginBottom: 16,
-		padding: 8,
-	},
-});
 
 export default Login;

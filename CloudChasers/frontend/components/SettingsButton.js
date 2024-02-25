@@ -2,7 +2,6 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import globalStyles from '../styles/global';
 
 /**
  * SettingsButton is a component that renders a button with a settings icon.
@@ -10,18 +9,6 @@ import globalStyles from '../styles/global';
  *
  * @returns {React.Element} The rendered button.
  */
-export default function SettingsButton() {
-	const navigation = useNavigation();
-
-	return (
-		<TouchableOpacity
-			style={styles.button}
-			onPress={() => navigation.navigate('Settings')}
-		>
-			<FontAwesome5 name="cog" size={24} color="#FFFFFF" solid />
-		</TouchableOpacity>
-	);
-}
 
 const styles = StyleSheet.create({
 	button: {
@@ -36,3 +23,16 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 	},
 });
+
+export default function SettingsButton() {
+	const navigation = useNavigation();
+
+	return (
+		<TouchableOpacity
+			style={styles.button}
+			onPress={() => navigation.navigate('Settings')}
+		>
+			<FontAwesome5 name="cog" size={24} color="#FFFFFF" solid />
+		</TouchableOpacity>
+	);
+}

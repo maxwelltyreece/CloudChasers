@@ -2,19 +2,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-function CurrentStreak({ streak }) {
-	return (
-		<View style={styles.currentStreakContainer}>
-			<Text style={styles.streakTextTitle}>Current Streak:</Text>
-			<Text style={styles.currentStreakText}>
-				{streak}
-				{' '}
-  days
-			</Text>
-		</View>
-	);
-}
-
 const styles = StyleSheet.create({
 	// -------Current Streak-------//
 	currentStreakContainer: {
@@ -33,7 +20,6 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.22,
 		shadowRadius: 2.22,
 		elevation: 3,
-		borderRadius: 15,
 	},
 	streakTextTitle: {
 		fontSize: 20,
@@ -47,5 +33,18 @@ const styles = StyleSheet.create({
 	},
 
 });
+
+function CurrentStreak({ streak }) {
+	return (
+		<View style={styles.currentStreakContainer}>
+			<Text style={styles.streakTextTitle}>Current Streak:</Text>
+			<Text style={styles.currentStreakText}>
+				{streak}
+				{' '}
+  days
+			</Text>
+		</View>
+	);
+}
 
 export default CurrentStreak;

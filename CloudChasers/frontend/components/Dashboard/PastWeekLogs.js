@@ -2,55 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const getLastSevenDays = () => {
-	const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-	return Array.from({ length: 7 }).map((_, i) => {
-		const date = new Date();
-		date.setDate(date.getDate() - i);
-		return {
-			dayName: days[date.getDay()],
-			logged: false,
-		};
-	}).reverse();
-};
-
-function DailyCheckmark({ logged, dayName }) {
-	return (
-		<View style={styles.dayContainer}>
-			<Text style={styles.dayName}>{dayName}</Text>
-			<View style={styles.dailyCheckmarkContainer}>
-				<Text>{logged ? '✅' : '❌'}</Text>
-			</View>
-		</View>
-	);
-}
-
-export function PastWeekLogs({ meals }) {
-	const [lastSevenDays, setLastSevenDays] = useState(getLastSevenDays());
-
-	useEffect(() => {
-		// Implement logic to determine if meals were logged each day
-		const updatedDays = lastSevenDays.map((day) => ({
-			...day,
-			logged: Math.random() < 0.5, // This should be replaced with actual logic
-		}));
-		setLastSevenDays(updatedDays);
-	}, [meals]);
-
-	return (
-		<View style={styles.wholePastLogsContainer}>
-			<Text style={styles.weeklyLogTitle}>Weekly Log:</Text>
-			<View style={styles.weekContainer}>
-				<View style={styles.weeklyLogDaysContainer}>
-					{lastSevenDays.map((day, index) => (
-						<DailyCheckmark key={index} logged={day.logged} dayName={day.dayName} />
-					))}
-				</View>
-			</View>
-		</View>
-	);
-}
-
 const styles = StyleSheet.create({
 	wholePastLogsContainer: {
 		padding: 20,
@@ -61,7 +12,6 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.22,
 		shadowRadius: 2.22,
 		elevation: 3,
-		borderRadius: 15,
 		width: '95%',
 	},
 	weeklyLogTitle: {
@@ -110,5 +60,54 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 });
+
+const getLastSevenDays = () => {
+	const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+	return Array.from({ length: 7 }).map((_, i) => {
+		const date = new Date();
+		date.setDate(date.getDate() - i);
+		return {
+			dayName: days[date.getDay()],
+			logged: false,
+		};
+	}).reverse();
+};
+
+function DailyCheckmark({ logged, dayName }) {
+	return (
+		<View style={styles.dayContainer}>
+			<Text style={styles.dayName}>{dayName}</Text>
+			<View style={styles.dailyCheckmarkContainer}>
+				<Text>{logged ? '✅' : '❌'}</Text>
+			</View>
+		</View>
+	);
+}
+
+export function PastWeekLogs({ meals }) {
+	const [lastSevenDays, setLastSevenDays] = useState(getLastSevenDays());
+
+	useEffect(() => {
+		// Implement logic to determine if meals were logged each day
+		const updatedDays = lastSevenDays.map((day) => ({
+			...day,
+			logged: Math.random() < 0.5, // This should be replaced with actual logic
+		}));
+		setLastSevenDays(updatedDays);
+	}, [meals]);
+
+	return (
+		<View style={styles.wholePastLogsContainer}>
+			<Text style={styles.weeklyLogTitle}>Weekly Log:</Text>
+			<View style={styles.weekContainer}>
+				<View style={styles.weeklyLogDaysContainer}>
+					{lastSevenDays.map((day, index) => (
+						<DailyCheckmark key={index} logged={day.logged} dayName={day.dayName} />
+					))}
+				</View>
+			</View>
+		</View>
+	);
+}
 
 export default PastWeekLogs;

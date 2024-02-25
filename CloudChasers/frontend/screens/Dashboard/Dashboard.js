@@ -1,17 +1,61 @@
 // React related imports
 import React, { useState } from 'react';
 import {
-	View, Text, ScrollView, StyleSheet, SafeAreaView,
+	View, StyleSheet, SafeAreaView,
 } from 'react-native';
-
-// Dashboard related imports
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useNavigation } from '@react-navigation/native';
 
 // Component imports
 import {
-	WelcomeBar, NotificationBadge, PastWeekLogs, CurrentStreak, RecentLog, LearnMore, CommunityStatus, CurrentGoalProgress,
+	WelcomeBar, NotificationBadge, PastWeekLogs, CurrentStreak, RecentLog,
+	LearnMore, CommunityStatus, CurrentGoalProgress,
 } from '../../components/Dashboard';
+
+const styles = StyleSheet.create({
+	dashboardHeader: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		alignItems: 'center',
+		width: '100%',
+	},
+	notificationBadgeContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginRight: 20,
+	},
+	dashboardContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		flexWrap: 'wrap',
+		backgroundColor: '#F9D3C8',
+	},
+	middleDashboardContainer: {
+		justifyContent: 'flex-start',
+		alignItems: 'flex-start',
+		flexDirection: 'row',
+		marginVertical: 10,
+		backgroundColor: '#F9D3C8',
+	},
+	leftComponentContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	rightComponentContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	bottomDashboardContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignContent: 'center',
+		width: '100%',
+		backgroundColor: '#F12A2A',
+	},
+});
 
 // Fake database
 const fakeDB = {
@@ -56,54 +100,5 @@ function Dashboard() {
 		</SafeAreaView>
 	);
 }
-
-const styles = StyleSheet.create({
-	dashboardHeader: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		width: '100%',
-	},
-	notificationBadgeContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginRight: 20,
-	},
-	dashboardContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#F0F0F0',
-		flexWrap: 'wrap',
-		backgroundColor: '#F9D3C8',
-	},
-	middleDashboardContainer: {
-		justifyContent: 'flex-start',
-		alignItems: 'flex-start',
-		flexDirection: 'row',
-		backgroundColor: '#F0F0F0',
-		marginVertical: 10,
-		backgroundColor: '#F9D3C8',
-	},
-	leftComponentContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	rightComponentContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	bottomDashboardContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignContent: 'center',
-		width: '100%',
-		backgroundColor: '#F12A2A',
-	},
-});
 
 export default Dashboard;
