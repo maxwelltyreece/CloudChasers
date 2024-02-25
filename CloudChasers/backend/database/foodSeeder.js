@@ -32,6 +32,69 @@ async function connect() {
             dbSize++
         }
 
+        await Food.create({
+        "name" : "Water",
+        "group" : "Beverages",
+        "calories" : 0,
+        "protein" : 0,
+        "carbs" : 0,
+        "fat" : 0,
+        "sugar" : 0,
+        "sodium" : 0,
+        "fibre" : 0,
+        "water" : 100,
+        "privacy" : "public",
+        "addedBy" : null
+        })
+        dbSize++
+
+        await Food.create({
+        "name" : "Protein",
+        "group" : "Macros",
+        "calories" : 400,
+        "protein" : 100,
+        "carbs" : 0,
+        "fat" : 0,
+        "sugar" : 0,
+        "sodium" : 0,
+        "fibre" : 0,
+        "water" : 0,
+        "privacy" : "public",
+        "addedBy" : null
+        })
+        dbSize++
+
+        await Food.create({
+        "name" : "Fat",
+        "group" : "Macros",
+        "calories" : 900,
+        "protein" : 0,
+        "carbs" : 0,
+        "fat" : 100,
+        "sugar" : 0,
+        "sodium" : 0,
+        "fibre" : 0,
+        "water" : 0,
+        "privacy" : "public",
+        "addedBy" : null
+        })
+        dbSize++
+
+        await Food.create({
+        "name" : "Carbs",
+        "group" : "Macros",
+        "calories" : 400,
+        "protein" : 0,
+        "carbs" : 100,
+        "fat" : 0,
+        "sugar" : 0,
+        "sodium" : 0,
+        "fibre" : 0,
+        "water" : 0,
+        "privacy" : "public",
+        "addedBy" : null
+        })
+        dbSize++
 
     }
     catch (err) {
