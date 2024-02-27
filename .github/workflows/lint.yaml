@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
     - name: Navigate to subdirectory
-      run: cd CloudChasers
+      run: cd CloudChasers/CloudChasers
     - name: Install Modules
       run: npm ci
     - name: Run ESLint
