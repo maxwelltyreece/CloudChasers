@@ -60,7 +60,8 @@ async function seed() {
             password: await bcrypt.hash("password123", 10),
             dateOfBirth : new Date(1990, 1, 1),
             lastLogin : new Date(), //Date() returns the current date and time
-            profilePictureLink : null
+            profilePictureLink : null,
+            streak : 0
         });
         await newUser.save();
     }
