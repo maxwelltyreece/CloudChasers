@@ -6,6 +6,27 @@ import Svg, { Path } from 'react-native-svg';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 
+const styles = StyleSheet.create({
+	modal: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+	bubble: {
+		position: 'absolute',
+		width: 200,
+		height: 100,
+		backgroundColor: '#FF815E', // Same color as the fill of the icon
+		borderRadius: 10,
+		padding: 10,
+		bottom: 90, // Adjust this value as needed
+		alignSelf: 'center',
+		alignItems: 'center',
+		justifyContent: 'center',
+		// Removed borderColor and borderWidth
+	},
+});
+
 function CustomIcon({ width = 80, height = 82 }) {
 	const [bubbleVisible, setBubbleVisible] = useState(false);
 	const navigation = useNavigation();
@@ -49,27 +70,6 @@ function CustomIcon({ width = 80, height = 82 }) {
 		</View>
 	);
 }
-
-const styles = StyleSheet.create({
-	modal: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	bubble: {
-		position: 'absolute',
-		width: 200,
-		height: 100,
-		backgroundColor: '#FF815E', // Same color as the fill of the icon
-		borderRadius: 10,
-		padding: 10,
-		bottom: 90, // Adjust this value as needed
-		alignSelf: 'center',
-		alignItems: 'center',
-		justifyContent: 'center',
-		// Removed borderColor and borderWidth
-	},
-});
 
 CustomIcon.propTypes = {
 	width: PropTypes.number,

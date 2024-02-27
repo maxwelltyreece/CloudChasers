@@ -33,5 +33,9 @@ module.exports = {
 		'no-unused-vars': ['warn'],
 		'linebreak-style': 'off',
 		'no-console': 'off',
+		'react/no-unstable-nested-components': 'off',
+		'react/require-default-props': 'off',
+		'react/jsx-props-no-spreading': 'off',
+		'react/no-array-index-key': 'off',
 	},
 };

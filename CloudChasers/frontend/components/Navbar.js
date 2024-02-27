@@ -47,7 +47,8 @@ const screenOptions = {
 };
 
 /**
- * Returns a function that returns null if the name is '+', otherwise undefined meaning it uses the defaultabel (the name of the tab).
+ * Returns a function that returns null if the name is '+', otherwise undefined meaning it uses
+ * the defaultabel (the name of the tab).
  * This is used for the tabBarLabel option in Tab.Screen.
  *
  * @param {string} name - The name of the tab.

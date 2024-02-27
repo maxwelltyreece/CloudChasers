@@ -68,8 +68,8 @@ const fakeDB = {
 
 // Dashboard screen
 function Dashboard() {
-	const [meals, setMeals] = useState(fakeDB.recentMeals);
-	const [streak, setStreak] = useState(fakeDB.currentStreak);
+	const [meals] = useState(fakeDB.recentMeals);
+	const [streak] = useState(fakeDB.currentStreak);
 
 	return (
 		<SafeAreaView style={styles.dashboardContainer}>

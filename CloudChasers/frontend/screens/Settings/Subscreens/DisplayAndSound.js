@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-function DisplayAndSound({ navigation }) {
+function DisplayAndSound() {
 	const [theme, setTheme] = useState(true);
 	const [sound, setSound] = useState(true);
 	const data = [
