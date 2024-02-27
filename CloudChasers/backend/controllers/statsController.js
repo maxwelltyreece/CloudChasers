@@ -2,15 +2,10 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 exports.getStreaks = async (req, res) => {
-    const { token, today } = req.body; // Extracting `today` from the request body
+    const { today } = req.body;
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY);
-        const user = await User.findById(decoded.userId);
-
-        if (!user) {
-            return res.status(404).send({ message: 'User not found' });
-        }
+        const user = req.user;
 
         // Parse the client-specified date
         const clientDate = new Date(today);

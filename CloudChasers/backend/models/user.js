@@ -9,7 +9,6 @@ function validateEmail(email) {
 const userSchema = new mongoose.Schema({
 	forename: { type: String, required: true },
 	surname: { type: String, required: true },
-	height: { type: Number, required: true, max: [300, "{VALUE}cm is not a realistic height"], min: [30, "{VALUE}cm is not a realistic height in cm"]},
 	username : { type: String, required: true, unique: true },
 	email: { type: String, required: true, unique: true, validate :  [validateEmail, "{VALUE} is not a valid email"]},
 	password: { type: String, required: true },

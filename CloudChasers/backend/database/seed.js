@@ -15,6 +15,7 @@ const Community_Award_Items = require('../models/communityAwardItem');
 const Community_Awards = require('../models/communityAward');
 const Communties = require('../models/community');
 const Community_Users = require('../models/communityUser');
+const Recipe_Quantities = require('../models/recipeQuantity');
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -41,12 +42,14 @@ async function seed() {
     await Recipe_Items.collection.drop();
     await Recipes.collection.drop();
     await Goals.collection.drop();
+    await Goal_Items.collection.drop();
     await Personal_Award_Items.collection.drop();
     await Personal_Awards.collection.drop();
     await Community_Award_Items.collection.drop();
     await Community_Awards.collection.drop();
     await Communties.collection.drop();
     await Community_Users.collection.drop();
+    await Recipe_Quantities.collection.drop();
     
 
     // User Seeding
@@ -54,7 +57,6 @@ async function seed() {
         var newUser = new User({
             forename: "User" + i,
             surname : "Test",
-            height  : 180,
             username : "User" + i + "SEED",
             email : "User" + i+ "@test.com",
             password: await bcrypt.hash("password123", 10),
@@ -163,6 +165,9 @@ async function seed() {
     }
     console.log("Community_Awards Seeded");
 
+    var user1 = await User.findOne({username: "User0SEED"})
+    user1 = await user1._id;
+
     //Community_Award_Items Seeding
     for (let i = 0; i < 10; i++) {
         var newCommunityAwardItem = new Community_Award_Items({
@@ -186,8 +191,66 @@ async function seed() {
     }
     console.log("Community_Users Seeded");
 
-    await mongoose.disconnect();
+    var sampleFood = await Foods.findOne({name: "Butter, salted"});
+    var sampleFoodID = await sampleFood._id;
+    //Food_Items Seeding
+    for (let i = 0; i < 10; i++) {
+        var newFoodItem = new Food_Items({
+            foodID: sampleFoodID,
+            weight: 200,
+        });
+        await newFoodItem.save();
+    }
+    console.log("Food_Items Seeded");
 
+    //Recipes Seeding
+    for (let i = 0; i < 10; i++) {
+        var newRecipe = new Recipes({
+            name: "Recipe" + i,
+            description: "Recipe " + i,
+            createdBy: await newUser._id,
+            communityThatOwnsRecipe : await newCommunity._id,
+        });
+        await newRecipe.save();
+    }
+    console.log("Recipes Seeded");
+
+    //Recipe_Items Seeding
+    for (let i = 0; i < 10; i++) {
+        var newRecipeItem = new Recipe_Items({
+            recipeID: await newRecipe._id,
+            foodItemID: await newFoodItem._id,
+        });
+        await newRecipeItem.save();
+    }
+    console.log("Recipe_Items Seeded");
+
+    //Recipe_Quantities Seeding
+    for (let i = 0; i < 10; i++) {
+        var newRecipeQuantity = new Recipe_Quantities({
+            mealItemID: await newUserDayMeal._id,
+            recipeID: await newRecipe._id,
+            totalRecipeWeight: 300,
+        });
+        await newRecipeQuantity.save();
+    }
+    console.log("Recipe_Quantities Seeded");
+
+    //Meal_Items Seeding
+    for (let i = 0; i < 10; i++) {
+        var newMealItem = new Meal_Items({
+            name: "Meal" + i,
+            userDayMealID: await newUserDayMeal._id,
+            foodItemID: await newFoodItem._id,
+            recipeQuantityID: null,
+        });
+        await newMealItem.save();
+    }
+    console.log("Meal_Items Seeded\n");
+
+    console.log("All collections seeded");
+
+    await mongoose.disconnect();
 
 }
 
