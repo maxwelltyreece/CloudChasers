@@ -13,8 +13,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
-      with:
-        node-version: 20
+    - name: Navigate to subdirectory
+      run: cd CloudChasers
     - name: Install Modules
       run: npm ci
     - name: Run ESLint
