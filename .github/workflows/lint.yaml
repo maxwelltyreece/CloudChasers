@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_RUNNER_DEBUG: true
 
     steps:
     - uses: actions/checkout@v2
@@ -18,5 +20,5 @@ jobs:
     - name: Install Modules
       run: npm ci
     - name: Run ESLint
-      run: $(npm bin)eslint .
+      run: eslint .
 
