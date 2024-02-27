@@ -1,42 +1,96 @@
-const request = require('supertest');
-const jwt = require('jsonwebtoken');
+const { getStreaks } = require('../controllers/statsController');
 const User = require('../models/user');
-const app = require('../server'); 
+const jwt = require('jsonwebtoken');
 
 jest.mock('jsonwebtoken');
 jest.mock('../models/user');
 
-describe('GET /streaks', () => {
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
+const mockReq = (body = {}) => ({ body });
 
-  it('should return 404 if user not found', async () => {
-    jwt.verify.mockReturnValueOnce({ userId: 'someUserId' });
-    User.findById.mockResolvedValueOnce(null);
+const mockRes = () => {
+	const res = {};
+	res.status = jest.fn().mockReturnValue(res);
+	res.send = jest.fn().mockReturnValue(res);
+	return res;
+};
 
-    const res = await request(app).post('/streaks').send({ token: 'someToken' });
+describe('Streaks', () => {
+	it('should return 404 if user is not found', async () => {
+		const req = mockReq({ token: 'testToken', today: new Date().toISOString() });
+		const res = mockRes();
 
-    expect(res.statusCode).toBe(404);
-    expect(res.body).toEqual({ message: 'User not found' });
-  });
+		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
+		User.findById.mockResolvedValue(null);
 
-  it('should return 200 and update streak if user found', async () => {
-    const mockUser = {
-      _id: 'someUserId',
-      lastLogin: new Date('2022-01-01T00:00:00Z'),
-      streak: 1,
-      save: jest.fn().mockResolvedValueOnce(),
-    };
-    jwt.verify.mockReturnValueOnce({ userId: 'someUserId' });
-    User.findById.mockResolvedValueOnce(mockUser);
+		await getStreaks(req, res);
 
-    jest.setSystemTime(new Date('2022-01-02T00:00:00Z'));
+		expect(res.status).toHaveBeenCalledWith(404);
+		expect(res.send).toHaveBeenCalledWith({ message: 'User not found' });
+	});
+	
+	it('should return streak of one for fresh user', async () => {
+		const req = mockReq({ token: 'testToken', today: new Date().toISOString() });
+		const res = mockRes();
+		const user = {
+			_id: 'testUserId',
+			lastLogin: new Date(),
+			streak: 0,
+			save: jest.fn().mockResolvedValue(true),
+		};
 
-    const res = await request(app).post('/streaks').send({ token: 'someToken' });
+		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
+		User.findById.mockResolvedValue(user);
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toEqual({ streak: 2, message: 'Streak updated' });
-    expect(mockUser.save).toHaveBeenCalled();
-  });
+		await getStreaks(req, res);
+
+		expect(user.streak).toBe(1);
+		expect(res.status).toHaveBeenCalledWith(200);
+		expect(res.send).toHaveBeenCalledWith({ streak: 1, message: 'Streak updated' });
+	});
+
+	it('should return streak of two for user who logged in yesterday', async () => {
+		const req = mockReq({ token: 'testToken', today: new Date().toISOString() });
+		const res = mockRes();
+		const user = {
+			_id: 'testUserId',
+			lastLogin: new Date(new Date().setDate(new Date().getDate() - 1)),
+			streak: 1,
+			save: jest.fn().mockResolvedValue(true),
+		};
+
+		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
+		User.findById.mockResolvedValue(user);
+
+		await getStreaks(req, res);
+
+		expect(user.streak).toBe(2);
+		expect(res.status).toHaveBeenCalledWith(200);
+		expect(res.send).toHaveBeenCalledWith({ streak: 2, message: 'Streak updated' });
+	});
+
+	it('should reset streak for user who logged in two days ago', async () => {
+		const yesterday = new Date();
+		yesterday.setDate(yesterday.getDate() - 2);
+		const req = mockReq({ token: 'testToken', today: new Date().toISOString() });
+		const res = mockRes();
+		const user = {
+			_id: 'testUserId',
+			lastLogin: yesterday,
+			streak: 5,
+			save: jest.fn().mockResolvedValue(true),
+		};
+
+		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
+		User.findById.mockResolvedValue(user);
+
+		await getStreaks(req, res);
+
+		expect(user.streak).toBe(1);
+		expect(res.status).toHaveBeenCalledWith(200);
+		expect(res.send).toHaveBeenCalledWith({ streak: 1, message: 'Streak updated' });
+	});
+
+	// TODO: Add tests for timezone adjustments
+	
 });
+

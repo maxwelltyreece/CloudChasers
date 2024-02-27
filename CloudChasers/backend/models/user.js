@@ -14,7 +14,8 @@ const userSchema = new mongoose.Schema({
 	password: { type: String, required: true },
 	dateOfBirth: { type: Date, required: true },
 	lastLogin: { type: Date, required: false },
-	profilePictureLink : { type: String, required: false},
+	profilePictureLink : { type: String, required: false, default: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png"},
+	streak : { type: Number, required: false, default: 0},
 });
 
 module.exports = mongoose.model('user', userSchema);
