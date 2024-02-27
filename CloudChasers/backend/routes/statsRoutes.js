@@ -4,6 +4,6 @@ const router = express.Router();
 const userMiddleware = require('../middleware/userMiddleware');
 const statsController = require('../controllers/statsController');
 
-router.post('/streaks', userMiddleware, statsController.getStreaks);
+router.post('/streak', userMiddleware, statsController.getStreaks);
 
 module.exports = router;

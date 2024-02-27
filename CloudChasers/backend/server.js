@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 const foodRoutes = require('./routes/foodRoutes');
 const communityRoutes = require('./routes/communityRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -51,6 +52,7 @@ app.use(conditionalAuth);
 app.use('/food', foodRoutes);
 app.use('/', userRoutes);
 app.use('/community', communityRoutes);
+app.use('/stats', statsRoutes);
 
 const { login } = require('./controllers/userController');
 const os = require('os');

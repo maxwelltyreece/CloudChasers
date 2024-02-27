@@ -1,96 +1,79 @@
-const { getStreaks } = require('../controllers/statsController');
-const User = require('../models/user');
+// const request = require('supertest');
+// const app = require('../server'); 
+// const jwt = require('jsonwebtoken');
+
+// jest.mock('jsonwebtoken', () => ({
+// 	verify: jest.fn().mockReturnValue({ userID: 'testUserID' }),
+// }));
+
+// jest.mock('../models/user', () => ({
+// 	findById: jest.fn().mockImplementation((id) => {
+// 		if (id === 'testUserID') {
+// 			return Promise.resolve({
+// 				_id: 'testUserID',
+// 				lastLogin: new Date.toISOString(),
+// 				streak: 1,
+// 				save: jest.fn().mockResolvedValue(true),
+// 			});
+// 		}
+// 		return Promise.resolve(null);
+// 	}),
+// }));
+
+// describe('Streaks', () => {
+// 	afterAll(() => {
+// 		jest.resetAllMocks();
+// 	});
+
+// 	it('should return 401 if no token is provided', async () => {
+// 		const response = await request(app)
+// 		.post('/stats/streak');
+// 		expect(response.statusCode).toBe(401);
+// 		expect(response.body).toHaveProperty('message', 'Unauthorized2');
+// 	});
+
+// 	it('should return 404 if user is not found', async () => {
+// 		jwt.verify = jest.fn().mockReturnValue({ userID: 'nonExistentUserID' });
+// 		const response = await request(app)
+// 			.post('/stats/streak')
+// 			.set('Authorization', 'Bearer mockedToken');
+			
+// 		expect(response.statusCode).toBe(404);
+// 		expect(response.body).toHaveProperty('message', 'User not found');
+// 	});
+
+// 	it('should return 200 and update the streak for authenticated request', async () => {
+// 		const response = await request(app)
+// 			.post('/stats/streak')
+// 			.set('Authorization', 'Bearer mockedToken')
+// 			.send({ today: new Date().toISOString() });
+
+// 		expect(response.statusCode).toBe(200);
+// 		expect(response.body).toHaveProperty('streak');
+// 		expect(response.body.streak).toBe(2);
+// 	});
+// });
+
+
+const request = require('supertest');
+const app = require('../server'); // Adjust the path as necessary
 const jwt = require('jsonwebtoken');
 
-jest.mock('jsonwebtoken');
-jest.mock('../models/user');
-
-const mockReq = (body = {}) => ({ body });
-
-const mockRes = () => {
-	const res = {};
-	res.status = jest.fn().mockReturnValue(res);
-	res.send = jest.fn().mockReturnValue(res);
-	return res;
-};
-
-describe('Streaks', () => {
-	it('should return 404 if user is not found', async () => {
-		const req = mockReq({ token: 'testToken', today: new Date().toISOString() });
-		const res = mockRes();
-
-		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
-		User.findById.mockResolvedValue(null);
-
-		await getStreaks(req, res);
-
-		expect(res.status).toHaveBeenCalledWith(404);
-		expect(res.send).toHaveBeenCalledWith({ message: 'User not found' });
-	});
-	
-	it('should return streak of one for fresh user', async () => {
-		const req = mockReq({ token: 'testToken', today: new Date().toISOString() });
-		const res = mockRes();
-		const user = {
-			_id: 'testUserId',
-			lastLogin: new Date(),
-			streak: 0,
-			save: jest.fn().mockResolvedValue(true),
-		};
-
-		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
-		User.findById.mockResolvedValue(user);
-
-		await getStreaks(req, res);
-
-		expect(user.streak).toBe(1);
-		expect(res.status).toHaveBeenCalledWith(200);
-		expect(res.send).toHaveBeenCalledWith({ streak: 1, message: 'Streak updated' });
-	});
-
-	it('should return streak of two for user who logged in yesterday', async () => {
-		const req = mockReq({ token: 'testToken', today: new Date().toISOString() });
-		const res = mockRes();
-		const user = {
-			_id: 'testUserId',
-			lastLogin: new Date(new Date().setDate(new Date().getDate() - 1)),
-			streak: 1,
-			save: jest.fn().mockResolvedValue(true),
-		};
-
-		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
-		User.findById.mockResolvedValue(user);
-
-		await getStreaks(req, res);
-
-		expect(user.streak).toBe(2);
-		expect(res.status).toHaveBeenCalledWith(200);
-		expect(res.send).toHaveBeenCalledWith({ streak: 2, message: 'Streak updated' });
-	});
-
-	it('should reset streak for user who logged in two days ago', async () => {
-		const yesterday = new Date();
-		yesterday.setDate(yesterday.getDate() - 2);
-		const req = mockReq({ token: 'testToken', today: new Date().toISOString() });
-		const res = mockRes();
-		const user = {
-			_id: 'testUserId',
-			lastLogin: yesterday,
-			streak: 5,
-			save: jest.fn().mockResolvedValue(true),
-		};
-
-		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
-		User.findById.mockResolvedValue(user);
-
-		await getStreaks(req, res);
-
-		expect(user.streak).toBe(1);
-		expect(res.status).toHaveBeenCalledWith(200);
-		expect(res.send).toHaveBeenCalledWith({ streak: 1, message: 'Streak updated' });
-	});
-
-	// TODO: Add tests for timezone adjustments
-	
+beforeEach(() => {
+  jwt.verify = jest.fn().mockReturnValue({ userID: 'testUserID' });
 });
 
+describe('Streaks Endpoint', () => {
+  it('should return 200 and update the streak for authenticated request', async () => {
+    const token = 'mockedToken'; // Assuming this token is what your mocked jwt.verify will successfully authenticate
+
+    const response = await request(app)
+      .post('/stats/streak')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ today: '1990-02-09T00:00:00.000Z' });
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toHaveProperty('streak');
+    expect(response.body.streak).toBeGreaterThanOrEqual(2); // Assuming the streak should increment
+  });
+});

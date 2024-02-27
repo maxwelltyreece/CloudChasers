@@ -9,19 +9,21 @@ exports.getStreaks = async (req, res) => {
 
         // Parse the client-specified date
         const clientDate = new Date(today);
-        clientDate.setHours(0, 0, 0, 0); // Optional: Adjust time part if necessary
+        clientDate.setHours(0, 0, 0, 0);
 
         const lastLogin = new Date(user.lastLogin);
         lastLogin.setHours(0, 0, 0, 0);
 
-        const oneDay = 24 * 60 * 60 * 1000;
-        const diffDays = Math.round(Math.abs((clientDate - lastLogin) / oneDay));
+        const nextDay = new Date(lastLogin);
+        nextDay.setDate(nextDay.getDate() + 1);
 
-        if (diffDays <= 1) {
+        if (clientDate.getTime() === nextDay.getTime()) {
             user.streak += 1;
-        } else if (diffDays > 1) {
-            user.streak = 1; // Reset streak if the gap is more than one day
+        } else if (clientDate > nextDay) {
+            user.streak = 1; 
         }
+
+        user.lastLogin = today;
 
         await user.save();
 
