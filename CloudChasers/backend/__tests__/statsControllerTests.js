@@ -1,4 +1,4 @@
-const { getStats } = require('../controllers/statsController');
+const { getStreaks } = require('../controllers/statsController');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 
@@ -22,7 +22,7 @@ describe('Streaks', () => {
 		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
 		User.findById.mockResolvedValue(null);
 
-		await getStats(req, res);
+		await getStreaks(req, res);
 
 		expect(res.status).toHaveBeenCalledWith(404);
 		expect(res.send).toHaveBeenCalledWith({ message: 'User not found' });
@@ -41,7 +41,7 @@ describe('Streaks', () => {
 		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
 		User.findById.mockResolvedValue(user);
 
-		await getStats(req, res);
+		await getStreaks(req, res);
 
 		expect(user.streak).toBe(1);
 		expect(res.status).toHaveBeenCalledWith(200);
@@ -61,7 +61,7 @@ describe('Streaks', () => {
 		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
 		User.findById.mockResolvedValue(user);
 
-		await getStats(req, res);
+		await getStreaks(req, res);
 
 		expect(user.streak).toBe(2);
 		expect(res.status).toHaveBeenCalledWith(200);
@@ -83,7 +83,7 @@ describe('Streaks', () => {
 		jwt.verify.mockImplementation(() => ({ userId: 'testUserId' }));
 		User.findById.mockResolvedValue(user);
 
-		await getStats(req, res);
+		await getStreaks(req, res);
 
 		expect(user.streak).toBe(1);
 		expect(res.status).toHaveBeenCalledWith(200);

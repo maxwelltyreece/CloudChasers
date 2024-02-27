@@ -1,9 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-
 exports.getStreaks = async (req, res) => {
     const { token, today } = req.body; // Extracting `today` from the request body
 
@@ -25,7 +22,7 @@ exports.getStreaks = async (req, res) => {
         const oneDay = 24 * 60 * 60 * 1000;
         const diffDays = Math.round(Math.abs((clientDate - lastLogin) / oneDay));
 
-        if (diffDays === 1) {
+        if (diffDays <= 1) {
             user.streak += 1;
         } else if (diffDays > 1) {
             user.streak = 1; // Reset streak if the gap is more than one day
