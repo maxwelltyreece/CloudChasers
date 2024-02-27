@@ -19,12 +19,12 @@ jobs:
     - name: Navigate to subdirectory
       run: cd CloudChasers
 
-    - name: Install Modules
-      run: npm ci
-
     - name: List directory contents
       run: ls
-        
+
+    - name: Install Modules
+      run: npm ci 
+
     - name: Run ESLint
       run: eslint .
 
