@@ -61,7 +61,7 @@ const Account = ({ navigation }) => {
                     renderItem={({ item }) => (
                         <View style={styles.row}>
                             <Text style={styles.label}>{`${item.field.charAt(0).toUpperCase() + item.field.slice(1)}: ${item.value}`}</Text>
-                            <Pressable onPress={() => navigation.navigate('EditPage', { field: item.field })}>
+                            <Pressable onPress={() => navigation.navigate('EditPage', { field: item.field, oldValue: item.value })}>
                                 <Text>Edit</Text>
                             </Pressable>
                         </View>

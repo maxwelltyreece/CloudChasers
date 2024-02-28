@@ -131,7 +131,8 @@ exports.getUserDetail =  async (req, res) => {
  */
 exports.updateProfile = async (req, res) => {
 	//TODO: Add guard for updating fields that are not allowed to be updated
-	const { token, ...updates } = req.body;
+    const token = req.headers.authorization.split(' ')[1];
+	const { ...updates } = req.body;
 	console.log('Updates', updates);
 	try {
 		const decoded = jwt.verify(token, process.env.SECRET_KEY);
@@ -146,6 +147,7 @@ exports.updateProfile = async (req, res) => {
 		Object.keys(updates).forEach((update) => {
 			user[update] = updates[update];
 		});
+        console.log('User updated', user);
 		await user.save();
 
 		return res.status(200).send({ message: 'Profile updated' });

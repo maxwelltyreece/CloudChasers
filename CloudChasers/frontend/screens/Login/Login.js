@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../IPIndex';
+import { UserContext } from '../../context/UserContext';
 
 const Login = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    const { updateDetails } = useContext(UserContext);
 
     const handleLogin = () => {
         axios.post(`http://${LocalIP}:3000/login`, {
@@ -18,6 +21,7 @@ const Login = ({ navigation }) => {
             if(response.data.data) {
                 AsyncStorage.setItem('token', response.data.data);
                 // Navigate to Dashboard
+                updateDetails();
                 navigation.navigate('Main');
             } else {
                 // Handle login failure
