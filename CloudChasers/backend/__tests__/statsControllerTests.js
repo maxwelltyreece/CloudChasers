@@ -152,4 +152,24 @@ describe('Streaks Endpoint', () => {
 		expect(response.body).toHaveProperty('streak');
 		expect(response.body.streak).toBe(3);
 	});
+
+	it('should reset streak if the date is not consecutive', async () => {
+		const response = await request(app)
+			.post('/stats/streak')
+			.set('Authorization', `Bearer ${token}`)
+			.send({ today: new Date(Date.now() + 86400000 * 2).toISOString() });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toHaveProperty('streak');
+		expect(response.body.streak).toBe(1);
+	});
+
+	it('should return 400 if no date is provided', async () => {
+		const response = await request(app)
+			.post('/stats/streak')
+			.set('Authorization', `Bearer ${token}`);
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body).toHaveProperty('message', 'Date not provided');
+	});
 });

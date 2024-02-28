@@ -5,6 +5,9 @@ exports.getStreaks = async (req, res) => {
 	const { today } = req.body;
 
 	try {
+		if (!today) {
+			return res.status(400).send({ message: 'Date not provided' });
+		}
 		const user = req.user;
 
 		// Parse the client-specified date
