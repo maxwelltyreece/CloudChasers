@@ -3,11 +3,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import globalStyles from '../../../styles/global';
 
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 50,
-        flex: 1,
-        alignItems: 'center',
-    },
+	container: {
+		marginTop: 50,
+		flex: 1,
+		alignItems: 'center',
+	},
 });
 
 /**
@@ -16,10 +16,12 @@ const styles = StyleSheet.create({
  *
  * @returns {React.Element} The rendered MyMeals screen.
  */
-const MyMeals = () => (
-    <View style={styles.container}>
-        <Text style={globalStyles.medium}>Placeholder for MyMeals</Text>
-    </View>
-);
+function MyMeals() {
+	return (
+		<View style={styles.container}>
+			<Text style={globalStyles.medium}>Placeholder for MyMeals</Text>
+		</View>
+	);
+}
 
 export default MyMeals;
