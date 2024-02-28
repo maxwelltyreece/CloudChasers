@@ -18,7 +18,7 @@ export default function SettingsButton() {
             style={styles.button}
             onPress={() => navigation.navigate('Settings')}
         >
-            <FontAwesome5 name="cog" size={24} color={globalStyles.secondaryColor.color} solid />
+            <FontAwesome5 name="cog" size={24} color="#FFFFFF" solid />
         </TouchableOpacity>
     );
 }

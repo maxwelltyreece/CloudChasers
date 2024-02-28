@@ -14,7 +14,8 @@ import navbarStyles from '../styles/NavbarStyles';
 import TabBarIcon from './TabBarIcon';
 
 // Screen imports
-import { Dashboard, Stats, UserProfile, Groups, DataEntry } from '../screens';
+import { Dashboard, Stats, Groups, DataEntry, } from '../screens';
+import UserNavigator from '../navigation/UserNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -27,7 +28,7 @@ const screens = [
     { name: 'Groups', component: Groups, icon: 'users' },
     { name: '+', component: DataEntry, icon: '+' },
     { name: 'Stats', component: Stats, icon: 'chart-pie' },
-    { name: 'You', component: UserProfile, icon: 'user' },
+    { name: 'You', component: UserNavigator, icon: 'user' },
 ];
 
 const screenOptions = { 

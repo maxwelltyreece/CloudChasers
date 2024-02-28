@@ -1,17 +1,20 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+
+function validateEmail(email) {
+	// checks that an email has some text, then an @, then some text, then a dot, then some text [regex from https://stackoverflow.com/questions/35788383/regex-validation-in-javascript-email]
+	var emailRegex = /\S+@\S+\.\S+/;
+	return emailRegex.test(email);
+}
 
 const userSchema = new mongoose.Schema({
-	username: { type: String, required: true, unique: true },
-	email: { type: String, required: true, unique: true },
+	forename: { type: String, required: true },
+	surname: { type: String, required: true },
+	username : { type: String, required: true, unique: true },
+	email: { type: String, required: true, unique: true, validate :  [validateEmail, "{VALUE} is not a valid email"]},
 	password: { type: String, required: true },
+	dateOfBirth: { type: Date, required: true },
+	lastLogin: { type: Date, required: false },
+	profilePictureLink : { type: String, required: false},
 });
 
-// // Hash password before saving
-// userSchema.pre('save', async function hashPassword(next) {
-// 	if (!this.isModified('password')) return next();
-// 	this.password = await bcrypt.hash(this.password, 10);
-// 	return next();
-// });
-
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('user', userSchema);
