@@ -1,11 +1,11 @@
 // MainNavigator.js
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Navbar from '../components/Navbar'; // Update this path if necessary
+import Navbar from '../components/Navbar';
 import SettingsNavigator from './SettingsNavigator';
-import GroupPage from '../screens/Groups/GroupPage'; // Update this path if necessary
+import GroupPage from '../screens/Groups/GroupPage';
 import { View } from 'react-native';
-import { Feather } from '@expo/vector-icons'; // Import Feather from expo vector icons
+import { Feather } from '@expo/vector-icons'; 
 
 const Stack = createStackNavigator();
 
@@ -41,7 +41,7 @@ export default function MainNavigator() {
             />
             <Stack.Screen 
                 name="GroupPage" 
-                component={GroupPage} 
+                component={GroupPage}  
                 options={{ ...commonOptions }} // Apply commonOptions to GroupPage
             />
         </Stack.Navigator>
