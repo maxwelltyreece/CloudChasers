@@ -62,7 +62,8 @@ async function seed() {
             password: await bcrypt.hash("password123", 10),
             dateOfBirth : new Date(1990, 1, 1),
             lastLogin : new Date(), //Date() returns the current date and time
-            profilePictureLink : null
+            profilePictureLink : null,
+            streak : 0
         });
         await newUser.save();
     }
@@ -241,7 +242,7 @@ async function seed() {
             name: "Meal" + i,
             userDayMealID: await newUserDayMeal._id,
             foodItemID: await newFoodItem._id,
-            recipeQuantityID: await newRecipeQuantity._id,
+            recipeQuantityID: null,
         });
         await newMealItem.save();
     }

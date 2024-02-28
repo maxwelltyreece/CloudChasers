@@ -1,35 +1,35 @@
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 exports.getStreaks = async (req, res) => {
-	const token = req.headers.authorization.split(' ')[1];
+    const { today } = req.body;
 
-	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY);
-		const user = await User.findById(decoded.userId);
+    try {
+        const user = req.user;
 
-        if (!user) {
-            return res.status(404).send({ message: 'User not found' });
-        }
+        // Parse the client-specified date
+        const clientDate = new Date(today);
+        clientDate.setHours(0, 0, 0, 0);
 
-        const today = new Date();
-        const lastLogin = user.lastLogin;
-        const oneDay = 24 * 60 * 60 * 1000;
-        const diffDays = Math.round(Math.abs((today - lastLogin) / oneDay));
-        
-        if (diffDays === 1) {
+        const lastLogin = new Date(user.lastLogin);
+        lastLogin.setHours(0, 0, 0, 0);
+
+        const nextDay = new Date(lastLogin);
+        nextDay.setDate(nextDay.getDate() + 1);
+
+        if (clientDate.getTime() === nextDay.getTime()) {
             user.streak += 1;
-        } else {
-            user.streak = 1;
+        } else if (clientDate > nextDay) {
+            user.streak = 1; 
         }
 
-        user.streak += 1;
+        user.lastLogin = today;
+
         await user.save();
 
         return res.status(200).send({ streak: user.streak, message: 'Streak updated' });
-        
+
     } catch (error) {
         return res.status(500).send({ error: error.toString() });
     }
-}
+};
