@@ -22,5 +22,5 @@ jobs:
 
     - name: Run ESLint
       working-directory: ./CloudChasers
-      run: eslint .
+      run: npm run lint
 
