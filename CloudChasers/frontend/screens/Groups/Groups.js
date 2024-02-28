@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import Box from '../../components/box';
+import { useNavigation } from '@react-navigation/native';
 
 const data = [
     { title: 'Community 1' },
@@ -45,12 +46,12 @@ const styles = StyleSheet.create({
 
 const Groups = () => {
     const [searchText, setSearchText] = useState('');
+    const navigation = useNavigation();
 
     const filteredData = data.filter(item => item.title.toLowerCase().includes(searchText.toLowerCase()));
 
     const handlePress = (item) => {
-        console.log(`Pressed: ${item.title}`);
-        // Add your own logic here
+        navigation.navigate('GroupPage', { community: item }); // Navigate to the GroupPage and pass the community data
     };
 
     return (
