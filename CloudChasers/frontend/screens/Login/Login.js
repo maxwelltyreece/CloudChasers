@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Text, Pressable } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../IPIndex';
+import global from '../../styles/global';
 
 const Login = ({ navigation }) => {
     const [username, setUsername] = useState('');
@@ -31,8 +32,11 @@ const Login = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.orangeBlock} />
-            <View style={styles.whiteBlock}>
+            <View style={styles.loginContainer}>
+                <Text style={styles.header}>Welcome Back!</Text>
+                <Pressable onPress={() => navigation.navigate('Register')}>
+                    <Text style={styles.body}>or <Text style={styles.link}>Sign Up Now</Text></Text>
+                </Pressable>
                 <TextInput 
                     style={styles.input} 
                     placeholder="Username" 
@@ -46,7 +50,11 @@ const Login = ({ navigation }) => {
                     onChangeText={setPassword} 
                     secureTextEntry 
                 />
-                <Button title="Login" onPress={handleLogin} />
+                <View style={styles.buttonContainer}>
+                    <Pressable style={styles.button} onPress={handleLogin}>
+                        <Text style={styles.buttonText}>Log In</Text>
+                    </Pressable>
+                </View>   
             </View>
         </View>
     );
@@ -55,30 +63,68 @@ const Login = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
-    },
-    orangeBlock: {
-        position: 'absolute',
-        backgroundColor: '#FF815E', // Updated color
-        width: '120%',
-        height: '120%',
-        top: '-40%',
-        left: '-10%',
-        transform: [{ rotate: '-60deg' }],
-    },
-    whiteBlock: {
-        flex: 1,
-        backgroundColor: 'transparent',
+        backgroundColor: '#FF815E',
         justifyContent: 'center',
-        padding: 16,
+        alignItems: 'center',
+    },
+    loginContainer: {
+        width: '90%',
+        height: '60%',
+        backgroundColor: 'white',
+        paddingHorizontal: 24,
+        paddingTop: 48,
         zIndex: 1,
+        borderRadius: 50,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 3,
+        elevation: 5,
     },
     input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
+        height: 50,
+        backgroundColor: '#F7F7F7',
         marginBottom: 16,
         padding: 8,
+        fontFamily: 'Montserrat_600SemiBold',
+        borderRadius: 20,
+        color: '#6B6868',
+    },
+    header: {
+        fontSize: 24,
+        marginBottom: 4,
+        color: '#6B6868',
+        fontFamily: 'Montserrat_700Bold',
+    },
+    body: {
+        fontSize: 16,
+        color: '#6B6868',
+        fontFamily: 'Montserrat_600SemiBold',
+        marginBottom: 36,
+    },
+    link: {
+        color: '#FF815E',
+        fontFamily: 'Montserrat_600SemiBold',
+    },
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#FF815E',
+        padding: 15,
+        borderRadius: 30,
+        width: '70%',
+    },
+    buttonText: {
+        color: 'white',
+        fontFamily: 'Montserrat_600SemiBold',
+    },
+    buttonContainer: {
+        marginTop: 24,
+        alignItems: 'center',
+        width: '100%',
     },
 });
 
