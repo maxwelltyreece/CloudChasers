@@ -7,6 +7,7 @@ import GroupNavigator from './GroupNavigator';
 import { View } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
 
+
 const Stack = createStackNavigator();
 
 const commonOptions = {
@@ -47,3 +48,4 @@ export default function MainNavigator() {
         </Stack.Navigator>
     );
 }
+
