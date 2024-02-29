@@ -104,16 +104,10 @@ exports.getUsers = async (req, res) => {
  * @returns {Object} res - The response object.
  * @returns {Object} res.data - The user object.
  */
-exports.getUserDetail = async (req, res) => {
-	const { token } = req.body;
+exports.getUserDetail =  async (req, res) => {
 	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY);
-		const user = await User.findById(decoded.userId);
+		return res.status(200).json({data: req.user});
 
-		if (!user) {
-			return res.status(404).send({ message: 'User not found' });
-		}
-		return res.status(200).json({ data: user });
 	} catch (error) {
 		return res.status(500).json({ error: error.toString() });
 	}
@@ -128,17 +122,12 @@ exports.getUserDetail = async (req, res) => {
  * @returns {string} res.message - A message indicating the result of the operation.
  */
 exports.updateProfile = async (req, res) => {
-	// TODO: Add guard for updating fields that are not allowed to be updated
-	const { token, ...updates } = req.body;
+	//TODO: Add guard for updating fields that are not allowed to be updated
+	const { ...updates } = req.body;
+	const user = req.user;
+	console.log('User', user);
 	console.log('Updates', updates);
 	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY);
-		const user = await User.findById(decoded.userId);
-
-		console.log('User', user);
-		if (!user) {
-			return res.status(404).send({ message: 'User not found' });
-		}
 		console.log('Updating user');
 		// Loop over the updates object and update the user
 		Object.keys(updates).forEach((update) => {
@@ -189,15 +178,8 @@ exports.updateProfile = async (req, res) => {
  * @returns {Array} res.data - An array of user day objects.
  */
 exports.getUserDays = async (req, res) => {
-	const { token } = req.body;
 	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY);
-		const user = await User.findById(decoded.userId);
-
-		if (!user) {
-			return res.status(404).send({ message: 'User not found' });
-		}
-
+		const user = req.user;
 		const userDays = await UserDay.find({ userID: user._id });
 
 		return res.status(200).json(userDays);

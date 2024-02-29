@@ -17,50 +17,55 @@ const Community_Award_Items = require('../models/communityAwardItem');
 const Community_Awards = require('../models/communityAward');
 const Communties = require('../models/community');
 const Community_Users = require('../models/communityUser');
+const Recipe_Quantities = require('../models/recipeQuantity');
 
 const userDayMeal = require('../models/userDayMeal');
 
 const url = 'mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/seeded?retryWrites=true&w=majority';
 
 async function seed() {
-	await mongoose.connect(url)
-		.then(() => { console.log('Connected to the database '); })
-		.catch((err) => {
-			console.error(`Error connecting to the database. n${err}`);
-		});
 
-	// Unseeding drops all the collections in the database except the food database
-	await User.collection.drop();
-	await User_Days.collection.drop();
-	await User_Day_Meals.collection.drop();
-	await Meal_Items.collection.drop();
-	await Food_Items.collection.drop();
-	await Recipe_Items.collection.drop();
-	await Recipes.collection.drop();
-	await Goals.collection.drop();
-	await Goal_Items.collection.drop();
-	await Personal_Award_Items.collection.drop();
-	await Personal_Awards.collection.drop();
-	await Community_Award_Items.collection.drop();
-	await Community_Awards.collection.drop();
-	await Communties.collection.drop();
-	await Community_Users.collection.drop();
 
-	// User Seeding
-	for (let i = 0; i < 10; i++) {
-		var newUser = new User({
-			forename: `User${i}`,
-			surname: 'Test',
-			username: `User${i}SEED`,
-			email: `User${i}@test.com`,
-			password: await bcrypt.hash('password123', 10),
-			dateOfBirth: new Date(1990, 1, 1),
-			lastLogin: new Date(), // Date() returns the current date and time
-			profilePictureLink: null,
-		});
-		await newUser.save();
-	}
-	console.log('Users Seeded');
+    await mongoose.connect(url)
+        .then( () => {console.log('Connected to the database ')})
+        .catch( (err) => {console.error(`Error connecting to the database. n${err}`);
+    })
+    
+    //Unseeding drops all the collections in the database except the food database
+    await User.collection.drop();
+    await User_Days.collection.drop();
+    await User_Day_Meals.collection.drop();
+    await Meal_Items.collection.drop();
+    await Food_Items.collection.drop();
+    await Recipe_Items.collection.drop();
+    await Recipes.collection.drop();
+    await Goals.collection.drop();
+    await Goal_Items.collection.drop();
+    await Personal_Award_Items.collection.drop();
+    await Personal_Awards.collection.drop();
+    await Community_Award_Items.collection.drop();
+    await Community_Awards.collection.drop();
+    await Communties.collection.drop();
+    await Community_Users.collection.drop();
+    await Recipe_Quantities.collection.drop();
+    
+
+    // User Seeding
+    for (let i = 0; i < 10; i++) {
+        var newUser = new User({
+            forename: "User" + i,
+            surname : "Test",
+            username : "User" + i + "SEED",
+            email : "User" + i+ "@test.com",
+            password: await bcrypt.hash("password123", 10),
+            dateOfBirth : new Date(1990, 1, 1),
+            lastLogin : new Date(), //Date() returns the current date and time
+            profilePictureLink : null,
+            streak : 0
+        });
+        await newUser.save();
+    }
+    console.log("Users Seeded");
 
 	// User_Days Seeding
 	for (let i = 0; i < 10; i++) {
@@ -209,27 +214,38 @@ async function seed() {
 	}
 	console.log('Recipes Seeded');
 
-	// Recipe_Items Seeding
-	for (let i = 0; i < 10; i++) {
-		const newRecipeItem = new Recipe_Items({
-			recipeID: await newRecipe._id,
-			foodItemID: await newFoodItem._id,
-		});
-		await newRecipeItem.save();
-	}
-	console.log('Recipe_Items Seeded');
+    //Recipe_Items Seeding
+    for (let i = 0; i < 10; i++) {
+        var newRecipeItem = new Recipe_Items({
+            recipeID: await newRecipe._id,
+            foodItemID: await newFoodItem._id,
+        });
+        await newRecipeItem.save();
+    }
+    console.log("Recipe_Items Seeded");
 
-	// Meal_Items Seeding
-	for (let i = 0; i < 10; i++) {
-		const newMealItem = new Meal_Items({
-			name: `Meal${i}`,
-			userDayMealID: await newUserDayMeal._id,
-			foodItemID: await newFoodItem._id,
-			receipeID: await newRecipe._id,
-		});
-		await newMealItem.save();
-	}
-	console.log('Meal_Items Seeded\n');
+    //Recipe_Quantities Seeding
+    for (let i = 0; i < 10; i++) {
+        var newRecipeQuantity = new Recipe_Quantities({
+            mealItemID: await newUserDayMeal._id,
+            recipeID: await newRecipe._id,
+            totalRecipeWeight: 300,
+        });
+        await newRecipeQuantity.save();
+    }
+    console.log("Recipe_Quantities Seeded");
+
+    //Meal_Items Seeding
+    for (let i = 0; i < 10; i++) {
+        var newMealItem = new Meal_Items({
+            name: "Meal" + i,
+            userDayMealID: await newUserDayMeal._id,
+            foodItemID: await newFoodItem._id,
+            recipeQuantityID: null,
+        });
+        await newMealItem.save();
+    }
+    console.log("Meal_Items Seeded\n");
 
 	console.log('All collections seeded');
 
