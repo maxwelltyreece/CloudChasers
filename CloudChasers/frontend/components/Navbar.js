@@ -90,7 +90,7 @@ export default function MainTabNavigator() {
 	return (
 		<View style={navbarStyles.container}>
 			<Tab.Navigator
-				initialRouteName="Dashboard"
+				initialRouteName="Groups"
 				screenOptions={screenOptions}
 			>
 				{screens.map(({ name, component, icon }) => (
