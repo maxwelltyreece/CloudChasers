@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, StyleSheet, TextInput, TouchableOpacity, Pressable } from 'react-native';
 import Box from '../../components/box';
 import { useNavigation } from '@react-navigation/native';
+import { Feather } from '@expo/vector-icons';
 
 const data = [
     { title: 'Community 1' },
@@ -48,16 +49,28 @@ const Groups = () => {
     const [searchText, setSearchText] = useState('');
     const navigation = useNavigation();
 
+    const NewGroupButton = () => {
+        const navigation = useNavigation();
+
+        return (
+            <Pressable onPress={() => navigation.navigate('Group', { screen: 'NewGroup' })}>
+                <Feather name="plus" size={24} color="black" />
+            </Pressable>
+        );
+    };
+
     const filteredData = data.filter(item => item.title.toLowerCase().includes(searchText.toLowerCase()));
 
     const handlePress = (item) => {
-        navigation.navigate('GroupPage', { community: item }); // Navigate to the GroupPage and pass the community data
+        navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });
     };
-
     return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
-                <Text style={styles.title}>Your communities</Text>
+                <View style={{...styles.titleContainer, flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <Text style={styles.title}>Your communities</Text>
+                    <NewGroupButton />
+                </View>
                 <TextInput
                     style={styles.searchInput}
                     onChangeText={text => setSearchText(text)}

@@ -3,7 +3,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Navbar from '../components/Navbar';
 import SettingsNavigator from './SettingsNavigator';
-import GroupPage from '../screens/Groups/GroupPage';
+import GroupNavigator from './GroupNavigator';
 import { View } from 'react-native';
 import { Feather } from '@expo/vector-icons'; 
 
@@ -40,9 +40,9 @@ export default function MainNavigator() {
                 options={{ headerShown: false }}
             />
             <Stack.Screen 
-                name="GroupPage" 
-                component={GroupPage}  
-                options={{ ...commonOptions }} // Apply commonOptions to GroupPage
+                name="Group" 
+                component={GroupNavigator} 
+                options={{ headerShown: false }}
             />
         </Stack.Navigator>
     );
