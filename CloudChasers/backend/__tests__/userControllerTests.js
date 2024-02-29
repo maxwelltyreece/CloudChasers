@@ -1,8 +1,8 @@
 const request = require('supertest');
-const app = require('../server');
-const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const app = require('../server');
+const User = require('../models/user');
 
 jest.mock('../models/user');
 jest.mock('bcrypt');

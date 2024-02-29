@@ -1,8 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, Animated } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import CustomIcon from './AddButton';
 import PropTypes from 'prop-types';
+import CustomIcon from './AddButton';
 
 /**
  * TabBarIcon is a component that renders an icon for the tab bar.
@@ -19,38 +19,39 @@ import PropTypes from 'prop-types';
  *
  * @returns {React.Element} The rendered component.
  */
-export default function TabBarIcon({ name, color, size, animation, onPress, navigation }) {
-    if (name === '+') {
-        return (
-            <Animated.View style={{ transform: [{ scale: animation }] }}>
-                <TouchableOpacity 
-                    onPress={() => {
-                        onPress();
-                        navigation.navigate('+'); 
-                    }} 
-                    activeOpacity={0.6}
-                >
-                    <CustomIcon width={70} height={70} />
-                </TouchableOpacity>
-            </Animated.View>
-        );
-    }
+export default function TabBarIcon({
+	name, color, size, animation, onPress, navigation,
+}) {
+	if (name === '+') {
+		return (
+			<Animated.View style={{ transform: [{ scale: animation }] }}>
+				<TouchableOpacity
+					onPress={() => {
+						onPress();
+						navigation.navigate('+');
+					}}
+					activeOpacity={0.6}
+				>
+					<CustomIcon width={70} height={70} />
+				</TouchableOpacity>
+			</Animated.View>
+		);
+	}
 
-    return <FontAwesome5 name={name} color={color} size={size} solid />;
-
+	return <FontAwesome5 name={name} color={color} size={size} solid />;
 }
 
 /**
- * These are the PropTypes for the TabBarIcon component. 
+ * These are the PropTypes for the TabBarIcon component.
  * They serve as a type checking mechanism for the props the component receives.
 */
 TabBarIcon.propTypes = {
-    name: PropTypes.string.isRequired,
-    color: PropTypes.string,
-    size: PropTypes.number,
-    animation: PropTypes.instanceOf(Animated.Value),
-    onPress: PropTypes.func,
-    navigation: PropTypes.shape({
-        navigate: PropTypes.func.isRequired,
-    }),
+	name: PropTypes.string.isRequired,
+	color: PropTypes.string,
+	size: PropTypes.number,
+	animation: PropTypes.instanceOf(Animated.Value),
+	onPress: PropTypes.func,
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func.isRequired,
+	}),
 };

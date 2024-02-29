@@ -62,7 +62,7 @@ exports.logDatabaseFood = async (req, res) => {
 		
 		const session = await mongoose.startSession();
 		session.startTransaction();
-		
+
 		// Check if user day exists, if not create it
 		const newUserDay = createUserDay(user._id, today);
 
@@ -72,23 +72,22 @@ exports.logDatabaseFood = async (req, res) => {
 
 		const newFoodItem = new FoodItem({
 			foodID: food._id,
-			weight: weight
+			weight,
 		});
 		await newFoodItem.save();
-	
+
 		const mealItem = new MealItem({
 			name: food.name,
 			foodItemID: newFoodItem._id,
 			receipeID: null,
-			userDayMealID: newUserDayMeal._id
+			userDayMealID: newUserDayMeal._id,
 		});
 		await mealItem.save();
-		
+
 		await session.commitTransaction();
 		session.endSession();
 
 		return res.status(200).send({ message: 'Food logged' });
-
 	} catch (error) {
 		session.abortTransaction();
 		session.endSession();
@@ -98,7 +97,7 @@ exports.logDatabaseFood = async (req, res) => {
 
 /**
  * Retrieves all food items with pagination.
- * 
+ *
  * @param {string} req.query.page - The page number for pagination. Defaults to 1.
  * @param {string} req.query.limit - The number of items per page for pagination. Defaults to 50.
  * @returns {Array} res.data.foods - An array of food objects.
@@ -118,7 +117,7 @@ exports.getFood = async (req, res) => {
 		res.status(200).send({
 			foods,
 			totalPages: Math.ceil(total / limit),
-			currentPage: page
+			currentPage: page,
 		});
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
@@ -140,18 +139,19 @@ exports.searchFoods = async (req, res) => {
 	const { page = 1, limit = 50, ...searchParams } = req.body;
 	const skip = (page - 1) * limit;
 
+
 	// List of valid fields
 	const validFields = ['name', 'group', 'calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre', 'privacy', 'addedBy'];
 
 	// Check for invalid fields
-	const invalidFields = Object.keys(searchParams).filter(field => !validFields.includes(field));
+	const invalidFields = Object.keys(searchParams).filter((field) => !validFields.includes(field));
 	if (invalidFields.length > 0) {
 		return res.status(400).send({ error: `Invalid field(s): ${invalidFields.join(', ')}` });
 	}
 
 	// Create a query object with regex for each search parameter
 	const query = Object.entries(searchParams).reduce((acc, [key, value]) => {
-		acc[key] = { $regex: new RegExp(value, "i") };
+		acc[key] = { $regex: new RegExp(value, 'i') };
 		return acc;
 	}, {});
 
@@ -164,9 +164,11 @@ exports.searchFoods = async (req, res) => {
 			return res.status(404).send({ message: 'No foods found' });
 		}
 
-		const totalPages = await Food.countDocuments(query)/limit;
+		const totalPages = await Food.countDocuments(query) / limit;
 
-		res.status(200).send({ foods, totalPages, page, limit });
+		res.status(200).send({
+			foods, totalPages, page, limit,
+		});
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}

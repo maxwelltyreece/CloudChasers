@@ -9,7 +9,7 @@ const Food = require('../models/food');
 
 /**
  * Registers a new user.
- * 
+ *
  * @param {string} req.body.forename - The user's forename.
  * @param {string} req.body.surname - The user's surname.
  * @param {string} req.body.username - The user's username. Must be unique.
@@ -20,17 +20,19 @@ const Food = require('../models/food');
  * @param {string} req.body.profilePictureLink - The link to the user's profile picture.
  */
 exports.register = async (req, res) => {
-	const {forename, surname, username, email, password, dateOfBirth, lastLogin, profilePictureLink} = req.body;
+	const {
+		forename, surname, username, email, password, dateOfBirth, lastLogin, profilePictureLink,
+	} = req.body;
 	try {
 		// Check if user exists
-		const user = await User.findOne({ username: username });
+		const user = await User.findOne({ username });
 		if (user) {
 			return res.status(400).send({ message: 'Username already used' });
 		}
-        const emailUser = await User.findOne({ email: email });
+		const emailUser = await User.findOne({ email });
 		if (emailUser) {
-            return res.status(400).send({ message: 'Email already used' });
-        }
+			return res.status(400).send({ message: 'Email already used' });
+		}
 		// Hash the password
 		const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -43,12 +45,12 @@ exports.register = async (req, res) => {
 			password: hashedPassword,
 			dateOfBirth,
 			lastLogin,
-			profilePictureLink
+			profilePictureLink,
 		});
 		console.log('User created', newUser);
 		await newUser.save();
 		console.log('User created');
-		return res.status(200).json({ success: true, message: 'User created', data: newUser});	
+		return res.status(200).json({ success: true, message: 'User created', data: newUser });
 	} catch (error) {
 		return res.status(400).json({ error: error.toString() });
 	}
@@ -56,7 +58,7 @@ exports.register = async (req, res) => {
 
 /**
  * Logs in a user. returns a JWT token.
- * 
+ *
  * @param {string} req.body.username - The username of the user.
  * @param {string} req.body.password - The password of the user.
  * @returns {Object} res - The response object.
@@ -69,7 +71,7 @@ exports.login = async (req, res) => {
 
 		if (!user || !await bcrypt.compare(req.body.password, user.password)) {
 			console.log('Invalid credentials');
-			return res.status(401).json({ message:'Invalid credentials' });
+			return res.status(401).json({ message: 'Invalid credentials' });
 		}
 		//TODO: Add last login date
 		// Generate and send token
@@ -82,7 +84,7 @@ exports.login = async (req, res) => {
 
 /**
  * Retrieves all users.
- * 
+ *
  * @returns {Object} res - The response object.
  * @returns {Array} res.data - An array of user objects.
  */
@@ -91,13 +93,13 @@ exports.getUsers = async (req, res) => {
 		const users = await User.find();
 		return res.status(200).json(users);
 	} catch (error) {
-		return res.status(500).json({error: error.toString()});
+		return res.status(500).json({ error: error.toString() });
 	}
 };
 
 /**
  * Retrieves details of a user given his token.
- * 
+ *
  * @param {string} req.body.token - The JWT token of the user.
  * @returns {Object} res - The response object.
  * @returns {Object} res.data - The user object.
@@ -107,13 +109,13 @@ exports.getUserDetail =  async (req, res) => {
 		return res.status(200).json({data: req.user});
 
 	} catch (error) {
-		return res.status(500).json({error: error.toString()});
+		return res.status(500).json({ error: error.toString() });
 	}
 };
 
 /**
  * Updates the profile of a user given his token and the fields to be updated.
- * 
+ *
  * @param {string} req.body.token - The JWT token of the user.
  * @param {Object} req.body.updates - An object containing the fields to update and their new values.
  * @returns {Object} res - The response object.
@@ -170,7 +172,7 @@ exports.updateProfile = async (req, res) => {
 
 /**
  * Retrieves all days of a user.
- * 
+ *
  * @param {string} req.body.token - The JWT token of the user.
  * @returns {Object} res - The response object.
  * @returns {Array} res.data - An array of user day objects.
@@ -185,6 +187,3 @@ exports.getUserDays = async (req, res) => {
 		return res.status(500).send({ error: error.toString() });
 	}
 };
-
-
-
