@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import {
+        View, Text, Image, StyleSheet,
+    } from 'react-native';
 
 const styles = StyleSheet.create({
     box: {
@@ -23,7 +25,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const Box = ({ title, image }) => {
+const Box = function (title, image) {
     return (
         <View style={styles.box}>
             {image && <Image source={{ uri: image }} style={styles.image} />}
