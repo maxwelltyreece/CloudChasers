@@ -36,7 +36,7 @@ mongoose.connect(url)
     })
 
 const conditionalAuth = (req, res, next) => {
-    const pathsThatDontRequireAuth = ['/register', '/login'];
+    const pathsThatDontRequireAuth = ['/register', '/login', '/'];
     if (pathsThatDontRequireAuth.includes(req.path)) {
         // Skip JWT authentication for these paths
         return next();

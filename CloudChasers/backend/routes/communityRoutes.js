@@ -8,7 +8,8 @@ router.post('/create', userMiddleware, communityController.createCommunity);
 router.post('/join', userMiddleware, communityController.joinCommunity);
 router.get('/details', userMiddleware, communityController.getCommunityDetails);
 router.get('/members', userMiddleware, communityController.getCommunityMembers);
-router.get('/isAdmin', userMiddleware, communityController.getAdminStatus);
+router.get('/role', userMiddleware, communityController.getUserRole);
 router.get('/all', userMiddleware, communityController.getAllCommunities);
+router.get('/userCommunities', userMiddleware, communityController.getUserCommunities);
 
 module.exports = router;

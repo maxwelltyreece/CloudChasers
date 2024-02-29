@@ -4,6 +4,10 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 
 
+router.get('/', (req, res) => {
+    res.send('Welcome to GOBL API');
+});
+
 router.post('/register', userController.register);
 router.post('/login', userController.login);
 router.get('/users', userController.getUsers);
