@@ -3,11 +3,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import globalStyles from '../../styles/global';
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
+	container: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
 });
 
 /**
@@ -16,10 +16,12 @@ const styles = StyleSheet.create({
  *
  * @returns {React.Element} The rendered Groups screen.
  */
-const Groups = () => (
-    <View style={styles.container}>
-        <Text style={globalStyles.medium}>Placeholder for groups</Text>
-    </View>
-);
+function Groups() {
+	return (
+		<View style={styles.container}>
+			<Text style={globalStyles.medium}>Placeholder for groups</Text>
+		</View>
+	);
+}
 
 export default Groups;
