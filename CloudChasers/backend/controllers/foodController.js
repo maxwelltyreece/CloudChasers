@@ -6,56 +6,69 @@ const UserDayMeal = require('../models/userDayMeal');
 const MealItem = require('../models/mealItem');
 const FoodItem = require('../models/foodItem');
 const Food = require('../models/food');
+const mongoose = require('mongoose');
+
+async function createUserDay(userID, date){
+	try {
+		const existingUserDay = await UserDay.findOne({ userID, date });
+		if (!existingUserDay) {
+			const newUserDay = new UserDay({
+				date,
+				userID
+			});
+			await newUserDay.save();
+			return newUserDay; // Return the newly created UserDay object
+		}
+	} catch (error) {
+		throw new Error('Failed to create UserDay');
+	}
+};
+
+async function createUserDayMeal(mealType, userDay) {
+	try {
+		let userDayMeal = await userDayMeal.findOne({ name: mealType, userDayID: userDay._id });
+
+		if (!userDayMeal) {
+			userDayMeal = new UserDayMeal({
+				name: mealType,
+				userDayID: userDay._id
+			});
+			await userDayMeal.save();
+		}
+
+		return userDayMeal;
+	} catch (error) {
+		throw new Error('Failed to create UserDayMeal');
+	}
+}
 
 /**
  * Logs a food item to the database for a specific user and meal type.
- *
- * @param {string} req.body.token - The JWT token of the user.
+ * 
+ * @param {string} req.headers.authorization - The JWT token of the user.
  * @param {string} req.body.mealType - The type of meal (e.g., "breakfast", "lunch", "dinner").
  * @param {string} req.body.food_id - The ID of the food item.
  * @param {number} req.body.weight - The weight of the food item.
  * @returns {string} res.message - A message indicating the result of the operation.
- * @throws {Error} If an error occurs during the operation.
  */
 exports.logDatabaseFood = async (req, res) => {
-	const {
-		token, mealType, food_id, weight,
-	} = req.body;
+	const { mealType, food_id, weight } = req.body;
 	try {
-		const decoded = jwt.verify(token, process.env.SECRET_KEY);
-		const user = await User.findById(decoded.userId);
+		const user = req.user;
 		const food = await Food.findById(food_id);
 
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
-
-		if (!user) {
-			return res.status(404).send({ message: 'User not found' });
-		}
-
+		
 		const session = await mongoose.startSession();
 		session.startTransaction();
 
 		// Check if user day exists, if not create it
-		const newUserDay = await UserDay.findOne({ userID: user._id, date: today });
-		if (!newUserDay) {
-			const newUserDay = new UserDay({
-				date: today,
-				userID: user._id,
-			});
-			await newUserDay.save();
-		}
+		const newUserDay = createUserDay(user._id, today);
 
 		// Check if user day meal exists, if not create it
 		// TODO: Can change behaviour to allow multiple meals of the same type
-		const newUserDayMeal = await userDayMeal.findOne({ name: mealType, userDayID: newUserDay._id });
-		if (!newUserDayMeal) {
-			const newUserDayMeal = new userDayMeal({
-				name: mealType,
-				userDayID: newUserDay._id,
-			});
-			await newUserDayMeal.save();
-		}
+		const newUserDayMeal = createUserDayMeal(mealType, newUserDay);
 
 		const newFoodItem = new FoodItem({
 			foodID: food._id,
@@ -92,8 +105,7 @@ exports.logDatabaseFood = async (req, res) => {
  * @returns {number} res.data.currentPage - The current page number.
  */
 exports.getFood = async (req, res) => {
-	const page = parseInt(req.query.page) || 1;
-	const limit = parseInt(req.query.limit) || 50;
+	const { page = 1, limit = 50 } = req.body;
 
 	try {
 		const foods = await Food.find()
@@ -112,28 +124,12 @@ exports.getFood = async (req, res) => {
 	}
 };
 
-// exports.searchFoods = async (req, res) => {
-// 	const { name } = req.query;
-
-// 	try {
-// 		const foods = await Food.find({
-// 			name: { $regex: new RegExp(name, "i") }
-// 		});
-
-// 		res.status(200).send({ foods });
-// 	} catch (error) {
-// 		res.status(500).send({ error: error.toString() });
-// 	}
-// };
-//
-
-// TODO: check credintials to not display food created by others
+//TODO: check credintials to not display food created by others
 /**
  * Retrieves food items based on search parameters.
- *
  * @param {number} req.body.page - The page number for pagination. Defaults to 1.
  * @param {number} req.body.limit - The number of items per page for pagination. Defaults to 50.
- * @param {Object} req.body.searchParams - An object containing the fields to search and their values.
+ * @param {Object} req.body.searchParams - Object containing the fields to search and their values.
  * @returns {Array} res.data.foods - An array of food objects.
  * @returns {number} res.data.totalPages - The total number of pages.
  * @returns {number} res.data.page - The current page number.
@@ -142,6 +138,7 @@ exports.getFood = async (req, res) => {
 exports.searchFoods = async (req, res) => {
 	const { page = 1, limit = 50, ...searchParams } = req.body;
 	const skip = (page - 1) * limit;
+
 
 	// List of valid fields
 	const validFields = ['name', 'group', 'calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre', 'privacy', 'addedBy'];
@@ -178,4 +175,3 @@ exports.searchFoods = async (req, res) => {
 };
 
 
-//TODO ask matt about the fixed amount of recipes

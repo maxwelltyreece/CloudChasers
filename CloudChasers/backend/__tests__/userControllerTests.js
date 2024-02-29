@@ -5,10 +5,14 @@ const app = require('../server');
 const User = require('../models/user');
 
 jest.mock('../models/user');
+jest.mock('bcrypt');
 
-// Mock bcrypt and jwt
 bcrypt.hash = jest.fn().mockResolvedValue('hashedPassword');
 jwt.sign = jest.fn().mockReturnValue('fakeTokenString');
+
+beforeEach(() => {
+	jest.clearAllMocks();
+});
 
 describe('POST /register', () => {
 	describe('given a username, email, and password', () => {
@@ -16,7 +20,7 @@ describe('POST /register', () => {
 			const response = await request(app).post('/register').send({
 				username: 'username',
 				email: 'test@email.com',
-				password: 'password123',
+				password: 'password123'
 			});
 			expect(response.statusCode).toBe(200);
 			expect(response.body).toEqual({ success: true, message: 'User created' });
@@ -26,7 +30,7 @@ describe('POST /register', () => {
 			const response = await request(app).post('/register').send({
 				username: 'username',
 				email: 'test@email.com',
-				password: 'password123',
+				password: 'password123'
 			});
 			expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));
 		});
@@ -37,7 +41,7 @@ describe('POST /register', () => {
 			const response = await request(app).post('/register').send({
 				username: 'existingUser',
 				email: 'test@email.com',
-				password: 'password123',
+				password: 'password123'
 			});
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toEqual({ message: 'Username already used' });
@@ -46,21 +50,27 @@ describe('POST /register', () => {
 		test('when email already exists', async () => {
 			// Set up User.findOne to simulate that the email already exists
 			User.findOne.mockResolvedValueOnce(null).mockResolvedValueOnce({ email: 'test@email.com' });
-			const response = await request(app).post('/register').send({
+				const response = await request(app).post('/register').send({
 				username: 'newUser',
 				email: 'test@email.com',
-				password: 'password123',
+				password: 'password123'
 			});
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toEqual({ message: 'Email already used' });
 		});
 
 		// test('return 400 if an error occurs', async () => {
+
 	});
 });
 
 describe('POST /login', () => {
+	beforeEach(() => {
+		bcrypt.compare.mockResolvedValue(true);
+	});
+
 	describe('given a username and password', () => {
+
 		test('should login a user', async () => {
 			// Set up User.findOne to simulate that the user exists
 			User.findOne.mockResolvedValueOnce({ username: 'username', password: 'hashedPassword' });
@@ -68,10 +78,11 @@ describe('POST /login', () => {
 			bcrypt.compare.mockResolvedValueOnce(true);
 			const response = await request(app).post('/login').send({
 				username: 'username',
-				password: 'password123',
+				password: 'password123'
 			});
 			expect(response.statusCode).toBe(200);
 			expect(response.body).toEqual({ data: 'fakeTokenString' });
+			expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'hashedPassword');
 		});
 
 		test('should specify json in the content type header', async () => {
@@ -81,7 +92,7 @@ describe('POST /login', () => {
 			bcrypt.compare.mockResolvedValueOnce(true);
 			const response = await request(app).post('/login').send({
 				username: 'username',
-				password: 'password123',
+				password: 'password123'
 			});
 			expect(response.headers['content-type']).toEqual(expect.stringContaining('json'));
 		});
@@ -91,7 +102,7 @@ describe('POST /login', () => {
 			User.findOne.mockResolvedValueOnce(null);
 			const response = await request(app).post('/login').send({
 				username: 'username',
-				password: 'password123',
+				password: 'password123'
 			});
 			expect(response.statusCode).toBe(401);
 			expect(response.body).toEqual({ message: 'Invalid credentials' });
@@ -104,11 +115,12 @@ describe('POST /login', () => {
 			bcrypt.compare.mockResolvedValueOnce(false);
 			const response = await request(app).post('/login').send({
 				username: 'username',
-				password: 'password123',
+				password: 'password123'
 			});
 			expect(response.statusCode).toBe(401);
 			expect(response.body).toEqual({ message: 'Invalid credentials' });
 		});
 		// test('return 500 if an error occurs', async () => {
+
 	});
 });

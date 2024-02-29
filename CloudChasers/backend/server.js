@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const os = require('os');
 const userRoutes = require('./routes/userRoutes');
 const foodRoutes = require('./routes/foodRoutes');
+const communityRoutes = require('./routes/communityRoutes');
+const statsRoutes = require('./routes/statsRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -35,13 +37,13 @@ mongoose.connect(url)
 	});
 
 const conditionalAuth = (req, res, next) => {
-	const pathsThatDontRequireAuth = ['/register', '/login'];
-	if (pathsThatDontRequireAuth.includes(req.path)) {
-		// Skip JWT authentication for these paths
-		return next();
-	}
-	// Apply JWT authentication middleware
-	return authenticateJWT(req, res, next);
+    const pathsThatDontRequireAuth = ['/register', '/login', '/'];
+    if (pathsThatDontRequireAuth.includes(req.path)) {
+        // Skip JWT authentication for these paths
+        return next();
+    }
+    // Apply JWT authentication middleware
+    return authenticateJWT(req, res, next);
 };
 
 // Apply the conditionalAuth middleware
@@ -50,6 +52,8 @@ app.use(conditionalAuth);
 // API url routes
 app.use('/food', foodRoutes);
 app.use('/', userRoutes);
+app.use('/community', communityRoutes);
+app.use('/stats', statsRoutes);
 
 const { login } = require('./controllers/userController');
 
