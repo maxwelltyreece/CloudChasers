@@ -7,6 +7,7 @@ const { getStorage, ref, getDownloadURL } = require('firebase-admin/storage');
 const { Storage } = require('@google-cloud/storage');
 var busboy = require('busboy');
 const stream = require('stream');
+const path = require('path');
 
 const storage = new Storage({
     projectId: 'gobl-b4e3d',
@@ -17,18 +18,23 @@ const bucket = storage.bucket('./gobl-b4e3d.appspot.com');
 /**
  * Retrieves the URL of the profile picture for a given user ID.
  * @param {Object} req - The request object.
+ *  - The request body must contain the user 2 parameters userID and folderName which can be ["Profile_Picstures", "Recipe_Pictures", "Community_Pictures"]
  * @param {Object} res - The response object.
  * @returns {Object} The response object with the profile picture URL or an error message.
  */
-exports.getProfilePicURL = async (req, res) => {
+exports.getPictureURL = async (req, res) => {
     // Retrieve the user ID from the request body
-    const { userId } = req.body;
+    const { userId, folderName} = req.body;
     try {
         // Construct the path to the profile picture
         const validExtensions = ['png', 'jpg', 'jpeg', 'gif'];
+        const validFolders = ['Profile_Pictures', 'Recipe_Pictures', 'Community_Pictures'];
+        if (!validFolders.includes(folderName)) {
+            return res.status(400).json({ error: "Invalid folder name " + folderName + "   valid folder names are ['Profile_Pictures', 'Recipe_Pictures', 'Community_Pictures']" });
+        }
         var extensionFound = false;
         for (var i = 0; i < validExtensions.length; i++) {
-            var path = 'Profile_Pics/' + userId + '.' + validExtensions[i];
+            var path = folderName + '/' + userId + '.' + validExtensions[i];
             var file = bucket.file(path);
             var exists = await file.exists();
             if (exists[0]) {
@@ -38,7 +44,7 @@ exports.getProfilePicURL = async (req, res) => {
         }
 
         if (!extensionFound) {
-            return res.status(404).json({ error: "Profile picture not found for user with ID " + userId });
+            return res.status(404).json({ error: "Picture not found in folder " + folderName + " with name " + userId});
         }
 
         // Get the download URL of the profile picture
@@ -60,39 +66,58 @@ exports.getProfilePicURL = async (req, res) => {
  * @param {Object} res - The response object.
  * @returns {Object} The response object with a success message.
  */
-exports.uploadProfilePic = async (req, res) => {
-    const nameOfFolderToStoreImage = 'Profile_Pics';
-    var pathToFile = nameOfFolderToStoreImage + '/';
+exports.uploadPicture = async (req, res) => {
+    var extension = "";
+    var objectID = "";
+    var folderName = "";
     var fileUploaded = false;
+    var pathToFile = "";
     const bb = busboy({ headers: req.headers, limits: { files: 1 } });
     bb.on('field', (fieldname, val) => {
-        var userId = val;
-        pathToFile = pathToFile + userId;
+        if (fieldname === 'objectID'){
+            objectID = val;
+            console.log('objectID ' + val);
+        } else if (fieldname === 'folderName'){
+            folderName = val;
+            console.log('Folder Name: ' + val);
+        } else {
+            return res.status(400).json({ error: "Invalid field name " + fieldname + "   valid field names are ['objectID', 'folderName']" });
+        }
+
     });
     bb.on('file', async (fieldname, file, fileMeta) => {
-        var extension = getFileExtension(fileMeta);
-        pathToFile = pathToFile + '.' + extension;
+        currentPhoto = await findPreviousPhoto(objectID, folderName);
+        // console.log(currentPhoto);
+        extension = getFileExtension(fileMeta);
+        pathToFile = folderName + '/' + objectID + '.' + extension;
+        console.log('Path to file: ' + pathToFile);
         newFileLocationReference = bucket.file(pathToFile);
         const fileStream = newFileLocationReference.createWriteStream();
+        if (objectID === "") {
+            return res.status(400).json({ error: "No object ID provided (At least before the file was received). Make sure the obejct ID is passed in the form before the file" });
+        }
+        if (folderName === "") {
+            return res.status(400).json({ error: "No folderName provided (At least before the file was received). Make sure the folderName is passed in the form before the file" });
+        }
         file.on('data', (data) => {
             fileStream.write(data);
         });
         file.on('end', () => {
+            // console.log(currentPhoto);
+            // if (currentPhoto.metadata.name === pathToFile) {
+            //     currentPhoto.file.delete();
+            // }
             fileStream.end();
             fileUploaded = true;
         });
     });
     bb.on('close', () => {
-        if (pathToFile === nameOfFolderToStoreImage + '/') {
-            return res.status(400).json({ error: "User ID not provided & file no recieved" });
-        } else if (pathToFile === nameOfFolderToStoreImage + '/.' + extension) {
-            return res.status(400).json({ error: "User ID not provided in time. Make sure that the userId is provided before the file in the form" });
-        } else if (pathToFile === nameOfFolderToStoreImage + '/' + userId) {
-            return res.status(400).json({ error: "File not recieved" });
-        } else if (!fileUploaded) {
-            return res.status(500).json({ error: "Internal server error" });
-        } else {
-            return res.status(200).json({ message: "File uploaded successfully" });
+        if (fileUploaded) {
+            return res.status(200).json({ message: "File uploaded successfully." });
+        } else if (pathToFile === "") {
+            return res.status(400).json({ error: "No file uploaded." });
+        } else if (pathToFile === "/" + objectID + "." + extension) {
+            return res.status(400).json({ error: "No object ID provided" });
         }
     });
     req.pipe(bb);
@@ -107,4 +132,19 @@ function getFileExtension(fileMeta) {
     var filename = fileMeta['filename'];
     var extension = filename.split('.').pop();
     return extension;
+}
+
+async function findPreviousPhoto (objectID, folderName) {
+    const validExtensions = ['png', 'jpg', 'jpeg', 'gif'];
+    var extensionFound = false;
+    for (var i = 0; i < validExtensions.length; i++) {
+        var path = folderName + '/' + objectID + '.' + validExtensions[i];
+        var file = bucket.file(path);
+        var exists = await file.exists();
+        if (exists[0]) {
+            extensionFound = true;
+            break;
+        }
+    }
+    return {"file" : file, "exists" : exists[0]};
 }
