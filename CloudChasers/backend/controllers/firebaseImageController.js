@@ -76,10 +76,8 @@ exports.uploadPicture = async (req, res) => {
     bb.on('field', (fieldname, val) => {
         if (fieldname === 'objectID'){
             objectID = val;
-            console.log('objectID ' + val);
         } else if (fieldname === 'folderName'){
             folderName = val;
-            console.log('Folder Name: ' + val);
         } else {
             return res.status(400).json({ error: "Invalid field name " + fieldname + "   valid field names are ['objectID', 'folderName']" });
         }
@@ -87,10 +85,10 @@ exports.uploadPicture = async (req, res) => {
     });
     bb.on('file', async (fieldname, file, fileMeta) => {
         currentPhoto = await findPreviousPhoto(objectID, folderName);
-        // console.log(currentPhoto);
+        var previousNameOfPhoto = (await currentPhoto['file'].getMetadata())[0]["name"];
+        // console.log(metaData.constructor.name);
         extension = getFileExtension(fileMeta);
         pathToFile = folderName + '/' + objectID + '.' + extension;
-        console.log('Path to file: ' + pathToFile);
         newFileLocationReference = bucket.file(pathToFile);
         const fileStream = newFileLocationReference.createWriteStream();
         if (objectID === "") {
@@ -102,11 +100,10 @@ exports.uploadPicture = async (req, res) => {
         file.on('data', (data) => {
             fileStream.write(data);
         });
-        file.on('end', () => {
-            // console.log(currentPhoto);
-            // if (currentPhoto.metadata.name === pathToFile) {
-            //     currentPhoto.file.delete();
-            // }
+        file.on('end', async () => {
+            if (previousNameOfPhoto != pathToFile && currentPhoto['exists']) {
+                currentPhoto['file'].delete();
+            }
             fileStream.end();
             fileUploaded = true;
         });
