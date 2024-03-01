@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
-
-import Navbar from './components/Navbar';
-import Settings from './screens/Settings/Settings';
+import { NavigationContainer } from '@react-navigation/native';
+import Navbar from './CloudChasers/components/Navbar.js';
+import Settings from './CloudChasers/screens/Settings/Settings.js';
 import {
   useFonts,
   Montserrat_100Thin,
