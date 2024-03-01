@@ -1,13 +1,22 @@
 // MainNavigator.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Navbar from '../components/Navbar';
 import SettingsNavigator from './SettingsNavigator';
 import GroupNavigator from './GroupNavigator';
+import { useUser } from '../contexts/UserContext';
 
 const Stack = createStackNavigator();
 
 export default function MainNavigator() {
+	const { userDetails, updateUserDetails } = useUser();
+
+	useEffect(() => {
+		if (!userDetails) {
+			updateUserDetails();
+		}
+	}, []);
+
 	return (
 		<Stack.Navigator initialRouteName="Navbar">
 			<Stack.Screen

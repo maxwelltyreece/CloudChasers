@@ -3,7 +3,7 @@ import {
 	View, Text, StyleSheet, FlatList,
 	Pressable,
 } from 'react-native';
-
+import { useUser } from '../../../contexts/UserContext';
 import globalStyles from '../../../styles/global';
 
 const styles = StyleSheet.create({
@@ -29,14 +29,16 @@ const styles = StyleSheet.create({
 	},
 });
 
-const data = [
-	{ field: 'First Name', value: 'John' },
-	{ field: 'Last Name', value: 'Doe' },
-	{ field: 'Email', value: 'john.doe@example.com' },
-	{ field: 'Username', value: '@johndoe' },
-];
-
 function Account({ navigation }) {
+	const { userDetails } = useUser();
+
+	const data = [
+		{ field: 'Username', value: userDetails.username },
+		{ field: 'First Name', value: userDetails.forename },
+		{ field: 'Last Name', value: userDetails.surname },
+		{ field: 'Email', value: userDetails.email },
+	];
+
 	return (
 		<View style={styles.container}>
 			<FlatList

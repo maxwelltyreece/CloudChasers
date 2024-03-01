@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import { UserProvider } from './frontend/contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import {
@@ -63,11 +64,13 @@ export default function App() {
 	}
 
 	return (
-		<NavigationContainer>
-			<Stack.Navigator initialRouteName={initialRoute}>
-				<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-				<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-			</Stack.Navigator>
-		</NavigationContainer>
+		<UserProvider>
+            <NavigationContainer>
+                <Stack.Navigator initialRouteName={initialRoute}>
+                    <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+                    <Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </UserProvider>
 	);
 }

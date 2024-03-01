@@ -4,6 +4,7 @@ import {
 	View, Text, StyleSheet, FlatList, Pressable,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useUser } from '../../contexts/UserContext';
 import Feather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
@@ -44,7 +45,6 @@ const styles = StyleSheet.create({
 });
 
 const ICON_SIZE = 25;
-const USERNAME = 'test@email.com';
 
 function ItemSeparator() {
 	return <View style={styles.separator} />;
@@ -102,6 +102,8 @@ const keyExtractor = (item) => item.name;
  */
 function Settings() {
 	const navigation = useNavigation();
+	const { userDetails } = useUser();
+	const { email } = userDetails;
 	return (
 		<View style={styles.container}>
 			<FlatList
@@ -109,7 +111,7 @@ function Settings() {
 				renderItem={SettingsItem}
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={ItemSeparator}
-				ListFooterComponent={<SettingsFooter username={USERNAME} navigation={navigation} />}
+				ListFooterComponent={<SettingsFooter username={email} navigation={navigation} />}
 			/>
 		</View>
 	);

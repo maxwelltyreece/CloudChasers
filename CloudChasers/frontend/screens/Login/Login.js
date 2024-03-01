@@ -5,6 +5,7 @@ import {
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../IPIndex';
+import { useUser } from '../../contexts/UserContext';
 
 const styles = StyleSheet.create({
 	container: {
@@ -24,16 +25,19 @@ const styles = StyleSheet.create({
 function Login({ navigation }) {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const { updateUserDetails } = useUser();
 
 	const handleLogin = () => {
 		axios.post(`http://${LocalIP}:3000/login`, {
 			username,
 			password,
 		})
-			.then((response) => {
+			.then(async (response) => {
 				// handle success
 				if (response.data.data) {
-					AsyncStorage.setItem('token', response.data.data);
+					const token = response.data.data;
+					await AsyncStorage.setItem('token', token);
+					await updateUserDetails();
 					// Navigate to Dashboard
 					navigation.navigate('Main');
 				} else {
