@@ -4,9 +4,9 @@ import {
 	View, Text, StyleSheet, FlatList, Pressable,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useUser } from '../../contexts/UserContext';
 import Feather from 'react-native-vector-icons/Feather';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUser } from '../../contexts/UserContext';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
 import LogoutButton from './settingsComponents/LogoutButton';

@@ -20,16 +20,20 @@ export function UserProvider({ children }) {
 		setUserDetails(details);
 	};
 
-	const editUserDetails = async (newDetails) => {
-		// TODO implement
-		const updatedDetails = await userService.updateUserDetails(newDetails);
-		setUserDetails(updatedDetails);
+	const editUserDetails = async (field, newValue) => {
+		try {
+			await userService.editUserDetails(field, newValue);
+			updateUserDetails();
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const logout = () => {
 		setUserDetails(null);
 		// Perform other logout actions
 	};
+
 	const value = useMemo(() => ({
 		userDetails, updateUserDetails, editUserDetails, logout,
 	}), [userDetails, updateUserDetails, editUserDetails, logout]);

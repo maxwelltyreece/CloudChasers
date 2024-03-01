@@ -1,5 +1,6 @@
 // userService.js
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../screens/IPIndex'; // adjust the path as needed
 
 const getUserDetails = async (token) => {
@@ -29,14 +30,24 @@ const getUserDetails = async (token) => {
 	}
 };
 
-const updateUserDetails = async (userId, newDetails) => {
-	const response = await axios.put(`http://${LocalIP}:3000/users/${userId}`, newDetails);
-	return response.data;
+const editUserDetails = async (field, newValue) => {
+	try {
+		const token = await AsyncStorage.getItem('token');
+		const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, {
+			[field]: newValue,
+		}, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		console.log(response.data);
+	} catch (error) {
+		console.error(error);
+	}
 };
-
 // Add other user-related functions, like login and register
 
 export default {
 	getUserDetails,
-	updateUserDetails,
+	editUserDetails,
 };

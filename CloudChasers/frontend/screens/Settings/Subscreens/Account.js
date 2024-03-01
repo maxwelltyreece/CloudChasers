@@ -33,10 +33,10 @@ function Account({ navigation }) {
 	const { userDetails } = useUser();
 
 	const data = [
-		{ field: 'Username', value: userDetails.username },
-		{ field: 'First Name', value: userDetails.forename },
-		{ field: 'Last Name', value: userDetails.surname },
-		{ field: 'Email', value: userDetails.email },
+		{ field: 'Username', value: userDetails.username, realName: 'username' },
+		{ field: 'First Name', value: userDetails.forename, realName: 'forename' },
+		{ field: 'Last Name', value: userDetails.surname, realName: 'surname' },
+		{ field: 'Email', value: userDetails.email, realName: 'email' },
 	];
 
 	return (
@@ -47,7 +47,7 @@ function Account({ navigation }) {
 				renderItem={({ item }) => (
 					<View style={styles.row}>
 						<Text style={styles.label}>{`${item.field.charAt(0).toUpperCase() + item.field.slice(1)}: ${item.value}`}</Text>
-						<Pressable onPress={() => navigation.navigate('EditPage', { field: item.field })}>
+						<Pressable onPress={() => navigation.navigate('EditPage', { field: item.field, realName: item.realName })}>
 							<Text>Edit</Text>
 						</Pressable>
 					</View>
