@@ -15,6 +15,8 @@ const styles = StyleSheet.create({
 		elevation: 3,
 		width: '95%',
 		height: '18%',
+		margingTop: '1%',
+		marginBottom: '2%',
 	},
 	weeklyLogTitle: {
 		fontSize: 20,

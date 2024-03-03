@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F0F0F0',
 		width: '95%',
 		height: '30%',
+		marginBottom: '14%',
 	},
 	leftComponentContainer: {
 		flex: 1,
@@ -83,6 +84,10 @@ function Dashboard() {
 				</View> */}
 			</View>
 
+			<CurrentGoalProgress goal={120} current={80} />
+
+			<CommunityStatus />
+
 			<PastWeekLogs meals={meals} />
 
 			<View style={styles.middleDashboardContainer}>
@@ -95,10 +100,6 @@ function Dashboard() {
 					<RecentLog />
 				</View>
 			</View>
-
-			<CommunityStatus />
-
-			<CurrentGoalProgress goal={120} current={80} />
 
 		</SafeAreaView>
 	);

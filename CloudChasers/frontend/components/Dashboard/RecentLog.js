@@ -5,7 +5,8 @@ import { View, Text, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
 	// -------Recent Meal Log-------//
 	recentLogContainer: {
-		backgroundColor: '#EC6641',
+		// backgroundColor: '#EC6641',
+		backgroundColor: '#FF815E',
 		justifyContent: 'flex-start',
 		alignContent: 'center',
 		borderRadius: 15,
@@ -22,7 +23,8 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	recentLogTitleContainer: {
-		backgroundColor: '#EC6641',
+		// backgroundColor: '#EC6641',
+		backgroundColor: '#FF815E',
 		padding: 7,
 	},
 	innerRecentLogContainer: {
