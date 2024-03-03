@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
 		padding: 7,
 	},
 	innerRecentLogContainer: {
-		backgroundColor: '#F0F0F0',
+		// backgroundColor: '#F0F0F0',
+		backgroundColor: '#F7F7F7',
 		borderRadius: 8,
 		padding: 8,
 		shadowColor: '#000',
