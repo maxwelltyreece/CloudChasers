@@ -6,13 +6,15 @@ import {
 const styles = StyleSheet.create({
 	learnMoreContainer: {
 		flex: 1,
-		backgroundColor: '#EC6641',
+		// backgroundColor: '#EC6641',
+		backgroundColor: 'white',
 		justifyContent: 'center',
 		alignContent: 'center',
 		borderRadius: 15,
-		marginLeft: 10,
+		// marginLeft: 10,
 		padding: 20,
-		width: 200,
+		right: '1%',
+		width: '98%',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.22,

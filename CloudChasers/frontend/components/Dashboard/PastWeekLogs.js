@@ -4,8 +4,9 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
 	wholePastLogsContainer: {
-		padding: 20,
-		backgroundColor: '#EC6641',
+		padding: 15,
+		// backgroundColor: '#EC6641',
+		backgroundColor: 'white',
 		borderRadius: 15,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
@@ -13,11 +14,12 @@ const styles = StyleSheet.create({
 		shadowRadius: 2.22,
 		elevation: 3,
 		width: '95%',
+		height: '18%',
 	},
 	weeklyLogTitle: {
 		fontSize: 20,
 		fontWeight: 'bold',
-		marginBottom: 15,
+		// marginBottom: 15,
 		color: '#000',
 	},
 	weekContainer: {
@@ -26,19 +28,26 @@ const styles = StyleSheet.create({
 		backgroundColor: '#F7F7F7',
 		borderRadius: 8,
 		padding: 8,
+		marginVertical: 10,
+		width: '100%',
+		height: '70%',
+		// backgroundColor: 'red',
 
 	},
 	weeklyLogDaysContainer: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'space-around',
+		alignContent: 'center',
+		alignItems: 'center',
+		width: '100%',
 	},
 	dayContainer: {
 		alignItems: 'center',
-		padding: 10,
+		padding: 5,
 	},
 	dayName: {
-		fontSize: 15,
-		fontWeight: '500',
+		fontSize: 12,
+		fontWeight: '700',
 		color: '#333',
 		marginBottom: 5,
 		textTransform: 'uppercase',

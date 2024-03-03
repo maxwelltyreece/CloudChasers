@@ -7,34 +7,37 @@ import {
 const styles = StyleSheet.create({
 	// -------Goal Progress Bar-------//
 	progressBarComponentContainer: {
-		flex: 1,
 		justifyContent: 'center',
-		alignContent: 'center',
+		alignContent: 'flex-start',
 		backgroundColor: '#EC6641',
+		// backgroundColor: 'white',
 		padding: 20,
-		marginBottom: 50,
+		marginBottom: '14%',
 		borderRadius: 15,
 		width: '95%',
-		height: 'auto',
+		height: '15%',
 		marginTop: 10,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.22,
 		shadowRadius: 2.22,
 		elevation: 3,
-
+		// borderColor: 'white',
+		// borderWidth: 1,
 	},
 	topSection: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'flex-start',
+		alignContent: 'center',
 		marginTop: 4,
 		width: '60%',
+		height: '50%',
 	},
 	goalInfoSection: {
 		justifyContent: 'center',
 		alignItems: 'flex-end',
-		width: '100%',
+		width: '90%',
 	},
 	progressBarTitle: {
 		fontSize: 20,
@@ -101,8 +104,13 @@ const styles = StyleSheet.create({
 	goalListContainer: {
 		width: '100%',
 	},
+	goalItemText: {
+		fontSize: 16,
+		fontWeight: '600',
+	},
 	goalItem: {
-		backgroundColor: '#EC6641',
+		// backgroundColor: '#EC6641',
+		backgroundColor: 'lightblue',
 		padding: 15,
 		width: '100%',
 		borderWidth: 1,
@@ -145,22 +153,34 @@ const styles = StyleSheet.create({
 function GoalProgressBar({ current }) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [selectedGoal, setSelectedGoal] = useState({
-		id: 0,
-		description: '160g Protein',
+		id: 1,
+		description: '2000ml Water',
 		frequency: 'per day',
+		currentAmount: 1200,
+		goalAmount: 2000,
 	});
 
 	// Mock database of dietary goals
 	const goals = [
-		{ id: 1, description: '2000ml Water', frequency: 'per day' },
-		{ id: 2, description: '150g Protein', frequency: 'per day' },
-		{ id: 3, description: '80g Carbohydrates', frequency: 'per day' },
-		{ id: 4, description: '1000mg Sodium', frequency: 'per day' },
-		{ id: 5, description: '75g Fat', frequency: 'per day' },
+		{
+			id: 1, description: '2000ml Water', frequency: 'per day', currentAmount: 1200, goalAmount: 2000,
+		},
+		{
+			id: 2, description: '150g Protein', frequency: 'per day', currentAmount: 80, goalAmount: 150,
+		},
+		{
+			id: 3, description: '80g Carbohydrates', frequency: 'per day', currentAmount: 40, goalAmount: 80,
+		},
+		{
+			id: 4, description: '1000mg Sodium', frequency: 'per day', currentAmount: 500, goalAmount: 1000,
+		},
+		{
+			id: 5, description: '75g Fat', frequency: 'per day', currentAmount: 60, goalAmount: 75,
+		},
 	];
 
-	const progressPercent = Math.min((current / selectedGoal.id) * 100, 100);
-	// This calculation might need to be adjusted based on real data
+	const progressPercent = Math.min((
+		selectedGoal.currentAmount / selectedGoal.goalAmount) * 100, 100);
 
 	const selectGoal = (goal) => {
 		setSelectedGoal(goal);
@@ -189,10 +209,11 @@ function GoalProgressBar({ current }) {
 				<View style={[styles.filledProgressBar, { width: `${progressPercent}%` }]} />
 			</View>
 
+			{/* Display Current vs. Goal Amount */}
 			<Text style={styles.currentProgressBarText}>
-				{current}
-    /
-				{selectedGoal.description}
+				{selectedGoal.currentAmount}
+				/
+				{selectedGoal.goalAmount}
 			</Text>
 
 			<Modal

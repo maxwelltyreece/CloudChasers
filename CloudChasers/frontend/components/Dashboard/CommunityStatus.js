@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-one-expression-per-line */
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React from 'react';
 import {
 	View, Text, ScrollView, StyleSheet,
@@ -5,12 +7,11 @@ import {
 
 const styles = StyleSheet.create({
 	container: {
-		// flex: 1,
-		backgroundColor: '#EC6641',
+		// backgroundColor: '#EC6641',
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
 		width: '95%',
-		// height: 'auto',
+		height: 'auto',
 		borderRadius: 15,
 		padding: 10,
 		shadowColor: '#000',
@@ -25,7 +26,7 @@ const styles = StyleSheet.create({
 	header: {
 		fontSize: 20,
 		fontWeight: 'bold',
-		marginLeft: 10,
+		// marginLeft: 10,
 		marginBottom: 10,
 	},
 	updateContainer: {
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
 		padding: 10,
 		marginRight: 10,
 		marginBottom: 5,
-		width: 200,
+		width: 'auto',
 		height: 'auto',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
@@ -67,10 +68,7 @@ function CommunityUpdates() {
 					<View key={index} style={styles.updateContainer}>
 						<Text style={styles.groupName}>{update.groupName}</Text>
 						<Text style={styles.detailText}>
-    Likes:
-							{update.likes}
-							{' '}
-    | Members:
+    						Likes: {update.likes} {' '} | Members:
 							{update.members}
 						</Text>
 						{/* <Text style={styles.detailText}>Members: {update.members}</Text> */}
