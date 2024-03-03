@@ -246,8 +246,7 @@ function Reminders() {
 		frequency: 'Daily', // Default frequency
 	});
 	const [date, setDate] = useState(new Date());
-	const [showTimePicker, setShowTimePicker] = useState(false);
-	const [showFrequencyPicker, setShowFrequencyPicker] = useState(false);
+	const [, setShowTimePicker] = useState(false);
 	const [selectedFrequencyIndex, setSelectedFrequencyIndex] = useState(0);
 
 	const handleAddReminder = () => {
@@ -278,14 +277,6 @@ function Reminders() {
 		setNewReminder({ ...newReminder, time: formattedTime });
 	};
 
-	const showModalTimePicker = () => {
-		setShowTimePicker(true);
-	};
-
-	const showModalFrequencyPicker = () => {
-		setShowFrequencyPicker(true);
-	};
-
 	return (
 		<View style={styles.container}>
 			<ScrollView style={styles.scrollViewContainer}>
@@ -306,9 +297,9 @@ function Reminders() {
 			</ScrollView>
 
 			<Pressable style={styles.addReminderButton} onPress={() => setIsModalVisible(true)}>
-					<Text style={styles.addReminderButtonText}>
+				<Text style={styles.addReminderButtonText}>
 						Add Reminder
-					</Text>
+				</Text>
 			</Pressable>
 
 			<Modal
@@ -328,18 +319,18 @@ function Reminders() {
 					/>
 
 					<Text style={{ fontSize: 16, fontWeight: 'bold' }}>Current Time Selected:</Text>
-						<Text>{newReminder.time || '(Choose Time)'}</Text>
+					<Text>{newReminder.time || '(Choose Time)'}</Text>
 
 					<View style={styles.timePickerSection}>
 						<Text style={styles.selectTimeTitle}>Select Time: </Text>
 
 						{/* {showTimePicker && ( */}
-							<DateTimePicker
-								value={date}
-								mode="time"
-								display="default"
-								onChange={onChangeTime}
-							/>
+						<DateTimePicker
+							value={date}
+							mode="time"
+							display="default"
+							onChange={onChangeTime}
+						/>
 						{/* )} */}
 
 					</View>
