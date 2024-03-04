@@ -6,6 +6,10 @@ const MealItem = require('../models/mealItem');
 const FoodItem = require('../models/foodItem');
 const Food = require('../models/food');
 
+const Recipe = require('../models/recipe');
+const RecipeItem = require('../models/recipeItem');
+const RecipeQuantity = require('../models/recipeQuantity');
+
 exports.getStreaks = async (req, res) => {
 	try {
 		const { today } = req.body;
@@ -59,9 +63,20 @@ exports.getDailyCaloricIntake = async (req, res) => {
 			const mealItems = await MealItem.find({ User_Day_Meals_ID: meal._id });
 
 			for (const mealItem of mealItems) {
-				const foodItem = await FoodItem.findById(mealItem.foodItemID);
-				const food = await Food.findById(foodItem.foodID);
-				totalCalories += food.kCals * (foodItem.weight / 100); 
+				if (!mealItem.foodItemID) {
+					const recipeQuantityID = await RecipeQuantity.findById(mealItem.recipeQuantityID);
+					const recipe = await Recipe.findById(recipeQuantityID.recipeID);
+					const allRecipeItems = await RecipeItem.find({ Recipe_ID: recipe._id });
+					for (const recipeItem of allRecipeItems) {
+						const foodItem = await FoodItem.findById(recipeItem.foodItemID);
+						const food = await Food.findById(foodItem.foodID);
+						totalCalories += food.kCals * (foodItem.weight / 100);
+					}
+				} else {
+					const foodItem = await FoodItem.findById(mealItem.foodItemID);
+					const food = await Food.findById(foodItem.foodID);
+					totalCalories += food.kCals * (foodItem.weight / 100); 
+				}
 			}
 		}
 
