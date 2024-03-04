@@ -17,9 +17,9 @@ const food = require('../models/food');
 
 jest.mock('../models/user', () => ({ findById: jest.fn() }));
 jest.mock('../models/userDay', () => ({ findOne: jest.fn() }));
-jest.mock('../models/userDayMeal', () => ({ findAll: jest.fn() }));
-jest.mock('../models/mealItem', () => ({ findAll: jest.fn() }));
-jest.mock('../models/foodItem', () => ({ findAll: jest.fn() }));
+jest.mock('../models/userDayMeal', () => ({ find: jest.fn() }));
+jest.mock('../models/mealItem', () => ({ find: jest.fn() }));
+jest.mock('../models/foodItem', () => ({ findById: jest.fn() }));
 jest.mock('../models/food', () => ({ findById: jest.fn() }));
 
 jest.mock('../models/user', () => ({
@@ -34,7 +34,7 @@ jest.mock('../models/user', () => ({
 describe('Streaks Endpoint', () => {
 	it('should return 200 and update the streak for authenticated request', async () => {
 		const response = await request(app)
-			.post('/stats/streak')
+			.put('/stats/streak')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ today: new Date().toISOString() });
 
@@ -45,7 +45,7 @@ describe('Streaks Endpoint', () => {
 
 	it('should return consecutive days streak', async () => {
 		const response = await request(app)
-			.post('/stats/streak')
+			.put('/stats/streak')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ today: new Date(Date.now() + 86400000).toISOString() });
 
@@ -56,7 +56,7 @@ describe('Streaks Endpoint', () => {
 
 	it('should not update streak if the date is the same', async () => {
 		const response = await request(app)
-			.post('/stats/streak')
+			.put('/stats/streak')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ today: new Date().toISOString() });
 
@@ -67,7 +67,7 @@ describe('Streaks Endpoint', () => {
 
 	it('should reset streak if the date is not consecutive', async () => {
 		const response = await request(app)
-			.post('/stats/streak')
+			.put('/stats/streak')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ today: new Date(Date.now() + 86400000 * 2).toISOString() });
 
@@ -79,24 +79,27 @@ describe('Streaks Endpoint', () => {
 
 describe('Daily Caloric Intake Endpoint', () => {
 	it('should return 200 and the total caloric intake for the day', async () => {
-		userDay.findOne.mockResolvedValue({ _id: 'testUserDayID', date: new Date().toISOString(), userID: 'testUserID' });
-		userDayMeal.find.mockResolvedValue([{ name: 'Lunch', userDayID: 'testUserDayID' }, { name: 'Dinner', userDayID: 'testUserDayID2'}]);
-		mealItem.find.mockResolvedValue([{ name: 'testmealItem', userDayMealID: 'testUserDayMealID' }, { name: 'testmealItem2', userDayMealID: 'testUserDayMealID2' }]);
-		foodItem.find.mockResolvedValue([{ _id: 'testFoodItemID',  weight: 100, foodID: 'testFoodID' }, { _id: 'testFoodItemID2',  weight: 100, foodID: 'testFoodID' }]);
-		food.findById.mockResolvedValue({ calories: 100 });
+		userDay.findOne.mockResolvedValue({ _id: 'testUserDayID', date: new Date().toISOString(), userID: 'testUserID', save: jest.fn().mockResolvedValue(true)});
+		userDayMeal.find.mockResolvedValue([ { _id: 'testUserDayMealID', name: 'Dinner', userDayID: 'testUserDayID2', save: jest.fn().mockResolvedValue(true)}]);
+		mealItem.find.mockResolvedValue([{ _id: 'testMealItemID', name: 'testmealItem', foodItemID: 'testFoodItemID', userDayMealID: 'testUserDayMealID', save: jest.fn().mockResolvedValue(true) }, { _id: 'testMealItemID2', name: 'testmealItem2', foodItemID: 'testFoodItemID', userDayMealID: 'testUserDayMealID', save: jest.fn().mockResolvedValue(true) }]);
+		// foodItem.findById.mockResolvedValue([{ _id: 'testFoodItemID',  weight: 100, foodID: 'testFoodID', save: jest.fn().mockResolvedValue(true) }, { _id: 'testFoodItemID2',  weight: 100, foodID: 'testFoodID2',save: jest.fn().mockResolvedValue(true) }]);
+		// food.findById.mockResolvedValue([{ _id: 'testFoodID', calories: 100, save: jest.fn().mockResolvedValue(true) }, { _id: 'testFoodID2', calories: 200, save: jest.fn().mockResolvedValue(true) }]);
+		foodItem.findById.mockResolvedValue({ _id: 'testFoodItemID',  weight: 200, foodID: 'testFoodID', save: jest.fn().mockResolvedValue(true) });
+		food.findById.mockResolvedValue({ _id: 'testFoodID', calories: 100, save: jest.fn().mockResolvedValue(true) });
 
 		const response = await request(app)
-			.post('/stats/daily-caloric-intake')
+			.get('/stats/daily-caloric-intake')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ date: new Date().toISOString() });
 
 		expect(response.statusCode).toBe(200);
 		expect(response.body).toHaveProperty('totalCalories');
+		expect(response.body.totalCalories).toBe(300);
 	});
 
 	it('should return 400 if no data is found for the day', async () => {
 		const response = await request(app)
-			.post('/stats/daily-caloric-intake')
+			.get('/stats/daily-caloric-intake')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ date: new Date(Date.now() - 86400000).toISOString() });
 
@@ -106,7 +109,7 @@ describe('Daily Caloric Intake Endpoint', () => {
 
 	it('should return 400 if no meals are found for the day', async () => {
 		const response = await request(app)
-			.post('/stats/daily-caloric-intake')
+			.get('/stats/daily-caloric-intake')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ date: new Date().toISOString() });
 

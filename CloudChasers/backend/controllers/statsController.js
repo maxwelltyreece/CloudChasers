@@ -97,7 +97,7 @@ exports.getDailyCaloricIntake = async (req, res) => {
 		}
 
 		let totalCalories = 0;
-
+		console.log("calories: " + totalCalories);
 		for (const meal of userDayMeals) {
 			const mealItems = await MealItem.find({ userDayMealID: meal._id });
 
