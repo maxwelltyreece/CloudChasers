@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { UserProvider } from './frontend/contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import {
@@ -17,6 +16,8 @@ import {
 	Montserrat_900Black,
 } from '@expo-google-fonts/montserrat';
 
+import { UserProvider } from './frontend/contexts/UserContext';
+import { CommunityProvider } from './frontend/contexts/CommunityContext';
 import AuthNavigator from './frontend/navigation/AuthNavigator';
 import MainNavigator from './frontend/navigation/MainNavigator';
 
@@ -65,12 +66,14 @@ export default function App() {
 
 	return (
 		<UserProvider>
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName={initialRoute}>
-                    <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-                    <Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-                </Stack.Navigator>
-            </NavigationContainer>
-        </UserProvider>
+			<CommunityProvider>
+				<NavigationContainer>
+					<Stack.Navigator initialRouteName={initialRoute}>
+						<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+						<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+					</Stack.Navigator>
+				</NavigationContainer>
+			</CommunityProvider>
+		</UserProvider>
 	);
 }

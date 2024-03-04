@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	View, Text, FlatList, StyleSheet, TextInput, TouchableOpacity, Pressable,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import Box from '../../components/box';
+import { useCommunity } from '../../contexts/CommunityContext';
 
 const data = [
 	{ title: 'Community 1' },
@@ -50,6 +51,12 @@ const styles = StyleSheet.create({
 function Groups() {
 	const [searchText, setSearchText] = useState('');
 	const navigation = useNavigation();
+	const { userCommunities, fetchUserCommunities } = useCommunity();
+
+	useEffect(() => {
+		console.log(userCommunities);
+		console.log(userCommunities.map(item => item.name));
+	}, [userCommunities]);
 
 	function NewGroupButton() {
 		return (
@@ -60,9 +67,7 @@ function Groups() {
 	}
 
 	// eslint-disable-next-line max-len
-	const filteredData = data.filter((item) => item.title.toLowerCase().includes(searchText.toLowerCase()));
-
-	const handlePress = (item) => {
+	const filteredData = userCommunities.filter((item) => item.name.toLowerCase().includes((searchText || '').toLowerCase()));	const handlePress = (item) => {
 		navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });
 	};
 	return (
@@ -84,7 +89,7 @@ function Groups() {
 				renderItem={({ item }) => (
 					<View style={styles.itemContainer}>
 						<TouchableOpacity style={{ flex: 1 }} onPress={() => handlePress(item)}>
-							<Box title={item.title} />
+							<Box title={item.name} />
 						</TouchableOpacity>
 					</View>
 				)}
