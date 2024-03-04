@@ -106,7 +106,7 @@ exports.getCommunityDetails = async (req, res) => {
 };
 
 exports.getCommunityMembers = async (req, res) => {
-    const { communityId } = req.body;
+    const { communityId } = req.query;
     try {
         const user = req.user;
         // Get community
@@ -133,10 +133,11 @@ exports.getCommunityMembers = async (req, res) => {
 };
 
 exports.getUserRole = async (req, res) => {
-    const { communityId } = req.body;
+    const { communityId } = req.query;
     try {
         const user = req.user;
         // Get community
+        console.log(communityId);
         const community = await Community.findById(communityId);
         if (!community) {
             return res.status(404).send({ message: 'Community not found' });

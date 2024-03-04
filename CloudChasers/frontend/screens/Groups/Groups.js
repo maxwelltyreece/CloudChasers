@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import Box from '../../components/box';
 import { useCommunity } from '../../contexts/CommunityContext';
+import globalStyles from '../../styles/global';
 
 const data = [
 	{ title: 'Community 1' },
@@ -28,11 +29,12 @@ const styles = StyleSheet.create({
 		paddingHorizontal: '5%',
 	},
 	title: {
-		fontWeight: 'bold',
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 24,
 		marginBottom: 20,
 	},
 	searchInput: {
+		fontFamily: 'Montserrat_600SemiBold',
 		height: 40,
 		borderColor: 'gray',
 		borderWidth: 1,
@@ -51,12 +53,7 @@ const styles = StyleSheet.create({
 function Groups() {
 	const [searchText, setSearchText] = useState('');
 	const navigation = useNavigation();
-	const { userCommunities, fetchUserCommunities } = useCommunity();
-
-	useEffect(() => {
-		console.log(userCommunities);
-		console.log(userCommunities.map(item => item.name));
-	}, [userCommunities]);
+	const { userCommunities } = useCommunity(); // Destructure userCommunities from the context
 
 	function NewGroupButton() {
 		return (
@@ -67,7 +64,9 @@ function Groups() {
 	}
 
 	// eslint-disable-next-line max-len
-	const filteredData = userCommunities.filter((item) => item.name.toLowerCase().includes((searchText || '').toLowerCase()));	const handlePress = (item) => {
+	const filteredData = userCommunities.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
+
+	const handlePress = (item) => {
 		navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });
 	};
 	return (

@@ -57,26 +57,37 @@ export async function getCommunityDetails(communityId) {
 
 export async function getCommunityMembers(communityId) {
 	const token = await AsyncStorage.getItem('token');
-	const response = await fetch(`http://${LocalIP}:3000/community/members`, {
-		method: 'POST',
+	const response = await fetch(`http://${LocalIP}:3000/community/members?communityId=${communityId}`, {
+		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
-		body: JSON.stringify({ communityId }),
 	});
+
+	if (!response.ok) {
+		console.error('Server response:', response);
+		throw new Error(`Server responded with status code ${response.status}`);
+	}
+
+	if (!response.headers.get('Content-Type').includes('application/json')) {
+		console.error('Unexpected response type:', response.headers.get('Content-Type'));
+		throw new Error('Server responded with non-JSON content');
+	}
+
 	return response.json();
 }
 
 export async function getUserRole(communityId) {
 	const token = await AsyncStorage.getItem('token');
-	const response = await fetch(`http://${LocalIP}:3000/community/role`, {
-		method: 'POST',
+	const response = await fetch(`http://${LocalIP}:3000/community/role?communityId=${communityId}`, {
+		method: 'GET',
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
-		body: JSON.stringify({ communityId }),
 	});
-	return response.json();
+	const text = await response.text(); // get the response as text
+	console.log('Server response:', text); // log the response
+	return JSON.parse(text); // parse the response as JSON
 }
 
 export async function getAllCommunities() {
