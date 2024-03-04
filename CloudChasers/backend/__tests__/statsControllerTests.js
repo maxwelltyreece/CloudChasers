@@ -79,7 +79,7 @@ describe('Streaks Endpoint', () => {
 
 describe('Daily Caloric Intake Endpoint', () => {
 	it('should return 200 and the total caloric intake for the day', async () => {
-		userDay.findOne.mockResolvedValue({ date: new Date().toISOString(), userID: 'testUserID' });
+		userDay.findOne.mockResolvedValue({ _id: 'testUserDayID', date: new Date().toISOString(), userID: 'testUserID' });
 		userDayMeal.find.mockResolvedValue([{ name: 'Lunch', userDayID: 'testUserDayID' }, { name: 'Dinner', userDayID: 'testUserDayID2'}]);
 		mealItem.find.mockResolvedValue([{ name: 'testmealItem', userDayMealID: 'testUserDayMealID' }, { name: 'testmealItem2', userDayMealID: 'testUserDayMealID2' }]);
 		foodItem.find.mockResolvedValue([{ _id: 'testFoodItemID',  weight: 100, foodID: 'testFoodID' }, { _id: 'testFoodItemID2',  weight: 100, foodID: 'testFoodID' }]);
