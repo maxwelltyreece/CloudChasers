@@ -97,29 +97,33 @@ exports.getDailyCaloricIntake = async (req, res) => {
 		}
 
 		let totalCalories = 0;
-		console.log("totalCalories: " + totalCalories);
 
 		for (const meal of userDayMeals) {
 			const mealItems = await MealItem.find({ userDayMealID: meal._id });
-		  
+
 			for (const mealItem of mealItems) {
-			  if (!mealItem.foodItemID) {
-				const recipeQuantityID = await RecipeQuantity.findById(mealItem.recipeQuantityID);
-				const recipe = await Recipe.findById(recipeQuantityID.recipeID);
-				const allRecipeItems = await RecipeItem.find({ recipeID: recipe._id });
-				for (const recipeItem of allRecipeItems) {
-				  totalCalories += await calculateCalories(recipeItem.foodItemID);
+
+				if (!mealItem.foodItemID) {
+					const recipeQuantityID = await RecipeQuantity.findById(mealItem.recipeQuantityID);
+					const recipe = await Recipe.findById(recipeQuantityID.recipeID);
+					const allRecipeItems = await RecipeItem.find({ recipeID: recipe._id });
+					for (const recipeItem of allRecipeItems) {
+						const foodItem = await FoodItem.findById(recipeItem.foodItemID);
+						const food = await Food.findById(foodItem.foodID);
+						totalCalories += food.calories * (foodItem.weight / 100);
+					}
+				} else {
+					const foodItem = await FoodItem.findById(mealItem.foodItemID);
+					const food = await Food.findById(foodItem.foodID);
+					console.log("food: " + food);
+					totalCalories += food.calories * (foodItem.weight / 100); 
 				}
-			  } else {
-				totalCalories += await calculateCalories(mealItem.foodItemID);
-			  }
 			}
-		  }
-
-		return res.status(200).send({ totalCalories, message: 'Calories retrieved successfully.' });
-
-	} catch (error) {
-		console.error(error); 
-		return res.status(500).send({ error: 'An error occurred while calculating calories.' });
+		}
+		return res.status(200).send({ totalCalories });
+	}
+	catch (error) {
+		console.error(error);
+		return res.status(500).send({ error: error.toString() });
 	}
 };
