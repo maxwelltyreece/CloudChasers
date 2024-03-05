@@ -68,7 +68,7 @@ exports.addItemToRecipe = async (req, res) => {
 }
 
 exports.getRecipe = async (req, res) => {
-	const { recipeID } = req.body;
+	const { recipeID } = req.query;
 	try {
 		const recipe = await Recipe.findById(recipeID);
 		if (!recipe) {
@@ -76,6 +76,48 @@ exports.getRecipe = async (req, res) => {
 		}
 		const recipeItems = await RecipeItem.find({ recipeID });
 		return res.status(200).json({ message: 'Recipe found', data: { recipe, recipeItems, recipeQuantities } });
+	}
+	catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}
+
+exports.getAllUserRecipes = async (req, res) => {
+	const user = req.user;
+	try {
+		const recipes = await Recipe.find({ createdBy: user._id });
+		return res.status(200).json({ message: 'Recipes found', data: recipes });
+	}
+	catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}
+
+exports.getRecipeIngredients = async (req, res) => {
+	const { recipeID } = req.query;
+	try {
+		const recipeItems = await RecipeItem.find({ recipeID: recipeID });
+		if (recipeItems.length === 0) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+
+		let recipeIngredients = [];
+		for (const recipeItem of recipeItems) {
+			const foodItem = await FoodItem.findById(recipeItem.foodItemID);
+			const food = await Food.findById(foodItem.foodID);
+			recipeIngredients.push({ food, weight: foodItem.weight });
+		}
+
+		//removes any fields from the food other than name and id and weight
+		recipeIngredients = recipeIngredients.map(ingredient => {
+			return {
+				name: ingredient.food.name,
+				id: ingredient.food._id,
+				weight: ingredient.weight
+			}
+		});
+
+		return res.status(200).json({ message: 'Recipe ingredients found', data: recipeIngredients });
 	}
 	catch (error) {
 		return res.status(400).json({ error: error.toString() });

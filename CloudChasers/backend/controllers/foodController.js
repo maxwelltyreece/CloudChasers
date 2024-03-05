@@ -105,7 +105,7 @@ exports.logDatabaseFood = async (req, res) => {
  * @returns {number} res.data.currentPage - The current page number.
  */
 exports.getFood = async (req, res) => {
-	const { page = 1, limit = 50 } = req.body;
+	const { page = 1, limit = 50 } = req.query;
 
 	try {
 		const foods = await Food.find()
@@ -127,16 +127,16 @@ exports.getFood = async (req, res) => {
 //TODO: check credintials to not display food created by others
 /**
  * Retrieves food items based on search parameters.
- * @param {number} req.body.page - The page number for pagination. Defaults to 1.
- * @param {number} req.body.limit - The number of items per page for pagination. Defaults to 50.
- * @param {Object} req.body.searchParams - Object containing the fields to search and their values.
+ * @param {number} req.query.page - The page number for pagination. Defaults to 1.
+ * @param {number} req.query.limit - The number of items per page for pagination. Defaults to 50.
+ * @param {Object} req.query.searchParams - Object containing the fields to search and their values.
  * @returns {Array} res.data.foods - An array of food objects.
  * @returns {number} res.data.totalPages - The total number of pages.
  * @returns {number} res.data.page - The current page number.
  * @returns {number} res.data.limit - The number of items per page.
  */
 exports.searchFoods = async (req, res) => {
-	const { page = 1, limit = 50, ...searchParams } = req.body;
+	const { page = 1, limit = 50, ...searchParams } = req.query;
 	const skip = (page - 1) * limit;
 
 
