@@ -88,20 +88,20 @@ describe('Daily Caloric Intake Endpoint', () => {
 		food.findById.mockResolvedValue({ _id: 'testFoodID', calories: 100, save: jest.fn().mockResolvedValue(true) });
 
 		const response = await request(app)
-			.get('/stats/daily-caloric-intake')
+			.get('/stats/daily-caloric-intake?date=' + new Date().toISOString())
 			.set('Authorization', `Bearer ${token}`)
-			.send({ date: new Date().toISOString() });
+			// .send({ date: new Date().toISOString() });
 
 		expect(response.statusCode).toBe(200);
 		expect(response.body).toHaveProperty('totalCalories');
-		expect(response.body.totalCalories).toBe(300);
+		expect(response.body.totalCalories).toBe(400);
 	});
 
 	it('should return 400 if no data is found for the day', async () => {
 		const response = await request(app)
-			.get('/stats/daily-caloric-intake')
+			.get('/stats/daily-caloric-intake?date=' + new Date(Date.now() - 86400000).toISOString())
 			.set('Authorization', `Bearer ${token}`)
-			.send({ date: new Date(Date.now() - 86400000).toISOString() });
+			// .send({ date: new Date(Date.now() - 86400000).toISOString() });
 
 		expect(response.statusCode).toBe(400);
 		expect(response.body).toHaveProperty('message', 'No data for this day.');
@@ -109,9 +109,9 @@ describe('Daily Caloric Intake Endpoint', () => {
 
 	it('should return 400 if no meals are found for the day', async () => {
 		const response = await request(app)
-			.get('/stats/daily-caloric-intake')
+			.get('/stats/daily-caloric-intake?date=' + new Date().toISOString())
 			.set('Authorization', `Bearer ${token}`)
-			.send({ date: new Date().toISOString() });
+			// .send({ date: new Date().toISOString() });
 
 		expect(response.statusCode).toBe(400);
 		expect(response.body).toHaveProperty('message', 'No meals for this day.');

@@ -83,7 +83,7 @@ async function calculateCalories(foodItemId) {
  */
 exports.getDailyCaloricIntake = async (req, res) => {
 	try {
-		const { date } = req.body;
+		const { date } = req.query;
 		const user = req.user;
 
 		const userDay = await UserDay.findOne({ userID: user._id, date: date });
@@ -97,7 +97,7 @@ exports.getDailyCaloricIntake = async (req, res) => {
 		}
 
 		let totalCalories = 0;
-		console.log("calories: " + totalCalories);
+
 		for (const meal of userDayMeals) {
 			const mealItems = await MealItem.find({ userDayMealID: meal._id });
 
@@ -121,6 +121,100 @@ exports.getDailyCaloricIntake = async (req, res) => {
 			}
 		}
 		return res.status(200).send({ totalCalories });
+	}
+	catch (error) {
+		console.error(error);
+		return res.status(500).send({ error: error.toString() });
+	}
+};
+
+exports.getDailyWaterIntake = async (req, res) => {
+	try {
+		const { date } = req.body;
+		const user = req.user;
+
+		const userDay = await UserDay.findOne({ userID: user._id, date: date });
+		if (!userDay) {
+			return res.status(400).send({ message: 'No data for this day.' });
+		}
+
+		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
+		if (userDayMeals.length === 0) {
+			return res.status(400).send({ message: 'No meals for this day.' });
+		}
+
+		let totalWater = 0;
+
+		for (const meal of userDayMeals) {
+			const mealItems = await MealItem.find({ userDayMealID: meal._id });
+
+			for (const mealItem of mealItems) {
+
+				if (!mealItem.foodItemID) {
+					const recipeQuantityID = await RecipeQuantity.findById(mealItem.recipeQuantityID);
+					const recipe = await Recipe.findById(recipeQuantityID.recipeID);
+					const allRecipeItems = await RecipeItem.find({ recipeID: recipe._id });
+					for (const recipeItem of allRecipeItems) {
+						const foodItem = await FoodItem.findById(recipeItem.foodItemID);
+						const food = await Food.findById(foodItem.foodID);
+						totalWater += food.water * (foodItem.weight / 100);
+					}
+				} else {
+					const foodItem = await FoodItem.findById(mealItem.foodItemID);
+					const food = await Food.findById(foodItem.foodID);
+					console.log("food: " + food);
+					totalWater += food.water * (foodItem.weight / 100); 
+				}
+			}
+		}
+		return res.status(200).send({ totalWater });
+	}
+	catch (error) {
+		console.error(error);
+		return res.status(500).send({ error: error.toString() });
+	}
+};
+
+exports.getDailyProteinIntake = async (req, res) => {
+	try {
+		const { date } = req.body;
+		const user = req.user;
+
+		const userDay = await UserDay.findOne({ userID: user._id, date: date });
+		if (!userDay) {
+			return res.status(400).send({ message: 'No data for this day.' });
+		}
+
+		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
+		if (userDayMeals.length === 0) {
+			return res.status(400).send({ message: 'No meals for this day.' });
+		}
+
+		let totalProtein = 0;
+
+		for (const meal of userDayMeals) {
+			const mealItems = await MealItem.find({ userDayMealID: meal._id });
+
+			for (const mealItem of mealItems) {
+
+				if (!mealItem.foodItemID) {
+					const recipeQuantityID = await RecipeQuantity.findById(mealItem.recipeQuantityID);
+					const recipe = await Recipe.findById(recipeQuantityID.recipeID);
+					const allRecipeItems = await RecipeItem.find({ recipeID: recipe._id });
+					for (const recipeItem of allRecipeItems) {
+						const foodItem = await FoodItem.findById(recipeItem.foodItemID);
+						const food = await Food.findById(foodItem.foodID);
+						totalProtein += food.protein * (foodItem.weight / 100);
+					}
+				} else {
+					const foodItem = await FoodItem.findById(mealItem.foodItemID);
+					const food = await Food.findById(foodItem.foodID);
+					console.log("food: " + food);
+					totalProtein += food.protein * (foodItem.weight / 100); 
+				}
+			}
+		}
+		return res.status(200).send({ totalProtein });
 	}
 	catch (error) {
 		console.error(error);
