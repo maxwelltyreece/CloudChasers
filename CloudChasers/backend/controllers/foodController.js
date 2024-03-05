@@ -17,29 +17,35 @@ async function createUserDay(userID, date){
 				userID
 			});
 			await newUserDay.save();
-			return newUserDay; // Return the newly created UserDay object
+		}else{
+
+			return existingUserDay;
+		
 		}
 	} catch (error) {
 		throw new Error('Failed to create UserDay');
 	}
+	return newUserDay; // Return the newly created UserDay object
 };
 
 async function createUserDayMeal(mealType, userDay) {
 	try {
-		let userDayMeal = await userDayMeal.findOne({ name: mealType, userDayID: userDay._id });
+		const existingUserDayMeal = await UserDayMeal.findOne({ name: mealType, userDayID: userDay._id });
 
-		if (!userDayMeal) {
-			userDayMeal = new UserDayMeal({
+		if (!existingUserDayMeal) {
+			const newUserDayMeal = new UserDayMeal({
 				name: mealType,
 				userDayID: userDay._id
 			});
-			await userDayMeal.save();
+			await newUserDayMeal.save();
+		} else {
+			return existingUserDayMeal;
 		}
 
-		return userDayMeal;
 	} catch (error) {
 		throw new Error('Failed to create UserDayMeal');
 	}
+	return newUserDayMeal;
 }
 
 /**
@@ -53,29 +59,28 @@ async function createUserDayMeal(mealType, userDay) {
  */
 exports.logDatabaseFood = async (req, res) => {
 	const { mealType, food_id, weight } = req.body;
+	let session;
 	try {
 		const user = req.user;
 		const food = await Food.findById(food_id);
-
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 		
-		const session = await mongoose.startSession();
+		session = await mongoose.startSession();
 		session.startTransaction();
 
 		// Check if user day exists, if not create it
-		const newUserDay = createUserDay(user._id, today);
+		const newUserDay = await createUserDay(user._id, today);
 
 		// Check if user day meal exists, if not create it
 		// TODO: Can change behaviour to allow multiple meals of the same type
-		const newUserDayMeal = createUserDayMeal(mealType, newUserDay);
+		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
 
 		const newFoodItem = new FoodItem({
 			foodID: food._id,
 			weight,
 		});
-		await newFoodItem.save();
-
+		await newFoodItem.save();	
 		const mealItem = new MealItem({
 			name: food.name,
 			foodItemID: newFoodItem._id,
@@ -83,14 +88,15 @@ exports.logDatabaseFood = async (req, res) => {
 			userDayMealID: newUserDayMeal._id,
 		});
 		await mealItem.save();
-
 		await session.commitTransaction();
 		session.endSession();
 
 		return res.status(200).send({ message: 'Food logged' });
 	} catch (error) {
-		session.abortTransaction();
-		session.endSession();
+		if (session) {
+			session.abortTransaction();
+			session.endSession();
+		}
 		return res.status(500).send({ error: error.toString() });
 	}
 };
