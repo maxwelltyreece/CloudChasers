@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-        View, Text, Image, StyleSheet,
-    } from 'react-native';
+    View, Text, Image, StyleSheet,
+} from 'react-native';
 
 const styles = StyleSheet.create({
     box: {
@@ -21,17 +21,17 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: 'Montserrat_700Bold',
     },
 });
 
-const Box = function (title, image) {
+function Box({ title, image }) {
     return (
         <View style={styles.box}>
             {image && <Image source={{ uri: image }} style={styles.image} />}
             <Text style={styles.title}>{title}</Text>
         </View>
     );
-};
+}
 
 export default Box;
