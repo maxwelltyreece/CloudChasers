@@ -8,8 +8,6 @@ const CommunityUser = require('../models/communityUser');
 // - Join private community
 // - Get pending requests
 // - Get community posts
-// - Delete community
-// - Leave community
 // - Update community details
 // - Get list of communities
 // 
@@ -18,6 +16,8 @@ const CommunityUser = require('../models/communityUser');
 // - Get admin status
 // - Get member status
 // - Get list of user communities
+// - Delete community
+// - Leave community
 
 exports.createCommunity = async (req, res) => {
     const { name, description, recipePrivacy, joinPrivacy } = req.body;
@@ -186,6 +186,62 @@ exports.getUserCommunities = async (req, res) => {
             name: community.name,
             description: community.description,
         }))});
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.toString() });
+    }
+}
+
+// Delete community
+exports.deleteCommunity = async (req, res) => {
+    const { communityId } = req.body;
+    try {
+        const user = req.user;
+        // Get community
+        const community = await Community.findById(communityId);
+        if (!community) {
+            return res.status(404).send({ message: 'Community not found' });
+        }
+        // Check if user is admin
+        const isAdmin = await CommunityUser.findOne({ communityID: communityId, userID: user._id, role: 'admin' });
+        if (!isAdmin) {
+            return res.status(400).send({ message: 'User is not an admin of the community' });
+        }
+        // Delete community object
+        await Community.deleteOne({ _id: communityId });
+        // Delete all CommunityUser objects for the community
+        await CommunityUser.deleteMany({ communityID: communityId });
+    
+        return res.status(200).json({ success: true, message: 'Community deleted' });
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.toString() });
+    }
+}
+
+// Leave community
+exports.leaveCommunity = async (req, res) => {
+    const { communityId } = req.body;
+    try {
+        const user = req.user;
+        // Get community
+        const community = await Community.findById(communityId);
+        if (!community) {
+            return res.status(404).send({ message: 'Community not found' });
+        }
+        // Check if user is a member
+        const isMember = await CommunityUser.findOne({ communityID: communityId, userID: user._id });
+        if (!isMember) {
+            return res.status(400).send({ message: 'User is not a member of the community' });
+        }
+        // If user is admin then they cannot leave community
+        if (isMember.role === 'admin') {
+            return res.status(400).send({ message: 'User is an admin of the community' });
+        }
+        // Leave community
+        await CommunityUser.deleteOne({ communityID: communityId, userID: user._id });
+    
+        return res.status(200).json({ success: true, message: 'Community left' });
     }
     catch (error) {
         return res.status(400).json({ error: error.toString() });
