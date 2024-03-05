@@ -36,9 +36,9 @@ exports.createCommunity = async (req, res) => {
             joinPrivacy,
             createdBy: user,
         });
-        console.log('Community created', newCommunity);
+       
         await newCommunity.save();
-
+        console.log('Community created', newCommunity);
         // Create CommunityUser to join community
         const newCommunityUser = new CommunityUser({
             communityID: newCommunity._id,
@@ -266,6 +266,32 @@ exports.updateCommunityDesc = async (req, res) => {
         }
         // Update community
         await Community.updateOne({ _id: communityId }, { description });
+    
+        return res.status(200).json({ success: true, message: 'Community updated' });
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.toString() });
+    }
+}
+
+// Update join privacy settings
+exports.updateJoinPrivacy = async (req, res) => {
+    const { communityId, joinPrivacy } = req.body;
+    try {
+        const user = req.user;
+        // Get community
+        const community = await Community.findById(communityId);
+        if (!community) {
+            return res.status(404).send({ message: 'Community not found' });
+        }
+        // Check if user is admin
+        const isAdmin = await CommunityUser.findOne({ communityID: communityId, userID: user._id, role: 'admin' });
+        if (!isAdmin) {
+            return res.status(400).send({ message: 'User is not an admin of the community' });
+        }
+        // Update community
+        await Community.updateOne({ _id: communityId }, { joinPrivacy }, { runValidators: true });
+
     
         return res.status(200).json({ success: true, message: 'Community updated' });
     }
