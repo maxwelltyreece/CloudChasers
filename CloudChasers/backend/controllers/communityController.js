@@ -8,16 +8,17 @@ const CommunityUser = require('../models/communityUser');
 // - Join private community
 // - Get pending requests
 // - Get community posts
-// - Update community details
-// - Get list of communities
+// - Update community privacy settings
 // 
 // DONE:
 // - Get community members
 // - Get admin status
 // - Get member status
 // - Get list of user communities
+// - Get list of communities
 // - Delete community
 // - Leave community
+// - Update community description
 
 exports.createCommunity = async (req, res) => {
     const { name, description, recipePrivacy, joinPrivacy } = req.body;
@@ -242,6 +243,31 @@ exports.leaveCommunity = async (req, res) => {
         await CommunityUser.deleteOne({ communityID: communityId, userID: user._id });
     
         return res.status(200).json({ success: true, message: 'Community left' });
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.toString() });
+    }
+}
+
+// Update group description
+exports.updateCommunityDesc = async (req, res) => {
+    const { communityId, description } = req.body;
+    try {
+        const user = req.user;
+        // Get community
+        const community = await Community.findById(communityId);
+        if (!community) {
+            return res.status(404).send({ message: 'Community not found' });
+        }
+        // Check if user is admin
+        const isAdmin = await CommunityUser.findOne({ communityID: communityId, userID: user._id, role: 'admin' });
+        if (!isAdmin) {
+            return res.status(400).send({ message: 'User is not an admin of the community' });
+        }
+        // Update community
+        await Community.updateOne({ _id: communityId }, { description });
+    
+        return res.status(200).json({ success: true, message: 'Community updated' });
     }
     catch (error) {
         return res.status(400).json({ error: error.toString() });

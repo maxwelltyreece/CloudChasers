@@ -13,5 +13,6 @@ router.get('/all', userMiddleware, communityController.getAllCommunities);
 router.get('/userCommunities', userMiddleware, communityController.getUserCommunities);
 router.put('/delete', userMiddleware, communityController.deleteCommunity);
 router.put('/leave', userMiddleware, communityController.leaveCommunity);
+router.put('/updateDesc', userMiddleware, communityController.updateCommunityDesc);
 
 module.exports = router;
