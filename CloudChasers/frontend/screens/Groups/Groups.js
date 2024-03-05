@@ -8,17 +8,6 @@ import Box from '../../components/box';
 import { useCommunity } from '../../contexts/CommunityContext';
 import globalStyles from '../../styles/global';
 
-const data = [
-	{ title: 'Community 1' },
-	{ title: 'Community 2' },
-	{ title: 'Community 3' },
-	{ title: 'Community 4' },
-	{ title: 'Community 5' },
-	{ title: 'Community 6' },
-	{ title: 'Community 7' },
-	{ title: 'Community 8' },
-];
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
@@ -53,7 +42,7 @@ const styles = StyleSheet.create({
 function Groups() {
 	const [searchText, setSearchText] = useState('');
 	const navigation = useNavigation();
-	const { userCommunities } = useCommunity(); // Destructure userCommunities from the context
+	const { userCommunities } = useCommunity();
 
 	function NewGroupButton() {
 		return (
@@ -62,6 +51,14 @@ function Groups() {
 			</Pressable>
 		);
 	}
+
+    function JoinGroupButton() {
+        return (
+            <Pressable onPress={() => navigation.navigate('Group', { screen: 'JoinGroup' })}>
+                <Feather name="users" size={24} color="black" />
+            </Pressable>
+        );
+    }
 
 	// eslint-disable-next-line max-len
 	const filteredData = userCommunities.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
@@ -75,6 +72,7 @@ function Groups() {
 				<View style={{ ...styles.titleContainer, flexDirection: 'row', justifyContent: 'space-between' }}>
 					<Text style={styles.title}>Your communities</Text>
 					<NewGroupButton />
+                    <JoinGroupButton />
 				</View>
 				<TextInput
 					style={styles.searchInput}

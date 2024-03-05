@@ -5,16 +5,19 @@ import Navbar from '../components/Navbar';
 import SettingsNavigator from './SettingsNavigator';
 import GroupNavigator from './GroupNavigator';
 import { useUser } from '../contexts/UserContext';
+import { useCommunity } from '../contexts/CommunityContext';
 
 const Stack = createStackNavigator();
 
 export default function MainNavigator() {
 	const { userDetails, updateUserDetails } = useUser();
+    const { getUserCommunities } = useCommunity();
 
 	useEffect(() => {
 		if (!userDetails) {
 			updateUserDetails();
 		}
+        getUserCommunities();
 	}, []);
 
 	return (

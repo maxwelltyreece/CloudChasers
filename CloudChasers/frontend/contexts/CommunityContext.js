@@ -9,14 +9,26 @@ const CommunityContext = createContext();
 export function CommunityProvider({ children }) {
 	const [userCommunities, setUserCommunities] = useState([]);
 
-	useEffect(() => {
-		const getUserCommunities = async () => {
-			const communities = await communityService.getUserCommunities();
-			setUserCommunities(communities.data);
-		};
+    const getUserCommunities = async () => {
+        const communities = await communityService.getUserCommunities();
+        setUserCommunities(communities.data);
+    };
 
+	useEffect(() => {
 		getUserCommunities();
 	}, []);
+
+    const getAvailableCommunities = async () => {
+        const response = await getAllCommunities();
+        if (response.success) {
+            return response.data.filter(
+                (community) => !userCommunities.some((userCommunity) => userCommunity.id === community.id)
+            );
+        } else {
+            console.error('Failed to get communities:', response);
+            return [];
+        }
+    };
 
 	// eslint-disable-next-line max-len
 	const getCommunityDetails = async (communityId) => communityService.getCommunityDetails(communityId);
@@ -33,6 +45,10 @@ export function CommunityProvider({ children }) {
 		return communityService.createCommunity(communityData);
 	};
 
+    const resetUserCommunities = () => {
+        setUserCommunities([]);
+    };
+
 	const joinCommunity = async (communityId) => communityService.joinCommunity(communityId);
 
 	const value = useMemo(() => ({
@@ -44,8 +60,11 @@ export function CommunityProvider({ children }) {
 		getAllCommunities,
 		createCommunity,
 		joinCommunity,
+        getAvailableCommunities,
+        resetUserCommunities,
+        getUserCommunities,
 	// eslint-disable-next-line max-len
-	}), [getCommunityDetails, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity]);
+	}), [getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity]);
 
 	return (
 		<CommunityContext.Provider value={value}>

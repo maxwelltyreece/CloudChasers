@@ -62,24 +62,13 @@ function SettingsItem({ item }) {
 }
 
 function SettingsFooter({ username, navigation }) {
+    const { logout } = useUser();
 	return (
 		<View>
 			<View style={styles.separator} />
 			<Text style={[styles.usernameHeader, globalStyles.bold]}>Logged in as</Text>
 			<Text style={[styles.usernameText, globalStyles.medium]}>{username}</Text>
-			<LogoutButton onPress={async () => {
-				try {
-					await AsyncStorage.removeItem('token');
-					console.log('Token removed!');
-					navigation.reset({
-						index: 0,
-						routes: [{ name: 'Auth' }],
-					});
-				} catch (error) {
-					console.error('Failed to remove the token.', error);
-				}
-			}}
-			/>
+			<LogoutButton onPress={ () => logout(navigation) }/>
 		</View>
 	);
 }
@@ -103,7 +92,7 @@ const keyExtractor = (item) => item.name;
 function Settings() {
 	const navigation = useNavigation();
 	const { userDetails } = useUser();
-	const { email } = userDetails;
+    const email = userDetails ? userDetails.email : '';
 	return (
 		<View style={styles.container}>
 			<FlatList

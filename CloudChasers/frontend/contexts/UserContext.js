@@ -4,11 +4,13 @@ import React, {
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import userService from '../services/UserService';
+import { useCommunity } from './CommunityContext';
 
 const UserContext = createContext();
 
 export function UserProvider({ children }) {
 	const [userDetails, setUserDetails] = useState(null);
+    const { resetUserCommunities } = useCommunity();
 
 	const updateUserDetails = async () => {
 		const token = await AsyncStorage.getItem('token');
@@ -29,9 +31,19 @@ export function UserProvider({ children }) {
 		}
 	};
 
-	const logout = () => {
-		setUserDetails(null);
-		// Perform other logout actions
+	const logout = async (navigation) => {
+        try {
+            await AsyncStorage.removeItem('token');
+            console.log('Token removed!');
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Auth' }],
+            });
+            setUserDetails(null);
+            resetUserCommunities();
+        } catch (error) {
+            console.error('Failed to remove the token.', error);
+        }
 	};
 
 	const value = useMemo(() => ({
