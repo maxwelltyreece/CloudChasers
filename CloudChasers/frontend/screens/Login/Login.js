@@ -66,6 +66,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#FF815E',
 		justifyContent: 'center',
 		alignItems: 'center',
+		minHeight: '100%',
 	},
 	loginContainer: {
 		width: '90%',

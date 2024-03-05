@@ -4,13 +4,17 @@ import Svg, { Path } from 'react-native-svg';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 
-const CustomIcon = ({ width = 80, height = 82 }) => {
+const CustomIcon = ({ width = 80, height = 82, startAnimation }) => {
     const [bubbleVisible, setBubbleVisible] = useState(false);
     const navigation = useNavigation();
-
+    const handlePress = () => {
+        setBubbleVisible(true);
+        startAnimation(); // Start the animation
+    };
+    
     return (
         <View>
-            <TouchableWithoutFeedback onPress={() => setBubbleVisible(true)}>
+            <TouchableWithoutFeedback onPress={handlePress}>
                 <Svg width={width} height={height} viewBox="0 0 80 82" fill="none">
                     <Path
                         d="M72.9816 14.2106C80.6197 23.9184 81.2327 36.9284 78.561 48.9885C75.9048 60.9786 69.8823 72.5196 58.8632 77.9412C47.8655 83.3523 35.0218 81.1582 23.9765 75.8451C13.0869 70.6068 3.96698 61.8531 1.04351 50.128C-1.91256 38.2721 1.6092 25.8768 9.11341 16.2339C16.6332 6.57095 27.7974 0.411021 40.0353 0.023339C52.6089 -0.374977 65.2027 4.32393 72.9816 14.2106Z"

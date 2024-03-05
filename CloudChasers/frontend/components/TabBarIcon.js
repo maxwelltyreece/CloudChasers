@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Animated } from 'react-native';
+import { TouchableOpacity, Animated, Platform } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import CustomIcon from './AddButton';
 import PropTypes from 'prop-types';
@@ -21,8 +21,13 @@ import PropTypes from 'prop-types';
  */
 export default function TabBarIcon({ name, color, size, animation, onPress, navigation }) {
     if (name === '+') {
+        const iconStyle = {
+            transform: [{ scale: animation }],
+            marginTop: Platform.OS === 'android' ? -10 : 0, // Adjust this value as needed
+        };
+
         return (
-            <Animated.View style={{ transform: [{ scale: animation }] }}>
+            <Animated.View style={iconStyle}>
                 <TouchableOpacity 
                     onPress={() => {
                         onPress();
@@ -30,7 +35,7 @@ export default function TabBarIcon({ name, color, size, animation, onPress, navi
                     }} 
                     activeOpacity={0.6}
                 >
-                    <CustomIcon width={70} height={70} />
+                    <CustomIcon width={70} height={70} startAnimation={onPress} animation={animation} />
                 </TouchableOpacity>
             </Animated.View>
         );

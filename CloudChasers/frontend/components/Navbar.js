@@ -1,6 +1,6 @@
 // React related imports
 import React, { useState, useCallback } from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated, Platform } from 'react-native';
 
 // Navigation related imports
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -24,23 +24,26 @@ const Tab = createBottomTabNavigator();
  * Each configuration is an object with `name`, `component`, and `icon` properties.
  */
 const screens = [
-    { name: 'Home', component: Dashboard, icon: 'home' },
-    { name: 'Groups', component: Groups, icon: 'users' },
-    { name: '+', component: DataEntry, icon: '+' },
-    { name: 'Stats', component: Stats, icon: 'chart-pie' },
-    { name: 'You', component: UserNavigator, icon: 'user' },
+	{ name: 'Home', component: Dashboard, icon: 'home' },
+	{ name: 'Groups', component: Groups, icon: 'users' },
+	{ name: '+', component: DataEntry, icon: '+' },
+	{ name: 'Stats', component: Stats, icon: 'chart-pie' },
+	{ name: 'You', component: UserNavigator, icon: 'user' },
 ];
 
 const screenOptions = { 
-    headerShown: false,
-    tabBarStyle: { 
+	headerShown: false,
+	tabBarStyle: { 
         ...navbarStyles.tabBarStyle,
         backgroundColor: globalStyles.backgroundColor.backgroundColor,
+        height: Platform.OS === 'android' ? 70 : 90, // Apply only on Android
+        paddingBottom: Platform.OS === 'android' ? 10 : 30, // Apply only on Android
     },
-    tabBarInactiveTintColor: globalStyles.secondaryColor.color,
-    tabBarActiveTintColor: globalStyles.primaryColor.color,
-    tabBarLabelStyle: {
-        fontFamily: globalStyles.medium.fontFamily
+	tabBarInactiveTintColor: globalStyles.secondaryColor.color,
+	tabBarActiveTintColor: globalStyles.primaryColor.color,
+	tabBarLabelStyle: {
+        fontFamily: globalStyles.medium.fontFamily,
+        marginBottom: Platform.OS === 'android' ? 0 : 0, // Apply only on Android
     }
 };
 
@@ -62,54 +65,54 @@ const getTabBarLabel = (name) => name === '+' ? () => null : undefined;
  * @returns {React.Element} The rendered bottom tab navigator.
  */
 export default function MainTabNavigator() {
-    const navigation = useNavigation();
-    const [animation] = useState(new Animated.Value(1));
+	const navigation = useNavigation();
+	const [animation] = useState(new Animated.Value(1));
 
-    // startAnimation triggers a sequence of animations that first scales up
-    // the animation value to 1.1 over 100ms, then scales it back down to 1 over 100ms.
-    // This creates a "bounce" effect when the user interacts with the animated element.
-    // The function is memoized with useCallback and only updates when the `animation` state changes.
-    const startAnimation = useCallback(() => {
-        Animated.sequence([
-            Animated.timing(animation, {
-                toValue: 1.1,
-                duration: 100,
-                useNativeDriver: true,
-            }),
-            Animated.timing(animation, {
-                toValue: 1,
-                duration: 100,
-                useNativeDriver: true,
-            }),
-        ]).start();
-    }, [animation]);
+	// startAnimation triggers a sequence of animations that first scales up
+	// the animation value to 1.1 over 100ms, then scales it back down to 1 over 100ms.
+	// This creates a "bounce" effect when the user interacts with the animated element.
+	// The function is memoized with useCallback and only updates when the `animation` state changes.
+	const startAnimation = useCallback(() => {
+		Animated.sequence([
+			Animated.timing(animation, {
+				toValue: 1.1,
+				duration: 100,
+				useNativeDriver: true,
+			}),
+			Animated.timing(animation, {
+				toValue: 1,
+				duration: 100,
+				useNativeDriver: true,
+			}),
+		]).start();
+	}, [animation]);
 
-    return (
-        <View style={navbarStyles.container}>
-            <Tab.Navigator 
-                initialRouteName="Dashboard"
-                screenOptions={screenOptions}
-            >
-            {screens.map(({ name, component, icon }) => (
-                <Tab.Screen 
-                    key={name}
-                    name={name} 
-                    component={component} 
-                    options={{
-                        tabBarIcon: (props) => (
-                            <TabBarIcon 
-                                {...props} 
-                                name={icon} 
-                                animation={animation} 
-                                onPress={startAnimation} 
-                                navigation={navigation}
-                            />
-                        ),
-                        tabBarLabel: getTabBarLabel(name),
-                    }}
-                />
-            ))}
-            </Tab.Navigator>
-        </View>
-    );
+	return (
+		<View style={navbarStyles.container}>
+			<Tab.Navigator 
+			  initialRouteName="Stats"
+			  screenOptions={screenOptions}
+			>
+			{screens.map(({ name, component, icon }) => (
+				<Tab.Screen 
+				  key={name}
+				  name={name} 
+				  component={component} 
+				  options={{
+						tabBarIcon: (props) => (
+							<TabBarIcon 
+							  {...props} 
+							  name={icon} 
+							  animation={animation} 
+							  onPress={startAnimation} 
+							  navigation={navigation}
+							/>
+						),
+						tabBarLabel: getTabBarLabel(name),
+					}}
+				/>
+			))}
+			</Tab.Navigator>
+		</View>
+	);
 }
