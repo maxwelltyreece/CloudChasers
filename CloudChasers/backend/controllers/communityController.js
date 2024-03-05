@@ -106,7 +106,7 @@ exports.getCommunityDetails = async (req, res) => {
 };
 
 exports.getCommunityMembers = async (req, res) => {
-    const { communityId } = req.body;
+    const { communityId } = req.query;
     try {
         const user = req.user;
         // Get community
@@ -122,7 +122,11 @@ exports.getCommunityMembers = async (req, res) => {
         // Get members
         const members = await CommunityUser.find({ communityID: communityId });
         // Map member IDs to usernames
-        const users = await Promise.all(members.map(member => User.findById(member.userID).select('username')));
+        const users = await Promise.all(members.map(async (member) => {
+            const user = await User.findById(member.userID).select('username');
+            const role = member.role;
+            return { _id: user._id, username: user.username, role };
+        }));
 
         return res.status(200).json({ success: true, data: users });
         
@@ -133,7 +137,7 @@ exports.getCommunityMembers = async (req, res) => {
 };
 
 exports.getUserRole = async (req, res) => {
-    const { communityId } = req.body;
+    const { communityId } = req.query;
     try {
         const user = req.user;
         // Get community
