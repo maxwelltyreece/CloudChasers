@@ -49,8 +49,18 @@ export function CommunityProvider({ children }) {
         setUserCommunities([]);
     };
 
-	const joinCommunity = async (communityId) => communityService.joinCommunity(communityId);
+const joinCommunity = async (communityId) => {
+    console.log('Attempting to join community with ID:', communityId);
 
+    try {
+        const response = await communityService.joinCommunity(communityId);
+        console.log('Successfully joined community. Response:', response);
+        return response;
+    } catch (error) {
+        console.error('Error joining community:', error);
+        throw error;
+    }
+};
 	const value = useMemo(() => ({
 		getCommunityDetails,
 		getCommunityMembers,

@@ -41,7 +41,7 @@ function JoinGroup() {
     const [searchText, setSearchText] = useState('');
     const [availableCommunities, setAvailableCommunities] = useState([]);
     const navigation = useNavigation();
-    const { getAvailableCommunities } = useCommunity(); // Destructure getAvailableCommunities from the context
+    const { getAvailableCommunities, joinCommunity, getUserCommunities } = useCommunity(); // Destructure getAvailableCommunities from the context
 
     useEffect(() => {
         const fetchAvailableCommunities = async () => {
@@ -55,7 +55,18 @@ function JoinGroup() {
     const filteredData = availableCommunities.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
 
     const handlePress = (item) => {
-        navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });
+        console.log("Joining community: ", item.name);
+        const communityId = item.id;
+        console.log("Community ID: ", communityId);
+        joinCommunity(communityId)
+            .then(() => {
+                getUserCommunities();
+                // Filter out the joined community from the list of available communities
+                setAvailableCommunities(availableCommunities.filter(community => community.id !== communityId));
+            })
+            .catch(error => {
+                console.error("Error joining community: ", error);
+            });
     };
 
     return (

@@ -56,6 +56,8 @@ exports.createCommunity = async (req, res) => {
 
 exports.joinCommunity = async (req, res) => {
     const { communityId } = req.body;
+    console.log('Body:', req.body);
+    console.log('Community ID server side:', communityId);
     try {
         // Get user from token
         const user = req.user; 
