@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
 import Box from '../../components/box';
 import { useCommunity } from '../../contexts/CommunityContext';
-import globalStyles from '../../styles/global';
 
 const styles = StyleSheet.create({
 	container: {
@@ -37,6 +36,29 @@ const styles = StyleSheet.create({
 		aspectRatio: 1,
 		margin: '2.5%',
 	},
+    noCommunitiesContainer: {
+        flex: 1,
+        alignItems: 'center',
+        paddingTop: 60,
+        paddingHorizontal: 20,
+    },
+    noCommunitiesTitle: {
+        fontFamily: 'Montserrat_700Bold',
+        fontSize: 20,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    noCommunitiesText: {
+        fontFamily: 'Montserrat_700Bold',
+        fontSize: 20,
+        textAlign: 'center',
+        marginVertical: 4,
+    },
+    linkText: {
+        color: '#FF815E',
+        fontSize: 18,
+        fontFamily: 'Montserrat_600SemiBold',
+    },
 });
 
 function Groups() {
@@ -67,34 +89,47 @@ const filteredData = (userCommunities || []).filter((item) => item.name.toLowerC
 		navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });
 	};
 	return (
-		<View style={styles.container}>
-			<View style={styles.titleContainer}>
-				<View style={{ ...styles.titleContainer, flexDirection: 'row', justifyContent: 'space-between' }}>
-					<Text style={styles.title}>Your communities</Text>
-					<NewGroupButton />
+        <View style={styles.container}>
+            <View style={styles.titleContainer}>
+                <View style={{ ...styles.titleContainer, flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <Text style={styles.title}>Your communities</Text>
+                    <NewGroupButton />
                     <JoinGroupButton />
-				</View>
-				<TextInput
-					style={styles.searchInput}
-					onChangeText={(text) => setSearchText(text)}
-					value={searchText}
-					placeholder="Search..."
-				/>
-			</View>
-			<FlatList
-				data={filteredData}
-				renderItem={({ item }) => (
-					<View style={styles.itemContainer}>
-						<TouchableOpacity style={{ flex: 1 }} onPress={() => handlePress(item)}>
-							<Box title={item.name} />
-						</TouchableOpacity>
-					</View>
-				)}
-				numColumns={2} // Two items per row
-				contentContainerStyle={{
-					paddingHorizontal: '2.5%', // Offset the item margin
-				}}
-			/>
+                </View>
+                <TextInput
+                    style={styles.searchInput}
+                    onChangeText={(text) => setSearchText(text)}
+                    value={searchText}
+                    placeholder="Search..."
+                />
+            </View>
+            {filteredData.length > 0 ? (
+                <FlatList
+                    data={filteredData}
+                    renderItem={({ item }) => (
+                        <View style={styles.itemContainer}>
+                            <TouchableOpacity style={{ flex: 1 }} onPress={() => handlePress(item)}>
+                                <Box title={item.name} />
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                    numColumns={2} // Two items per row
+                    contentContainerStyle={{
+                        paddingHorizontal: '2.5%', // Offset the item margin
+                    }}
+                />
+            ) : (
+                <View style={styles.noCommunitiesContainer}>
+                    <Text style={styles.noCommunitiesTitle}>You are in no communities</Text>
+                    <Pressable onPress={() => navigation.navigate('Group', { screen: 'JoinGroup' })}>
+                        <Text style={styles.linkText}>Join your first here</Text>
+                    </Pressable>
+                    <Text style={styles.noCommunitiesText}>or</Text>
+                    <Pressable onPress={() => navigation.navigate('Group', { screen: 'NewGroup' })}>
+                        <Text style={styles.linkText}>Create your own</Text>
+                    </Pressable>
+                </View>
+            )}
 		</View>
 	);
 }

@@ -105,6 +105,7 @@ function GroupSettings({ route }) {
 				<Pressable onPress={handleDeleteGroup} style={styles.deleteButton}>
 					<Text style={styles.deleteButtonText}>Delete Group</Text>
 				</Pressable>
+                 
 			)}
 			{userRole === 'member' && (
 				<Pressable onPress={handleLeaveGroup} style={styles.leaveButton}>
