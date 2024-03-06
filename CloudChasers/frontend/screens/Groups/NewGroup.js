@@ -3,6 +3,7 @@ import {
 	View, Text, TextInput, Pressable, StyleSheet,
 } from 'react-native';
 import { useCommunity } from '../../contexts/CommunityContext';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
 	container: {
@@ -71,17 +72,30 @@ function NewGroup() {
 	const [isPrivateCommunity, setIsPrivateCommunity] = useState(false);
 	const [areRecipesPrivate, setAreRecipesPrivate] = useState(false);
 
-	const { createCommunity } = useCommunity();
+	const { createCommunity, getUserCommunities } = useCommunity();
+    const navigation = useNavigation();x
 
-	const handleButtonPress = async () => {
-		const communityData = {
-			name: communityName,
-			description: communityDescription,
-			joinPrivacy: isPrivateCommunity ? 'private' : 'public',
-			recipePrivacy: areRecipesPrivate ? 'private' : 'public',
-		};
-		await createCommunity(communityData);
-	};
+    const handleButtonPress = async () => {
+        const communityData = {
+            name: communityName,
+            description: communityDescription,
+            joinPrivacy: isPrivateCommunity ? 'private' : 'public',
+            recipePrivacy: areRecipesPrivate ? 'private' : 'public',
+        };
+        createCommunity(communityData)
+            .then((response) => {
+                if (response && response.success) {
+                    console.log('Successfully created community:', response);
+                    getUserCommunities();
+                    navigation.navigate('Groups');
+                } else {
+                    console.error('Failed to create community:', response);
+                }
+            })
+            .catch(error => {
+                console.error("Error creating community: ", error);
+            });
+    };
 
 	return (
 		<View style={styles.container}>

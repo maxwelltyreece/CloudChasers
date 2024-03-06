@@ -3,6 +3,7 @@ import {
 	View, Text, StyleSheet, Pressable,
 } from 'react-native';
 import { useCommunity } from '../../contexts/CommunityContext';
+import { useNavigation } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
 	container: {
@@ -47,18 +48,29 @@ const styles = StyleSheet.create({
 	},
 });
 
-function handleDeleteGroup() {
-	// Implement group deletion logic here
-}
-function handleLeaveGroup() {
-	// Implement group leaving logic here
-}
-
 function GroupSettings({ route }) {
 	const { community } = route.params;
-	const { getUserRole } = useCommunity(); // get getUserRole from the community context
-
+	const { getUserRole, deleteCommunity, leaveCommunity  } = useCommunity(); // get getUserRole from the community context
+    const navigation = useNavigation();
 	const [userRole, setUserRole] = useState(null);
+
+    const handleDeleteGroup = async () => {
+        const response = await deleteCommunity(community.id, navigation);
+        if (response.success) {
+            // handle successful deletion
+        } else {
+            console.error('Failed to delete community:', response);
+        }
+    };
+
+    const handleLeaveGroup = async () => {
+        const response = await leaveCommunity(community.id, navigation);
+        if (response.success) {
+            // handle successful leave
+        } else {
+            console.error('Failed to leave community:', response);
+        }
+    };
 
 	useEffect(() => {
 		async function fetchUserRole() {

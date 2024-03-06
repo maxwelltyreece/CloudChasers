@@ -61,7 +61,7 @@ function Groups() {
     }
 
 	// eslint-disable-next-line max-len
-	const filteredData = userCommunities.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
+const filteredData = (userCommunities || []).filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
 
 	const handlePress = (item) => {
 		navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });

@@ -21,7 +21,7 @@ export async function createCommunity(communityData) {
 		const jsonResponse = await response.json();
 		if (jsonResponse.success) {
 			console.log(jsonResponse.message);
-			return jsonResponse.success;
+			return jsonResponse;
 		}
 		console.error(jsonResponse.message);
 		return false;
@@ -109,4 +109,56 @@ export async function getUserCommunities() {
 		},
 	});
 	return response.json();
+}
+
+export async function deleteCommunity(communityId) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/delete`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ communityId }),
+    });
+    return response.json();
+}
+
+export async function leaveCommunity(communityId) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/leave`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ communityId }),
+    });
+    return response.json();
+}
+
+export async function updateCommunityDesc(communityId, description) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/updateDesc`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ communityId, description }),
+    });
+    return response.json();
+}
+
+export async function updateJoinPrivacy(communityId, joinPrivacy) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/updateJoinPrivacy`, {
+        method: 'PUT',
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ communityId, joinPrivacy }),
+    });
+    return response.json();
 }
