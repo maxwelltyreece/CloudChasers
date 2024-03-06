@@ -1,11 +1,11 @@
-const {MongoClient} = require("mongodb")
-const foodTable = require("./nutrients.json") // won't work becacuse file is not on git (too large)
-const Food = require("../models/food")
+const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
+const foodTable = require('./nutrients.json'); // won't work becacuse file is not on git (too large)
+const Food = require('../models/food');
 
-collection = "test" //Change this to be the name of the collection you want to seed with the food data
-const url = "mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/" + collection + "?retryWrites=true&w=majority"
-connect()
+collection = 'test'; // Change this to be the name of the collection you want to seed with the food data
+const url = `mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/${collection}?retryWrites=true&w=majority`;
+connect();
 
 dbSize = 0;
 
@@ -110,13 +110,6 @@ async function connect() {
 }
 
 function getValue(entry, nutrient) {
-    const foundNutrient = entry.nutrients.find(n => n.name === nutrient)
-    return foundNutrient ? foundNutrient.value : null
+	const foundNutrient = entry.nutrients.find((n) => n.name === nutrient);
+	return foundNutrient ? foundNutrient.value : null;
 }
-
-
-
-
-
-
-
