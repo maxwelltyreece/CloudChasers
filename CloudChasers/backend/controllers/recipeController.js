@@ -37,7 +37,7 @@ exports.createNewRecipeByUser = async (req, res) => {
 }
 
 exports.addItemToRecipe = async (req, res) => {
-	const { recipeID, foodID, quantity } = req.body;
+	const { recipeID, foodID, weight } = req.body;
 	try {
 		const recipe = await Recipe.findById(recipeID);
 		if (!recipe) {
@@ -50,7 +50,7 @@ exports.addItemToRecipe = async (req, res) => {
 
 		const newFoodItem = new FoodItem({
 			foodID,
-			quantity
+			weight
 		});
 		await newFoodItem.save();
 
@@ -124,6 +124,47 @@ exports.getRecipeIngredients = async (req, res) => {
 	}
 }
 
+
+//delete ingredient in recipe
+
+async function createUserDay(userID, date){
+    try {
+        const existingUserDay = await UserDay.findOne({ userID, date });
+        if (!existingUserDay) {
+            const newUserDay = new UserDay({
+                date,
+                userID
+            });
+            await newUserDay.save();
+        }else{
+            return existingUserDay;
+        }
+    } catch (error) {
+        console.log('Error in createUserDay:', error);
+        throw new Error('Failed to create UserDay: ' + error.toString());
+    }
+    return newUserDay; // Return the newly created UserDay object
+};
+
+async function createUserDayMeal(mealType, userDay) {
+	try {
+		const existingUserDayMeal = await UserDayMeal.findOne({ name: mealType, userDayID: userDay._id });
+
+		if (!existingUserDayMeal) {
+			const newUserDayMeal = new UserDayMeal({
+				name: mealType,
+				userDayID: userDay._id
+			});
+			await newUserDayMeal.save();
+		} else {
+			return existingUserDayMeal;
+		}
+
+	} catch (error) {
+		throw new Error('Failed to create UserDayMeal');
+	}
+	return newUserDayMeal;
+}
 //TODO FIX
 exports.logRecipeFood = async (req, res) => {
 	const { mealType, recipeID } = req.body;
@@ -144,17 +185,13 @@ exports.logRecipeFood = async (req, res) => {
 		// TODO: Can change behaviour to allow multiple meals of the same type
 		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
 
-		const recipeItems = await RecipeItem.find({ recipeID: recipe._id });
-
-		for (let i = 0; i < recipeItems.length; i++) {
-			const mealItem = new MealItem({
-				name: recipeItems[i].name,
-				foodItemID: recipeItems[i].foodItemID,
-				recipeID: recipe._id,
-				userDayMealID: newUserDayMeal._id
-			});
-			await mealItem.save();
-		}
+		const mealItem = new MealItem({
+			name: recipe.name,
+			foodItemID: null,
+			recipeID: recipe._id,
+			userDayMealID: newUserDayMeal._id
+		});
+		await mealItem.save();
 		
 		await session.commitTransaction();
 		session.endSession();

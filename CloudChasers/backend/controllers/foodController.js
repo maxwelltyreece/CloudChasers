@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-const UserDay = require('../models/userDay');
+const UserDay	 = require('../models/userDay');
 const UserDayMeal = require('../models/userDayMeal');
 const MealItem = require('../models/mealItem');
 const FoodItem = require('../models/foodItem');
@@ -9,78 +9,118 @@ const Food = require('../models/food');
 const mongoose = require('mongoose');
 
 async function createUserDay(userID, date){
-	try {
-		const existingUserDay = await UserDay.findOne({ userID, date });
-		if (!existingUserDay) {
-			const newUserDay = new UserDay({
-				date,
-				userID
-			});
-			await newUserDay.save();
-		}else{
-
-			return existingUserDay;
-		
-		}
-	} catch (error) {
-		throw new Error('Failed to create UserDay');
-	}
-	return newUserDay; // Return the newly created UserDay object
+	let newUserDay;
+    try {
+        const existingUserDay = await UserDay.findOne({ userID, date });
+        if (!existingUserDay) {
+            newUserDay = new UserDay({
+                date,
+                userID
+            });	
+            await newUserDay.save();
+        }else{
+            return existingUserDay;
+        }
+    } catch (error) {
+        console.log('Error in createUserDay:', error);
+        throw new Error('Failed to create UserDay: ' + error.toString());
+    }
+    return newUserDay; // Return the newly created UserDay object
 };
 
+// async function createUserDayMeal(mealType, userDay) {
+// 	let newUserDayMeal;
+// 	try {
+// 		const existingUserDayMeal = await UserDayMeal.findOne({ name: mealType, userDayID: userDay._id });
+
+// 		if (!existingUserDayMeal) {
+// 			newUserDayMeal = new UserDayMeal({
+// 				name: mealType,
+// 				userDayID: userDay._id
+// 			});	
+// 			await newUserDayMeal.save();
+		
+// 		} else {
+// 			return existingUserDayMeal;
+// 		}
+
+// 	} catch (error) {
+
+// 		console.log('Error in createUserDayMeal:', error);
+// 		throw new Error('Failed to create UserDayMeal: ' + error.toString());
+// 	}
+// 	return newUserDayMeal;
+// };
 async function createUserDayMeal(mealType, userDay) {
+	let newUserDayMeal;
 	try {
+		console.log('mealType:', mealType);
+		console.log('userDay._id:', userDay._id);
+
 		const existingUserDayMeal = await UserDayMeal.findOne({ name: mealType, userDayID: userDay._id });
+		console.log('existingUserDayMeal:', existingUserDayMeal);
 
 		if (!existingUserDayMeal) {
-			const newUserDayMeal = new UserDayMeal({
+			newUserDayMeal = new UserDayMeal({
 				name: mealType,
 				userDayID: userDay._id
-			});
+			});	
 			await newUserDayMeal.save();
+			console.log('newUserDayMeal:', newUserDayMeal);
 		} else {
 			return existingUserDayMeal;
 		}
 
 	} catch (error) {
-		throw new Error('Failed to create UserDayMeal');
+		console.log('Error in createUserDayMeal:', error);
+		throw new Error('Failed to create UserDayMeal: ' + error.toString());
 	}
 	return newUserDayMeal;
-}
-
+};
 /**
  * Logs a food item to the database for a specific user and meal type.
  * 
  * @param {string} req.headers.authorization - The JWT token of the user.
  * @param {string} req.body.mealType - The type of meal (e.g., "breakfast", "lunch", "dinner").
- * @param {string} req.body.food_id - The ID of the food item.
+ * @param {string} req.body.foodID - The ID of the food item.
  * @param {number} req.body.weight - The weight of the food item.
  * @returns {string} res.message - A message indicating the result of the operation.
  */
 exports.logDatabaseFood = async (req, res) => {
-	const { mealType, food_id, weight } = req.body;
+	const { mealType, foodID, weight } = req.body;
 	let session;
 	try {
 		const user = req.user;
-		const food = await Food.findById(food_id);
+		console.log('User:', user);
+
+		const food = await Food.findById(foodID);
+		console.log('Food:', food);
+		
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
-		
+		console.log('Today:', today);
+
 		session = await mongoose.startSession();
+		console.log('Session started');
+
 		session.startTransaction();
+		console.log('Transaction started');
 
 		// Check if user day exists, if not create it
 		const newUserDay = await createUserDay(user._id, today);
+		console.log('New User Day:', newUserDay);
 
 		// Check if user day meal exists, if not create it
-		// TODO: Can change behaviour to allow multiple meals of the same type
 		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
+		console.log('New User Day Meal:', newUserDayMeal);
 
 		const newFoodItem = new FoodItem({
 			foodID: food._id,
 			weight,
 		});
-		await newFoodItem.save();	
+		await newFoodItem.save();    
+		console.log('New Food Item saved');
+
 		const mealItem = new MealItem({
 			name: food.name,
 			foodItemID: newFoodItem._id,
@@ -88,16 +128,25 @@ exports.logDatabaseFood = async (req, res) => {
 			userDayMealID: newUserDayMeal._id,
 		});
 		await mealItem.save();
+		console.log('Meal Item saved');
+
 		await session.commitTransaction();
+		console.log('Transaction committed');
+
 		session.endSession();
+		console.log('Session ended');
 
 		return res.status(200).send({ message: 'Food logged' });
 	} catch (error) {
+		console.log('Error:', error);
 		if (session) {
 			session.abortTransaction();
+			console.log('Transaction aborted');
+
 			session.endSession();
+			console.log('Session ended');
 		}
-		return res.status(500).send({ error: error.toString() });
+		return res.status(501).send({ error: "test" + error.toString() });
 	}
 };
 
@@ -131,6 +180,7 @@ exports.getFood = async (req, res) => {
 };
 
 //TODO: check credintials to not display food created by others
+//TODO: implement searching by >, <, >=, <= for calories
 /**
  * Retrieves food items based on search parameters.
  * @param {number} req.query.page - The page number for pagination. Defaults to 1.
@@ -148,6 +198,7 @@ exports.searchFoods = async (req, res) => {
 
 	// List of valid fields
 	const validFields = ['name', 'group', 'calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre', 'privacy', 'addedBy'];
+	const numericFields = ['calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre'];
 
 	// Check for invalid fields
 	const invalidFields = Object.keys(searchParams).filter((field) => !validFields.includes(field));
@@ -157,7 +208,23 @@ exports.searchFoods = async (req, res) => {
 
 	// Create a query object with regex for each search parameter
 	const query = Object.entries(searchParams).reduce((acc, [key, value]) => {
-		acc[key] = { $regex: new RegExp(value, 'i') };
+		if (numericFields.includes(key)) {
+			if (typeof value === 'object') {
+				if (value.min !== undefined && value.max !== undefined) {
+					acc[key] = { $gte: value.min, $lte: value.max };
+
+				} else if (value.min !== undefined) {
+					acc[key] = { $gte: value.min };
+					
+				} else if (value.max !== undefined) {
+					acc[key] = { $lte: value.max };
+				}
+			} else {
+				acc[key] = value;
+			}
+		} else {
+			acc[key] = { $regex: new RegExp(value, 'i') };
+		}
 		return acc;
 	}, {});
 

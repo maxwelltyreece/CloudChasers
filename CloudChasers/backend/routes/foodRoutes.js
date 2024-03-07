@@ -7,7 +7,7 @@ const recipeController = require('../controllers/recipeController');
 const userMiddleware = require('../middleware/userMiddleware');
 
 router.post('/logDatabaseFood', userMiddleware, foodController.logDatabaseFood);
-router.post('createNewRecipeByUser', userMiddleware, recipeController.createNewRecipeByUser);
+router.post('/createNewRecipeByUser', userMiddleware, recipeController.createNewRecipeByUser);
 router.post('/logRecipeFood', userMiddleware, recipeController.logRecipeFood);
 
 router.get('/getFood', foodController.getFood);
