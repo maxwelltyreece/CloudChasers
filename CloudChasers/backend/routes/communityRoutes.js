@@ -13,6 +13,7 @@ router.get('/all', userMiddleware, communityController.getAllCommunities);
 router.get('/userCommunities', userMiddleware, communityController.getUserCommunities);
 router.put('/delete', userMiddleware, communityController.deleteCommunity);
 router.put('/leave', userMiddleware, communityController.leaveCommunity);
+router.put('/removeMember', userMiddleware, communityController.removeMember);
 router.put('/updateDesc', userMiddleware, communityController.updateCommunityDesc);
 router.put('/updateJoinPrivacy', userMiddleware, communityController.updateJoinPrivacy);
 

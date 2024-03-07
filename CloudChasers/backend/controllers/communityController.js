@@ -7,8 +7,9 @@ const CommunityUser = require('../models/communityUser');
 // TODO:
 // - Join private community
 // - Get pending requests
-// - Get community posts
+// - Get community posts/recipes
 // - Update community privacy settings
+// - Admin can remove members
 // 
 // DONE:
 // - Get community members
@@ -101,7 +102,9 @@ exports.getCommunityDetails = async (req, res) => {
         if (!community) {
             return res.status(404).send({ message: 'Community not found' });
         }
-        return res.status(200).json({ success: true, data: community });
+        // Get member count
+        const count = await CommunityUser.countDocuments({ communityID: communityId });
+        return res.status(200).json({ success: true, data: { community, count }});
     }
     catch (error) {
         return res.status(400).json({ error: error.toString() });
@@ -246,6 +249,35 @@ exports.leaveCommunity = async (req, res) => {
         await CommunityUser.deleteOne({ communityID: communityId, userID: user._id });
     
         return res.status(200).json({ success: true, message: 'Community left' });
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.toString() });
+    }
+}
+
+// Remove member from community
+exports.removeMember = async (req, res) => {
+    const { communityId, userId } = req.body;
+    try {
+        const user = req.user;
+        // Get community
+        const community = await Community.findById(communityId);
+        if (!community) {
+            return res.status(404).send({ message: 'Community not found' });
+        }
+        // Check if user is admin
+        const isAdmin = await CommunityUser.findOne({ communityID: communityId, userID: user._id, role: 'admin' });
+        if (!isAdmin) {
+            return res.status(400).send({ message: 'User is not an admin of the community' });
+        }
+        // Remove member
+        const member = await CommunityUser.findOne({ communityID: communityId, userID: userId });
+        if (!member) {
+            return res.status(404).send({ message: 'Member not found' });
+        }
+        await CommunityUser.deleteOne({ communityID: communityId, userID: userId });
+    
+        return res.status(200).json({ success: true, message: 'Member removed' });
     }
     catch (error) {
         return res.status(400).json({ error: error.toString() });
