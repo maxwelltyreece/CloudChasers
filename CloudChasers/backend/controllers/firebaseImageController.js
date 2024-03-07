@@ -23,8 +23,8 @@ const bucket = storage.bucket('./gobl-b4e3d.appspot.com');
  * @returns {Object} The response object with the profile picture URL or an error message.
  */
 exports.getPictureURL = async (req, res) => {
-    // Retrieve the user ID from the request body
-    const { userId, folderName} = req.body;
+    // Retrieve the user ID from the request query
+    const {id, folderName} = req.query;
     try {
         // Construct the path to the profile picture
         const validExtensions = ['png', 'jpg', 'jpeg', 'gif'];
@@ -44,7 +44,13 @@ exports.getPictureURL = async (req, res) => {
         }
 
         if (!extensionFound) {
-            return res.status(404).json({ error: "Picture not found in folder " + folderName + " with name " + userId});
+            file = bucket.file(folderName + '/default.png');
+            if ((await file.exists())[0]){
+                var url = await getDownloadURL(file);
+                return res.status(200).json({ url: url });
+            } else {
+                return res.status(404).json({ error: "Image not found." });
+            } 
         }
 
         // Get the download URL of the profile picture
