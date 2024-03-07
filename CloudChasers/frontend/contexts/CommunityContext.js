@@ -30,7 +30,7 @@ export function CommunityProvider({ children }) {
             return [];
         }
     };
-
+2
 	// eslint-disable-next-line max-len
 	const getCommunityDetails = async (communityId) => communityService.getCommunityDetails(communityId);
 
@@ -96,6 +96,16 @@ export function CommunityProvider({ children }) {
     const updateJoinPrivacy = async (communityId, joinPrivacy) => {
         const response = await communityService.updateJoinPrivacy(communityId, joinPrivacy);
     };
+
+    const getCommunityImage = async (Id, folderName) => {
+        try {
+            const response = await communityService.getCommunityImage(Id, folderName);
+            return response;
+        } catch (error) {
+            console.error(error);
+            return { status: error.message };
+        }
+    }
 
 	const value = useMemo(() => ({
         deleteCommunity,

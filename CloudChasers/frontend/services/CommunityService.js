@@ -162,3 +162,13 @@ export async function updateJoinPrivacy(communityId, joinPrivacy) {
     });
     return response.json();
 }
+
+export async function getCommunityImage(Id, folderName) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/image/getImage?Id=${Id}&folderName=${folderName}`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response;
+}
