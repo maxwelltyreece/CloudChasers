@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useUser } from '../../contexts/UserContext';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
 import LogoutButton from './settingsComponents/LogoutButton';
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
 });
 
 const ICON_SIZE = 25;
-const USERNAME = 'test@email.com';
 
 function ItemSeparator() {
 	return <View style={styles.separator} />;
@@ -62,24 +61,13 @@ function SettingsItem({ item }) {
 }
 
 function SettingsFooter({ username, navigation }) {
+	const { logout } = useUser();
 	return (
 		<View>
 			<View style={styles.separator} />
 			<Text style={[styles.usernameHeader, globalStyles.bold]}>Logged in as</Text>
 			<Text style={[styles.usernameText, globalStyles.medium]}>{username}</Text>
-			<LogoutButton onPress={async () => {
-				try {
-					await AsyncStorage.removeItem('token');
-					console.log('Token removed!');
-					navigation.reset({
-						index: 0,
-						routes: [{ name: 'Auth' }],
-					});
-				} catch (error) {
-					console.error('Failed to remove the token.', error);
-				}
-			}}
-			/>
+			<LogoutButton onPress={() => logout(navigation)} />
 		</View>
 	);
 }
@@ -102,6 +90,8 @@ const keyExtractor = (item) => item.name;
  */
 function Settings() {
 	const navigation = useNavigation();
+	const { userDetails } = useUser();
+	const email = userDetails ? userDetails.email : '';
 	return (
 		<View style={styles.container}>
 			<FlatList
@@ -109,7 +99,7 @@ function Settings() {
 				renderItem={SettingsItem}
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={ItemSeparator}
-				ListFooterComponent={<SettingsFooter username={USERNAME} navigation={navigation} />}
+				ListFooterComponent={<SettingsFooter username={email} navigation={navigation} />}
 			/>
 		</View>
 	);
