@@ -1,8 +1,6 @@
 /* eslint-disable camelcase */
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import Navbar from './CloudChasers/components/Navbar.js';
-import Settings from './CloudChasers/screens/Settings/Settings.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import {
@@ -53,7 +51,7 @@ export default function App() {
 				const token = await AsyncStorage.getItem('token');
 				setInitialRoute(token ? 'Main' : 'Auth');
 			} catch (error) {
-				console.error(error);
+				console.log(error);
 			}
 		};
 

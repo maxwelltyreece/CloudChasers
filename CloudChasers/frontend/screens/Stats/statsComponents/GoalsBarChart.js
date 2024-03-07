@@ -4,7 +4,7 @@ import { BarChart } from 'react-native-chart-kit';
 
 const screenWidth = Dimensions.get("window").width;
 
-const GoalBarChart = ({ weeklyIntake, goal, nutrient }) => {
+const GoalsBarChart = ({ weeklyIntake, goal, nutrient }) => {
   const [selectedBarIndex, setSelectedBarIndex] = useState(null);
 
   // Function to handle bar press
@@ -95,4 +95,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default GoalBarChart;
+export default GoalsBarChart;

@@ -1,6 +1,5 @@
-// React Imports
 import React from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import { View, Dimensions, StyleSheet } from 'react-native';
 import { ProgressChart } from 'react-native-chart-kit';
 
 const ProgressChartComponent = () => {

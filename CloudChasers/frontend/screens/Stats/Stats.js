@@ -2,11 +2,15 @@ import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import Swiper from 'react-native-swiper';
 import globalStyles from '../../styles/global';
-import ProgressChartComponent from '../../components/Stats/ProgressChartComponent'; 
-import WelcomeBar from '../../components/Stats/WelcomeBar';
-import CommunityPanel from '../../components/Stats/CommunityPanel';
-import AnnouncementBar from '../../components/Stats/AnnouncementBar';
-import GoalsBarChart from '../../components/Stats/GoalsBarChart'; 
+
+import AnnouncementBar from './statsComponents/AnnouncementBar';
+import WelcomeBar from './statsComponents/WelcomeBar';
+import ProgressChartComponent from './statsComponents/ProgressChartComponent';
+import GoalsBarChart from './statsComponents/GoalsBarChart';
+import CommunityPanel from './statsComponents/CommunityPanel';
+
+
+
 
 const Stats = () => {
   // Dummy Data 
