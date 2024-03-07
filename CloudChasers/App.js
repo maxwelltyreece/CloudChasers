@@ -54,7 +54,7 @@ export default function App() {
 				const token = await AsyncStorage.getItem('token');
 				setInitialRoute(token ? 'Main' : 'Auth');
 			} catch (error) {
-				console.error(error);
+				console.log(error);
 			}
 		};
 
