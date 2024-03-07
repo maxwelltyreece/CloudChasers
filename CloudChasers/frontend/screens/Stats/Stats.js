@@ -1,7 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
 import Swiper from 'react-native-swiper';
+
 import globalStyles from '../../styles/global';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LocalIP } from '../../screens/IPIndex';
 
 import AnnouncementBar from './statsComponents/AnnouncementBar';
 import WelcomeBar from './statsComponents/WelcomeBar';
@@ -125,4 +129,3 @@ const styles = StyleSheet.create({
 });
 
 export default Stats; 
-
