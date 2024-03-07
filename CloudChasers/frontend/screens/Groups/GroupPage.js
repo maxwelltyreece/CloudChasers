@@ -47,7 +47,7 @@ function GroupPage({ route, navigation }) {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>{community.title}</Text>
+			<Text style={styles.title}>{community.name}</Text>
 			<Text style={styles.description}>{community.description}</Text>
 		</View>
 	);
