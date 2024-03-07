@@ -34,7 +34,7 @@ jest.mock('../models/user', () => ({
 describe('Streaks Endpoint', () => {
 	it('should return 200 and update the streak for authenticated request', async () => {
 		const response = await request(app)
-			.put('/stats/streak')
+			.post('/stats/streak')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ today: new Date().toISOString() });
 
@@ -45,7 +45,7 @@ describe('Streaks Endpoint', () => {
 
 	it('should return consecutive days streak', async () => {
 		const response = await request(app)
-			.put('/stats/streak')
+			.post('/stats/streak')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ today: new Date(Date.now() + 86400000).toISOString() });
 
@@ -56,7 +56,7 @@ describe('Streaks Endpoint', () => {
 
 	it('should not update streak if the date is the same', async () => {
 		const response = await request(app)
-			.put('/stats/streak')
+			.post('/stats/streak')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ today: new Date().toISOString() });
 
@@ -67,7 +67,7 @@ describe('Streaks Endpoint', () => {
 
 	it('should reset streak if the date is not consecutive', async () => {
 		const response = await request(app)
-			.put('/stats/streak')
+			.post('/stats/streak')
 			.set('Authorization', `Bearer ${token}`)
 			.send({ today: new Date(Date.now() + 86400000 * 2).toISOString() });
 
@@ -88,7 +88,7 @@ describe('Daily Caloric Intake Endpoint', () => {
 		food.findById.mockResolvedValue({ _id: 'testFoodID', calories: 100, save: jest.fn().mockResolvedValue(true) });
 
 		const response = await request(app)
-			.get('/stats/daily-caloric-intake?date=' + new Date().toISOString())
+			.get('/stats/dailyCaloricIntake?date=' + new Date().toISOString())
 			.set('Authorization', `Bearer ${token}`)
 			// .send({ date: new Date().toISOString() });
 
@@ -99,7 +99,7 @@ describe('Daily Caloric Intake Endpoint', () => {
 
 	it('should return 400 if no data is found for the day', async () => {
 		const response = await request(app)
-			.get('/stats/daily-caloric-intake?date=' + new Date(Date.now() - 86400000).toISOString())
+			.get('/stats/dailyCaloricIntake?date=' + new Date(Date.now() - 86400000).toISOString())
 			.set('Authorization', `Bearer ${token}`)
 			// .send({ date: new Date(Date.now() - 86400000).toISOString() });
 
@@ -109,7 +109,7 @@ describe('Daily Caloric Intake Endpoint', () => {
 
 	it('should return 400 if no meals are found for the day', async () => {
 		const response = await request(app)
-			.get('/stats/daily-caloric-intake?date=' + new Date().toISOString())
+			.get('/stats/dailyCaloricIntake?date=' + new Date().toISOString())
 			.set('Authorization', `Bearer ${token}`)
 			// .send({ date: new Date().toISOString() });
 
