@@ -9,26 +9,24 @@ const CommunityContext = createContext();
 export function CommunityProvider({ children }) {
 	const [userCommunities, setUserCommunities] = useState([]);
 
-    const getUserCommunities = async () => {
-        const communities = await communityService.getUserCommunities();
-        setUserCommunities(communities.data);
-    };
+	const getUserCommunities = async () => {
+		const communities = await communityService.getUserCommunities();
+		setUserCommunities(communities.data);
+	};
 
 	useEffect(() => {
 		getUserCommunities();
 	}, []);
 
-    const getAvailableCommunities = async () => {
-        const response = await getAllCommunities();
-        if (response.success) {
-            return response.data.filter(
-                (community) => !userCommunities.some((userCommunity) => userCommunity.id === community.id)
-            );
-        } else {
-            console.error('Failed to get communities:', response);
-            return [];
-        }
-    };
+	const getAvailableCommunities = async () => {
+		const response = await getAllCommunities();
+		if (response.success) {
+			return response.data.filter(
+				(community) => !userCommunities.some((userCommunity) => userCommunity.id === community.id)
+			);
+		console.error('Failed to get communities:', response);
+		return [];
+	};
 
 	// eslint-disable-next-line max-len
 	const getCommunityDetails = async (communityId) => communityService.getCommunityDetails(communityId);
@@ -45,22 +43,22 @@ export function CommunityProvider({ children }) {
 		return communityService.createCommunity(communityData);
 	};
 
-    const resetUserCommunities = () => {
-        setUserCommunities([]);
-    };
+	const resetUserCommunities = () => {
+		setUserCommunities([]);
+	};
 
-const joinCommunity = async (communityId) => {
-    console.log('Attempting to join community with ID:', communityId);
+	const joinCommunity = async (communityId) => {
+		console.log('Attempting to join community with ID:', communityId);
 
-    try {
-        const response = await communityService.joinCommunity(communityId);
-        console.log('Successfully joined community. Response:', response);
-        return response;
-    } catch (error) {
-        console.error('Error joining community:', error);
-        throw error;
-    }
-};
+		try {
+			const response = await communityService.joinCommunity(communityId);
+			console.log('Successfully joined community. Response:', response);
+			return response;
+		} catch (error) {
+			console.error('Error joining community:', error);
+			throw error;
+		}
+	};
 	const value = useMemo(() => ({
 		getCommunityDetails,
 		getCommunityMembers,
@@ -70,9 +68,9 @@ const joinCommunity = async (communityId) => {
 		getAllCommunities,
 		createCommunity,
 		joinCommunity,
-        getAvailableCommunities,
-        resetUserCommunities,
-        getUserCommunities,
+		getAvailableCommunities,
+		resetUserCommunities,
+		getUserCommunities,
 	// eslint-disable-next-line max-len
 	}), [getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity]);
 

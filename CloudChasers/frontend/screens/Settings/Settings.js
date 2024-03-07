@@ -5,7 +5,6 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUser } from '../../contexts/UserContext';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
@@ -62,13 +61,13 @@ function SettingsItem({ item }) {
 }
 
 function SettingsFooter({ username, navigation }) {
-    const { logout } = useUser();
+	const { logout } = useUser();
 	return (
 		<View>
 			<View style={styles.separator} />
 			<Text style={[styles.usernameHeader, globalStyles.bold]}>Logged in as</Text>
 			<Text style={[styles.usernameText, globalStyles.medium]}>{username}</Text>
-			<LogoutButton onPress={ () => logout(navigation) }/>
+			<LogoutButton onPress={() => logout(navigation)} />
 		</View>
 	);
 }
@@ -92,7 +91,7 @@ const keyExtractor = (item) => item.name;
 function Settings() {
 	const navigation = useNavigation();
 	const { userDetails } = useUser();
-    const email = userDetails ? userDetails.email : '';
+	const email = userDetails ? userDetails.email : '';
 	return (
 		<View style={styles.container}>
 			<FlatList

@@ -22,7 +22,6 @@ import AuthNavigator from './frontend/navigation/AuthNavigator';
 import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
 
-
 const Stack = createStackNavigator();
 
 /**
@@ -60,7 +59,7 @@ export default function App() {
 		};
 
 		checkToken();
-        getUserCommunities();
+		getUserCommunities();
 	}, []);
 
 	if (!fontsLoaded || !initialRoute) {
@@ -68,15 +67,15 @@ export default function App() {
 	}
 
 	return (
-        <CommunityProvider>
-		    <UserProvider>
+		<CommunityProvider>
+			<UserProvider>
 				<NavigationContainer>
 					<Stack.Navigator initialRouteName={initialRoute}>
 						<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
 						<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
 					</Stack.Navigator>
 				</NavigationContainer>
-		    </UserProvider>
-        </CommunityProvider>
+			</UserProvider>
+		</CommunityProvider>
 	);
 }

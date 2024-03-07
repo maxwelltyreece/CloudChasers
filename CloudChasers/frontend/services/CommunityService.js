@@ -37,7 +37,7 @@ export async function joinCommunity(communityId) {
 		method: 'POST',
 		headers: {
 			Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',  // Add this line
+			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({ communityId }),
 	});
