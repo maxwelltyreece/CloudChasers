@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 	},
 	currentGoalTitle: {
 		fontSize: 12,
-		fontWeight: '400',
+		fontWeight: '500',
 		marginRight: 10,
 	},
 	selectGoalButton: {
