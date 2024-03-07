@@ -130,5 +130,5 @@ export function CommunityProvider({ children }) {
 		</CommunityContext.Provider>
 	);
 }
-
+}
 export const useCommunity = () => useContext(CommunityContext);
