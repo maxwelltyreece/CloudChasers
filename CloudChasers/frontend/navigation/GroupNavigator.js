@@ -6,6 +6,7 @@ import NewGroup from '../screens/Groups/NewGroup';
 import GroupPage from '../screens/Groups/GroupPage';
 import GroupMembers from '../screens/Groups/GroupMembers';
 import GroupSettings from '../screens/Groups/GroupSettings';
+import JoinGroup from '../screens/Groups/JoinGroup';
 
 const GroupStack = createStackNavigator();
 
@@ -33,6 +34,7 @@ export default function GroupNavigator() {
 			<GroupStack.Screen name="GroupPage" component={GroupPage} />
 			<GroupStack.Screen name="GroupMembers" component={GroupMembers} />
 			<GroupStack.Screen name="GroupSettings" component={GroupSettings} />
+            <GroupStack.Screen name="JoinGroup" component={JoinGroup} />
 		</GroupStack.Navigator>
 	);
 }

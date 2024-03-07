@@ -3,7 +3,7 @@ import {
 	View, Text, StyleSheet, FlatList,
 	Pressable,
 } from 'react-native';
-
+import { useUser } from '../../../contexts/UserContext';
 import globalStyles from '../../../styles/global';
 
 const styles = StyleSheet.create({
@@ -29,14 +29,16 @@ const styles = StyleSheet.create({
 	},
 });
 
-const data = [
-	{ field: 'First Name', value: 'John' },
-	{ field: 'Last Name', value: 'Doe' },
-	{ field: 'Email', value: 'john.doe@example.com' },
-	{ field: 'Username', value: '@johndoe' },
-];
-
 function Account({ navigation }) {
+	const { userDetails } = useUser();
+
+	const data = [
+		{ field: 'Username', value: userDetails.username, realName: 'username' },
+		{ field: 'First Name', value: userDetails.forename, realName: 'forename' },
+		{ field: 'Last Name', value: userDetails.surname, realName: 'surname' },
+		{ field: 'Email', value: userDetails.email, realName: 'email' },
+	];
+
 	return (
 		<View style={styles.container}>
 			<FlatList
@@ -45,7 +47,7 @@ function Account({ navigation }) {
 				renderItem={({ item }) => (
 					<View style={styles.row}>
 						<Text style={styles.label}>{`${item.field.charAt(0).toUpperCase() + item.field.slice(1)}: ${item.value}`}</Text>
-						<Pressable onPress={() => navigation.navigate('EditPage', { field: item.field })}>
+						<Pressable onPress={() => navigation.navigate('EditPage', { field: item.field, realName: item.realName })}>
 							<Text>Edit</Text>
 						</Pressable>
 					</View>
