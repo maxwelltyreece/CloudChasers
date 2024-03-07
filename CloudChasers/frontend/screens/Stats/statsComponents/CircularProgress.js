@@ -1,8 +1,5 @@
-// CircularProgress.js
 import React from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
 import { CircularProgressBase } from 'react-native-circular-progress-indicator';
-import Animated, { runOnUI } from 'react-native-reanimated';
 
 
 const CircularProgress = ({ value, radius, activeStrokeColor, inActiveStrokeColor }) => {
