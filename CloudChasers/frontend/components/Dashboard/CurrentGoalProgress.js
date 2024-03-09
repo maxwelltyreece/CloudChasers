@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 	},
 	currentProgressBarText: {
 		fontSize: 15,
-		fontWeight: 600,
+		fontWeight: '600',
 		textAlign: 'left',
 		marginTop: 5,
 		paddingLeft: 8,
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-function GoalProgressBar({ current }) {
+function GoalProgressBar() {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [selectedGoal, setSelectedGoal] = useState({
 		id: 1,

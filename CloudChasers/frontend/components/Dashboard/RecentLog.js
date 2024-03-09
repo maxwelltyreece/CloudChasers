@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 	},
 	logInfoText: {
 		fontSize: 15,
-		fontWeight: 600,
+		fontWeight: '600',
 	},
 
 });
