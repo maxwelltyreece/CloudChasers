@@ -20,7 +20,7 @@ function DashboardScreen() {
 			.then((response) => response.json())
 			.then((data) => {
 				console.log(data);
-				setUsers(data);
+				setUsers(data); 
 			})
 			.catch((error) => console.error(error));
 	}

@@ -36,4 +36,5 @@ Sam Thomas
 [contributors-url]: https://github.com/maxwelltyreece/CloudChasers/graphs/contributors
 
 [issues-shield]: https://img.shields.io/github/issues/maxwelltyreece/CloudChasers.svg?style=for-the-badge
+
 [issues-url]: https://github.com/maxwelltyreece/CloudChasers/issues
