@@ -81,6 +81,7 @@ const getNutrientIntake = async (req, res, nutrient) => {
 				if (mealItem.foodItemID) {
 					foodItem = await FoodItem.findById(mealItem.foodItemID);
 					food = await Food.findById(foodItem.foodID);
+					totalNutrient += food[nutrient] * (foodItem.weight / 100);
 				} else {
 					const recipeQuantity = await RecipeQuantity.findById(mealItem.recipeQuantityID);
 					const recipe = await Recipe.findById(recipeQuantity.recipeID);
@@ -90,13 +91,14 @@ const getNutrientIntake = async (req, res, nutrient) => {
 						foodItem = await FoodItem.findById(recipeItem.foodItemID);
 						food = await Food.findById(foodItem.foodID);
 						totalNutrient += food[nutrient] * (foodItem.weight / 100);
+						totalRecipeWeight += foodItem.weight;
 					}
 					totalNutrient = totalNutrient * (recipeQuantity.quantity / totalRecipeWeight);
 
 				}
-				totalNutrient += food[nutrient] * (foodItem.weight / 100);
 			}
 		}
+		console.log(totalNutrient)
 		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: totalNutrient });
 	}
 	catch (error) {
