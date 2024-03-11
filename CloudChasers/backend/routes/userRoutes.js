@@ -11,11 +11,12 @@ router.get('/', (req, res) => {
 
 router.post('/register', userController.register);
 router.post('/login', userController.login);
-router.get('/users', userController.getUsers);
 
+router.get('/users', userController.getUsers);
 router.get('/userDetails', userMiddleware, userController.getUserDetail);
-router.put('/updateProfile', userMiddleware, userController.updateProfile);
 router.get('/userDays', userMiddleware, userController.getUserDays);
+
+router.put('/updateProfile', userMiddleware, userController.updateProfile);
 
 
 
