@@ -17,7 +17,15 @@ const food = require('../models/food');
 
 jest.mock('../models/user', () => ({ findById: jest.fn() }));
 // Mock UserDay model
-jest.mock('../models/UserDay', () => ({findOne: jest.fn(), save: jest.fn()}));
+jest.mock('../models/UserDay', () => {
+	return function() {
+		return {
+			save: jest.fn(),
+			findOne: jest.fn(),
+		};
+	};
+});
+
 jest.mock('../models/userDayMeal', () => ({ findOne: jest.fn() }));
 jest.mock('../models/food', () => ({ findById: jest.fn() }));
 
@@ -55,4 +63,6 @@ describe('logDatabaseFood Endpoint', () => {
 		expect(response.body.message).toBe('Food logged');
 		expect(response.statusCode).toBe(200);
 	});
+
+	
 });

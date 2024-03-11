@@ -90,13 +90,8 @@ exports.getDailyCaloricIntake = async (req, res) => {
 		if (!userDay) {
 			return res.status(400).send({ message: "No data for this day." });
 		}
-		console.log(userDay);
 
 		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
-		if (userDayMeals.length === 0) {
-			return res.status(400).send({ message: "No meals for this day." });
-		}
-		console.log(userDayMeals);
 
 		let totalCalories = 0;
 		for (const meal of userDayMeals) {
