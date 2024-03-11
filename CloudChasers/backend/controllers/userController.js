@@ -20,9 +20,7 @@ const Food = require('../models/food');
  * @param {string} req.body.profilePictureLink - The link to the user's profile picture.
  */
 exports.register = async (req, res) => {
-	const {
-		forename, surname, username, email, password, dateOfBirth, lastLogin, profilePictureLink,
-	} = req.body;
+	const {forename, surname, username, email, password, dateOfBirth, lastLogin, profilePictureLink} = req.body;
 	try {
 		// Check if user exists
 		const user = await User.findOne({ username });
@@ -38,10 +36,13 @@ exports.register = async (req, res) => {
 
 		console.log('Creating user');
 		const newUser = new User({
-			forename,
-			surname,
-			username,
-			email,
+			forename: forename,
+			surname: surname,
+			username: username,
+			email: email,
+			dateOfBirth: dateOfBirth,
+			lastLogin: lastLogin,
+			profilePictureLink: profilePictureLink,
 			password: hashedPassword,
 			dateOfBirth,
 			lastLogin,

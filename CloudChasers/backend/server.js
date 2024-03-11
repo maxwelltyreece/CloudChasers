@@ -8,6 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const foodRoutes = require('./routes/foodRoutes');
 const communityRoutes = require('./routes/communityRoutes');
 const statsRoutes = require('./routes/statsRoutes');
+const imageRoutes = require('./routes/imageRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -26,7 +27,11 @@ const authenticateJWT = jwt({
 // .catch((err) => {
 //   console.error('Error connecting to the database', err);
 // });
-const url = 'mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/?retryWrites=true&w=majority';
+
+// const url = 'mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/?retryWrites=true&w=majority';
+
+// seeded DB
+const url = 'mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/seeded?retryWrites=true&w=majority';  
 
 mongoose.connect(url)
 	.then(() => {
@@ -54,6 +59,7 @@ app.use('/food', foodRoutes);
 app.use('/', userRoutes);
 app.use('/community', communityRoutes);
 app.use('/stats', statsRoutes);
+app.use('/image', imageRoutes);
 
 const { login } = require('./controllers/userController');
 

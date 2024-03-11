@@ -2,6 +2,7 @@ const express = require('express');
 const userMiddleware = require('../middleware/userMiddleware');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const firebaseController = require('../controllers/firebaseImageController.js');
 
 
 router.get('/', (req, res) => {
