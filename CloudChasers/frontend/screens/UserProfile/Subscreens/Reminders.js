@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
 	View, Text, ScrollView, StyleSheet, Modal, TextInput, Platform, Pressable,
 } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+// import DateTimePicker from '@react-native-community/datetimepicker';
 
 const styles = StyleSheet.create({
 	container: {
@@ -325,12 +325,12 @@ function Reminders() {
 						<Text style={styles.selectTimeTitle}>Select Time: </Text>
 
 						{/* {showTimePicker && ( */}
-						<DateTimePicker
+						{/* <DateTimePicker
 							value={date}
 							mode="time"
 							display="default"
 							onChange={onChangeTime}
-						/>
+						/> */}
 						{/* )} */}
 
 					</View>

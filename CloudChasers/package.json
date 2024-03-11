@@ -46,7 +46,11 @@
     "react-native-screens": "~3.22.0",
     "react-native-svg": "^14.1.0",
     "react-native-vector-icons": "^10.0.3",
-    "supertest": "^6.3.4"
+    "supertest": "^6.3.4",
+    "busboy": "^1.6.0",
+    "file-type": "^19.0.0",
+    "firebase": "^10.8.0",
+    "firebase-admin": "^12.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

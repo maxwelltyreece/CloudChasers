@@ -57,6 +57,8 @@ exports.createCommunity = async (req, res) => {
 
 exports.joinCommunity = async (req, res) => {
     const { communityId } = req.body;
+    console.log('Body:', req.body);
+    console.log('Community ID server side:', communityId);
     try {
         // Get user from token
         const user = req.user; 
@@ -142,6 +144,7 @@ exports.getUserRole = async (req, res) => {
     try {
         const user = req.user;
         // Get community
+        console.log(communityId);
         const community = await Community.findById(communityId);
         if (!community) {
             return res.status(404).send({ message: 'Community not found' });

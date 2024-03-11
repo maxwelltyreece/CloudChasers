@@ -28,6 +28,10 @@ exports.getStreaks = async (req, res) => {
 		const { today } = req.body;
 		const user = req.user;
 
+		if (!Date.parse(today)) {
+			return res.status(400).send({ message: 'Invalid date' });
+		}
+
 		const clientDate = new Date(today);
 		clientDate.setHours(0, 0, 0, 0);
 
@@ -43,6 +47,7 @@ exports.getStreaks = async (req, res) => {
 			user.streak = 1; 
 		}
 
+		// TODO: Update `lastLogin` when the user logs in not when the user sends a request to update the streak.
 		user.lastLogin = today;
 
 		await user.save();
@@ -50,40 +55,13 @@ exports.getStreaks = async (req, res) => {
 		return res.status(200).send({ streak: user.streak, message: "Streak updated" });
 
 	} catch (error) {
-		console.error(error);
 		return res.status(500).send({ error: error.toString() });
 	}
 };
 
-/**
- * Calculates the total calories for a given food item.
- * This function retrieves the food item and its associated food from the database,
- * then calculates the calories based on the food"s kCals and the food item"s weight.
- *
- * @param {string} foodItemId - The ID of the food item.
- * @returns {Promise<number>} A promise that resolves to the total calories for the food item.
- * @throws {Error} If an error occurs while retrieving the food item or food from the database.
- */
-async function calculateCalories(foodItemId) {
-	const foodItem = await FoodItem.findById(foodItemId);
-	const food = await Food.findById(foodItem.foodID);
-	return food.kCals * (foodItem.weight / 100);
-}
-
-/**
- * Handles the GET /daily-caloric-intake route.
- * This function calculates the user"s total caloric intake for a given day.
- * It retrieves the user"s meals for the day from the database, then calculates the total calories for each meal.
- * The total calories for the day are returned in the response.
- *
- * @param {Object} req - The Express request object. The request body should contain a "date" property with the date for which to calculate the caloric intake. The request should also contain a "user" property with the user"s data.
- * @param {Object} res - The Express response object.
- * @returns {Object} The Express response object. The response body contains the total calories for the day and a success message.
- * @throws {Error} If an error occurs while calculating the caloric intake, the error is logged and a 500 status code is returned in the response.
- */
-exports.getDailyCaloricIntake = async (req, res) => {
+const getNutrientIntake = async (req, res, nutrient) => {
 	try {
-		const { date } = req.body;
+		const { date } = req.query;  // Ensure consistency in how you receive the date, query or body.
 		const user = req.user;
 
 		const userDay = await UserDay.findOne({ userID: user._id, date: date });
@@ -93,35 +71,45 @@ exports.getDailyCaloricIntake = async (req, res) => {
 
 		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
 
-		let totalCalories = 0;
+		let totalNutrient = 0;
+
 		for (const meal of userDayMeals) {
 			const mealItems = await MealItem.find({ userDayMealID: meal._id });
 
 			for (const mealItem of mealItems) {
-
-				if (!mealItem.foodItemID) {
+				let foodItem, food;
+				if (mealItem.foodItemID) {
+					foodItem = await FoodItem.findById(mealItem.foodItemID);
+					food = await Food.findById(foodItem.foodID);
+				} else {
 					const recipeQuantity = await RecipeQuantity.findById(mealItem.recipeQuantityID);
 					const recipe = await Recipe.findById(recipeQuantity.recipeID);
 					const allRecipeItems = await RecipeItem.find({ recipeID: recipe._id });
 					let totalRecipeWeight = 0;
 					for (const recipeItem of allRecipeItems) {
-						const foodItem = await FoodItem.findById(recipeItem.foodItemID);
-						const food = await Food.findById(foodItem.foodID);
-						totalRecipeWeight += foodItem.weight;
-						totalCalories += food.calories * (foodItem.weight / 100);
+						foodItem = await FoodItem.findById(recipeItem.foodItemID);
+						food = await Food.findById(foodItem.foodID);
+						totalNutrient += food[nutrient] * (foodItem.weight / 100);
 					}
-					totalCalories = totalCalories * (recipeQuantity.quantity / totalRecipeWeight);
-				} else {
-					const foodItem = await FoodItem.findById(mealItem.foodItemID);
-					const food = await Food.findById(foodItem.foodID);
-					totalCalories += food.calories * (foodItem.weight / 100); 
+					totalNutrient = totalNutrient * (recipeQuantity.quantity / totalRecipeWeight);
+
 				}
+				totalNutrient += food[nutrient] * (foodItem.weight / 100);
 			}
 		}
-		return res.status(200).send({ totalCalories });
+		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: totalNutrient });
 	}
 	catch (error) {
 		console.error(error);
 		return res.status(500).send({ error: error.toString() });
 	}
 };
+
+exports.getDailyCaloricIntake = (req, res) => getNutrientIntake(req, res, 'calories');
+exports.getDailyWaterIntake = (req, res) => getNutrientIntake(req, res, 'water');
+exports.getDailyProteinIntake = (req, res) => getNutrientIntake(req, res, 'protein');
+exports.getDailyCarbIntake = (req, res) => getNutrientIntake(req, res, 'carbs');
+exports.getDailyFatIntake = (req, res) => getNutrientIntake(req, res, 'fat');
+exports.getDailySugarIntake = (req, res) => getNutrientIntake(req, res, 'sugar');
+exports.getDailySodiumIntake = (req, res) => getNutrientIntake(req, res, 'sodium');
+exports.getDailyFibreIntake = (req, res) => getNutrientIntake(req, res, 'fibre');

@@ -44,7 +44,7 @@ export default function SettingsNavigator() {
 			<Stack.Screen name="HelpAndSupport" component={HelpAndSupport} options={{ ...commonOptions, title: 'Help & Support' }} />
 			<Stack.Screen name="Notifications" component={Notifications} options={{ ...commonOptions, title: 'Notifications' }} />
 			<Stack.Screen name="Privacy" component={Privacy} options={{ ...commonOptions, title: 'Privacy' }} />
-			<Stack.Screen name="EditPage" component={EditPage} options={{ ...commonOptions, title: 'Edit Page' }} />
+			<Stack.Screen name="EditPage" component={EditPage} options={{ ...commonOptions, title: '' }} />
 		</Stack.Navigator>
 	);
 }
