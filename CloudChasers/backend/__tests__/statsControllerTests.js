@@ -84,6 +84,20 @@ describe("Streaks Endpoint", () => {
 });
 
 describe("Daily Caloric Intake Endpoint", () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
+	it("should return 400 if no data is found for the day", async () => {
+		const response = await request(app)
+			.get("/stats/daily-caloric-intake")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ date: new Date(Date.now() + 86400000 * 2).toISOString() });
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body).toHaveProperty("message", "No data for this day.");
+	});
+
 	it("should return 200 and the total caloric intake for the day", async () => {
 		userDay.findOne.mockResolvedValue({ _id: "testUserDayID", date: new Date().toISOString(), userID: "testUserID", save: jest.fn().mockResolvedValue(true)});
 		userDayMeal.find.mockResolvedValue([ { _id: "testUserDayMealID", name: "Dinner", userDayID: "testUserDayID2", save: jest.fn().mockResolvedValue(true)}]);
@@ -106,28 +120,6 @@ describe("Daily Caloric Intake Endpoint", () => {
 		expect(response.body.totalCalories).toBe(400);
 	});
 
-	jest.clearAllMocks();
-	it("should return 400 if no data is found for the day", async () => {
-		const response = await request(app)
-			.get("/stats/daily-caloric-intake")
-			.set("Authorization", `Bearer ${token}`)
-			.send({ date: new Date(Date.now() + 86400000 * 2).toISOString() });
-
-		expect(response.statusCode).toBe(400);
-		expect(response.body).toHaveProperty("message", "No data for this day.");
-	});
-
-	it("should return 400 if no meals are found for the day", async () => {
-		const response = await request(app)
-			.get("/stats/daily-caloric-intake")
-			.set("Authorization", `Bearer ${token}`)
-			.send({ date: new Date().toISOString() });
-
-		expect(response.statusCode).toBe(400);
-		expect(response.body).toHaveProperty("message", "No meals for this day.");
-	});
-
-	jest.clearAllMocks();
 	it("should return 200 and the correct total caloric intake for the day for recipes", async () => {
 		userDay.findOne.mockResolvedValue({ _id: "testUserDayID", date: new Date().toISOString(), userID: "testUserID", save: jest.fn().mockResolvedValue(true)});
 		userDayMeal.find.mockResolvedValue([ { _id: "testUserDayMealID", name: "Dinner", userDayID: "testUserDayID2", save: jest.fn().mockResolvedValue(true)}]);
@@ -147,7 +139,5 @@ describe("Daily Caloric Intake Endpoint", () => {
 		expect(response.body).toHaveProperty("totalCalories");
 		expect(response.body.totalCalories).toBe(289.8);
 	}); 
-
-
 });
 

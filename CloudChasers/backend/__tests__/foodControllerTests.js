@@ -62,4 +62,6 @@ describe('logDatabaseFood Endpoint', () => {
 		expect(response.body.message).toBe('Food logged');
 		expect(response.statusCode).toBe(200);
 	});
+
+	
 });
