@@ -6,13 +6,15 @@ import {
 const styles = StyleSheet.create({
 	learnMoreContainer: {
 		flex: 1,
-		backgroundColor: '#EC6641',
+		// backgroundColor: '#EC6641',
+		backgroundColor: 'white',
 		justifyContent: 'center',
 		alignContent: 'center',
 		borderRadius: 15,
-		marginLeft: 10,
+		// marginLeft: 10,
 		padding: 20,
-		width: 200,
+		right: '1%',
+		width: '98%',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.22,
@@ -38,7 +40,9 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		borderRadius: 20,
 		padding: 35,
+		justifyContent: 'center',
 		alignItems: 'center',
+		alignContent: 'center',
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
@@ -51,8 +55,10 @@ const styles = StyleSheet.create({
 	},
 	modalHeaderText: {
 		fontSize: 22,
-		fontWeight: 'bold',
-		marginBottom: 20,
+		fontWeight: '700',
+		marginBottom: 35,
+		color: '#007BFF',
+		alignSelf: 'center',
 	},
 	modalSubheaderText: {
 		fontWeight: 'bold',
@@ -60,7 +66,7 @@ const styles = StyleSheet.create({
 	modalContentText: {
 		fontSize: 16,
 		marginBottom: 20,
-		textAlign: 'justify',
+		// textAlign: 'justify',
 	},
 	modalCloseButtonText: {
 		color: '#FFFFFF',
@@ -163,7 +169,11 @@ function LearnMore() {
 
 						{/* Micronutrients */}
 						<Text style={styles.modalContentText}>
-							<Text style={styles.modalSubheaderText}>Micronutrients (Vitamins & Minerals):</Text>
+							<Text style={styles.modalSubheaderText}>
+								Micronutrients
+								{'\n'}
+								(Vitamins & Minerals):
+							</Text>
 							{'\n'}
                             Vital for health, development, and disease prevention. Vitamins
                             support immune function and energy production, while minerals

@@ -29,14 +29,18 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexWrap: 'wrap',
-		backgroundColor: '#F9D3C8',
+		backgroundColor: '#F0F0F0',
+		top: '5%',
 	},
 	middleDashboardContainer: {
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
 		flexDirection: 'row',
 		marginVertical: 10,
-		backgroundColor: '#F9D3C8',
+		backgroundColor: '#F0F0F0',
+		width: '95%',
+		height: '30%',
+		marginBottom: '14%',
 	},
 	leftComponentContainer: {
 		flex: 1,
@@ -75,10 +79,14 @@ function Dashboard() {
 		<SafeAreaView style={styles.dashboardContainer}>
 			<View style={styles.dashboardHeader}>
 				<WelcomeBar name="Lorenzo" />
-				<View style={styles.notificationBadgeContainer}>
+				{/* <View style={styles.notificationBadgeContainer}>
 					<NotificationBadge count={3} />
-				</View>
+				</View> */}
 			</View>
+
+			<CurrentGoalProgress goal={120} current={80} />
+
+			<CommunityStatus />
 
 			<PastWeekLogs meals={meals} />
 
@@ -92,10 +100,6 @@ function Dashboard() {
 					<RecentLog />
 				</View>
 			</View>
-
-			<CommunityStatus />
-
-			<CurrentGoalProgress goal={120} current={80} />
 
 		</SafeAreaView>
 	);

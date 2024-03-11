@@ -6,15 +6,17 @@ const styles = StyleSheet.create({
 	// -------Current Streak-------//
 	currentStreakContainer: {
 		flex: 1,
-		backgroundColor: '#EC6641',
+		// backgroundColor: '#EC6641',
+		backgroundColor: 'white',
 		justifyContent: 'center',
 		alignContent: 'center',
 		borderRadius: 15,
 		padding: 20,
-		marginLeft: 10,
-		marginRight: 5,
-		marginBottom: 10,
-		width: 200,
+		// marginLeft: 10,
+		// marginRight: 5,
+		right: '1%',
+		marginBottom: '7%',
+		width: '98%',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.22,
@@ -22,14 +24,13 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	streakTextTitle: {
-		fontSize: 20,
+		fontSize: 18,
 		fontWeight: 'bold',
-		// fontFamily: 'Montserrat_700Bold',
 	},
 	currentStreakText: {
 		fontSize: 20,
 		fontWeight: 'medium',
-		// fontFamily: 'Montserrat_700Bold',
+		marginTop: 5,
 	},
 
 });

@@ -5,15 +5,17 @@ import { View, Text, StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
 	// -------Recent Meal Log-------//
 	recentLogContainer: {
-		backgroundColor: '#EC6641',
+		// backgroundColor: '#EC6641',
+		backgroundColor: '#FF815E',
 		justifyContent: 'flex-start',
 		alignContent: 'center',
 		borderRadius: 15,
-		marginLeft: 5,
-		marginRight: 10,
+		// marginLeft: 5,
+		// marginRight: 10,
+		left: '1%',
 		padding: 8,
-		width: 200,
-		height: 215,
+		width: '98%',
+		height: '100%',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.22,
@@ -21,11 +23,13 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	recentLogTitleContainer: {
-		backgroundColor: '#EC6641',
+		// backgroundColor: '#EC6641',
+		backgroundColor: '#FF815E',
 		padding: 7,
 	},
 	innerRecentLogContainer: {
-		backgroundColor: '#F0F0F0',
+		// backgroundColor: '#F0F0F0',
+		backgroundColor: '#F7F7F7',
 		borderRadius: 8,
 		padding: 8,
 		shadowColor: '#000',
@@ -48,7 +52,7 @@ const styles = StyleSheet.create({
 	},
 	logInfoText: {
 		fontSize: 15,
-		fontWeight: 600,
+		fontWeight: '600',
 	},
 
 });
