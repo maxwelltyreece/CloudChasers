@@ -204,3 +204,11 @@ exports.logRecipeFood = async (req, res) => {
 		return res.status(500).send({ error: error.toString() });
 	}
 };
+
+//TODO: get all community recipes
+
+//TODO: get total recipe weight
+
+//TODO: duplicate 
+
+//TODO: add macro

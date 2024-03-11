@@ -8,15 +8,16 @@ const token = jwt.sign({ userID: 'testUserID' }, process.env.SECRET_KEY);
 
 const request = require('supertest');
 const app = require('../server');
-
-const userDay = require('../models/userDay');
+const mongoose = require('mongoose');
+const UserDay = require('../models/userDay');
 const userDayMeal = require('../models/userDayMeal');
 const mealItem = require('../models/mealItem');
 const foodItem = require('../models/foodItem');
 const food = require('../models/food');
 
 jest.mock('../models/user', () => ({ findById: jest.fn() }));
-jest.mock('../models/userDay', () => ({ findOne: jest.fn() }));
+// Mock UserDay model
+jest.mock('../models/UserDay', () => ({findOne: jest.fn(), save: jest.fn()}));
 jest.mock('../models/userDayMeal', () => ({ findOne: jest.fn() }));
 jest.mock('../models/food', () => ({ findById: jest.fn() }));
 
@@ -28,12 +29,17 @@ jest.mock('../models/user', () => ({
 }));
 
 
-
 describe('logDatabaseFood Endpoint', () => {
 	it('should return 200 and log the food for authenticated request', async () => {
-		userDay.findOne.mockResolvedValue({ _id: 'testUserDayID' });
-		userDayMeal.findOne.mockResolvedValue({ _id: 'testUserDayMealID' , name: 'breakfast' , userDayID: 'testUserDayID' });
-		food.findById.mockResolvedValue({ _id: 'testFoodID', calories: 100, save: jest.fn().mockResolvedValue(true) });
+		const foodID = new mongoose.Types.ObjectId();
+		const userDayID = new mongoose.Types.ObjectId();
+		// const userDayMealID = new mongoose.Types.ObjectId();
+		// userDay.findOne.mockResolvedValue({ _id: userDayID });
+		// userDayMeal.findOne.mockResolvedValue({ _id: userDayMealID , name: 'breakfast' , userDayID: 'testUserDayID' });
+		UserDay.findOne.mockResolvedValue(null);
+		UserDay.save.mockResolvedValue(true);
+		userDayMeal.findOne.mockResolvedValue(null);
+		food.findById.mockResolvedValue({ _id: foodID, name: "butter", calories: 100, save: jest.fn().mockResolvedValue(true) });
 
 
 		const response = await request(app)
