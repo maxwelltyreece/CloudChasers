@@ -206,9 +206,96 @@ exports.logRecipeFood = async (req, res) => {
 };
 
 //TODO: get all community recipes
+exports.getCommunityRecipes = async (req, res) => {
+	const { communityID } = req.query;
+	try {
+		const recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });
+		return res.status(200).json({ message: 'Recipes found', data: recipes });
+	}
+	catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}
 
-//TODO: get total recipe weight
+exports.getRecipeWeight = async (req, res) => {
+	const { recipeID } = req.query;
+	try {
+		const recipeItems = await RecipeItem.findById(recipeID);
+		if (recipeItems.length === 0) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+
+		let recipeWeight = 0;
+		for (const recipeItem of recipeItems) {
+			const foodItem = await FoodItem.findById(recipeItem.foodItemID);
+			recipeWeight += foodItem.weight;
+		}
+		return res.status(200).json({ message: 'Recipe weight found', data: recipeWeight });
+	} catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}
+
+exports.getRecipeMacro = async (req, res) => {
+	const { recipeID } = req.query;
+	try {
+		const recipeItems = await RecipeItem.findById(recipeID);
+		if (recipeItems.length === 0) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+
+		let recipeMacros = { protein: 0, carbs: 0, fats: 0, calories: 0 };
+		for (const recipeItem of recipeItems) {
+			const foodItem = await FoodItem.findById(recipeItem.foodItemID);
+			const food = await Food.findById(foodItem.foodID);
+			const weightRatio = foodItem.weight / 100;
+			recipeMacros.protein += food.protein * weightRatio;
+			recipeMacros.carbs += food.carbs * weightRatio;
+			recipeMacros.fats += food.fats * weightRatio;
+			recipeMacros.calories += food.calories * weightRatio;
+		}
+		return res.status(200).json({ message: 'Recipe macros found', data: recipeMacros });
+	} catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}
 
 //TODO: duplicate 
+exports.duplicateRecipeToUser = async (req, res) => {
+	const user = req.user;
+	const { recipeID } = req.body;
+	try {
+		const recipe = await Recipe.findById(recipeID);
+		if (!recipe) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+		const newRecipe = new Recipe({
+			name: recipe.name,
+			description: recipe.description,
+			createdBy: user._id,
+			communityThatOwnsRecipe: null
+		});
+		await newRecipe.save();
+		
+		const recipeItems = await RecipeItem.find({ recipeID });
+		for (const recipeItem of recipeItems) {
+			const foodItem = await FoodItem.findById(recipeItem.foodItemID);
+			const newFoodItem = new FoodItem({
+				foodID: foodItem.foodID,
+				weight: foodItem.weight
+			});
+			await newFoodItem.save();
+			const newRecipeItem = new RecipeItem({
+				foodItemID: newFoodItem._id,
+				recipeID: newRecipe._id
+			});
+			await newRecipeItem.save();
+		}
+		return res.status(200).json({ message: 'Recipe duplicated', data: newRecipe });
+	}
+	catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}
 
 //TODO: add macro
