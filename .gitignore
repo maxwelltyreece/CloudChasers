@@ -39,5 +39,4 @@ yarn-error.*
 
 # jest
 coverage/
-CloudChasers/frontend/screens/IPIndex.js
 nutrients.json
