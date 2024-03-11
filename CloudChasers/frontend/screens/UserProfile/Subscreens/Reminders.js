@@ -4,7 +4,6 @@ import {
 	View, Text, ScrollView, KeyboardAvoidingView, StyleSheet, Modal, TextInput, Pressable, Alert, Platform,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-// eslint-disable-next-line import/no-extraneous-dependencies
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const styles = StyleSheet.create({
