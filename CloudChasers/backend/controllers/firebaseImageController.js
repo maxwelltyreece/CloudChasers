@@ -34,7 +34,7 @@ exports.getPictureURL = async (req, res) => {
 		}
 		var extensionFound = false;
 		for (var i = 0; i < validExtensions.length; i++) {
-			var path = folderName + '/' + userId + '.' + validExtensions[i];
+			var path = folderName + '/' + id + '.' + validExtensions[i];
 			var file = bucket.file(path);
 			var exists = await file.exists();
 			if (exists[0]) {
