@@ -6,7 +6,7 @@ import {
 
 // Component imports
 import {
-	WelcomeBar, NotificationBadge, PastWeekLogs, CurrentStreak, RecentLog,
+	WelcomeBar, PastWeekLogs, CurrentStreak, RecentLog,
 	LearnMore, CommunityStatus, CurrentGoalProgress,
 } from '../../components/Dashboard';
 

@@ -30,7 +30,7 @@ export function CommunityProvider({ children }) {
             return [];
         }
     };
-2
+
 	// eslint-disable-next-line max-len
 	const getCommunityDetails = async (communityId) => communityService.getCommunityDetails(communityId);
 
