@@ -9,4 +9,4 @@ const communityPostSchema = new mongoose.Schema({
 	title : { type: String, required: true },
 });
 
-module.exports = mongoose.model('communityUser', communityPostSchema);
+module.exports = mongoose.model('communityPost', communityPostSchema);
