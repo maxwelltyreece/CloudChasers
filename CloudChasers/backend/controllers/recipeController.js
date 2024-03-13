@@ -105,7 +105,7 @@ exports.getRecipeIngredients = async (req, res) => {
 		for (const recipeItem of recipeItems) {
 			const foodItem = await FoodItem.findById(recipeItem.foodItemID);
 			const food = await Food.findById(foodItem.foodID);
-			recipeIngredients.push({ food, weight: foodItem.weight });
+			recipeIngredients.push({ food, weight: foodItem.weight, recipeItem }); // Add recipeItem here
 		}
 
 		//removes any fields from the food other than name and id and weight
@@ -113,7 +113,8 @@ exports.getRecipeIngredients = async (req, res) => {
 			return {
 				name: ingredient.food.name,
 				id: ingredient.food._id,
-				weight: ingredient.weight
+				weight: ingredient.weight,
+				recipeItemId: ingredient.recipeItem._id
 			}
 		});
 
@@ -124,26 +125,38 @@ exports.getRecipeIngredients = async (req, res) => {
 	}
 }
 
-
-//delete ingredient in recipe
+exports.deleteIngredientFromRecipe = async (req, res) => {
+	const { recipeItemID } = req.body;
+	try {
+		const recipeItem = await RecipeItem.findById(recipeItemID);
+		if (!recipeItem) {
+			return res.status(400).send({ message: 'Recipe Item does not exist' });
+		}
+		await RecipeItem.findByIdAndDelete(recipeItemID);
+		return res.status(200).json({ message: 'Recipe Item deleted' });
+	}
+	catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}
 
 async function createUserDay(userID, date){
-    try {
-        const existingUserDay = await UserDay.findOne({ userID, date });
-        if (!existingUserDay) {
-            const newUserDay = new UserDay({
-                date,
-                userID
-            });
-            await newUserDay.save();
-        }else{
-            return existingUserDay;
-        }
-    } catch (error) {
-        console.log('Error in createUserDay:', error);
-        throw new Error('Failed to create UserDay: ' + error.toString());
-    }
-    return newUserDay; // Return the newly created UserDay object
+	try {
+		const existingUserDay = await UserDay.findOne({ userID, date });
+		if (!existingUserDay) {
+			const newUserDay = new UserDay({
+				date,
+				userID
+			});
+			await newUserDay.save();
+		}else{
+			return existingUserDay;
+		}
+	} catch (error) {
+		console.log('Error in createUserDay:', error);
+		throw new Error('Failed to create UserDay: ' + error.toString());
+	}
+	return newUserDay; // Return the newly created UserDay object
 };
 
 async function createUserDayMeal(mealType, userDay) {
@@ -167,7 +180,7 @@ async function createUserDayMeal(mealType, userDay) {
 }
 //TODO FIX
 exports.logRecipeFood = async (req, res) => {
-	const { mealType, recipeID } = req.body;
+	const { mealType, recipeID , totalRecipeWeight} = req.body;
 	try {
 		const user = req.user;
 		const recipe = await Recipe.findById(recipeID);
@@ -193,6 +206,13 @@ exports.logRecipeFood = async (req, res) => {
 		});
 		await mealItem.save();
 		
+		const recipeQuantity = new RecipeQuantity({
+			recipeID: recipe._id,
+			mealItemID: mealItem._id,
+			totalRecipeWeight: totalRecipeWeight
+		});
+		await recipeQuantity.save();
+
 		await session.commitTransaction();
 		session.endSession();
 
