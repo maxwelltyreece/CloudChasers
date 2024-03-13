@@ -1,7 +1,7 @@
 // userService.js
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../screens/IPIndex'; // adjust the path as needed
+import { LocalIP } from '../screens/IPIndex';
 
 const getUserDetails = async (token) => {
 	try {
@@ -10,7 +10,8 @@ const getUserDetails = async (token) => {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		return response.data.data;
+		console.log(response.data);
+		return response.data;
 	} catch (error) {
 		if (error.response) {
 			// The request was made and the server responded with a status code
@@ -18,6 +19,7 @@ const getUserDetails = async (token) => {
 			console.log(error.response.data);
 			console.log(error.response.status);
 			console.log(error.response.headers);
+			console.log('hellooooooOOOOooo');
 		} else if (error.request) {
 			// The request was made but no response was received
 			console.log(error.request);

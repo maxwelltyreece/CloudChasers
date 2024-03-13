@@ -106,6 +106,7 @@ exports.getUsers = async (req, res) => {
  * @returns {Object} res.data - The user object.
  */
 exports.getUserDetail =  async (req, res) => {
+	console.log('Getting user details'); 
 	try {
 		return res.status(200).json({data: req.user});
 

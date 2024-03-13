@@ -1,5 +1,5 @@
 // React related imports
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
 	View, StyleSheet, SafeAreaView,
 } from 'react-native';
@@ -9,6 +9,9 @@ import {
 	WelcomeBar, PastWeekLogs, CurrentStreak, RecentLog,
 	LearnMore, CommunityStatus, CurrentGoalProgress,
 } from '../../components/Dashboard';
+
+// Context imports
+import { UserContext } from '../../contexts/UserContext';
 
 const styles = StyleSheet.create({
 	dashboardHeader: {
@@ -74,15 +77,32 @@ const fakeDB = {
 function Dashboard() {
 	const [meals] = useState(fakeDB.recentMeals);
 	const [streak] = useState(fakeDB.currentStreak);
+	const [userDetails, updateUserDetails] = useContext(UserContext);
+
+	console.log(UserContext)
+	console.log(userDetails)
+
+
+	useEffect(() => {
+        updateUserDetails();
+    }, []);
+
+
+	console.log(userDetails)
+
+	// Don't render the component until userDetails is fetched
+    if (!userDetails) {
+        return null;
+    }
 
 	return (
 		<SafeAreaView style={styles.dashboardContainer}>
-			<View style={styles.dashboardHeader}>
-				<WelcomeBar name="Lorenzo" />
-				{/* <View style={styles.notificationBadgeContainer}>
-					<NotificationBadge count={3} />
-				</View> */}
-			</View>
+			<UserContext.Provider value={{ userDetails, updateUserDetails }}>
+				<View style={styles.dashboardHeader}>
+
+					<WelcomeBar name={userDetails.forename} />
+				</View>
+			</UserContext.Provider>
 
 			<CurrentGoalProgress goal={120} current={80} />
 
