@@ -27,8 +27,6 @@ import {
 import { UserProvider } from './frontend/contexts/UserContext';
 import { StatsProvider } from './frontend/contexts/StatsContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
-import AuthNavigator from './frontend/navigation/AuthNavigator';
-import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
 
 const Stack = createStackNavigator();
