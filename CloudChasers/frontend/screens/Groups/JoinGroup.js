@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+
 import {
 	View, Text, FlatList, StyleSheet, TextInput, TouchableOpacity,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Box from '../../components/box';
 import { useCommunity } from '../../contexts/CommunityContext';
 
