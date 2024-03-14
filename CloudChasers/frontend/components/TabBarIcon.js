@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Animated } from 'react-native';
+import { TouchableOpacity, Animated, Platform } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import PropTypes from 'prop-types';
 import CustomIcon from './AddButton';
@@ -19,26 +19,28 @@ import CustomIcon from './AddButton';
  *
  * @returns {React.Element} The rendered component.
  */
-export default function TabBarIcon({
-	name, color, size, animation, onPress, navigation,
-}) {
-	if (name === '+') {
-		return (
-			<Animated.View style={{ transform: [{ scale: animation }] }}>
-				<TouchableOpacity
-					onPress={() => {
-						onPress();
-						navigation.navigate('+');
-					}}
-					activeOpacity={0.6}
-				>
-					<CustomIcon width={70} height={70} />
-				</TouchableOpacity>
-			</Animated.View>
-		);
-	}
+export default function TabBarIcon({ name, color, size, animation, onPress, navigation }) {
+    if (name === '+') {
+        const iconStyle = {
+            transform: [{ scale: animation }],
+            marginTop: Platform.OS === 'android' ? -10 : 0, // Adjust this value as needed
+        };
 
-	return <FontAwesome5 name={name} color={color} size={size} solid />;
+        return (
+            <Animated.View style={iconStyle}>
+                <TouchableOpacity 
+                    onPress={() => {
+                        onPress();
+                        navigation.navigate('+'); 
+                    }} 
+                    activeOpacity={0.6}
+                >
+                    <CustomIcon width={70} height={70} startAnimation={onPress} animation={animation} />
+                </TouchableOpacity>
+            </Animated.View>
+        );
+    }
+  return <FontAwesome5 name={name} color={color} size={size} solid />;
 }
 
 /**
