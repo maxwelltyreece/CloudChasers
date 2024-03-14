@@ -24,7 +24,7 @@ describe('recipes endpoint', () => {
 	let user, community, token, food, recipe;
 
 	beforeAll(async () => {
-		await mongoose.connect(process.env.TEST_DATABASE_URL);
+		await mongoose.connect(process.env.DATABASE_URL);
 		community = new mongoose.Types.ObjectId();
 		user = await User.create({
 			forename: 'John',
