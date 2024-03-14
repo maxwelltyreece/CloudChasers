@@ -42,14 +42,16 @@ function JoinGroup() {
 	const [availableCommunities, setAvailableCommunities] = useState([]);
 	const navigation = useNavigation();
 	const { getAvailableCommunities, joinCommunity, getUserCommunities } = useCommunity();
-	useEffect(() => {
-		const fetchAvailableCommunities = async () => {
-			const communities = await getAvailableCommunities();
-			setAvailableCommunities(communities);
-		};
+	useFocusEffect(
+        React.useCallback(() => {
+            const fetchAvailableCommunities = async () => {
+                const communities = await getAvailableCommunities();
+                setAvailableCommunities(communities);
+            };
 
-		fetchAvailableCommunities();
-	}, []);
+            fetchAvailableCommunities();
+        }, [])
+    );
 
 	// eslint-disable-next-line max-len
 	const filteredData = availableCommunities.filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
@@ -61,7 +63,6 @@ function JoinGroup() {
 		joinCommunity(communityId)
 			.then(() => {
 				getUserCommunities();
-				// Filter out the joined community from the list of available communities
 				// eslint-disable-next-line max-len
 				setAvailableCommunities(availableCommunities.filter((community) => community.id !== communityId));
 			})
@@ -90,9 +91,9 @@ function JoinGroup() {
 						</TouchableOpacity>
 					</View>
 				)}
-				numColumns={2} // Two items per row
+				numColumns={2}
 				contentContainerStyle={{
-					paddingHorizontal: '2.5%', // Offset the item margin
+					paddingHorizontal: '2.5%',
 				}}
 			/>
 		</View>
