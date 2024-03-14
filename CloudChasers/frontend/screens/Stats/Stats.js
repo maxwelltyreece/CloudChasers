@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import Swiper from 'react-native-swiper';
 import { StatsContext } from '../../contexts/StatsContext.js';
 import { fetchStats } from '../../services/StatsService.js';
 
@@ -9,12 +8,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../../screens/IPIndex';
 
-import AnnouncementBar from './statsComponents/AnnouncementBar';
 import WelcomeBar from './statsComponents/WelcomeBar';
-import ProgressChartComponent from './statsComponents/ProgressChartComponent';
-import GoalsBarChart from './statsComponents/GoalsBarChart';
-import CommunityPanel from './statsComponents/CommunityPanel';
 import CircularProgressComponent from './statsComponents/CircularProgress.js';
+import NutritionProgress from './statsComponents/NutritionProgress.js';
 
 const Stats = () => {
 
@@ -29,7 +25,24 @@ const Stats = () => {
     getStats();
   }, []);
 
-  // Dummy Data 
+
+  useEffect(() => {
+    const getStats = async () => {
+      const data = await fetchStats();
+      setStats(data);
+    };
+
+    getStats();
+  }, []);
+
+  // Dummy Data
+  const nutrientValues = {
+    sugar: 25, // Example value
+    fat: 30, // Example value
+    carbs: 50, // Example value
+    sodium: 10, // Example value
+  };
+
   const weeklyIntake = [
     { day: 'Mon', protein: 20, carbs: 50, calories: 1200 },
     { day: 'Tue', protein: 25, carbs: 45, calories: 1900 },
@@ -60,12 +73,15 @@ const Stats = () => {
         <WelcomeBar name="Emily" />
       </View>
       
-      {/* <View style={styles.statsHeader}>
-        <AnnouncementBar streak={3} progressData={{data: [0.4, 0.6, 0.8]}} />
-      </View> */}
-      
       <View style={styles.ringComp}>
         <CircularProgressComponent value={75} maxValue={100} />
+      </View>
+
+      <View style={styles.progressBarContainer}>
+        <NutritionProgress label="Sugar" value={nutrientValues.sugar} maxValue={100} progressColor="#FFC107" />
+        <NutritionProgress label="Fat" value={nutrientValues.fat} maxValue={100} progressColor="#FF5722" />
+        <NutritionProgress label="Carbs" value={nutrientValues.carbs} maxValue={100} progressColor="#4CAF50" />
+        <NutritionProgress label="Sodium" value={nutrientValues.sodium} maxValue={100} progressColor="#03A9F4" />
       </View>
     </SafeAreaView>
   );
@@ -82,6 +98,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     backgroundColor: '#f2f2f2'
     
+  },
+  progressBarContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
   },
   statsHeader: {
     justifyContent: 'flex-start',

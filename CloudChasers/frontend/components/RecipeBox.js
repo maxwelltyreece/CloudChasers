@@ -10,43 +10,43 @@ const styles = StyleSheet.create({
         width: '48%', 
         aspectRatio: 1, 
         margin: 8,
-      },
-
-  text: {
+        },
+        
+    text: {
     fontSize: 20,
-  },
-  image: {
-    width: '70%',
-    height: '70%',
-    resizeMode: 'cover',
-  },
-  title: {
-    fontSize: 16,
-    fontFamily: 'Montserrat_700Bold',
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
     },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    width: 300, // Set a fixed width
-    height: 400, // Set a fixed height
-  },
+    image: {
+        width: '70%',
+        height: '70%',
+        resizeMode: 'cover',
+    },
+    title: {
+        fontSize: 16,
+        fontFamily: 'Montserrat_700Bold',
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 10,
+    },
+    modalView: {
+        margin: 20,
+        backgroundColor: "white",
+        borderRadius: 20,
+        padding: 35,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+        width: 0,
+        height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+        width: 300, 
+        height: 400,
+    },
   
 });
 

@@ -79,13 +79,13 @@ const styles = StyleSheet.create({
   keyContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingTop: 10,
+    paddingTop: 20,
     width: '100%',
   },
   keyText: {
     marginHorizontal: 5,
     fontSize: 18,
+    fontFamily: 'Montserrat_700Bold',
   },
 });
-
 export default CircularProgressComponent;

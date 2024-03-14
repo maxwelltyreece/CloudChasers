@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
 		marginTop: 5,
 		flex: 1,
 		paddingHorizontal: 5, 
-		
 	  },
 	list: {
 		flex: 1,
