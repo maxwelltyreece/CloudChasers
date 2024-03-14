@@ -105,7 +105,7 @@ exports.getCommunityDetails = async (req, res) => {
         }
         // Get member count
         const count = await CommunityUser.countDocuments({ communityID: communityId });
-        return res.status(200).json({ success: true, data: { community, count }});
+        return res.status(200).json({ success: true, data: { community, members: count }});
     }
     catch (error) {
         return res.status(400).json({ error: error.toString() });
