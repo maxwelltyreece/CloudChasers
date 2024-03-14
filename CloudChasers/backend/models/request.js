@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
-
-module.exports = mongoose.model("user", userSchema);
-
-const mongoose = require("mongoose");
-
-const recipeSchema = new mongoose.Schema({
+const requestSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["Pending", "Approved", "Rejected"],
