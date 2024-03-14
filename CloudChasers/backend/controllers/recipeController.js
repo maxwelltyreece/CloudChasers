@@ -75,7 +75,8 @@ exports.getRecipe = async (req, res) => {
 			return res.status(400).send({ message: 'Recipe does not exist' });
 		}
 		const recipeItems = await RecipeItem.find({ recipeID });
-		return res.status(200).json({ message: 'Recipe found', data: { recipe, recipeItems, recipeQuantities } });
+		
+		return res.status(200).json({ message: 'Recipe found', data: { recipe, recipeItems } });
 	}
 	catch (error) {
 		return res.status(400).json({ error: error.toString() });
