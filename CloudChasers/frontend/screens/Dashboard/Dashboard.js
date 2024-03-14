@@ -137,7 +137,7 @@ function Dashboard() {
 
 			<View style={styles.middleDashboardContainer}>
 				<View style={styles.leftComponentContainer}>
-					<CurrentStreak streak={streak} />
+					<CurrentStreak streak={userDetails?.data?.streak} />
 					<LearnMore />
 				</View>
 
