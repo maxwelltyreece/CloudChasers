@@ -14,7 +14,9 @@ import navbarStyles from '../styles/NavbarStyles';
 import TabBarIcon from './TabBarIcon';
 
 // Screen imports
-import { Dashboard, Stats, Groups, DataEntry, } from '../screens';
+import {
+	Dashboard, Stats, Groups, DataEntry,
+} from '../screens';
 import UserNavigator from '../navigation/UserNavigator';
 
 const Tab = createBottomTabNavigator();
@@ -48,13 +50,14 @@ const screenOptions = {
 };
 
 /**
- * Returns a function that returns null if the name is '+', otherwise undefined meaning it uses the defaultabel (the name of the tab).
+ * Returns a function that returns null if the name is '+', otherwise undefined meaning it uses
+ * the defaultabel (the name of the tab).
  * This is used for the tabBarLabel option in Tab.Screen.
  *
  * @param {string} name - The name of the tab.
  * @returns {function|null} - A function that returns null if the name is '+', otherwise undefined.
  */
-const getTabBarLabel = (name) => name === '+' ? () => null : undefined;
+const getTabBarLabel = (name) => (name === '+' ? () => null : undefined);
 
 /**
  * MainTabNavigator is a component that renders a bottom tab navigator.

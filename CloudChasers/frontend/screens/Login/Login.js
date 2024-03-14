@@ -4,6 +4,7 @@ import { View, TextInput, Button, StyleSheet, Text, Pressable } from 'react-nati
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../IPIndex';
+import { useUser } from '../../contexts/UserContext';
 
 function Login({ navigation }) {
 	const [username, setUsername] = useState('');

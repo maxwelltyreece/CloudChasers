@@ -167,5 +167,4 @@ function Register({ navigation }) {
 	);
 }
 
-
 export default Register;

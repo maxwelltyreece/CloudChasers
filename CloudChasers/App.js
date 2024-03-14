@@ -1,10 +1,5 @@
-
+/* eslint-disable camelcase */
 import { createStackNavigator } from '@react-navigation/stack';
-import Navbar from './frontend/components/Navbar';
-import Settings from './frontend/screens/Settings/Settings';
-import Landing from './frontend/screens/Landing/Landing';
-import Login from './frontend/screens/Login/Login';
-import Register from './frontend/screens/Register/Register';
 import { NavigationContainer } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import { View, StatusBar } from 'react-native';
@@ -27,8 +22,14 @@ import {
 	Montserrat_700Bold,
 	Montserrat_800ExtraBold,
 	Montserrat_900Black,
-} from "@expo-google-fonts/montserrat";
+} from '@expo-google-fonts/montserrat';
 
+import { UserProvider } from './frontend/contexts/UserContext';
+import { StatsProvider } from './frontend/contexts/StatsContext';
+import { CommunityProvider } from './frontend/contexts/CommunityContext';
+import AuthNavigator from './frontend/navigation/AuthNavigator';
+import MainNavigator from './frontend/navigation/MainNavigator';
+import { getUserCommunities } from './frontend/services/CommunityService';
 
 const Stack = createStackNavigator();
 
@@ -42,7 +43,7 @@ const Stack = createStackNavigator();
  * @returns {React.Element} The rendered navigation container.
  */
 export default function App() {
-	let [fontsLoaded] = useFonts({
+	const [fontsLoaded] = useFonts({
 		Montserrat_100Thin,
 		Montserrat_200ExtraLight,
 		Montserrat_300Light,
@@ -63,27 +64,33 @@ export default function App() {
 	useEffect(() => {
 		const checkToken = async () => {
 			try {
-			const token = await AsyncStorage.getItem('token');
-			setInitialRoute(token ? 'Main' : 'Auth');
+				const token = await AsyncStorage.getItem('token');
+				setInitialRoute(token ? 'Main' : 'Auth');
 			} catch (error) {
-			console.error(error);
+				console.log(error);
 			}
 		};
-		
-		checkToken();
-	}, []);
-  
-	if (!fontsLoaded || !initialRoute) {
-	  return null;
-	}
-  
-	return (
-	  <NavigationContainer>
-		<Stack.Navigator initialRouteName={initialRoute}>
-		  <Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-		  <Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-		</Stack.Navigator>
-	  </NavigationContainer>
-	);
-  }
 
+		checkToken();
+		getUserCommunities();
+	}, []);
+
+	if (!fontsLoaded || !initialRoute) {
+		return null;
+	}
+
+	return (
+		<StatsProvider>
+		<CommunityProvider>
+		  <UserProvider>
+			<NavigationContainer>
+			  <Stack.Navigator initialRouteName={initialRoute}>
+				<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+				<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+			  </Stack.Navigator>
+			</NavigationContainer>
+		  </UserProvider>
+		</CommunityProvider>
+	  </StatsProvider>
+	);
+}
