@@ -140,17 +140,20 @@ exports.deleteIngredientFromRecipe = async (req, res) => {
 		return res.status(400).json({ error: error.toString() });
 	}
 }
-
 async function createUserDay(userID, date){
+	console.log('createUserDay called with userID:', userID, 'and date:', date);
+	let newUserDay;
 	try {
 		const existingUserDay = await UserDay.findOne({ userID, date });
+		console.log('existingUserDay:', existingUserDay);
 		if (!existingUserDay) {
-			const newUserDay = new UserDay({
+			newUserDay = new UserDay({
 				date,
 				userID
-			});
+			});	
 			await newUserDay.save();
-		}else{
+			console.log('newUserDay saved:', newUserDay);
+		} else {
 			return existingUserDay;
 		}
 	} catch (error) {
@@ -161,27 +164,35 @@ async function createUserDay(userID, date){
 };
 
 async function createUserDayMeal(mealType, userDay) {
+	let newUserDayMeal;
 	try {
+		console.log('mealType:', mealType);
+		console.log('userDay._id:', userDay._id);
+
 		const existingUserDayMeal = await UserDayMeal.findOne({ name: mealType, userDayID: userDay._id });
+		console.log('existingUserDayMeal:', existingUserDayMeal);
 
 		if (!existingUserDayMeal) {
-			const newUserDayMeal = new UserDayMeal({
+			newUserDayMeal = new UserDayMeal({
 				name: mealType,
 				userDayID: userDay._id
-			});
+			});	
 			await newUserDayMeal.save();
+			console.log('newUserDayMeal:', newUserDayMeal);
 		} else {
 			return existingUserDayMeal;
 		}
 
 	} catch (error) {
-		throw new Error('Failed to create UserDayMeal');
+		console.log('Error in createUserDayMeal:', error);
+		throw new Error('Failed to create UserDayMeal: ' + error.toString());
 	}
 	return newUserDayMeal;
-}
+};
 
 exports.logRecipeFood = async (req, res) => {
 	const { mealType, recipeID , totalRecipeWeight} = req.body;
+	let session;
 	try {
 		const user = req.user;
 		const recipe = await Recipe.findById(recipeID);
@@ -189,14 +200,14 @@ exports.logRecipeFood = async (req, res) => {
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 		
-		const session = await mongoose.startSession();
+		session = await mongoose.startSession();
 		session.startTransaction();
 		
 		// Check if user day exists, if not create it
 		const newUserDay = await createUserDay(user._id, today);
 
 		// Check if user day meal exists, if not create it
-		// TODO: Can change behaviour to allow multiple meals of the same type
+
 		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
 
 		const mealItem = new MealItem({
@@ -220,17 +231,20 @@ exports.logRecipeFood = async (req, res) => {
 		return res.status(200).send({ message: 'Recipe logged' });
 
 	} catch (error) {
-		session.abortTransaction();
-		session.endSession();
-		return res.status(500).send({ error: error.toString() });
+		if (session) {
+			session.abortTransaction();
+			session.endSession();}
+		return res.status(501).send({ error: "test" + error.toString() });
 	}
 };
 
-//TODO: get all community recipes
 exports.getCommunityRecipes = async (req, res) => {
 	const { communityID } = req.query;
 	try {
 		const recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });
+		if (recipes.length === 0) {
+			return res.status(400).send({ message: 'No recipes found' });
+		}
 		return res.status(200).json({ message: 'Recipes found', data: recipes });
 	}
 	catch (error) {
@@ -241,7 +255,7 @@ exports.getCommunityRecipes = async (req, res) => {
 exports.getRecipeWeight = async (req, res) => {
 	const { recipeID } = req.query;
 	try {
-		const recipeItems = await RecipeItem.findById(recipeID);
+		const recipeItems = await RecipeItem.find({recipeID});
 		if (recipeItems.length === 0) {
 			return res.status(400).send({ message: 'Recipe does not exist' });
 		}
@@ -260,19 +274,19 @@ exports.getRecipeWeight = async (req, res) => {
 exports.getRecipeMacro = async (req, res) => {
 	const { recipeID } = req.query;
 	try {
-		const recipeItems = await RecipeItem.findById(recipeID);
+		const recipeItems = await RecipeItem.find({recipeID});
 		if (recipeItems.length === 0) {
 			return res.status(400).send({ message: 'Recipe does not exist' });
 		}
 
-		let recipeMacros = { protein: 0, carbs: 0, fats: 0, calories: 0 };
+		let recipeMacros = { protein: 0, carbs: 0, fat: 0, calories: 0 };
 		for (const recipeItem of recipeItems) {
 			const foodItem = await FoodItem.findById(recipeItem.foodItemID);
 			const food = await Food.findById(foodItem.foodID);
 			const weightRatio = foodItem.weight / 100;
 			recipeMacros.protein += food.protein * weightRatio;
 			recipeMacros.carbs += food.carbs * weightRatio;
-			recipeMacros.fats += food.fats * weightRatio;
+			recipeMacros.fat += food.fat * weightRatio;
 			recipeMacros.calories += food.calories * weightRatio;
 		}
 		return res.status(200).json({ message: 'Recipe macros found', data: recipeMacros });
@@ -281,7 +295,6 @@ exports.getRecipeMacro = async (req, res) => {
 	}
 }
 
-//TODO: duplicate 
 exports.duplicateRecipeToUser = async (req, res) => {
 	const user = req.user;
 	const { recipeID } = req.body;
