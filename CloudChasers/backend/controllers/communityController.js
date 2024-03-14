@@ -3,13 +3,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Community = require('../models/community');
 const CommunityUser = require('../models/communityUser');
+const CommunityPost = require('../models/communityPost');
 
 // TODO:
 // - Join private community
 // - Get pending requests
 // - Get community posts/recipes
-// - Update community privacy settings
-// - Admin can remove members
 // 
 // DONE:
 // - Get community members
@@ -20,6 +19,8 @@ const CommunityUser = require('../models/communityUser');
 // - Delete community
 // - Leave community
 // - Update community description
+// - Update community privacy settings
+// - Admin can remove members
 
 exports.createCommunity = async (req, res) => {
     const { name, description, recipePrivacy, joinPrivacy } = req.body;
@@ -104,7 +105,7 @@ exports.getCommunityDetails = async (req, res) => {
         }
         // Get member count
         const count = await CommunityUser.countDocuments({ communityID: communityId });
-        return res.status(200).json({ success: true, data: { community, count }});
+        return res.status(200).json({ success: true, data: { community, members: count }});
     }
     catch (error) {
         return res.status(400).json({ error: error.toString() });
@@ -127,13 +128,14 @@ exports.getCommunityMembers = async (req, res) => {
         }
         // Get members
         const members = await CommunityUser.find({ communityID: communityId });
-        // Map member IDs to usernames
+        // Map member IDs to usernames + pic URLs
         const users = await Promise.all(members.map(async (member) => {
-            const user = await User.findById(member.userID).select('username');
+            const communitymember = await User.findById(member.userID).select('username');
+            const profilePictureLink = await User.findById(member.userID).select('profilePictureLink');
             const role = member.role;
-            return { _id: user._id, username: user.username, role };
+            return { _id: communitymember._id, username: communitymember.username, profilePictureLink: profilePictureLink.profilePictureLink, role };
         }));
-
+        
         return res.status(200).json({ success: true, data: users });
         
     }
@@ -329,6 +331,69 @@ exports.updateJoinPrivacy = async (req, res) => {
 
     
         return res.status(200).json({ success: true, message: 'Community updated' });
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.toString() });
+    }
+}
+
+exports.makePost = async (req, res) => {
+    const { communityId, title, text, recipeID } = req.body;
+    try {
+        const user = req.user;
+        // Get community
+        const community = await Community.findById(communityId);
+        if (!community) {
+            return res.status(404).send({ message: 'Community not found' });
+        }
+        // Check if user is a member of the community
+        const isMember = await CommunityUser.findOne({ communityID: communityId, userID: user._id });
+        if (!isMember) {
+            return res.status(400).send({ message: 'User is not a member of the community' });
+        }
+        // Create post
+        const newPost = new CommunityPost({
+            communityID: communityId,
+            userID: user._id,
+            recipeID,
+            text,
+            data: Date.now(),
+            title,
+        });
+        await newPost.save();
+        return res.status(200).json({ success: true, message: 'Post created', data: newPost });
+    }
+    catch (error) {
+        return res.status(400).json({ error: error.toString() });
+    }
+}
+
+exports.getCommunityPosts = async (req, res) => {
+    const { communityId } = req.query;
+    try {
+        const user = req.user;
+        // Get community
+        const community = await Community.findById(communityId);
+        if (!community) {
+            return res.status(404).send({ message: 'Community not found' });
+        }
+        // Check if user is a member of the community
+        const isMember = await CommunityUser.findOne({ communityID: communityId, userID: user._id });
+        if (!isMember) {
+            return res.status(400).send({ message: 'User is not a member of the community' });
+        }
+        // Get posts
+        const posts = await CommunityPost.find({ communityID: communityId });
+        // Map user IDs to usernames + pic URLs
+        const postsMapped = await Promise.all(posts.map(async (post) => {
+            const username = await User.findById(post.userID).select('username');
+            const user_profile_pic = await User.findById(post.userID).select('profilePictureLink');
+            return { _id: post._id, username: username.username, recipeID: post.recipeID, user_profile_pic: user_profile_pic.profilePictureLink, title: post.title, text: post.text, date: post.date };
+        }
+        ));
+
+        return res.status(200).json({ success: true, data: postsMapped });
+
     }
     catch (error) {
         return res.status(400).json({ error: error.toString() });
