@@ -85,6 +85,10 @@ describe('logDatabaseFood Endpoint', () => {
 });
 
 describe('searchFoods Endpoint', () => {
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
 	it('should return 200 and the correct foods for a valid request', async () => {
 
 		const response = await request(app)
@@ -100,5 +104,106 @@ describe('searchFoods Endpoint', () => {
 		expect(response.body.page).toBe("1");
 		expect(response.body.limit).toBe("2");
 		expect(response.statusCode).toBe(200);
+	});
+
+
+    it('should return 404 when no foods are found', async () => {
+        // Mock Food.find to return an empty array
+        food.find.mockImplementation(() => {
+            return {
+                skip: jest.fn().mockReturnThis(),
+                limit: jest.fn().mockResolvedValue([])
+            };
+        });
+
+        food.countDocuments.mockResolvedValue(0);
+
+        const response = await request(app)
+            .get('/food/searchFoods')
+            .query({ name: 'nonexistent' });
+
+        expect(response.statusCode).toBe(404);
+        expect(response.body.message).toBe('No foods found');
+    });
+
+	it('should return 400 for invalid query parameters', async () => {
+		const response = await request(app)
+		  .get('/food/searchFoods')
+		  .query({ invalidField: 'invalidValue', anotherInvalidField: 'anotherValue' });
+	
+		expect(response.statusCode).toBe(400);
+		expect(response.body.error).toBeDefined();
+		expect(response.body.error).toContain('Invalid field(s):');
+		expect(response.body.error).toContain('invalidField');
+		expect(response.body.error).toContain('anotherInvalidField');
+	  });
+
+	it('should handle search with exact match for numeric fields', async () => {
+	// Mocking the Food model's response for an exact match
+	food.find.mockImplementationOnce(() => ({
+		skip: jest.fn().mockReturnThis(),
+		limit: jest.fn().mockResolvedValue([{ _id: 'mockedId1', name: 'apple', calories: 100 }])
+	}));
+	food.countDocuments.mockResolvedValueOnce(1);
+
+	const response = await request(app)
+		.get('/food/searchFoods')
+		.query({ page: 1, limit: 10, calories: 100 });
+
+	expect(response.statusCode).toBe(200);
+	expect(response.body.foods).toHaveLength(1);
+	expect(response.body.foods[0].calories).toBe(100);
+	});
+
+	it('should handle search with greater than condition for numeric fields', async () => {
+	// Mocking the Food model's response for a $gte query
+	food.find.mockImplementationOnce(() => ({
+		skip: jest.fn().mockReturnThis(),
+		limit: jest.fn().mockResolvedValue([{ _id: 'mockedId2', name: 'banana', calories: 150 }])
+	}));
+	food.countDocuments.mockResolvedValueOnce(1);
+
+	const response = await request(app)
+		.get('/food/searchFoods')
+		.query({ page: 1, limit: 10, calories: { min: 150 } });
+
+	expect(response.statusCode).toBe(200);
+	expect(response.body.foods).toHaveLength(1);
+	expect(response.body.foods[0].calories).toBeGreaterThanOrEqual(150);
+	});
+
+	it('should handle search with less than condition for numeric fields', async () => {
+	// Mocking the Food model's response for a $lte query
+	food.find.mockImplementationOnce(() => ({
+		skip: jest.fn().mockReturnThis(),
+		limit: jest.fn().mockResolvedValue([{ _id: 'mockedId3', name: 'orange', calories: 49 }])
+	}));
+	food.countDocuments.mockResolvedValueOnce(1);
+
+	const response = await request(app)
+		.get('/food/searchFoods')
+		.query({ page: 1, limit: 10, calories: { max: 50 } });
+
+	expect(response.statusCode).toBe(200);
+	expect(response.body.foods).toHaveLength(1);
+	expect(response.body.foods[0].calories).toBeLessThanOrEqual(50);
+	});
+
+	it('should handle search with inbetween conditions conditions for numeric fields', async () => {
+		// Mocking the Food model's response for a $gte and $lte query
+		food.find.mockImplementationOnce(() => ({
+			skip: jest.fn().mockReturnThis(),
+			limit: jest.fn().mockResolvedValue([{ _id: 'mockedId4', name: 'pear', calories: 75 }])
+		}));
+		food.countDocuments.mockResolvedValueOnce(1);
+	
+		const response = await request(app)
+			.get('/food/searchFoods')
+			.query({ page: 1, limit: 10, calories: { min: 50, max: 100 } });
+	
+		expect(response.statusCode).toBe(200);
+		expect(response.body.foods).toHaveLength(1);
+		expect(response.body.foods[0].calories).toBeGreaterThanOrEqual(50);
+		expect(response.body.foods[0].calories).toBeLessThanOrEqual(100);
 	});
 });
