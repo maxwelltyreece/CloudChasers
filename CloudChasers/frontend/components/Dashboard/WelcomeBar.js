@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// import { DashboardContext } from '../../contexts/DashboardContext';
-import { UserContext } from '../../contexts/UserContext';
+import PropTypes from 'prop-types';
 
 
 const styles = StyleSheet.create({
@@ -22,16 +21,18 @@ const styles = StyleSheet.create({
     },
 });
 
-function WelcomeBar() {
-    const userDetails = useContext(UserContext);
-
+function WelcomeBar({ name }) {
     return (
         <View style={styles.welcomeContainer}>
             <Text style={styles.welcomeText}>
-                Welcome, {userDetails ? userDetails.forename : 'Loading...'}!
+                Welcome, {name ? name : 'Loading...'}!
             </Text>
         </View>
     );
 }
+
+WelcomeBar.propTypes = {
+    name: PropTypes.string.isRequired,
+};
 
 export default WelcomeBar;

@@ -254,25 +254,6 @@ const styles = StyleSheet.create({
 	},
 });
 
-// Initial mock data for demonstration
-const initialReminders = [
-	{
-		id: 1, description: 'Eat more protein', time: '08:00 AM', date: '2024-02-27', frequency: 'Daily',
-	},
-	{
-		id: 2, description: 'Less carbs', time: '07:00 PM', date: '2024-02-27', frequency: 'Daily',
-	},
-	{
-		id: 3, description: 'Drink more water', time: '09:00 AM', date: '2024-02-27', frequency: 'Daily',
-	},
-	{
-		id: 4, description: 'Take vitamins', time: '10:00 AM', date: '2024-02-27', frequency: 'Daily',
-	},
-	{
-		id: 5, description: 'Exercise', time: '06:00 PM', date: '2024-02-27', frequency: 'Daily',
-	},
-];
-
 const frequencyOptions = ['Daily', 'Weekly']; // Options for the segmented control
 
 const REMINDERS_KEY = 'REMINDERS';
@@ -283,7 +264,7 @@ const REMINDERS_KEY = 'REMINDERS';
  * @returns {React.Element} The rendered Reminders screen.
  */
 function Reminders() {
-	const [reminders, setReminders] = useState(initialReminders);
+	const [reminders, setReminders] = useState([]);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [newReminder, setNewReminder] = useState({
 		id: null,

@@ -12,13 +12,24 @@ export function UserProvider({ children }) {
 	const [userDetails, setUserDetails] = useState(null);
     const { resetUserCommunities } = useCommunity();
 
+	const getUserDetails = async () => {
+		const token = await AsyncStorage.getItem('token');
+		if (!token) {
+			console.error('Token not available');
+			return;
+		}
+		const details = await userService.fetchUserDetails(token);
+		setUserDetails(details);
+		console.log('User details:', details);
+	}
+
 	const updateUserDetails = async () => {
 		const token = await AsyncStorage.getItem('token');
 		if (!token) {
 			console.error('Token not available');
 			return;
 		}
-		const details = await userService.getUserDetails(token);
+		const details = await userService.fetchUserDetails(token);
 		setUserDetails(details);
 	};
 
@@ -47,8 +58,8 @@ export function UserProvider({ children }) {
 	};
 
 	const value = useMemo(() => ({
-		userDetails, updateUserDetails, editUserDetails, logout,
-	}), [userDetails, updateUserDetails, editUserDetails, logout]);
+		userDetails, getUserDetails, updateUserDetails, editUserDetails, logout,
+	}), [userDetails, getUserDetails, updateUserDetails, editUserDetails, logout]);
 
 	return (
 		<UserContext.Provider value={value}>

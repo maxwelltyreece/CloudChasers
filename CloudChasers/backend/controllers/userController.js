@@ -108,6 +108,7 @@ exports.getUsers = async (req, res) => {
 exports.getUserDetail =  async (req, res) => {
 	console.log('Getting user details'); 
 	try {
+		console.log('Getting user details2'); 
 		return res.status(200).json({data: req.user});
 
 	} catch (error) {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../screens/IPIndex';
 
-const getUserDetails = async (token) => {
+const fetchUserDetails = async (token) => {
 	try {
 		const response = await axios.get(`http://${LocalIP}:3000/userDetails`, {
 			headers: {
@@ -42,7 +42,7 @@ const editUserDetails = async (field, newValue) => {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		console.log(response.data);
+		// console.log(response.data);
 	} catch (error) {
 		console.error(error);
 	}
@@ -50,6 +50,6 @@ const editUserDetails = async (field, newValue) => {
 // Add other user-related functions, like login and register
 
 export default {
-	getUserDetails,
+	fetchUserDetails,
 	editUserDetails,
 };
