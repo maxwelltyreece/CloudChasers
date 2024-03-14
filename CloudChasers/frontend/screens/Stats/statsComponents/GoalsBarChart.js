@@ -23,19 +23,6 @@ const GoalsBarChart = ({ weeklyIntake, goal, nutrient }) => {
     color: () => `#007AFF`, 
     labelColor: () => `#000000`, 
     barPercentage: 0.5,
-    propsForDots: {
-      r: "6", 
-      strokeWidth: "2",
-      stroke: "#FFFFFF"
-    },
-  };
-  
-  const renderCustomGoalAnnotation = (goal) => {
-    return (
-      <Text style={{color: 'YourGoalColor', position: 'absolute', right: 0, top: 'CalculatedTopPositionBasedOnGoal'}}>
-        Goal: {goal}
-      </Text>
-    );
   };
 
   const data = {
@@ -43,7 +30,7 @@ const GoalsBarChart = ({ weeklyIntake, goal, nutrient }) => {
     datasets: [
       {
         data: weeklyIntake.map(d => d.amount),
-        color: () => `rgba(127, 255, 212, 1)`, // Color is now fully opaque
+        color: () => `rgba(127, 255, 212, 1)`,
         label: nutrient
       }
     ],
@@ -57,14 +44,14 @@ const GoalsBarChart = ({ weeklyIntake, goal, nutrient }) => {
       <BarChart
         style={styles.chart}
         data={data}
+        height={150}
         width={screenWidth}
-        height={160}
         yAxisSuffix={yAxisSuffix}
         chartConfig={chartConfig}
         withVerticalLabels={true}
         withHorizontalLabels={true}
         fromZero={true}
-        showBarTops={false}
+        showBarTops={true}
         showValuesOnTopOfBars={true}
         withInnerLines={false}
         yAxisInterval={1}
@@ -88,6 +75,7 @@ const styles = StyleSheet.create({
     marginVertical: 1,
     fontWeight: 'bold',
     fontSize: 20,
+    color: 'white',
   },
   chart: {
     flex: 1,

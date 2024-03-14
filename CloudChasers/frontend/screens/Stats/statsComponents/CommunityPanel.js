@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
 const communityPanel = [
   { name: 'Matt', streak: 4},
-  { name: 'Lorenzo', streak: 2},
+  { name: 'Lorenzooooo', streak: 2},
   { name: 'Alana', streak: 3},
-  { name: 'L', streak: 5},
-  { name: 's', streak: 1},
-  { name: 'P', streak: 0}
+  { name: 'Lucy', streak: 5},
+  { name: 'Sam', streak: 1},
+  { name: 'Ian', streak: 0}
 ];
 
 const CommunityPanel = () => {
@@ -35,7 +35,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     width: '95%',
-    height: 120,
+    height: 150,
+    paddingTop: 10,
     borderRadius: 15,
     padding: 10,
     shadowColor: '#000',
@@ -48,11 +49,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: 'Montserrat_700Bold',
+
   },
   rankAndName: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 5,
+    fontFamily: 'Montserrat_700Bold',
+
   },
   detailText: {
     fontSize: 16,

@@ -13,10 +13,25 @@ import ProgressChartComponent from './statsComponents/ProgressChartComponent';
 import GoalsBarChart from './statsComponents/GoalsBarChart';
 import CommunityPanel from './statsComponents/CommunityPanel';
 
-
-
+// Stats.js
+import React, { useContext, useEffect } from 'react';
+import { StatsContext } from '../../contexts/StatsContext.js';
+import { fetchStats } from '../../services/StatsService.js';
 
 const Stats = () => {
+
+  const { stats, setStats } = useContext(StatsContext);
+
+  useEffect(() => {
+    const getStats = async () => {
+      const data = await fetchStats();
+      setStats(data);
+    };
+
+    getStats();
+  }, []);
+
+
   // Dummy Data 
   const weeklyIntake = [
     { day: 'Mon', protein: 20, carbs: 50, calories: 1200 },
@@ -55,6 +70,7 @@ const Stats = () => {
         <ProgressChartComponent/>
       </View>
 
+      
       <View style={styles.swiperContainer}>
         <Swiper showsButtons loop={false}>
           {/* Protein Slide */}
@@ -91,7 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'wrap',
     flexDirection: 'column',
-    backgroundColor: '#F9D3C8'
+    backgroundColor: '#f2f2f2'
   },
   statsHeader: {
     justifyContent: 'flex-start',
@@ -125,6 +141,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
+  
 
 });
 

@@ -10,6 +10,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'flex-end',
         padding: 10,
+       //added
+        // width: '48%', 
+        // aspectRatio: 1, 
+        // marginBottom: 16, 
+        
     },
     text: {
         fontSize: 20,
@@ -32,6 +37,8 @@ function Box({ title, image }) {
             <Text style={styles.title}>{title}</Text>
         </View>
     );
+
+    
 }
 
 export default Box;
