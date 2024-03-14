@@ -8,25 +8,6 @@ const FoodItem = require('../models/foodItem');
 const Food = require('../models/food');
 const mongoose = require('mongoose');
 
-// async function createUserDay(userID, date){
-// 	let newUserDay;
-//     try {
-//         const existingUserDay = await UserDay.findOne({ userID, date });
-//         if (!existingUserDay) {
-//             newUserDay = new UserDay({
-//                 date,
-//                 userID
-//             });	
-//             await newUserDay.save();
-//         }else{
-//             return existingUserDay;
-//         }
-//     } catch (error) {
-//         console.log('Error in createUserDay:', error);
-//         throw new Error('Failed to create UserDay: ' + error.toString());
-//     }
-//     return newUserDay; // Return the newly created UserDay object
-// };
 async function createUserDay(userID, date){
 	console.log('createUserDay called with userID:', userID, 'and date:', date);
 	let newUserDay;
@@ -246,3 +227,8 @@ exports.searchFoods = async (req, res) => {
 
 
 // TODO: saerch recipes
+
+//exporting createUserDayMeal
+exports.createUserDayMeal = createUserDayMeal;
+//exporting createUserDay
+exports.createUserDay = createUserDay;
