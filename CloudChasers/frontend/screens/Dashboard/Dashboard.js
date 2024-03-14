@@ -125,7 +125,8 @@ function Dashboard() {
 	return (
 		<SafeAreaView style={styles.dashboardContainer}>
 			<View style={styles.dashboardHeader}>
-				<WelcomeBar name={userDetails.data.forename}/>
+				{/* Assuming userDetails might be null or undefined */}
+				<WelcomeBar name={userDetails?.data?.forename} />
 			</View>
 
 			<CurrentGoalProgress goal={120} current={80} />
