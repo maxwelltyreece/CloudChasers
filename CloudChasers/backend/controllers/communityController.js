@@ -128,13 +128,14 @@ exports.getCommunityMembers = async (req, res) => {
         }
         // Get members
         const members = await CommunityUser.find({ communityID: communityId });
-        // Map member IDs to usernames
+        // Map member IDs to usernames + pic URLs
         const users = await Promise.all(members.map(async (member) => {
-            const user = await User.findById(member.userID).select('username');
+            const communitymember = await User.findById(member.userID).select('username');
+            const profilePictureLink = await User.findById(member.userID).select('profilePictureLink');
             const role = member.role;
-            return { _id: user._id, username: user.username, role };
+            return { _id: communitymember._id, username: communitymember.username, profilePictureLink: profilePictureLink.profilePictureLink, role };
         }));
-
+        
         return res.status(200).json({ success: true, data: users });
         
     }
@@ -383,14 +384,15 @@ exports.getCommunityPosts = async (req, res) => {
         }
         // Get posts
         const posts = await CommunityPost.find({ communityID: communityId });
-        return res.status(200).json({ success: true, data: posts.map(post => ({
-            id: post._id,
-            username: User.findById(post.userID).select('username'),
-            user_profile_pic: User.findById(post.userID).select('profilePictureLink'),
-            title: post.title,
-            text: post.text,
-            date: post.date,
-        }))});
+        // Map user IDs to usernames + pic URLs
+        const postsMapped = await Promise.all(posts.map(async (post) => {
+            const username = await User.findById(post.userID).select('username');
+            const user_profile_pic = await User.findById(post.userID).select('profilePictureLink');
+            return { _id: post._id, username: username.username, recipeID: post.recipeID, user_profile_pic: user_profile_pic.profilePictureLink, title: post.title, text: post.text, date: post.date };
+        }
+        ));
+
+        return res.status(200).json({ success: true, data: postsMapped });
 
     }
     catch (error) {
