@@ -69,6 +69,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     justifyContent: 'center',
+    //backgroundColor: 'blue',
+    height: 100,
+    width: '100%',
   },
   header: {
     textAlign: 'center',
@@ -80,6 +83,7 @@ const styles = StyleSheet.create({
   chart: {
     flex: 1,
     marginVertical: 10,
+    backgroundColor: 'white',
   },
 });
 

@@ -2,16 +2,16 @@ import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Modal, Pressable } from 'react-native';
 
 const styles = StyleSheet.create({
-  box: {
-    flex: 1,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    justifyContent: 'flex-end',
-    padding: 10,
-    width: 20, 
-    aspectRatio: 1,  
-    margin: 8,
-  },
+    box: {
+        backgroundColor: 'white',
+        borderRadius: 10,
+        justifyContent: 'flex-end',
+        padding: 10,
+        width: '48%', 
+        aspectRatio: 1, 
+        margin: 8,
+      },
+
   text: {
     fontSize: 20,
   },

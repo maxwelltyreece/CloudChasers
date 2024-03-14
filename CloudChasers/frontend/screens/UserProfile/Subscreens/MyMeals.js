@@ -3,8 +3,6 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 //import Box from '../frontend/components/box';
 import RecipeBox from '../../../components/RecipeBox' 
-//import RecipeBox from '../../subscreensComponents/RecipeBox'
-
 
 const recipes = [
   { id: '1', title: 'Charred Cabbage', image: 'image-url-1' },
@@ -15,6 +13,7 @@ const recipes = [
   { id: '6', title: 'Roast Chicken', image: 'image-url-2' },
   { id: '7', title: 'Pasta with Tomato Sauce', image: 'image-url-3' },
   { id: '8', title: 'Grilled Salmon', image: 'image-url-4' },
+  { id: '9', title: 'Tofu Stir Fry', image: 'image-url-5'},
   { id: '9', title: 'Tofu Stir Fry', image: 'image-url-5'},
   { id: '9', title: 'Tofu Stir Fry', image: 'image-url-5'},
 ];
@@ -66,18 +65,22 @@ function MyMeals() {
 
 const styles = StyleSheet.create({
 	container: {
-	  marginTop: 5,
-	  flex: 1,
-	  padding: 16,
-	},
+		marginTop: 5,
+		flex: 1,
+		paddingHorizontal: 5, 
+		
+	  },
 	list: {
-	  flex: 1,
+		flex: 1,
 	},
 	row: {
-	  justifyContent: 'space-between', 
+		justifyContent: 'space-between',
+		paddingHorizontal: 8,
 	},
 	box: {
-	  width: '45%', 
+		width: '45%',
+		aspectRatio: 1,
+		margin: 8,
 	},
 	searchInput: {
 		fontFamily: 'Montserrat_600SemiBold',
@@ -93,7 +96,6 @@ const styles = StyleSheet.create({
 		alignSelf: 'stretch',
 		paddingHorizontal: '5%',
 	},
-  }
-);
+});
 
 export default MyMeals;
