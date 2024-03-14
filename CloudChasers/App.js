@@ -17,6 +17,7 @@ import {
 } from '@expo-google-fonts/montserrat';
 
 import { UserProvider } from './frontend/contexts/UserContext';
+import { StatsProvider } from './frontend/contexts/StatsContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
 import AuthNavigator from './frontend/navigation/AuthNavigator';
 import MainNavigator from './frontend/navigation/MainNavigator';
@@ -67,15 +68,17 @@ export default function App() {
 	}
 
 	return (
+		<StatsProvider>
 		<CommunityProvider>
-			<UserProvider>
-				<NavigationContainer>
-					<Stack.Navigator initialRouteName={initialRoute}>
-						<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-						<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-					</Stack.Navigator>
-				</NavigationContainer>
-			</UserProvider>
+		  <UserProvider>
+			<NavigationContainer>
+			  <Stack.Navigator initialRouteName={initialRoute}>
+				<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+				<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+			  </Stack.Navigator>
+			</NavigationContainer>
+		  </UserProvider>
 		</CommunityProvider>
+	  </StatsProvider>
 	);
 }

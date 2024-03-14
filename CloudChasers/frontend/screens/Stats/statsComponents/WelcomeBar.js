@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
 
-const WelcomeBar = ({ name }) => (
+const WelcomeBar = () => (
     <View style={styles.welcomeContainer}>
-      <Text style={styles.welcomeText}>Today's Statistics</Text>
+      <Text style={styles.title}>Today's Statistics</Text>
     </View>
 );
 
@@ -22,6 +22,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
   },
+
+  title: {
+		fontFamily: 'Montserrat_700Bold',
+		fontSize: 24,
+		marginBottom: 10,
+	}
 
 });
 
