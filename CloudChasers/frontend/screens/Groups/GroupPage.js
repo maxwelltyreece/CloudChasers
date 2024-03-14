@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { TextInput } from 'react-native';
+import NewPostPage from './NewPost';
 import { KeyboardAvoidingView, Platform, ScrollView, FlatList, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -41,6 +42,7 @@ const styles = StyleSheet.create({
 		flexGrow: '1',
 		width: '100%',
         paddingTop: 20,
+        paddingBottom: 50,
 	},
 	divider: {
 		height: 2,
@@ -124,28 +126,28 @@ const IconButton = ({ iconName, onPress }) => (
         </View>
     );
 
-    function generateRandomMessage() {
+    function generateRandomWord() {
         const words = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit'];
-        const numWords = Math.floor(Math.random() * (words.length * 10)); // Generate a random number between 1 and the number of words
+        return words[Math.floor(Math.random() * words.length)];
+    }
+
+    function generateRandomMessage() {
+        const numWords = Math.max(1, Math.floor(Math.random() * Math.random() * 50));
         let message = '';
         for (let i = 0; i < numWords; i++) {
-            message += words[Math.floor(Math.random() * words.length)] + ' '; // Add a random word to the message
+            message += generateRandomWord() + ' ';
         }
-        return message.trim(); // Remove the trailing space
+        return message.trim();
     }
 
     function GroupPage({ route, navigation }) {
-	    const { community } = route.params; // Get the community data from the route params
-        const [messages, setMessages] = useState([
-            { title: 'Title 1', text: generateRandomMessage(), sender: '@User1' },
-            { title: 'Title 2', text: generateRandomMessage(), sender: '@User2' },
-            { title: 'Title 3', text: generateRandomMessage(), sender: '@User3' },
-            { title: 'Title 4', text: generateRandomMessage(), sender: '@User4' },
-            { title: 'Title 5', text: generateRandomMessage(), sender: '@User5' },
-            { title: 'Title 6', text: generateRandomMessage(), sender: '@User6' },
-            { title: 'Title 7', text: generateRandomMessage(), sender: '@User7' },
-        ]);
-	    const [input, setInput] = useState('');
+        const { community } = route.params;
+        const [messages, setMessages] = useState(Array.from({ length: 50 }, (_, i) => ({
+            title: `${generateRandomWord()}`,
+            text: generateRandomMessage(),
+            sender: `@${generateRandomWord()}`,
+        })));
+        const [input, setInput] = useState('');
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -198,7 +200,10 @@ const IconButton = ({ iconName, onPress }) => (
                         }} 
                     />
                 </View> */}
-                <TouchableOpacity style={styles.button} onPress={() => console.log("BUTTON PRESSED")}>
+                <TouchableOpacity 
+                    style={styles.button} 
+                    onPress={() => navigation.navigate('NewPostPage', { communityId: community.id })}
+                >
                     <Feather name="plus" size={30} color="white" />
                 </TouchableOpacity>
             </View>
