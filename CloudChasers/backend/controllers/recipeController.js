@@ -178,7 +178,7 @@ async function createUserDayMeal(mealType, userDay) {
 	}
 	return newUserDayMeal;
 }
-//TODO FIX
+
 exports.logRecipeFood = async (req, res) => {
 	const { mealType, recipeID , totalRecipeWeight} = req.body;
 	try {

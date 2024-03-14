@@ -14,7 +14,7 @@ const userDayMeal = require('../models/userDayMeal');
 const mealItem = require('../models/mealItem');
 const foodItem = require('../models/foodItem');
 const food = require('../models/food');
-
+const createUserDayMeal = require('../controllers/foodController').createUserDayMeal;
 jest.mock('../models/user', () => ({ findById: jest.fn() }));
 // Mock UserDay model
 jest.mock('../models/userDay', () => ({findOne: jest.fn(), save: jest.fn()}));
@@ -52,11 +52,13 @@ jest.mock('../models/user', () => ({
 	}),
 }));
 
-beforeEach(() => {
-	jest.clearAllMocks();
-});
 
 describe('logDatabaseFood Endpoint', () => {
+
+	beforeEach(() => {
+		jest.clearAllMocks();
+	});
+
 	it('should return 200 and log the food for authenticated request', async () => {
 		const foodID = new mongoose.Types.ObjectId();
 		const userDayID = new mongoose.Types.ObjectId();
@@ -207,3 +209,5 @@ describe('searchFoods Endpoint', () => {
 		expect(response.body.foods[0].calories).toBeLessThanOrEqual(100);
 	});
 });
+
+  
