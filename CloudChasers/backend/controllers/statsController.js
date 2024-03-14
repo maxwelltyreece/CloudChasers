@@ -1,27 +1,27 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user');
-const UserDay = require('../models/userDay');
-const UserDayMeal = require('../models/userDayMeal');
-const MealItem = require('../models/mealItem');
-const FoodItem = require('../models/foodItem');
-const Food = require('../models/food');
+const jwt = require("jsonwebtoken");
+const User = require("../models/user");
+const UserDay = require("../models/userDay");
+const UserDayMeal = require("../models/userDayMeal");
+const MealItem = require("../models/mealItem");
+const FoodItem = require("../models/foodItem");
+const Food = require("../models/food");
 
-const Recipe = require('../models/recipe');
-const RecipeItem = require('../models/recipeItem');
-const RecipeQuantity = require('../models/recipeQuantity');
+const Recipe = require("../models/recipe");
+const RecipeItem = require("../models/recipeItem");
+const RecipeQuantity = require("../models/recipeQuantity");
 
 /**
  * Handles the GET /streaks route.
- * This function updates the user's login streak based on the date provided in the request body.
- * If the date is the day after the user's last login, the streak is incremented.
- * If the date is later than the day after the user's last login, the streak is reset to 1.
- * The user's last login date is then updated to the date provided in the request body.
+ * This function updates the user"s login streak based on the date provided in the request body.
+ * If the date is the day after the user"s last login, the streak is incremented.
+ * If the date is later than the day after the user"s last login, the streak is reset to 1.
+ * The user"s last login date is then updated to the date provided in the request body.
  * The updated streak is returned in the response.
  *
- * @param {Object} req - The Express request object. The request body should contain a 'today' property with the current date. The request should also contain a 'user' property with the user's data.
+ * @param {Object} req - The Express request object. The request body should contain a "today" property with the current date. The request should also contain a "user" property with the user"s data.
  * @param {Object} res - The Express response object.
  * @returns {Object} The Express response object. The response body contains the updated streak and a success message.
- * @throws {Error} If an error occurs while updating the user's streak, the error is logged and a 500 status code is returned in the response.
+ * @throws {Error} If an error occurs while updating the user"s streak, the error is logged and a 500 status code is returned in the response.
  */
 exports.getStreaks = async (req, res) => {
 	try {
@@ -52,7 +52,7 @@ exports.getStreaks = async (req, res) => {
 
 		await user.save();
 
-		return res.status(200).send({ streak: user.streak, message: 'Streak updated' });
+		return res.status(200).send({ streak: user.streak, message: "Streak updated" });
 
 	} catch (error) {
 		return res.status(500).send({ error: error.toString() });
@@ -66,13 +66,10 @@ const getNutrientIntake = async (req, res, nutrient) => {
 
 		const userDay = await UserDay.findOne({ userID: user._id, date: date });
 		if (!userDay) {
-			return res.status(400).send({ message: 'No data for this day.' });
+			return res.status(400).send({ message: "No data for this day." });
 		}
 
 		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
-		if (userDayMeals.length === 0) {
-			return res.status(400).send({ message: 'No meals for this day.' });
-		}
 
 		let totalNutrient = 0;
 
@@ -84,21 +81,24 @@ const getNutrientIntake = async (req, res, nutrient) => {
 				if (mealItem.foodItemID) {
 					foodItem = await FoodItem.findById(mealItem.foodItemID);
 					food = await Food.findById(foodItem.foodID);
+					totalNutrient += food[nutrient] * (foodItem.weight / 100);
 				} else {
-					const recipeQuantityID = await RecipeQuantity.findById(mealItem.recipeQuantityID);
-					const recipe = await Recipe.findById(recipeQuantityID.recipeID);
+					const recipeQuantity = await RecipeQuantity.findById(mealItem.recipeQuantityID);
+					const recipe = await Recipe.findById(recipeQuantity.recipeID);
 					const allRecipeItems = await RecipeItem.find({ recipeID: recipe._id });
-					
+					let totalRecipeWeight = 0;
 					for (const recipeItem of allRecipeItems) {
 						foodItem = await FoodItem.findById(recipeItem.foodItemID);
 						food = await Food.findById(foodItem.foodID);
 						totalNutrient += food[nutrient] * (foodItem.weight / 100);
+						totalRecipeWeight += foodItem.weight;
 					}
-					continue;
+					totalNutrient = totalNutrient * (recipeQuantity.quantity / totalRecipeWeight);
+
 				}
-				totalNutrient += food[nutrient] * (foodItem.weight / 100);
 			}
 		}
+		console.log(totalNutrient)
 		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: totalNutrient });
 	}
 	catch (error) {

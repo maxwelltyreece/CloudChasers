@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		maxWidth: '50%',
 		aspectRatio: 1,
-		margin: '2.5%',
+        marginVertical: '2.5%',
+		marginRight: '5%',
 	},
     noCommunitiesContainer: {
         flex: 1,
