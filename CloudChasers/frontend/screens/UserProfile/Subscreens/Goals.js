@@ -1,27 +1,42 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import globalStyles from '../../../styles/global';
+import React, { useState } from 'react';
+import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+
+const GoalItem = ({ title }) => (
+    <View style={styles.listItem}>
+        <Text>{title}</Text>
+    </View>
+);
+
+const Goals = () => {
+    const [goals, setGoals] = useState(['Goal 1', 'Goal 2']);
+
+    const addGoal = () => {
+        setGoals((currentGoals) => [...currentGoals, `Goal ${currentGoals.length + 1}`]);
+    };
+
+    return (
+        <View style={styles.screen}>
+            <Button title="New Goal" onPress={addGoal} />
+            <FlatList
+                data={goals}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => <GoalItem title={item} />}
+            />
+        </View>
+    );
+};
 
 const styles = StyleSheet.create({
-	container: {
-		marginTop: 50,
-		flex: 1,
-		alignItems: 'center',
-	},
+    screen: {
+        padding: 50,
+    },
+    listItem: {
+        padding: 10,
+        backgroundColor: '#ccc',
+        borderColor: 'black',
+        borderWidth: 1,
+        marginVertical: 10,
+    },
 });
-
-/**
- * Goals is a screen component designed for displaying and managing the users goals.
- * It uses styles from both the global styles and its own styles.
- *
- * @returns {React.Element} The rendered Goals screen.
- */
-function Goals() {
-	return (
-		<View style={styles.container}>
-			<Text style={globalStyles.medium}>Placeholder for Goals</Text>
-		</View>
-	);
-}
 
 export default Goals;

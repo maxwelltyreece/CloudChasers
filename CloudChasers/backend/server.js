@@ -19,19 +19,7 @@ const authenticateJWT = jwt({
 	algorithms: ['HS256'],
 });
 
-// // TODO: Change to local DB
-// mongoose.connect('mongodb+srv://cloudChasers:oio1cbd60Y1xQ5pO@goblcluster.ijglc9m.mongodb.net/?retryWrites=true&w=majority')
-// .then(() => {
-//   console.log('Connected to the database');
-// })
-// .catch((err) => {
-//   console.error('Error connecting to the database', err);
-// });
-
-// const url = 'mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/?retryWrites=true&w=majority';
-
-// seeded DB
-const url = 'mongodb+srv://cloudChasers:mUq0OT5xkbeqjXDA@goblcluster.ijglc9m.mongodb.net/seeded?retryWrites=true&w=majority';  
+const url = process.env.DATABASE_URL;
 
 mongoose.connect(url)
 	.then(() => {
@@ -41,18 +29,7 @@ mongoose.connect(url)
 		console.error(`Error connecting to the database. n${err}`);
 	});
 
-const conditionalAuth = (req, res, next) => {
-    const pathsThatDontRequireAuth = ['/register', '/login', '/'];
-    if (pathsThatDontRequireAuth.includes(req.path)) {
-        // Skip JWT authentication for these paths
-        return next();
-    }
-    // Apply JWT authentication middleware
-    return authenticateJWT(req, res, next);
-};
 
-// Apply the conditionalAuth middleware
-app.use(conditionalAuth);
 
 // API url routes
 app.use('/food', foodRoutes);
