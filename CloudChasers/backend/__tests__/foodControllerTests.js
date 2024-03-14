@@ -19,7 +19,24 @@ jest.mock('../models/user', () => ({ findById: jest.fn() }));
 // Mock UserDay model
 jest.mock('../models/userDay', () => ({findOne: jest.fn(), save: jest.fn()}));
 jest.mock('../models/userDayMeal', () => ({ findOne: jest.fn() }));
-jest.mock('../models/food', () => ({ findById: jest.fn() }));
+
+
+jest.mock('../models/food', () => {
+	return {
+	  findById: jest.fn(),
+	  find: jest.fn().mockImplementation(() => {
+		return {
+			skip: jest.fn().mockReturnThis(), // Ensure chaining by returning 'this'
+			limit: jest.fn().mockResolvedValue([
+				{ _id: 'mockedId1', name: 'apple', calories: 50 },
+				{ _id: 'mockedId2', name: 'banana', calories: 100 },
+			]),
+		};
+	  }),
+	  countDocuments: jest.fn().mockResolvedValue(2),
+	};
+});
+
 jest.mock(userDay, () => {
 	return jest.fn().mockImplementation(() => {
 		return {
@@ -35,6 +52,9 @@ jest.mock('../models/user', () => ({
 	}),
 }));
 
+beforeEach(() => {
+	jest.clearAllMocks();
+});
 
 describe('logDatabaseFood Endpoint', () => {
 	it('should return 200 and log the food for authenticated request', async () => {
@@ -62,6 +82,23 @@ describe('logDatabaseFood Endpoint', () => {
 		expect(response.body.message).toBe('Food logged');
 		expect(response.statusCode).toBe(200);
 	});
+});
 
-	
+describe('searchFoods Endpoint', () => {
+	it('should return 200 and the correct foods for a valid request', async () => {
+
+		const response = await request(app)
+			.get('/food/searchFoods')
+			.query({ page: 1, limit: 2, name: 'a' });
+
+		expect(response.error).toBe(false);
+		expect(response.body.foods).toEqual([
+			{ _id: 'mockedId1', name: 'apple', calories: 50 },
+			{ _id: 'mockedId2', name: 'banana', calories: 100 }
+		]);
+		expect(response.body.totalPages).toBe(1);
+		expect(response.body.page).toBe("1");
+		expect(response.body.limit).toBe("2");
+		expect(response.statusCode).toBe(200);
+	});
 });

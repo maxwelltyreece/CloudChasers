@@ -188,7 +188,7 @@ exports.getFood = async (req, res) => {
  * @returns {number} res.data.page - The current page number.
  * @returns {number} res.data.limit - The number of items per page.
  */
-exports.searchFoods = async (req, res) => {
+exports.searchFoods2 = async (req, res) => {
 	const { page = 1, limit = 50, ...searchParams } = req.query;
 	const skip = (page - 1) * limit;
 
@@ -244,5 +244,71 @@ exports.searchFoods = async (req, res) => {
 	}
 };
 
+exports.searchFoods = async (req, res) => {
+    const { page = 1, limit = 50, ...searchParams } = req.query;
+    const skip = (page - 1) * limit;
+
+    console.log('searchFoods called with page:', page, 'limit:', limit, 'searchParams:', searchParams);
+
+    // List of valid fields
+    const validFields = ['name', 'group', 'calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre', 'privacy', 'addedBy'];
+    const numericFields = ['calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre'];
+
+    // Check for invalid fields
+    const invalidFields = Object.keys(searchParams).filter((field) => !validFields.includes(field));
+    if (invalidFields.length > 0) {
+        console.log('Invalid fields:', invalidFields);
+        return res.status(400).send({ error: `Invalid field(s): ${invalidFields.join(', ')}` });
+    }
+
+    // Create a query object with regex for each search parameter
+    const query = Object.entries(searchParams).reduce((acc, [key, value]) => {
+        console.log('Processing search parameter:', key, 'value:', value);
+        if (numericFields.includes(key)) {
+            if (typeof value === 'object') {
+                if (value.min !== undefined && value.max !== undefined) {
+                    acc[key] = { $gte: value.min, $lte: value.max };
+
+                } else if (value.min !== undefined) {
+                    acc[key] = { $gte: value.min };
+                    
+                } else if (value.max !== undefined) {
+                    acc[key] = { $lte: value.max };
+                }
+            } else {
+                acc[key] = value;
+            }
+        } else {
+            acc[key] = { $regex: new RegExp(value, 'i') };
+        }
+        return acc;
+    }, {});
+
+    console.log('Query:', query);
+
+    try {
+        const foods = await Food.find(query)
+            .skip(skip)
+            .limit(limit);
+
+        console.log('Foods:', foods);
+
+        if (foods.length === 0) {
+            console.log('No foods found');
+            return res.status(404).send({ message: 'No foods found' });
+        }
+
+        const totalPages = await Food.countDocuments(query) / limit;
+
+        console.log('Total pages:', totalPages);
+
+        res.status(200).send({
+            foods, totalPages, page, limit,
+        });
+    } catch (error) {
+        console.log('Error:', error);
+        res.status(500).send({ error: error.toString() });
+    }
+};
 
 // TODO: saerch recipes
