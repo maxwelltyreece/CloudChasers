@@ -18,10 +18,10 @@ const RecipeQuantity = require("../models/recipeQuantity");
  * The user"s last login date is then updated to the date provided in the request body.
  * The updated streak is returned in the response.
  *
- * @param {Object} req - The Express request object. The request body should contain a "today" property with the current date. The request should also contain a "user" property with the user"s data.
+ * @param {Object} req - The Express request object. The request body should contain a "today" property with the current date. The request should also contain a "user" property with the user's data.
  * @param {Object} res - The Express response object.
  * @returns {Object} The Express response object. The response body contains the updated streak and a success message.
- * @throws {Error} If an error occurs while updating the user"s streak, the error is logged and a 500 status code is returned in the response.
+ * @throws {Error} If an error occurs while updating the user's streak, the error is logged and a 500 status code is returned in the response.
  */
 exports.getStreaks = async (req, res) => {
 	try {
@@ -29,7 +29,7 @@ exports.getStreaks = async (req, res) => {
 		const user = req.user;
 
 		if (!Date.parse(today)) {
-			return res.status(400).send({ message: 'Invalid date' });
+			return res.status(400).send({ error: 'Invalid date' });
 		}
 
 		const clientDate = new Date(today);
@@ -86,6 +86,8 @@ const getNutrientIntake = async (req, res, nutrient) => {
 					const recipe = await Recipe.findById(recipeQuantity.recipeID);
 					const allRecipeItems = await RecipeItem.find({ recipeID: recipe._id });
 					let totalRecipeWeight = 0;
+					let recipeNutrient = 0;
+
 					for (const recipeItem of allRecipeItems) {
 						foodItem = await FoodItem.findById(recipeItem.foodItemID);
 						food = await Food.findById(foodItem.foodID);
@@ -102,7 +104,6 @@ const getNutrientIntake = async (req, res, nutrient) => {
 		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: totalNutrient });
 	}
 	catch (error) {
-		console.error(error);
 		return res.status(500).send({ error: error.toString() });
 	}
 };
