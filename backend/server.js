@@ -31,7 +31,6 @@ mongoose.connect(url)
 	});
 
 
-
 // API url routes
 app.use('/food', foodRoutes);
 app.use('/', userRoutes);
