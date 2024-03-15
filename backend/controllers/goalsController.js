@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const Goal = require('../models/goal');
 const goalItem = require('../models/goalItem');
 const GoalItem = require('../models/goalItem');

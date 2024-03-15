@@ -2,7 +2,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Modal, Pressable, FlatList, Animated
+	View, Text, StyleSheet, Animated
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 

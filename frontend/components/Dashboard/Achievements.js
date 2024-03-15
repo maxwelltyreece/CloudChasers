@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
-import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { AnimatedCircularProgress } from 'react-native-circular-progress'
+import PropTypes from 'prop-types'; // Import PropTypes
 
 
 const styles = StyleSheet.create({
@@ -36,6 +37,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// eslint-disable-next-line no-unused-vars
 const AchievementsFeature = ({ totalAchievements, completedAchievements }) => {
 
     const screenWidth = Dimensions.get('window').width;
@@ -74,3 +76,8 @@ const AchievementsFeature = ({ totalAchievements, completedAchievements }) => {
 
 
 export default AchievementsFeature;
+
+AchievementsFeature.propTypes = {
+  totalAchievements: PropTypes.number.isRequired,
+  completedAchievements: PropTypes.number.isRequired,
+};

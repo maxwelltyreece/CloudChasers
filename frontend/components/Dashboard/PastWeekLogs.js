@@ -1,6 +1,7 @@
 // React Imports
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import PropTypes from 'prop-types'; // Import PropTypes
 
 const styles = StyleSheet.create({
 	wholePastLogsContainer: {
@@ -127,3 +128,12 @@ export function PastWeekLogs({ meals }) {
 }
 
 export default PastWeekLogs;
+
+PastWeekLogs.propTypes = {
+	meals: PropTypes.array.isRequired,
+};
+
+DailyCheckmark.propTypes = {
+	logged: PropTypes.bool.isRequired,
+	dayName: PropTypes.string.isRequired,
+};

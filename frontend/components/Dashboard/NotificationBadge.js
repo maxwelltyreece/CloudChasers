@@ -5,6 +5,7 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import proptypes from 'prop-types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -185,3 +186,13 @@ function NotificationBadge({ count }) {
 }
 
 export default NotificationBadge;
+
+NotificationBadge.propTypes = {
+	count: proptypes.number.isRequired,
+};
+
+NotificationItem.propTypes = {
+	title: proptypes.string.isRequired,
+	message: proptypes.string.isRequired,
+	timestamp: proptypes.string.isRequired,
+};

@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
 const foodTable = require('./nutrients.json'); // won't work becacuse file is not on git (too large)

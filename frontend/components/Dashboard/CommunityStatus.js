@@ -78,6 +78,7 @@ const fakeCommunities = [
 
 function CommunityUpdates({ communities }) {
 	// Check if communities is truthy and has length greater than 0
+	// eslint-disable-next-line no-unused-vars
 	const hasCommunities = communities && communities.length > 0;
 	const hasFakeCommunities = fakeCommunities && fakeCommunities.length > 0;
 

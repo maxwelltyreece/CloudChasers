@@ -33,20 +33,20 @@ const screens = [
 	{ name: 'You', component: UserNavigator, icon: 'user' },
 ];
 
-const screenOptions = { 
+const screenOptions = {
 	headerShown: false,
-	tabBarStyle: { 
-        ...navbarStyles.tabBarStyle,
-        backgroundColor: globalStyles.backgroundColor.backgroundColor,
-        height: Platform.OS === 'android' ? 70 : 90, // Apply only on Android
-        paddingBottom: Platform.OS === 'android' ? 10 : 30, // Apply only on Android
-    },
+	tabBarStyle: {
+		...navbarStyles.tabBarStyle,
+		backgroundColor: globalStyles.backgroundColor.backgroundColor,
+		height: Platform.OS === 'android' ? 70 : 90, // Apply only on Android
+		paddingBottom: Platform.OS === 'android' ? 10 : 30, // Apply only on Android
+	},
 	tabBarInactiveTintColor: globalStyles.secondaryColor.color,
 	tabBarActiveTintColor: globalStyles.primaryColor.color,
 	tabBarLabelStyle: {
-        fontFamily: globalStyles.medium.fontFamily,
-        marginBottom: Platform.OS === 'android' ? 0 : 0, // Apply only on Android
-    }
+		fontFamily: globalStyles.medium.fontFamily,
+		marginBottom: Platform.OS === 'android' ? 0 : 0, // Apply only on Android
+	}
 };
 
 /**
@@ -92,29 +92,29 @@ export default function MainTabNavigator() {
 
 	return (
 		<View style={navbarStyles.container}>
-			<Tab.Navigator 
-			  initialRouteName="Stats"
-			  screenOptions={screenOptions}
+			<Tab.Navigator
+				initialRouteName="Stats"
+				screenOptions={screenOptions}
 			>
-			{screens.map(({ name, component, icon }) => (
-				<Tab.Screen 
-				  key={name}
-				  name={name} 
-				  component={component} 
-				  options={{
-						tabBarIcon: (props) => (
-							<TabBarIcon 
-							  {...props} 
-							  name={icon} 
-							  animation={animation} 
-							  onPress={startAnimation} 
-							  navigation={navigation}
-							/>
-						),
-						tabBarLabel: getTabBarLabel(name),
-					}}
-				/>
-			))}
+				{screens.map(({ name, component, icon }) => (
+					<Tab.Screen
+						key={name}
+						name={name}
+						component={component}
+						options={{
+							tabBarIcon: (props) => (
+								<TabBarIcon
+									{...props}
+									name={icon}
+									animation={animation}
+									onPress={startAnimation}
+									navigation={navigation}
+								/>
+							),
+							tabBarLabel: getTabBarLabel(name),
+						}}
+					/>
+				))}
 			</Tab.Navigator>
 		</View>
 	);

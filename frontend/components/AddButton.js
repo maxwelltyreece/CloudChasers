@@ -76,3 +76,9 @@ const styles = StyleSheet.create({
 });
 
 export default CustomIcon;
+
+CustomIcon.propTypes = {
+    width: PropTypes.number,
+    height: PropTypes.number,
+    startAnimation: PropTypes.func.isRequired,
+};
