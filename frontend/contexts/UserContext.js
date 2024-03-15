@@ -5,6 +5,7 @@ import React, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import userService from '../services/UserService';
 import { useCommunity } from './CommunityContext';
+import PropTypes from 'prop-types';
 
 const UserContext = createContext();
 
@@ -69,3 +70,7 @@ export function UserProvider({ children }) {
 }
 
 export const useUser = () => useContext(UserContext);
+
+UserProvider.propTypes = {
+	children: PropTypes.node.isRequired,
+};

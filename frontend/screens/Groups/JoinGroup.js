@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
 	View, Text, FlatList, StyleSheet, TextInput, TouchableOpacity,
 } from 'react-native';
+/* eslint-disable no-unused-vars */
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Box from '../../components/box';
 import { useCommunity } from '../../contexts/CommunityContext';

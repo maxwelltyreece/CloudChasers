@@ -35,7 +35,8 @@ const fetchUserDetails = async (token) => {
 const editUserDetails = async (field, newValue) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, {
+		// const response = await axios.put(`http://${LocalIP}:3000/updateProfile`
+		await axios.put(`http://${LocalIP}:3000/updateProfile`, {
 			[field]: newValue,
 		}, {
 			headers: {

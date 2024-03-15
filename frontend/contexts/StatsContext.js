@@ -1,6 +1,6 @@
 // StatsContext.js
 import React, { createContext, useState } from 'react';
-
+import PropTypes from 'prop-types'; // Import PropTypes
 export const StatsContext = createContext();
 
 export const StatsProvider = ({ children }) => {
@@ -11,4 +11,8 @@ export const StatsProvider = ({ children }) => {
       {children}
     </StatsContext.Provider>
   );
+};
+
+StatsProvider.propTypes = {
+  children: PropTypes.node.isRequired,
 };

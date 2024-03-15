@@ -1,5 +1,6 @@
 import React, { createContext, useState } from 'react';
 import { getUser, getUserDetails, getUserDays } from '../services/DashboardService';
+import PropTypes from 'prop-types';
 
 export const DashboardContext = createContext();
 
@@ -56,4 +57,8 @@ export const DashboardProvider = ({ children }) => {
             {children}
         </DashboardContext.Provider>
     );
+};
+
+DashboardProvider.propTypes = {
+    children: PropTypes.node.isRequired,
 };

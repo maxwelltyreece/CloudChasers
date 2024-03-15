@@ -1,72 +1,75 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
+
 import {
-	View, Text, StyleSheet, Pressable,
+    View, Text, StyleSheet, Pressable, 
 } from 'react-native';
+
 import { Feather } from '@expo/vector-icons';
-import { TextInput } from 'react-native';
-import NewPostPage from './NewPost';
-import { KeyboardAvoidingView, Platform, ScrollView, FlatList, TouchableOpacity } from 'react-native';
+// import { TextInput } from 'react-native';
+// import NewPostPage from './NewPost';
+import { KeyboardAvoidingView, Platform, FlatList, TouchableOpacity } from 'react-native';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
+    container: {
+        flex: 1,
         paddingHorizontal: 20,
         paddingBottom: 20,
         paddingTop: 10,
-	},
-	title: {
-		fontSize: 24,
-		fontWeight: 'bold',
-	},
-	description: {
-		fontFamily: 'Montserrat_600SemiBold',
+    },
+    // title: {
+    //     fontSize: 24,
+    //     fontWeight: 'bold',
+    // },
+    description: {
+        fontFamily: 'Montserrat_600SemiBold',
         color: '#6B6868',
-		fontSize: 16,
-		textAlign: 'left',
-	},
-	headerButton: {
-		flexDirection: 'row',
-		marginRight: 16,
-	},
-	iconButton: {
-		marginRight: 8,
-	},
-	feedContainer: {
-		flex: 1,
-		justifyContent: 'space-between',
+        fontSize: 16,
+        textAlign: 'left',
+    },
+    headerButton: {
+        flexDirection: 'row',
+        marginRight: 16,
+    },
+    iconButton: {
+        marginRight: 8,
+    },
+    feedContainer: {
+        flex: 1,
+        justifyContent: 'space-between',
         width: '100%',
-	},
-	feed: {
-		flexDirection: 'column',
-		alignItems: 'stretch',
-		flexGrow: '1',
-		width: '100%',
+    },
+    feed: {
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        flexGrow: '1',
+        width: '100%',
         paddingTop: 20,
         paddingBottom: 50,
-	},
-	divider: {
-		height: 2,
-		backgroundColor: 'lightgrey',
-		marginTop: 10,
-		borderRadius: 20,
-	},
-	inputContainer: {
-		flexDirection: 'row',
-		alignItems: 'center',
-		justifyContent: 'space-between',
-		width: '100%',
-		marginVertical: 20,
-		backgroundColor: 'white',
-		borderRadius: 20,
-		paddingLeft: 20,
-		paddingRight: 12,
-	},
-	input: {
-		backgroundColor: null,
-		flex: 1,
-		height: 40,
-		fontFamily: 'Montserrat_600SemiBold',
-	},
+    },
+    divider: {
+        height: 2,
+        backgroundColor: 'lightgrey',
+        marginTop: 10,
+        borderRadius: 20,
+    },
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginVertical: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        paddingLeft: 20,
+        paddingRight: 12,
+    },
+    input: {
+        backgroundColor: null,
+        flex: 1,
+        height: 40,
+        fontFamily: 'Montserrat_600SemiBold',
+    },
     messageContainer: {
         flexDirection: 'column',
         width: '100%',
@@ -105,69 +108,70 @@ const styles = StyleSheet.create({
 });
 
 const IconButton = ({ iconName, onPress }) => (
-	<Pressable 
-	  style={({ pressed }) => [
-		styles.iconButton,
-		{
-		  opacity: pressed ? 0.5 : 1,
-		},
-	  ]}
-	  onPress={onPress}
-	>
-	  <Feather name={iconName} size={24} color="black" />
-	</Pressable>
-  );
-  
-    const Message = ({ title, text, sender }) => (
-        <View style={styles.messageContainer}>
-            <Text style={styles.title}>{title}</Text>
-            <Text style={styles.sender}>{sender}</Text>
-            <Text style={styles.messageText}>{text}</Text>
-        </View>
-    );
+    <Pressable
+        style={({ pressed }) => [
+            styles.iconButton,
+            {
+                opacity: pressed ? 0.5 : 1,
+            },
+        ]}
+        onPress={onPress}
+    >
+        <Feather name={iconName} size={24} color="black" />
+    </Pressable>
+);
 
-    function generateRandomWord() {
-        const words = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit'];
-        return words[Math.floor(Math.random() * words.length)];
-    }
+const Message = ({ title, text, sender }) => (
+    <View style={styles.messageContainer}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.sender}>{sender}</Text>
+        <Text style={styles.messageText}>{text}</Text>
+    </View>
+);
 
-    function generateRandomMessage() {
-        const numWords = Math.max(1, Math.floor(Math.random() * Math.random() * 50));
-        let message = '';
-        for (let i = 0; i < numWords; i++) {
-            message += generateRandomWord() + ' ';
-        }
-        return message.trim();
-    }
+// function generateRandomWord() {
+//     const words = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit'];
+//     return words[Math.floor(Math.random() * words.length)];
+// }
 
-    function GroupPage({ route, navigation }) {
-        const { community } = route.params;
-        const [messages, setMessages] = useState(Array.from({ length: 50 }, (_, i) => ({
-            title: `${generateRandomWord()}`,
-            text: generateRandomMessage(),
-            sender: `@${generateRandomWord()}`,
-        })));
-        const [input, setInput] = useState('');
+// function generateRandomMessage() {
+//     const numWords = Math.max(1, Math.floor(Math.random() * Math.random() * 50));
+//     let message = '';
+//     for (let i = 0; i < numWords; i++) {
+//         message += generateRandomWord() + ' ';
+//     }
+//     return message.trim();
+// }
 
-	useEffect(() => {
-		navigation.setOptions({
-			title: community.name,
-			headerTitleStyle: {
-				fontFamily: 'Montserrat_700Bold',
-				fontSize: 18,
-			},
-			headerTitleAlign: 'left',
-			headerRight: () => (
-				<View style={styles.headerButton}>
-					<IconButton iconName="book" onPress={() => navigation.navigate('GroupSettings', { community })} />
-					<IconButton iconName="settings" onPress={() => navigation.navigate('GroupSettings', { community })} />
-					<IconButton iconName="users" onPress={() => navigation.navigate('GroupMembers', { community })} />
-				</View>
-			),
-		});
-	}, [navigation, community]);
+function GroupPage({ route, navigation }) {
+    const { community } = route.params;
+    const messages = [];
+    // const [messages, setMessages] = useState(Array.from({ length: 50 }, (_, i) => ({
+    //     title: `${generateRandomWord()}`,
+    //     text: generateRandomMessage(),
+    //     sender: `@${generateRandomWord()}`,
+    // })));
+    // const [input, setInput] = useState('');
 
-	return (
+    useEffect(() => {
+        navigation.setOptions({
+            title: community.name,
+            headerTitleStyle: {
+                fontFamily: 'Montserrat_700Bold',
+                fontSize: 18,
+            },
+            headerTitleAlign: 'left',
+            headerRight: () => (
+                <View style={styles.headerButton}>
+                    <IconButton iconName="book" onPress={() => navigation.navigate('GroupSettings', { community })} />
+                    <IconButton iconName="settings" onPress={() => navigation.navigate('GroupSettings', { community })} />
+                    <IconButton iconName="users" onPress={() => navigation.navigate('GroupMembers', { community })} />
+                </View>
+            ),
+        });
+    }, [navigation, community]);
+
+    return (
         <KeyboardAvoidingView
             style={styles.container}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -176,6 +180,7 @@ const IconButton = ({ iconName, onPress }) => (
             <Text style={styles.description}>{community.description}</Text>
             <View style={styles.divider} />
             <View style={styles.feedContainer}>
+
                 <FlatList
                     data={messages.slice().reverse()}
                     renderItem={({ item, index }) => (
@@ -200,8 +205,8 @@ const IconButton = ({ iconName, onPress }) => (
                         }} 
                     />
                 </View> */}
-                <TouchableOpacity 
-                    style={styles.button} 
+                <TouchableOpacity
+                    style={styles.button}
                     onPress={() => navigation.navigate('NewPostPage', { communityId: community.id })}
                 >
                     <Feather name="plus" size={30} color="white" />
@@ -212,3 +217,32 @@ const IconButton = ({ iconName, onPress }) => (
 }
 
 export default GroupPage;
+
+
+IconButton.propTypes = {
+    iconName: PropTypes.string.isRequired,
+    onPress: PropTypes.func.isRequired,
+};
+
+Message.propTypes = {
+    title: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    sender: PropTypes.string.isRequired,
+};
+
+GroupPage.propTypes = {
+    route: PropTypes.shape({
+        params: PropTypes.shape({
+            community: PropTypes.shape({
+                id: PropTypes.number,
+                name: PropTypes.string,
+                description: PropTypes.string,
+            }),
+        }),
+    }).isRequired,
+    navigation: PropTypes.shape({
+        setOptions: PropTypes.func.isRequired,
+        navigate: PropTypes.func.isRequired,
+    }).isRequired,
+};
+

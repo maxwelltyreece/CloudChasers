@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+import proptypes from 'prop-types';
 
 const GoalItem = ({ title }) => (
     <View style={styles.listItem}>
@@ -40,3 +41,7 @@ const styles = StyleSheet.create({
 });
 
 export default Goals;
+
+GoalItem.propTypes = {
+    title: proptypes.string.isRequired,
+};

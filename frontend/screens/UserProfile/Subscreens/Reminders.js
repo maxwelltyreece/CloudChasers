@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const { width, height } = Dimensions.get('window');
+const { width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
 	container: {
