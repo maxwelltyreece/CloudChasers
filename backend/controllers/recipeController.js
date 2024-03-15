@@ -186,7 +186,7 @@ async function createUserDayMeal(mealType, userDay) {
 
 	} catch (error) {
 		console.log('Error in createUserDayMeal:', error);
-		throw new Error('Failed to create UserDayMeal: ' + error.toString());
+		throw new Error(error.toString());
 	}
 	return newUserDayMeal;
 };

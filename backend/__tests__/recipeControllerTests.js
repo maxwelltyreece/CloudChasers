@@ -20,15 +20,23 @@ const Food = require('../models/food');
 
 const Recipe = require('../models/recipe');
 	  
-// 	//todo: delete item from recipe
-	
-// });
+//todo: delete item from recipe
 
 describe('Recipe Management', () => {
 		let user, community, token, food, recipe;
 
 	beforeAll(async () => {
 		await mongoose.connect(process.env.DATABASE_URL);
+		await User.deleteMany({});
+		await Recipe.deleteMany({});
+		await Food.deleteMany({});
+		await RecipeItem.deleteMany({});
+		await FoodItem.deleteMany({});
+		await RecipeQuantity.deleteMany({});
+		await UserDay.deleteMany({});
+		await UserDayMeal.deleteMany({});
+		await MealItem.deleteMany({});
+		
 		community = new mongoose.Types.ObjectId();
 		user = await User.create({
 			forename: 'John',
@@ -67,6 +75,7 @@ describe('Recipe Management', () => {
 		await UserDay.deleteMany({});
 		await UserDayMeal.deleteMany({});
 		await MealItem.deleteMany({});
+		jest.restoreAllMocks();
 	});
 	
 	afterAll(async () => {
@@ -105,8 +114,33 @@ describe('Recipe Management', () => {
 			expect(recipe.communityThatOwnsRecipe.toString()).toBe(community.toString());
 		});
 
+		it('should return an error if recipe creation fails', async () => {
+			// Mock the save function to simulate a failure
+			const saveMock = jest.spyOn(Recipe.prototype, 'save');
+			saveMock.mockImplementationOnce(() => Promise.reject(new Error('Failed to save recipe')));
+		
+			const recipeData = {
+				name: 'Faulty Recipe',
+				description: 'This recipe should cause an error',
+				communityThatOwnsRecipe: community.toString(),
+			};
+		
+			const response = await request(app)
+				.post('/food/createNewRecipeByUser')
+				.set('Authorization', `Bearer ${token}`)
+				.send(recipeData);
+		
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty('error');
+			expect(response.body.error).toBe('Error: Failed to save recipe');
+		
+			// Ensure that no new recipe was created
+			const recipe = await Recipe.findOne({ name: recipeData.name });
+			expect(recipe).toBeNull();
+			saveMock.mockRestore();
+		});
 	});
-	
+
 	describe('Recipe Item Manipulation', () => {
 		// Tests for adding, deleting, and updating recipe items
 		it('should add a food item to a recipe', async () => {
@@ -118,9 +152,9 @@ describe('Recipe Management', () => {
 			};
 			
 			const response = await request(app)
-			.put('/food/addItemToRecipe') 
-			.set('Authorization', `Bearer ${token}`)
-			.send(foodItemData);
+				.put('/food/addItemToRecipe') 
+				.set('Authorization', `Bearer ${token}`)
+				.send(foodItemData);
 		
 			expect(response.statusCode).toBe(200);
 			expect(response.body).toHaveProperty('message', 'Item added to recipe');
@@ -139,13 +173,13 @@ describe('Recipe Management', () => {
 			const fakeRecipeId = new mongoose.Types.ObjectId();
 		
 			const response = await request(app)
-			.put('/food/addItemToRecipe')
-			.set('Authorization', `Bearer ${token}`)
-			.send({
-				recipeID: fakeRecipeId.toString(),
-				foodID: food._id.toString(),
-				weight: 200,
-			});
+				.put('/food/addItemToRecipe')
+				.set('Authorization', `Bearer ${token}`)
+				.send({
+					recipeID: fakeRecipeId.toString(),
+					foodID: food._id.toString(),
+					weight: 200,
+				});
 		
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toHaveProperty('message', 'Recipe does not exist');
@@ -203,12 +237,36 @@ describe('Recipe Management', () => {
 		it('should return 400 if the recipe item does not exist', async () => {
 			const fakeRecipeItemId = new mongoose.Types.ObjectId();
 			const response = await request(app)
-			.delete('/food/deleteItemFromRecipe')
-			.set('Authorization', `Bearer ${token}`)
-			.send({ recipeItemID: fakeRecipeItemId.toString() });
+				.delete('/food/deleteItemFromRecipe')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ recipeItemID: fakeRecipeItemId.toString() });
 			
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toHaveProperty('message', 'Recipe Item does not exist');
+		});
+
+		it('should handle errors during recipe retrieval', async () => {
+			const recipe = await Recipe.create({ name: 'Recipe', description: 'Description', createdBy: user._id });
+			const foodItem = await FoodItem.create({ foodID: food._id, weight: 100 });
+			const recipeItem = await RecipeItem.create({ recipeID: recipe._id, foodItemID: foodItem._id });
+		
+		
+			// Mock the Recipe.findById to throw an error
+			jest.spyOn(RecipeItem, 'findByIdAndDelete').mockImplementationOnce(() => {
+				throw new Error('Database error');
+			});
+		
+			const response = await request(app)
+			.delete('/food/deleteItemFromRecipe')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ recipeItemID: recipeItem._id.toString() });
+		
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty('error');
+			expect(response.body.error).toBe('Error: Database error');
+		
+			// Restore the original implementation after the test
+			jest.restoreAllMocks();
 		});
 	});
 	
@@ -225,6 +283,27 @@ describe('Recipe Management', () => {
 			
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toHaveProperty('message', 'Recipe does not exist');
+		});
+
+		it('should handle errors during recipe retrieval', async () => {
+			const fakeRecipeId = new mongoose.Types.ObjectId().toString();
+		
+			// Mock the Recipe.findById to throw an error
+			jest.spyOn(Recipe, 'findById').mockImplementationOnce(() => {
+				throw new Error('Database error');
+			});
+		
+			const response = await request(app)
+				.get('/food/getRecipe')
+				.set('Authorization', `Bearer ${token}`)
+				.query({ recipeID: fakeRecipeId });
+		
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty('error');
+			expect(response.body.error).toBe('Error: Database error');
+		
+			// Restore the original implementation after the test
+			jest.restoreAllMocks();
 		});
 
 		it('should retrieve a recipe and its associated items', async () => {
@@ -259,14 +338,13 @@ describe('Recipe Management', () => {
 
 		//get recipe ingredients
 		it('should retrieve ingredients for a specific recipe', async () => {
-			// Assuming food and recipe have been created in the beforeEach block
 			const foodItem = await FoodItem.create({ foodID: food._id, weight: 200 });
 			await RecipeItem.create({ foodItemID: foodItem._id, recipeID: recipe._id });
 		
 			const response = await request(app)
-			.get('/food/getRecipeIngredients')
-			.set('Authorization', `Bearer ${token}`)
-			.query({ recipeID: recipe._id.toString() });
+				.get('/food/getRecipeIngredients')
+				.set('Authorization', `Bearer ${token}`)
+				.query({ recipeID: recipe._id.toString() });
 		
 			expect(response.statusCode).toBe(200);
 			expect(response.body).toHaveProperty('message', 'Recipe ingredients found');
@@ -280,6 +358,27 @@ describe('Recipe Management', () => {
 			]));
 		});
 		
+		it('should handle errors during food retrieval', async () => {
+			const foodItem = await FoodItem.create({ foodID: food._id, weight: 200 });
+			await RecipeItem.create({ foodItemID: foodItem._id, recipeID: recipe._id });
+
+			jest.spyOn(Food, 'findById').mockImplementationOnce(() => {
+				throw new Error('Database error');
+			});
+		
+			const response = await request(app)
+				.get('/food/getRecipeIngredients')
+				.set('Authorization', `Bearer ${token}`)
+				.query({ recipeID: recipe._id.toString() });
+		
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty('error');
+			expect(response.body.error).toBe('Error: Database error');
+		
+			// Restore the original implementation after the test
+			jest.restoreAllMocks();
+		});
+
 		it('should return 400 if the recipe does not exist', async () => {
 			const fakeRecipeId = new mongoose.Types.ObjectId();
 		
@@ -291,6 +390,7 @@ describe('Recipe Management', () => {
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toHaveProperty('message', 'Recipe does not exist');
 		});
+
 
 		//community recipes
 		it('should retrieve recipes for a specific community', async () => {
@@ -317,6 +417,24 @@ describe('Recipe Management', () => {
 				.query({ communityID: fakeCommunityID.toString() });
 			
 			expect(response.statusCode).toBe(400);
+		});
+
+		it('should handle errors when retrieving community recipes', async () => {
+			const fakeCommunityId = new mongoose.Types.ObjectId().toString();
+	
+			// Mock the Recipe.find method to throw an error
+			jest.spyOn(Recipe, 'find').mockImplementationOnce(() => {
+				throw new Error('Database error');
+			});
+	
+			const response = await request(app)
+				.get('/food/getCommunityRecipes')
+				.query({ communityID: fakeCommunityId });
+	
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty('error');
+			expect(response.body.error).toBe('Error: Database error');
+	
 		});
 
 		// get user recipes
@@ -390,12 +508,33 @@ describe('Recipe Management', () => {
 			const fakeRecipeId = new mongoose.Types.ObjectId();
 		
 			const response = await request(app)
-			.post('/food/duplicateRecipe')
-			.set('Authorization', `Bearer ${token}`)
-			.send({ recipeID: fakeRecipeId.toString() });
+				.post('/food/duplicateRecipe')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ recipeID: fakeRecipeId.toString() });
 		
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toHaveProperty('message', 'Recipe does not exist');
+		});
+
+		it('should handle errors during recipe duplication', async () => {
+			const fakeRecipeId = new mongoose.Types.ObjectId().toString();
+	
+			// Mock the Recipe.findById to throw an error
+			jest.spyOn(Recipe, 'findById').mockImplementationOnce(() => {
+				throw new Error('Database error');
+			});
+	
+			const response = await request(app)
+				.post('/food/duplicateRecipe')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ recipeID: fakeRecipeId.toString() });
+	
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty('error');
+			expect(response.body.error).toBe('Error: Database error');
+	
+			// Restore the original implementation after the test
+			jest.restoreAllMocks();
 		});
 	});
 	
@@ -408,9 +547,9 @@ describe('Recipe Management', () => {
 			const totalRecipeWeight = 500;
 		
 			const response = await request(app)
-			.post('/food/logRecipeFood')
-			.set('Authorization', `Bearer ${token}`)
-			.send({ mealType, recipeID: recipe._id, totalRecipeWeight });
+				.post('/food/logRecipeFood')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ mealType, recipeID: recipe._id, totalRecipeWeight });
 		
 			expect(response.statusCode).toBe(200);
 			expect(response.body).toHaveProperty('message', 'Recipe logged');
@@ -428,6 +567,107 @@ describe('Recipe Management', () => {
 			const recipeQuantity = await RecipeQuantity.findOne({ recipeID: recipe._id, mealItemID: mealItem._id });
 			expect(recipeQuantity).toBeTruthy();
 			expect(recipeQuantity.totalRecipeWeight).toBe(totalRecipeWeight);
+		});
+
+		it('should return an existing UserDay', async () => {
+			const today = new Date();
+			today.setHours(0, 0, 0, 0);
+			const existingUserDay = await UserDay.create({
+				userID: user._id,
+				date: today,
+			});
+	
+			const mealType = 'lunch';
+			const totalRecipeWeight = 250;
+	
+			const response = await request(app)
+				.post('/food/logRecipeFood')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ mealType, recipeID: recipe._id, totalRecipeWeight });
+	
+			expect(response.statusCode).toBe(200);
+			// Ensure that no new UserDayMeal was created
+			const userDayCount = await UserDay.countDocuments({ userID: user._id, date: today });
+			expect(userDayCount).toBe(1);
+			expect(response.body).toHaveProperty('message', 'Recipe logged');
+		});
+		
+		it('should handle errors in createUserDay', async () => {
+			jest.spyOn(UserDay, 'findOne').mockImplementationOnce(() => {
+				throw new Error('Database error');
+			});
+	
+			const mealType = 'dinner';
+			const totalRecipeWeight = 300;
+	
+			const response = await request(app)
+				.post('/food/logRecipeFood')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ mealType, recipeID: recipe._id, totalRecipeWeight });
+	
+			expect(response.statusCode).toBe(501);
+		});
+
+		it('should return an existing UserDayMeal', async () => {
+			const today = new Date();
+			today.setHours(0, 0, 0, 0);
+			const userDay = await UserDay.create({
+				userID: user._id,
+				date: today,
+			});
+
+			const mealType = 'breakfast';
+			const existingUserDayMeal = await UserDayMeal.create({
+				name: mealType,
+				userDayID: userDay._id,
+				order: 1,
+			});
+	
+			const totalRecipeWeight = 500;
+	
+			const response = await request(app)
+				.post('/food/logRecipeFood')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ mealType, recipeID: recipe._id, totalRecipeWeight });
+	
+			expect(response.statusCode).toBe(200);
+			// Ensure that no new UserDayMeal was created
+			const userDayMealsCount = await UserDayMeal.countDocuments({ userDayID: userDay._id });
+			expect(userDayMealsCount).toBe(1);
+			expect(response.body).toHaveProperty('message', 'Recipe logged');
+		});
+	
+		it('should handle errors in createUserDayMeal', async () => {
+			jest.spyOn(UserDayMeal, 'findOne').mockImplementationOnce(() => {
+				throw new Error('Database error in UserDayMeal');
+			});
+	
+			const mealType = 'lunch';
+			const totalRecipeWeight = 300;
+	
+			const response = await request(app)
+				.post('/food/logRecipeFood')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ mealType, recipeID: recipe._id, totalRecipeWeight });
+	
+			expect(response.statusCode).toBe(501);
+
+		});
+
+		it('should handle transaction errors in logRecipeFood', async () => {
+			jest.spyOn(Recipe, 'findById').mockImplementationOnce(() => {
+				throw new Error('Transaction error');
+			});
+	
+			const mealType = 'snack';
+			const totalRecipeWeight = 200;
+	
+			const response = await request(app)
+				.post('/food/logRecipeFood')
+				.set('Authorization', `Bearer ${token}`)
+				.send({ mealType, recipeID: recipe._id, totalRecipeWeight });
+	
+			expect(response.statusCode).toBe(501);
 		});
 	});
 	
@@ -460,6 +700,23 @@ describe('Recipe Management', () => {
 			expect(response.statusCode).toBe(400);
 		});
 
+		it('should handle errors during recipe weight calculation', async () => {
+			const fakeRecipeId = new mongoose.Types.ObjectId().toString();
+	
+			// Mock the RecipeItem.find to throw an error
+			jest.spyOn(RecipeItem, 'find').mockImplementationOnce(() => {
+				throw new Error('Database error');
+			});
+	
+			const response = await request(app)
+				.get('/food/getRecipeWeight')
+				.query({ recipeID: fakeRecipeId });
+	
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty('error');
+			expect(response.body.error).toBe('Error: Database error');
+		});
+
 		// Macro for recipes
 		it('should calculate the macros of a recipe', async () => {
 			const recipe = await Recipe.create({ name: 'Recipe for Macros', description: 'test description'});
@@ -489,7 +746,29 @@ describe('Recipe Management', () => {
 		
 			expect(response.statusCode).toBe(400);
 		});
+
+		it('should handle errors during recipe macros calculation', async () => {
+			const fakeRecipeId = new mongoose.Types.ObjectId().toString();
+	
+			// Mock the RecipeItem.find to throw an error
+			jest.spyOn(RecipeItem, 'find').mockImplementationOnce(() => {
+				throw new Error('Database error');
+			});
+	
+			const response = await request(app)
+				.get('/food/getRecipeMacro')
+				.query({ recipeID: fakeRecipeId });
+	
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty('error');
+			expect(response.body.error).toBe('Error: Database error');
+	
+			// Restore the original implementation after the test
+			jest.restoreAllMocks();
+		});
 	});
+
+	
 });
 	  
 
