@@ -19,10 +19,8 @@ jobs:
           fetch-depth: 0  
 
     - name: Install Modules
-      working-directory: ./CloudChasers
       run: npm ci 
 
     - name: Run ESLint
-      working-directory: ./CloudChasers
       run: npm run lint
 
