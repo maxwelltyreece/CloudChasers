@@ -18,6 +18,7 @@ import {
 
 import { UserProvider } from './frontend/contexts/UserContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
+import { FoodStatsProvider } from './frontend/contexts/foodStatsContext';
 import AuthNavigator from './frontend/navigation/AuthNavigator';
 import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
@@ -69,12 +70,14 @@ export default function App() {
 	return (
 		<CommunityProvider>
 			<UserProvider>
-				<NavigationContainer>
-					<Stack.Navigator initialRouteName={initialRoute}>
-						<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-						<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-					</Stack.Navigator>
-				</NavigationContainer>
+				<FoodStatsProvider>
+					<NavigationContainer>
+						<Stack.Navigator initialRouteName={initialRoute}>
+							<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+							<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+						</Stack.Navigator>
+					</NavigationContainer>
+				</FoodStatsProvider>
 			</UserProvider>
 		</CommunityProvider>
 	);

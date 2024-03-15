@@ -12,7 +12,7 @@ export async function createCommunity(communityData) {
 			},
 			body: JSON.stringify(communityData),
 		});
-
+w
 		if (!response.ok) {
 			console.error(`HTTP error! status: ${response.status}`);
 			return false;

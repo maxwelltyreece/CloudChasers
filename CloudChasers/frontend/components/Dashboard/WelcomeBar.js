@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         padding: 5,
     },
     welcomeText: {
-        fontSize: 35,
+        fontSize: 32,
         fontWeight: 'bold',
         color: '#333',
         left: '4%',
