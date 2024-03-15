@@ -1,10 +1,12 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import {
-	View, Text, ScrollView, KeyboardAvoidingView, StyleSheet, Modal, TextInput, Pressable, Alert, Platform,
+	View, Text, ScrollView, KeyboardAvoidingView, StyleSheet, Modal, 
+	TextInput, Pressable, Alert, Platform, Dimensions
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
 	container: {
@@ -19,18 +21,21 @@ const styles = StyleSheet.create({
 	remindersDescription: {
 		fontSize: 18,
 		fontWeight: '600',
-		marginBottom: 7,
+		marginBottom: 8,
+		maxWidth: '92%',
 	},
 	reminderInfoTitle: {
 		fontSize: 14,
 		fontWeight: 'bold',
+		color: '#FF815E',
 	},
 	reminderInfoText: {
 		fontSize: 14,
 		marginRight: 10,
+		marginBottom: 2,
 	},
 	reminderItem: {
-		backgroundColor: 'lightblue',
+		backgroundColor: 'white',
 		padding: 15,
 		marginVertical: 5,
 		borderRadius: 12,
@@ -49,12 +54,12 @@ const styles = StyleSheet.create({
 	addReminderButtonText: {
 		fontSize: 18,
 		fontWeight: 'bold',
-		color: 'white',
+		color: '#FFFFFF',
 	},
 	addReminderButton: {
 		color: '#FFFFFF',
-		margin: 20,
-		backgroundColor: '#007BFF',
+		backgroundColor: '#FF815E',
+		margin: 30,
 		paddingVertical: 10,
 		paddingHorizontal: 20,
 		borderRadius: 20,
@@ -95,13 +100,16 @@ const styles = StyleSheet.create({
 		borderTopEndRadius: 28,
 	},
 	descriptionInput: {
-		height: '7%',
 		width: '100%',
 		margin: 20,
 		marginBottom: 35,
-		borderWidth: 1,
-		padding: 10,
+		borderWidth: 0.5,
+		paddingTop: 10,
+		paddingBottom: 10,
+		paddingHorizontal: 10,
 		borderRadius: 12,
+		fontSize: 16,
+		fontWeight: '500',
 	},
 	selectFreqTitle: {
 		fontSize: 18,
@@ -228,30 +236,68 @@ const styles = StyleSheet.create({
 	editButton: {
 		padding: 10,
 		right: '20%',
-		width: '14%',
-		height: 'auto',
-		backgroundColor: 'lightgreen',
+		width: 50,
+		height: 35,
+		backgroundColor: '#FF815E',
 		borderRadius: 5,
-		marginHorizontal: 5,
+		marginLeft: 5,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
 	deleteButton: {
 		padding: 5,
 		right: '20%',
-		width: '16%',
-		height: 'auto',
+		width: 60,
+		height: 35,
 		backgroundColor: 'tomato',
 		borderRadius: 5,
-		marginHorizontal: 2,
+		marginHorizontal: 7,
 		alignItems: 'center',
 		justifyContent: 'center',
 	},
-	actionButtonText: {
+	backButton: {
+		padding: 5,
+		right: '20%',
+		width: 50,
+		height: 35,
+		backgroundColor: '#F7F7F7',
+		borderRadius: 5,
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	backButtonText: {
 		fontSize: 14,
 		fontWeight: 'bold',
 		textAlign: 'center',
 	},
+	actionButtonText: {
+		color: 'white',
+		fontSize: 14,
+		fontWeight: 'bold',
+		textAlign: 'center',
+	},
+	threeDotsButton: {
+		position: 'absolute',
+		right: 16,
+		padding: 5,
+		marginLeft: 20,
+	},
+	threeDotsText: {
+		fontSize: 21,
+		fontWeight: '900',
+	},
+	semiCircle: {
+		width: width * 2,
+		height: width * 2,
+		borderRadius: width,
+		position: 'absolute',
+		top: -width * 0.7,
+		left: -width / 2,
+		backgroundColor: '#FF815E',
+		zIndex: -1,
+	},
+	
+
 });
 
 const frequencyOptions = ['Daily', 'Weekly']; // Options for the segmented control
@@ -274,8 +320,35 @@ function Reminders() {
 		frequency: 'Daily', // Default frequency
 	});
 	const [date, setDate] = useState(new Date());
-	const [showTimePicker, setShowTimePicker] = useState(false);
+	const [showTimePicker, setShowTimePicker] = useState(Platform.OS === 'ios'); // iOS will always show, Android controlled by state
 	const [selectedFrequencyIndex, setSelectedFrequencyIndex] = useState(0);
+
+
+	const toggleActionButtonsVisibility = (id) => {
+		const updatedReminders = reminders.map((reminder) => 
+			reminder.id === id ? { ...reminder, showActions: !reminder.showActions } : reminder
+		);
+		setReminders(updatedReminders);
+	};
+
+	// Function to open the modal and reset the new reminder details
+	const openModalAndResetFields = () => {
+		setIsModalVisible(true);
+		// Resetting newReminder fields to their default values
+		setNewReminder({
+			id: null,
+			description: '',
+			time: '',
+			date: '',
+			frequency: 'Daily',
+		});
+		setDate(new Date());
+
+		if (Platform.OS === 'android') {
+			setShowTimePicker(false);
+		}
+	};
+
 
 	useEffect(() => {
 		const loadReminders = async () => {
@@ -330,13 +403,15 @@ function Reminders() {
 		if (reminderToEdit) {
 			setNewReminder(reminderToEdit);
 			setIsModalVisible(true);
-			setDate(new Date()); // Reset or adjust date if necessary
+			setDate(new Date());
 		}
 	};
 
 	const onChangeTime = (event, selectedDate) => {
 		const currentDate = selectedDate || date;
-		setShowTimePicker(false); // Close the time picker after selection
+		if (Platform.OS === 'android') {
+			setShowTimePicker(false);
+		}
 		setDate(currentDate);
 
 		const hours = currentDate.getHours();
@@ -356,17 +431,21 @@ function Reminders() {
 			<ScrollView style={styles.scrollViewContainer}>
 				{reminders.map((reminder) => (
 					<View key={reminder.id} style={styles.reminderItem}>
-						<Text style={styles.remindersDescription}>{reminder.description}</Text>
+						<Text style={styles.remindersDescription} numberOfLines={4}>{reminder.description}</Text>
 						<Text style={styles.reminderInfoText}>
-							<Text style={styles.reminderInfoTitle}>Time:</Text>
-							{' '}
-							{reminder.time}
+						<Text style={styles.reminderInfoTitle}>Time:</Text>
+						{' '}
+						{reminder.time}
 						</Text>
 						<Text style={styles.reminderInfoText}>
-							<Text style={styles.reminderInfoTitle}>Frequency:</Text>
-							{' '}
-							{reminder.frequency}
+						<Text style={styles.reminderInfoTitle}>Frequency:</Text>
+						{' '}
+						{reminder.frequency}
 						</Text>
+						<Pressable onPress={() => toggleActionButtonsVisibility(reminder.id)} style={styles.threeDotsButton}>
+						<Text style={styles.threeDotsText}>...</Text>
+						</Pressable>
+						{reminder.showActions && (
 						<View style={styles.reminderActionButtonsSection}>
 							<Pressable onPress={() => editReminder(reminder.id)} style={styles.editButton}>
 								<Text style={styles.actionButtonText}>Edit</Text>
@@ -374,13 +453,18 @@ function Reminders() {
 							<Pressable onPress={() => deleteReminder(reminder.id)} style={styles.deleteButton}>
 								<Text style={styles.actionButtonText}>Delete</Text>
 							</Pressable>
+							{/* <Pressable onPress={() => toggleActionButtonsVisibility(reminder.id)} style={styles.backButton}>
+								<Text style={styles.backButtonText}>Back</Text>
+							</Pressable> */}
 						</View>
+						)}
 					</View>
-
 				))}
 			</ScrollView>
 
-			<Pressable style={styles.addReminderButton} onPress={() => setIsModalVisible(true)}>
+			<View style={styles.semiCircle}></View>
+
+			<Pressable style={styles.addReminderButton} onPress={openModalAndResetFields}>
 				<Text style={styles.addReminderButtonText}>
 						Add Reminder
 				</Text>
@@ -395,35 +479,38 @@ function Reminders() {
 				<KeyboardAvoidingView
 					behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
 					style={{ flex: 1 }}
-					keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 50} // Adjust based on your layout and platform
+					keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 50}
 				>
 					<ScrollView>
 						<View style={styles.modalView}>
 							<TextInput
-								style={styles.descriptionInput}
+								style={[styles.descriptionInput]}
 								placeholder="Description"
 								onChangeText={(text) => setNewReminder({ ...newReminder, description: text })}
 								value={newReminder.description}
+								multiline
 							/>
 
 							<Text style={{ fontSize: 16, fontWeight: 'bold' }}>Current Time Selected:</Text>
-							<Text style={styles.currentTimeSelectedText}>{newReminder.time || '(Choose Time)'}</Text>
 
-							<Pressable onPress={() => setShowTimePicker(true)} style={styles.timePickerButton}>
-								<Text style={styles.timePickerButtonText}>Select Time</Text>
-							</Pressable>
+							{(Platform.OS != 'ios' || !newReminder.time) && (
+								<Text style={styles.currentTimeSelectedText}>{newReminder.time || '(Choose Time)'}</Text>
+								)
+							}
 
-							<View style={styles.timePickerSection}>
-								{showTimePicker && (
-									<DateTimePicker
-										value={date}
-										mode="time"
-										display="default"
-										onChange={onChangeTime}
-										is24Hour={false}
-									/>
-								)}
-							</View>
+							{Platform.OS === 'ios' || showTimePicker ? (
+								<DateTimePicker
+									value={date}
+									mode="time"
+									display={Platform.OS === 'ios' ? 'inline' : 'spinner'}
+									onChange={onChangeTime}
+									is24Hour={false}
+								/>
+								) : (
+								<Pressable onPress={() => setShowTimePicker(true)} style={styles.timePickerButton}>
+									<Text style={styles.timePickerButtonText}>Select Time</Text>
+								</Pressable>
+							)}
 
 							<Text style={styles.selectFreqTitle}>Select Frequency: </Text>
 
@@ -455,7 +542,7 @@ function Reminders() {
 								<Pressable style={styles.addButton} onPress={handleAddReminder}>
 									{({ pressed }) => (
 										<Text style={[styles.addButtonText, pressed ? styles.pressedText : {}]}>
-											Add
+											Done
 										</Text>
 									)}
 								</Pressable>

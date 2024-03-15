@@ -3,6 +3,39 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
 
 
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 15,
+    backgroundColor: 'white',
+    borderRadius: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+    height: '95%',
+    width: '94%',
+    left: '1.5%',
+  },
+  containerTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    alignSelf: 'flex-start',
+    paddingTop: 10,
+  },
+  motivationalMessage: {
+    fontSize: 15,
+    fontWeight: '600',
+    marginBottom: 10,
+  },
+  progressText: {
+    fontSize: 19,
+    fontWeight: 'bold',
+  },
+});
+
 const AchievementsFeature = ({ totalAchievements, completedAchievements }) => {
 
     const screenWidth = Dimensions.get('window').width;
@@ -34,42 +67,10 @@ const AchievementsFeature = ({ totalAchievements, completedAchievements }) => {
           )
         }
       </AnimatedCircularProgress>
-      <Text style={styles.motivationalMessage}>Continue going!</Text>
+      <Text style={styles.motivationalMessage}>Keep going!</Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 15,
-    backgroundColor: 'white',
-    borderRadius: 12,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-    height: '95%',
-    width: '90%',
-    left: '1.5%',
-  },
-  containerTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    alignSelf: 'flex-start',
-    paddingTop: 9,
-  },
-  motivationalMessage: {
-    fontSize: 15,
-    fontWeight: '600',
-    marginBottom: 7,
-  },
-  progressText: {
-    fontSize: 19,
-    fontWeight: 'bold',
-  },
-});
 
 export default AchievementsFeature;

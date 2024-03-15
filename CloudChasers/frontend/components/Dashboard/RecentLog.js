@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 		elevation: 3,
 		// top: '5%',
 		height: '95%',
-		width: '95%',
+		width: '94%',
 		right: '1.5%',
 	},
 	recentLogTitleContainer: {

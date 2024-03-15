@@ -42,8 +42,9 @@ const styles = StyleSheet.create({
 		padding: 10,
 		marginRight: 8,
 		// marginBottom: 50,
-		width: '24%',
-		height: '82%',
+		// width: '18%',
+		width: 185,
+		height: '80%',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.22,
@@ -72,6 +73,7 @@ const fakeCommunities = [
 	{ groupName: 'Meat Meat Meat', description: 'A community for meat lovers' },
 	{ groupName: 'Health Gurus', description: 'A community for health and wellness' },
 	{ groupName: 'Veggie Heads', description: 'A community for vegetarians and vegans' },
+	{ groupName: 'Bread Heads', description: 'A community for bread lovers and pasta and pizza and sandwiches and wraps and spreads and toast' },
 ];
 
 function CommunityUpdates({ communities }) {
@@ -81,13 +83,13 @@ function CommunityUpdates({ communities }) {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.header}>Community Updates</Text>
+			<Text style={styles.header}>Communities</Text>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
 				{hasFakeCommunities ? (
 					fakeCommunities.map((fakeCommunity, index) => (
 						<View key={index} style={styles.updateContainer}>
 							<Text style={styles.groupName}>{fakeCommunity.groupName}</Text>
-							<Text style={styles.detailText}>
+							<Text style={styles.detailText} numberOfLines={2}>
 								{fakeCommunity.description}
 							</Text>
 						</View>

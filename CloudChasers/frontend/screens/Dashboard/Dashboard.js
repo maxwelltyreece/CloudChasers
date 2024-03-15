@@ -1,13 +1,12 @@
 // React related imports
 import React, { useState, useEffect } from 'react';
 import {
-	View, StyleSheet, SafeAreaView, ActivityIndicator, Text, Dimensions
+	View, StyleSheet, SafeAreaView, ActivityIndicator, Dimensions
 } from 'react-native';
 
 // Component imports
 import {
-	WelcomeBar, PastWeekLogs, CurrentStreak, RecentLog,
-	LearnMore, CommunityStatus, CurrentGoalProgress, AchievementsFeature,
+	WelcomeBar, RecentLog, CommunityStatus, CurrentGoalProgress, AchievementsFeature,
 } from '../../components/Dashboard';
 
 // Context imports
@@ -46,7 +45,7 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		// flexWrap: 'nowrap',
 		// backgroundColor: '#F0F0F0',
-		top: '5%',
+		top: '4%',
 		// backgroundColor: 'purple',
 		zIndex: 1,
 	},
@@ -64,7 +63,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingHorizontal: '1%',
-		paddingBottom: '4%',
+		paddingBottom: '2%',
 		width: '50%',
 		height: '100%',
 	},
@@ -73,24 +72,12 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingHorizontal: '1%',
-		paddingBottom: '4%',
+		paddingBottom: '2%',
 		width: '50%',
 		height: '100%',
 	},
-	// topRightComponentContainer: {
-	// 	justifyContent: 'center',
-	// 	alignItems: 'flex-end',
-	// 	width: '100%',
-	// 	height: '25%',
-	// },
-	// bottomRightComponentContainer: {
-	// 	justifyContent: 'flex-start',
-	// 	alignItems: 'center',
-	// 	width: '100%',
-	// 	height: '75%',
-	// 	backgroundColor: 'purple',
-	// },
 	bottomDashboardContainer: {
+		position: 'absolute',
 		justifyContent: 'center',
 		alignItems: 'center',
 		flexDirection: 'row',
@@ -98,33 +85,34 @@ const styles = StyleSheet.create({
 		// backgroundColor: '#F0F0F0',
 		width: '100%',
 		height: '25%',
-		marginBottom: '15%',
+		bottom: '5%',
+		// marginBottom: '15%',
 		
 	},
 	semiCircle: {
-		width: width * 2, // Make the circle large enough
-		height: width * 2, // Square shape to ensure a perfect circle
-		borderRadius: width, // Half of the width and height to ensure the rounded edges form a circle
+		width: width * 2,
+		height: width * 2,
+		borderRadius: width,
 		position: 'absolute',
-		top: -width, // Positioning at the top with negative offset to show half
-		left: -width / 2, // Center the circle horizontally
-		backgroundColor: '#FF815E', // Your choice of color
+		top: -width,
+		left: -width / 2,
+		backgroundColor: '#FF815E',
 	},
 });
 
 // Fake database
-const fakeDB = {
-	recentMeals: [
-		{ id: 1, name: 'Breakfast Burrito', timestamp: new Date().setDate(new Date().getDate() - 1) },
-		{ id: 2, name: 'Chicken Salad', timestamp: new Date().setDate(new Date().getDate() - 2) },
-	],
-	currentStreak: 5, // Example streak
-};
+// const fakeDB = {
+// 	recentMeals: [
+// 		{ id: 1, name: 'Breakfast Burrito', timestamp: new Date().setDate(new Date().getDate() - 1) },
+// 		{ id: 2, name: 'Chicken Salad', timestamp: new Date().setDate(new Date().getDate() - 2) },
+// 	],
+// 	currentStreak: 5, // Example streak
+// };
 
 // Dashboard screen
 function Dashboard() {
 	const navigation = useNavigation();
-	const [meals] = useState(fakeDB.recentMeals);
+	// const [meals] = useState(fakeDB.recentMeals);
     const [loading, setLoading] = useState(true);
 	const { userDetails, updateUserDetails } = useUser();
 	const { userCommunities, getUserCommunities } = useCommunity([]);
@@ -200,7 +188,7 @@ function Dashboard() {
 
     if (loading) {
         return (
-            <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+            <View style={styles.dashboardContainer}>
                 <ActivityIndicator size="large" />
             </View>
         );
@@ -228,22 +216,6 @@ function Dashboard() {
 					<RecentLog />
 				</View>
 			</View>
-
-			{/* <PastWeekLogs meals={meals} /> */}
-
-			{/* <RecentLog /> */}
-			
-			{/* <View style={styles.middleDashboardContainer}>
-				<View style={styles.leftComponentContainer}>
-					<CurrentStreak streak={userDetails?.data?.streak} />
-					<LearnMore />
-				</View>
-
-				<View style={styles.rightComponentContainer}>
-					<RecentLog />
-				</View>
-			</View> */}
-
 
 		</SafeAreaView>
 	);
