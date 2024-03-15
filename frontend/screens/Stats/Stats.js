@@ -18,16 +18,16 @@ import CircularProgressComponent from './statsComponents/CircularProgress.js';
 
 const Stats = () => {
 
-  const { stats, setStats } = useContext(StatsContext);
+  // const { stats, setStats } = useContext(StatsContext);
 
-  useEffect(() => {
-    const getStats = async () => {
-      const data = await fetchStats();
-      setStats(data);
-    };
+  // useEffect(() => {
+  //   const getStats = async () => {
+  //     const data = await fetchStats();
+  //     setStats(data);
+  //   };
 
-    getStats();
-  }, []);
+  //   getStats();
+  // }, []);
 
   // Dummy Data 
   const weeklyIntake = [
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     
   },
   statsHeader: {
-    justifyContent: 'flex-start',
+    // justifyContent: 'flex-start',
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',

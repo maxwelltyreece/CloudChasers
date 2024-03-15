@@ -5,7 +5,7 @@ import {
 import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../../../CloudChasers/frontend/screens/IPIndex';
+import { LocalIP } from '../IPIndex';
 import PropTypes from 'prop-types';
 
 

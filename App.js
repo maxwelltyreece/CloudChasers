@@ -27,8 +27,8 @@ import {
 import { UserProvider } from './frontend/contexts/UserContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
 import { FoodStatsProvider } from './frontend/contexts/foodStatsContext';
-import AuthNavigator from './frontend/navigation/AuthNavigator';
-import MainNavigator from './frontend/navigation/MainNavigator';
+// import AuthNavigator from './frontend/navigation/AuthNavigator';
+// import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
 
 const Stack = createStackNavigator();
