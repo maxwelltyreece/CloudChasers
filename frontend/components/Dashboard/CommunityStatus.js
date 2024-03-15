@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 	groupName: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		marginBottom: 3,
+		marginBottom: 8,
 	},
 	detailText: {
 		fontSize: 14,
@@ -68,30 +68,28 @@ const styles = StyleSheet.create({
 });
 
 
-const fakeCommunities = [
-	{ groupName: 'Pasta Lovers', description: 'A community for pasta enthusiasts' },
-	{ groupName: 'Meat Meat Meat', description: 'A community for meat lovers' },
-	{ groupName: 'Health Gurus', description: 'A community for health and wellness' },
-	{ groupName: 'Veggie Heads', description: 'A community for vegetarians and vegans' },
-	{ groupName: 'Bread Heads', description: 'A community for bread lovers and pasta and pizza and sandwiches and wraps and spreads and toast' },
-];
+// const fakeCommunities = [
+// 	{ groupName: 'Pasta Lovers', description: 'A community for pasta enthusiasts' },
+// 	{ groupName: 'Meat Meat Meat', description: 'A community for meat lovers' },
+// 	{ groupName: 'Health Gurus', description: 'A community for health and wellness' },
+// 	{ groupName: 'Veggie Heads', description: 'A community for vegetarians and vegans' },
+// 	{ groupName: 'Bread Heads', description: 'A community for bread lovers and pasta and pizza and sandwiches and wraps and spreads and toast' },
+// ];
 
 function CommunityUpdates({ communities }) {
 	// Check if communities is truthy and has length greater than 0
-	// eslint-disable-next-line no-unused-vars
 	const hasCommunities = communities && communities.length > 0;
-	const hasFakeCommunities = fakeCommunities && fakeCommunities.length > 0;
 
 	return (
 		<View style={styles.container}>
 			<Text style={styles.header}>Communities</Text>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-				{hasFakeCommunities ? (
-					fakeCommunities.map((fakeCommunity, index) => (
+				{hasCommunities ? (
+					communities.map((community, index) => (
 						<View key={index} style={styles.updateContainer}>
-							<Text style={styles.groupName}>{fakeCommunity.groupName}</Text>
+							<Text style={styles.groupName}>{community.name}</Text>
 							<Text style={styles.detailText} numberOfLines={2}>
-								{fakeCommunity.description}
+								{community.description}
 							</Text>
 						</View>
 					))

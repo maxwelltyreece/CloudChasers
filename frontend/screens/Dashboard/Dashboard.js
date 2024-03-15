@@ -118,6 +118,7 @@ function Dashboard() {
 	const { userCommunities, getUserCommunities } = useCommunity([]);
 	const { foodStats, updateFoodStats } = useFoodStats();
 	console.log({ foodStats, updateFoodStats });
+	console.log({ 'COMMUNITIES': userCommunities });
 
     useEffect(() => {
         const fetchUserDetails = async () => {
@@ -213,7 +214,7 @@ function Dashboard() {
 				</View>
 
 				<View style={styles.rightComponentContainer}>
-					<RecentLog />
+					<RecentLog streak={userDetails?.data?.streak} userLogStats={null} />
 				</View>
 			</View>
 
