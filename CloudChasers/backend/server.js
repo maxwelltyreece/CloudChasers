@@ -9,6 +9,7 @@ const foodRoutes = require('./routes/foodRoutes');
 const communityRoutes = require('./routes/communityRoutes');
 const statsRoutes = require('./routes/statsRoutes');
 const imageRoutes = require('./routes/imageRoutes');
+const goalRoutes = require('./routes/goalRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -20,6 +21,7 @@ const authenticateJWT = jwt({
 });
 
 const url = process.env.DATABASE_URL;
+console.log(url);
 
 mongoose.connect(url)
 	.then(() => {
@@ -37,6 +39,7 @@ app.use('/', userRoutes);
 app.use('/community', communityRoutes);
 app.use('/stats', statsRoutes);
 app.use('/image', imageRoutes);
+app.use('/goals', goalRoutes);
 
 const { login } = require('./controllers/userController');
 

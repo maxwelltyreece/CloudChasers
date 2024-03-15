@@ -1,8 +1,16 @@
 /* eslint-disable camelcase */
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+import Feather from 'react-native-vector-icons/Feather';
+import { View, StatusBar } from 'react-native';
+import globalStyles from './frontend/styles/global';
+import AuthNavigator from './frontend/navigation/AuthNavigator';
+import MainNavigator from './frontend/navigation/MainNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import * as NavigationBar from 'expo-navigation-bar';
+
 import {
 	useFonts,
 	Montserrat_100Thin,
@@ -17,9 +25,8 @@ import {
 } from '@expo-google-fonts/montserrat';
 
 import { UserProvider } from './frontend/contexts/UserContext';
+import { StatsProvider } from './frontend/contexts/StatsContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
-import AuthNavigator from './frontend/navigation/AuthNavigator';
-import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
 
 const Stack = createStackNavigator();
@@ -48,6 +55,10 @@ export default function App() {
 
 	const [initialRoute, setInitialRoute] = useState(null);
 
+    useEffect(() => {
+        NavigationBar.setBackgroundColorAsync('#000');
+    }, []);
+
 	useEffect(() => {
 		const checkToken = async () => {
 			try {
@@ -67,15 +78,17 @@ export default function App() {
 	}
 
 	return (
+		<StatsProvider>
 		<CommunityProvider>
-			<UserProvider>
-				<NavigationContainer>
-					<Stack.Navigator initialRouteName={initialRoute}>
-						<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-						<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-					</Stack.Navigator>
-				</NavigationContainer>
-			</UserProvider>
+		  <UserProvider>
+			<NavigationContainer>
+			  <Stack.Navigator initialRouteName={initialRoute}>
+				<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+				<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+			  </Stack.Navigator>
+			</NavigationContainer>
+		  </UserProvider>
 		</CommunityProvider>
+	  </StatsProvider>
 	);
 }

@@ -63,7 +63,6 @@ const getNutrientIntake = async (req, res, nutrient) => {
 	try {
 		const { date } = req.query;  // Ensure consistency in how you receive the date, query or body.
 		const user = req.user;
-
 		const userDay = await UserDay.findOne({ userID: user._id, date: date });
 		if (!userDay) {
 			return res.status(400).send({ message: "No data for this day." });
@@ -99,6 +98,7 @@ const getNutrientIntake = async (req, res, nutrient) => {
 			}
 		}
 		console.log(totalNutrient)
+		console.log(res.constructor.toString())	
 		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: totalNutrient });
 	}
 	catch (error) {

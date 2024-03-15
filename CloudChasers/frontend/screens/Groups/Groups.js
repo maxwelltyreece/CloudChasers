@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
 	},
 	itemContainer: {
 		flex: 1,
-		maxWidth: '50%',
+		maxWidth: '45%',
 		aspectRatio: 1,
 		margin: '2.5%',
 	},
