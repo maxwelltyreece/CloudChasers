@@ -57,9 +57,9 @@ export default function App() {
 
 	const [initialRoute, setInitialRoute] = useState(null);
 
-    useEffect(() => {
-        NavigationBar.setBackgroundColorAsync('#000');
-    }, []);
+	useEffect(() => {
+		NavigationBar.setBackgroundColorAsync('#000');
+	}, []);
 
 	useEffect(() => {
 		const checkToken = async () => {
@@ -79,18 +79,20 @@ export default function App() {
 		return null;
 	}
 
+
+
 	return (
-		<StatsProvider>
 		<CommunityProvider>
-		  <UserProvider>
-			<NavigationContainer>
-			  <Stack.Navigator initialRouteName={initialRoute}>
-				<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-				<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-			  </Stack.Navigator>
-			</NavigationContainer>
-		  </UserProvider>
+			<UserProvider>
+				<FoodStatsProvider>
+					<NavigationContainer>
+						<Stack.Navigator initialRouteName={initialRoute}>
+							<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+							<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+						</Stack.Navigator>
+					</NavigationContainer>
+				</FoodStatsProvider>
+			</UserProvider>
 		</CommunityProvider>
-	  </StatsProvider>
 	);
 }
