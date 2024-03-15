@@ -19,7 +19,7 @@ const RecipeQuantity = require('../models/recipeQuantity');
 const Food = require('../models/food');
 
 const Recipe = require('../models/recipe');
-	  
+
 //todo: delete item from recipe
 
 describe('Recipe Management', () => {
@@ -265,8 +265,6 @@ describe('Recipe Management', () => {
 			expect(response.body).toHaveProperty('error');
 			expect(response.body.error).toBe('Error: Database error');
 		
-			// Restore the original implementation after the test
-			jest.restoreAllMocks();
 		});
 	});
 	
@@ -770,6 +768,5 @@ describe('Recipe Management', () => {
 
 	
 });
-	  
 
 
