@@ -9,6 +9,7 @@ import { useUser } from '../../contexts/UserContext';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
 import LogoutButton from './settingsComponents/LogoutButton';
+import proptypes from 'prop-types'; // Import proptypes
 
 const styles = StyleSheet.create({
 	container: {
@@ -106,3 +107,17 @@ function Settings() {
 }
 
 export default Settings;
+
+SettingsItem.propTypes = {
+	item: proptypes.shape({
+		name: proptypes.string,
+		handler: proptypes.func,
+	}).isRequired,
+};
+
+SettingsFooter.propTypes = {
+	username: proptypes.string.isRequired,
+	navigation: proptypes.shape({
+		navigate: proptypes.func,
+	}).isRequired,
+};

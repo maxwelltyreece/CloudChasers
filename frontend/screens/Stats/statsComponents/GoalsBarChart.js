@@ -1,10 +1,35 @@
 import React, { useState } from 'react';
 import { View, Text, Dimensions, Alert, StyleSheet } from 'react-native';
 import { BarChart } from 'react-native-chart-kit';
+import PropTypes from 'prop-types';
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    //backgroundColor: 'blue',
+    height: 100,
+    width: '100%',
+  },
+  header: {
+    textAlign: 'center',
+    marginVertical: 1,
+    fontWeight: 'bold',
+    fontSize: 20,
+    color: 'white',
+  },
+  chart: {
+    flex: 1,
+    marginVertical: 10,
+    backgroundColor: 'white',
+  },
+});
 
 const screenWidth = Dimensions.get("window").width;
 
+// eslint-disable-next-line no-unused-vars
 const GoalsBarChart = ({ weeklyIntake, goal, nutrient }) => {
+  // eslint-disable-next-line no-unused-vars
   const [selectedBarIndex, setSelectedBarIndex] = useState(null);
 
   // Function to handle bar press
@@ -65,26 +90,13 @@ const GoalsBarChart = ({ weeklyIntake, goal, nutrient }) => {
   
 };
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    //backgroundColor: 'blue',
-    height: 100,
-    width: '100%',
-  },
-  header: {
-    textAlign: 'center',
-    marginVertical: 1,
-    fontWeight: 'bold',
-    fontSize: 20,
-    color: 'white',
-  },
-  chart: {
-    flex: 1,
-    marginVertical: 10,
-    backgroundColor: 'white',
-  },
-});
 
 export default GoalsBarChart;
+
+GoalsBarChart.propTypes = {
+  weeklyIntake: PropTypes.array.isRequired,
+  goal: PropTypes.number.isRequired,
+  nutrient: PropTypes.string.isRequired,
+};
+
+

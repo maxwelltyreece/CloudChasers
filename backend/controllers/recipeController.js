@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -161,6 +162,7 @@ async function createUserDay(userID, date){
 		throw new Error('Failed to create UserDay: ' + error.toString());
 	}
 	return newUserDay; // Return the newly created UserDay object
+// eslint-disable-next-line no-extra-semi
 };
 
 async function createUserDayMeal(mealType, userDay) {
@@ -189,6 +191,7 @@ async function createUserDayMeal(mealType, userDay) {
 		throw new Error(error.toString());
 	}
 	return newUserDayMeal;
+// eslint-disable-next-line no-extra-semi
 };
 
 exports.logRecipeFood = async (req, res) => {

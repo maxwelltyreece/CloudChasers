@@ -3,6 +3,7 @@ import {
 	View, Text, TouchableOpacity, StyleSheet,
 } from 'react-native';
 import globalStyles from '../../styles/global';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
 	header: {
@@ -75,3 +76,7 @@ function Landing({ navigation }) {
 }
 
 export default Landing;
+
+Landing.propTypes = {
+	navigation: PropTypes.objectOf(PropTypes.any).isRequired,
+};

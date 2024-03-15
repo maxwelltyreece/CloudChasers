@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const UserDay = require("../models/userDay");

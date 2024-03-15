@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { useCommunity } from '../../contexts/CommunityContext';
 import { useNavigation } from '@react-navigation/native';
+import PropTypes from 'prop-types'; // Import PropTypes
 
 const styles = StyleSheet.create({
 	container: {
@@ -117,3 +118,7 @@ function GroupSettings({ route }) {
 }
 
 export default GroupSettings;
+
+GroupSettings.propTypes = {
+	route: PropTypes.object.isRequired, // Add route prop
+};

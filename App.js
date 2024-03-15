@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import Feather from 'react-native-vector-icons/Feather';
-import { View, StatusBar } from 'react-native';
-import globalStyles from './frontend/styles/global';
+// import Feather from 'react-native-vector-icons/Feather';
+// import { View, StatusBar } from 'react-native';
+// import globalStyles from './frontend/styles/global';
 import AuthNavigator from './frontend/navigation/AuthNavigator';
 import MainNavigator from './frontend/navigation/MainNavigator';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState, useEffect } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
+// import { useFocusEffect } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 
 import {
@@ -25,8 +25,10 @@ import {
 } from '@expo-google-fonts/montserrat';
 
 import { UserProvider } from './frontend/contexts/UserContext';
-import { StatsProvider } from './frontend/contexts/StatsContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
+import { FoodStatsProvider } from './frontend/contexts/foodStatsContext';
+// import AuthNavigator from './frontend/navigation/AuthNavigator';
+// import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
 
 const Stack = createStackNavigator();
@@ -55,9 +57,9 @@ export default function App() {
 
 	const [initialRoute, setInitialRoute] = useState(null);
 
-    useEffect(() => {
-        NavigationBar.setBackgroundColorAsync('#000');
-    }, []);
+	useEffect(() => {
+		NavigationBar.setBackgroundColorAsync('#000');
+	}, []);
 
 	useEffect(() => {
 		const checkToken = async () => {
@@ -77,18 +79,20 @@ export default function App() {
 		return null;
 	}
 
+
+
 	return (
-		<StatsProvider>
 		<CommunityProvider>
-		  <UserProvider>
-			<NavigationContainer>
-			  <Stack.Navigator initialRouteName={initialRoute}>
-				<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-				<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-			  </Stack.Navigator>
-			</NavigationContainer>
-		  </UserProvider>
+			<UserProvider>
+				<FoodStatsProvider>
+					<NavigationContainer>
+						<Stack.Navigator initialRouteName={initialRoute}>
+							<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+							<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+						</Stack.Navigator>
+					</NavigationContainer>
+				</FoodStatsProvider>
+			</UserProvider>
 		</CommunityProvider>
-	  </StatsProvider>
 	);
 }

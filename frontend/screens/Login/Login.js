@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Text, Pressable } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Pressable } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../IPIndex';
-import { useUser } from '../../contexts/UserContext';
+// import { useUser } from '../../contexts/UserContext';
 
 function Login({ navigation }) {
 	const [username, setUsername] = useState('');
@@ -51,7 +51,7 @@ function Login({ navigation }) {
 					onChangeText={setPassword} 
 					secureTextEntry 
 				/>
-  				<View style={styles.buttonContainer}>
+				<View style={styles.buttonContainer}>
 					<Pressable style={styles.button} onPress={handleLogin}>
 						<Text style={styles.buttonText}>Log In</Text>
 					</Pressable>

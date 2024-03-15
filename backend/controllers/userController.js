@@ -1,3 +1,5 @@
+/* eslint-disable no-dupe-keys */
+/* eslint-disable no-unused-vars */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -105,7 +107,9 @@ exports.getUsers = async (req, res) => {
  * @returns {Object} res.data - The user object.
  */
 exports.getUserDetail =  async (req, res) => {
+	console.log('Getting user details'); 
 	try {
+		console.log('Getting user details2'); 
 		return res.status(200).json({data: req.user});
 
 	} catch (error) {

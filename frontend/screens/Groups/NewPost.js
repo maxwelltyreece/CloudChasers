@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, View, TextInput, TouchableOpacity, StyleSheet, Text, Button } from 'react-native';
+import { KeyboardAvoidingView, View, TextInput, TouchableOpacity, StyleSheet, Text, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
     container: {
@@ -69,6 +70,8 @@ const styles = StyleSheet.create({
     },
 });
 
+
+// eslint-disable-next-line no-unused-vars
 function NewPostPage({ navigation, communityId }) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
@@ -127,3 +130,10 @@ function NewPostPage({ navigation, communityId }) {
 }
 
 export default NewPostPage;
+
+NewPostPage.propTypes = {
+    navigation: PropTypes.shape({
+        goBack: PropTypes.func.isRequired,
+    }).isRequired,
+    communityId: PropTypes.number.isRequired,
+};

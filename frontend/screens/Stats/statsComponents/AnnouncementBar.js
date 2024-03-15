@@ -1,5 +1,28 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import proptypes from 'prop-types';
+
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#EC6641',
+    padding: 10,
+    borderRadius: 10,
+    margin: 10,
+    width: '95%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  message: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+});
 
 const messages = {
   good: [
@@ -19,6 +42,7 @@ const messages = {
   ],
 };
 
+// eslint-disable-next-line no-unused-vars
 const AnnouncementBar = ({ streak, progressData }) => {
   const averageProgress = progressData.data.reduce((acc, curr) => acc + curr, 0) / progressData.data.length;
 
@@ -44,25 +68,11 @@ const AnnouncementBar = ({ streak, progressData }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#EC6641',
-    padding: 10,
-    borderRadius: 10,
-    margin: 10,
-    width: '95%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-  },
-  message: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-});
+
 
 export default AnnouncementBar;
+
+AnnouncementBar.propTypes = {
+  streak: proptypes.number.isRequired,
+  progressData: proptypes.object.isRequired,
+};

@@ -15,7 +15,7 @@ const CommunityPanel = () => {
   
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Friend's Streaks</Text>
+        <Text style={styles.header}>Friend`&apos;`s Streaks</Text>
         <ScrollView style={styles.scrollViewStyle}>
           {sortedCommunityPanel.map((update, index) => (
             <View key={index} style={styles.updateContainer}>

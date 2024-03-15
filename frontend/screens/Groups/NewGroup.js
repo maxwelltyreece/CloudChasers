@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 import { useCommunity } from '../../contexts/CommunityContext';
 import { useNavigation } from '@react-navigation/native';
+import PropTypes from 'prop-types'; // Import PropTypes
 
 const styles = StyleSheet.create({
     container: {
@@ -52,11 +53,11 @@ const styles = StyleSheet.create({
         width: 12,
         backgroundColor: '#6B6868',
     },
-    buttonContainer: {
-        marginTop: 24,
-        alignItems: 'center',
-        width: '100%',
-    },
+    // buttonContainer: {
+    //     marginTop: 24,
+    //     alignItems: 'center',
+    //     width: '100%',
+    // },
     buttonText: {
         color: 'white',
         fontFamily: 'Montserrat_600SemiBold',
@@ -153,3 +154,9 @@ function NewGroup() {
 }
 
 export default NewGroup;
+
+CustomCheckbox.propTypes = {
+    label: PropTypes.string.isRequired,
+    isChecked: PropTypes.bool.isRequired,
+    onCheck: PropTypes.func.isRequired,
+};

@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
 
 
+// eslint-disable-next-line no-undef
 module.exports = mongoose.model("user", userSchema);
 
-const mongoose = require("mongoose");
 
+// eslint-disable-next-line no-unused-vars
 const recipeSchema = new mongoose.Schema({
   status: {
     type: String,
@@ -23,4 +24,5 @@ const recipeSchema = new mongoose.Schema({
   }
 });
 
+// eslint-disable-next-line no-undef
 module.exports = mongoose.model("request", requestSchema);
