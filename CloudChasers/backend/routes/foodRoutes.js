@@ -21,5 +21,5 @@ router.get('/getRecipeIngredients', recipeController.getRecipeIngredients);
 router.get('/getCommunityRecipes', recipeController.getCommunityRecipes);
 
 router.put('/addItemToRecipe', userMiddleware, recipeController.addItemToRecipe);
-router.put('/deleteItemFromRecipe', userMiddleware, recipeController.deleteIngredientFromRecipe);
+router.delete('/deleteItemFromRecipe', userMiddleware, recipeController.deleteIngredientFromRecipe);
 module.exports = router;

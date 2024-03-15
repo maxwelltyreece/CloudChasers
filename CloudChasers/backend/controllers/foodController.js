@@ -76,7 +76,6 @@ exports.logDatabaseFood = async (req, res) => {
 		console.log('Food:', food);
 		
 		const today = new Date();
-		today.setHours(0, 0, 0, 0);
 		console.log('Today:', today);
 
 		session = await mongoose.startSession();
@@ -225,7 +224,41 @@ exports.searchFoods = async (req, res) => {
 	}
 };
 
+//TODO: last log
+exports.getLastLoggedFoodOrRecipe = async (req, res) => {
+    const { userID } = req.user;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
+    try {
+        const userDay = await UserDay.findOne({ userID, date: today });
+
+        if (!userDay) {
+            return res.status(404).send({ message: 'No day logs found' });
+        }
+
+        const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id }).sort({ time: -1 });
+
+        if (!userDayMeals || userDayMeals.length === 0) {
+            return res.status(404).send({ message: 'No meal logs found' });
+        }
+
+        const latestUserDayMeal = userDayMeals[0];
+        const mealItems = await MealItem.find({ userDayMealID: latestUserDayMeal._id });
+
+        if (mealItems.length > 0) {
+            return res.status(200).send({latestUserDayMeal, mealItems });
+        }
+
+        return res.status(404).send({ message: 'No food or recipe logs found' });
+    }
+    catch (error) {
+        res.status(500).send({ error: error.toString() });
+    }
+};
+
+
+//TODO: Userdays for the last week
 // TODO: saerch recipes
 
 //exporting createUserDayMeal

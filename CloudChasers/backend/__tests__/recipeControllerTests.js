@@ -437,6 +437,34 @@ describe('recipes endpoint', () => {
 		expect(response.body).toHaveProperty('error');
 	});
 	  
+	//todo: delete item from recipe
+	it('should delete a recipe item from the recipe', async () => {
+		const recipe = await Recipe.create({ name: 'Recipe', description: 'Description', createdBy: user._id });
+		const foodItem = await FoodItem.create({ foodID: food._id, weight: 100 });
+		const recipeItem = await RecipeItem.create({ recipeID: recipe._id, foodItemID: foodItem._id });
+	
+		const response = await request(app)
+			.delete('/food/deleteItemFromRecipe') 
+			.set('Authorization', `Bearer ${token}`)
+			.send({ recipeItemID: recipeItem._id.toString() });
+		
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toHaveProperty('message', 'Recipe Item deleted');
+	
+		const deletedRecipeItem = await RecipeItem.findById(recipeItem._id);
+		expect(deletedRecipeItem).toBeNull();
+	});
+	
+	it('should return 400 if the recipe item does not exist', async () => {
+		const fakeRecipeItemId = new mongoose.Types.ObjectId();
+		const response = await request(app)
+			.delete('/food/deleteIngredientFromRecipe')
+			.set('Authorization', `Bearer ${token}`)
+			.send({ recipeItemID: fakeRecipeItemId.toString() });
+	  
+		expect(response.statusCode).toBe(400);
+		expect(response.body).toHaveProperty('message', 'Recipe Item does not exist');
+	});
 	  
 });
 

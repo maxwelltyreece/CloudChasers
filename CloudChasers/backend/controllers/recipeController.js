@@ -198,7 +198,6 @@ exports.logRecipeFood = async (req, res) => {
 		const recipe = await Recipe.findById(recipeID);
 
 		const today = new Date();
-		today.setHours(0, 0, 0, 0);
 		
 		session = await mongoose.startSession();
 		session.startTransaction();
