@@ -19,7 +19,9 @@ router.get("/getRecipeMacro", recipeController.getRecipeMacro)
 router.get('/getUserRecipes', userMiddleware, recipeController.getAllUserRecipes);
 router.get('/getRecipeIngredients', recipeController.getRecipeIngredients);
 router.get('/getCommunityRecipes', recipeController.getCommunityRecipes);
+router.get('/getLatestLoggedFood', userMiddleware, foodController.getLastLoggedFoodOrRecipe);
 
 router.put('/addItemToRecipe', userMiddleware, recipeController.addItemToRecipe);
+
 router.delete('/deleteItemFromRecipe', userMiddleware, recipeController.deleteIngredientFromRecipe);
 module.exports = router;

@@ -48,9 +48,8 @@ exports.register = async (req, res) => {
 			lastLogin,
 			profilePictureLink,
 		});
-		console.log('User created', newUser);
 		await newUser.save();
-		console.log('User created');
+		console.log('User created', newUser);
 		return res.status(200).json({ success: true, message: 'User created', data: newUser });
 	} catch (error) {
 		return res.status(400).json({ error: error.toString() });

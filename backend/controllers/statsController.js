@@ -89,10 +89,10 @@ const getNutrientIntake = async (req, res, nutrient) => {
 					for (const recipeItem of allRecipeItems) {
 						foodItem = await FoodItem.findById(recipeItem.foodItemID);
 						food = await Food.findById(foodItem.foodID);
-						totalNutrient += food[nutrient] * (foodItem.weight / 100);
+						recipeNutrient += food[nutrient] * (foodItem.weight / 100);
 						totalRecipeWeight += foodItem.weight;
 					}
-					totalNutrient = totalNutrient * (recipeQuantity.quantity / totalRecipeWeight);
+					totalNutrient += recipeNutrient * (recipeQuantity.quantity / totalRecipeWeight);
 
 				}
 			}
