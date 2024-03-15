@@ -171,11 +171,12 @@ async function createUserDayMeal(mealType, userDay) {
 
 		const existingUserDayMeal = await UserDayMeal.findOne({ name: mealType, userDayID: userDay._id });
 		console.log('existingUserDayMeal:', existingUserDayMeal);
-
+		const order = await UserDayMeal.countDocuments({ userDayID: userDay._id }) + 1;
 		if (!existingUserDayMeal) {
 			newUserDayMeal = new UserDayMeal({
 				name: mealType,
-				userDayID: userDay._id
+				userDayID: userDay._id,
+				order,
 			});	
 			await newUserDayMeal.save();
 			console.log('newUserDayMeal:', newUserDayMeal);
@@ -198,6 +199,7 @@ exports.logRecipeFood = async (req, res) => {
 		const recipe = await Recipe.findById(recipeID);
 
 		const today = new Date();
+		today.setHours(0, 0, 0, 0);
 		
 		session = await mongoose.startSession();
 		session.startTransaction();
@@ -213,7 +215,7 @@ exports.logRecipeFood = async (req, res) => {
 			name: recipe.name,
 			foodItemID: null,
 			recipeID: recipe._id,
-			userDayMealID: newUserDayMeal._id
+			userDayMealID: newUserDayMeal._id,
 		});
 		await mealItem.save();
 		
@@ -224,6 +226,9 @@ exports.logRecipeFood = async (req, res) => {
 		});
 		await recipeQuantity.save();
 
+		mealItem.recipeQuantityID = recipeQuantity._id;
+		await mealItem.save();
+		
 		await session.commitTransaction();
 		session.endSession();
 

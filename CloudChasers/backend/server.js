@@ -21,7 +21,6 @@ const authenticateJWT = jwt({
 });
 
 const url = process.env.DATABASE_URL;
-console.log(url);
 
 mongoose.connect(url)
 	.then(() => {
