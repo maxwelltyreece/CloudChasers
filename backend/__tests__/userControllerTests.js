@@ -162,7 +162,6 @@ describe("POST /login", () => {
 		});
 		expect(response.statusCode).toBe(200);
 		expect(response.body).toHaveProperty("data");
-		// You should check for the structure of the token here, or if it's valid.
 	});
 
 	test("should specify json in the content type header", async () => {
@@ -233,8 +232,12 @@ describe("GET /users", () => {
 		const response = await request(app).get("/users");
 		expect(response.statusCode).toBe(200);
 		expect(response.body).toHaveLength(2);
-		expect(response.body[0]).toHaveProperty("username", "johndoe");
-		expect(response.body[1]).toHaveProperty("username", "johndoe2");
+		expect(
+			response.body.some((user) => user.username === "johndoe")
+		).toBeTruthy();
+		expect(
+			response.body.some((user) => user.username === "johndoe2")
+		).toBeTruthy();
 	});
 
 	test("should return JSON format", async () => {
@@ -275,9 +278,7 @@ describe("GET /userDetail", () => {
 		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
 	});
 
-	beforeEach(async () => {
-
-	});
+	beforeEach(async () => {});
 
 	afterEach(async () => {
 		await User.deleteMany({});
@@ -307,8 +308,157 @@ describe("GET /userDetail", () => {
 			expect.stringContaining("json")
 		);
 	});
+});
 
-	// Note: Testing the error handling here is a bit artificial since the try-catch block in getUserDetail might not be necessary.
-	// However, if you want to maintain consistency and prepare for future changes, you can keep it.
-	// Testing for a 500 error would require mocking and causing an error in the middleware, which might not reflect a realistic usage of this endpoint.
+describe("POST /updateProfile", () => {
+	let user, token;
+
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+		// Assume User.deleteMany() is called elsewhere or not needed here
+	});
+
+	beforeEach(async () => {
+		// Create a user for testing
+		user = await User.create({
+			forename: "forename",
+			surname: "surname",
+			username: "newUsername",
+			email: "example@email.com",
+			password: "password123",
+			dateOfBirth: "1990-01-01",
+			lastLogin: "2022-01-01",
+		});
+		// Assume token generation logic is handled elsewhere
+		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+	});
+
+	afterEach(async () => {
+		await User.deleteMany({});
+	});
+
+	afterAll(async () => {
+		await User.deleteMany({});
+		await mongoose.connection.close();
+	});
+
+	test("should update user profile", async () => {
+		const updates = {
+			forename: "Jane",
+			surname: "Smith",
+		};
+
+		const response = await request(app)
+			.put("/updateProfile")
+			.set("Authorization", `Bearer ${token}`)
+			.send(updates);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toEqual({ message: "Profile updated" });
+
+		// Verify the user was updated in the database
+		const updatedUser = await User.findById(user._id);
+		expect(updatedUser.forename).toBe(updates.forename);
+		expect(updatedUser.surname).toBe(updates.surname);
+	});
+
+	test("should handle errors during profile update", async () => {
+		// Mock user.save to simulate an error
+		jest.spyOn(User.prototype, "save").mockImplementationOnce(() => {
+			throw new Error("Database error");
+		});
+
+		const updates = {
+			forename: "NewName",
+		};
+
+		const response = await request(app)
+			.put("/updateProfile")
+			.set("Authorization", `Bearer ${token}`)
+			.send(updates);
+
+		expect(response.statusCode).toBe(500);
+		expect(response.body).toEqual({ error: "Error: Database error" });
+
+		jest.restoreAllMocks();
+	});
+});
+
+describe("GET /userDays", () => {
+	let user, userDay1, userDay2, token;
+
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+	});
+
+	beforeEach(async () => {
+		// Create a test user
+		user = await User.create({
+			forename: "forename",
+			surname: "surname",
+			username: "johndoe2",
+			email: "example2@email.com",
+			password: "password123",
+			dateOfBirth: "1990-01-01",
+			lastLogin: "2022-01-01",
+		});
+
+		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+		// Create UserDay entries for the user
+		userDay1 = await UserDay.create({
+			date: new Date(),
+			userID: user._id,
+		});
+
+		userDay2 = await UserDay.create({
+			date: new Date(new Date().setDate(new Date().getDate() - 1)), // Yesterday
+			userID: user._id,
+		});
+		jest.spyOn(User, "findById").mockResolvedValue(user);
+	});
+
+	afterEach(async () => {
+		await User.deleteMany({});
+		await UserDay.deleteMany({});
+		jest.restoreAllMocks();
+	});
+
+	afterAll(async () => {
+		await mongoose.connection.close();
+	});
+
+	test("should retrieve user days for the authenticated user", async () => {
+		const response = await request(app)
+			.get("/userDays")
+			.set("Authorization", `Bearer ${token}`); // Assuming token is set in a higher scope or mock middleware
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.length).toBe(2);
+		expect(
+			response.body.some((day) =>
+				new mongoose.Types.ObjectId(day._id).equals(userDay1._id)
+			)
+		).toBeTruthy();
+
+		expect(
+			response.body.some((day) =>
+				new mongoose.Types.ObjectId(day._id).equals(userDay2._id)
+			)
+		).toBeTruthy();
+	});
+
+	test("should handle errors when fetching user days", async () => {
+		jest.spyOn(UserDay, "find").mockImplementationOnce(() => {
+			throw new Error("Database error");
+		});
+
+		const response = await request(app)
+			.get("/userDays")
+			.set("Authorization", `Bearer ${token}`);
+
+		expect(response.statusCode).toBe(500);
+		expect(response.body).toEqual({ error: "Error: Database error" });
+
+		jest.restoreAllMocks();
+	});
 });
