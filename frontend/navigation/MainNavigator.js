@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Navbar from '../components/Navbar';
 import SettingsNavigator from './SettingsNavigator';
 import GroupNavigator from './GroupNavigator';
+import UserNavigator from './UserNavigator';
 import { useUser } from '../contexts/UserContext';
 import { useCommunity } from '../contexts/CommunityContext';
 
@@ -35,6 +36,11 @@ export default function MainNavigator() {
 			<Stack.Screen
 				name="Group"
 				component={GroupNavigator}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen
+				name="User"
+				component={UserNavigator}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

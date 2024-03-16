@@ -14,7 +14,7 @@ const commonOptions = {
 	},
 	headerTitleStyle: {
 		fontFamily: 'Montserrat_700Bold',
-		fontSize: 14,
+		fontSize: 22,
 	},
 	headerBackImage: () => (
 		<View style={{ paddingLeft: 10 }}>

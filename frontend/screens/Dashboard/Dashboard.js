@@ -12,14 +12,12 @@ import {
 // Context imports
 import { useUser } from '../../contexts/UserContext';
 import { useCommunity } from '../../contexts/CommunityContext';
-import { useFoodStats } from '../../contexts/foodStatsContext';
+import { useStats } from '../../contexts/StatsContext';
 
 // Other imports
 const { width } = Dimensions.get('window');
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { LocalIP } from '../../screens/IPIndex';
 
 
 
@@ -87,7 +85,7 @@ const styles = StyleSheet.create({
 		height: '25%',
 		bottom: '5%',
 		// marginBottom: '15%',
-		
+
 	},
 	semiCircle: {
 		width: width * 2,
@@ -113,110 +111,97 @@ const styles = StyleSheet.create({
 function Dashboard() {
 	const navigation = useNavigation();
 	// const [meals] = useState(fakeDB.recentMeals);
-    const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const { userDetails, updateUserDetails } = useUser();
 	const { userCommunities, getUserCommunities } = useCommunity([]);
-	const { foodStats, updateFoodStats } = useFoodStats();
-	console.log({ foodStats, updateFoodStats });
-	console.log({ 'COMMUNITIES': userCommunities });
+	const { todayStats, updateTodayStats } = useStats();
+	console.log({ userDetails });
+	// console.log(userDetails.data.forename);
+	// console.log(userDetails.data.streak);
+	console.log({ userCommunities });
+	console.log({ todayStats });
+	// console.log({ 'COMMUNITIES': userCommunities });
 
-    useEffect(() => {
-        const fetchUserDetails = async () => {
-            try {
-                const token = await AsyncStorage.getItem('token');
-                if (!token) {
-                    console.error("No token found");
-                    navigation.navigate('Login'); // Redirect to login if no token
-                    return;
-                }
-                const response = await axios.get(`http://${LocalIP}:3000/userDetails`, {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-				console.log("RESPONSE:", response.data.data)
-				console.log("RESPONSE:", response.data.data.forename)
-                updateUserDetails(response.data.data);
-                setLoading(false);
-				console.log("USER DETAILS:", userDetails)
-            } catch (error) {
-                console.error("Error fetching user details:", error);
-            }
-        };
-
-        fetchUserDetails();
-    }, []);
+	const checkUserLogin = async () => {
+		try {
+			const token = await AsyncStorage.getItem('token');
+			if (!token) {
+				console.error("No token found");
+				navigation.navigate('Login'); // Redirect to login if no token
+				return;
+			}
+			return token;
+		} catch (error) {
+			console.error("Error accessing AsyncStorage:", error);
+			navigation.navigate('Login'); // Redirect to login if error
+		}
+	};
 
 	useEffect(() => {
-        async function loadInitialData() {
-            setLoading(true);
-			console.log("GETTING USER COMMUNITIES")
-			console.log("USER COMMUNITIES:", userCommunities)
-            await getUserCommunities();
-			console.log("USER COMMUNITIES:", userCommunities)
-            setLoading(false);
-        }
+		setLoading(true);
+	
+		const fetchData = async () => {
+			try {
+				await checkUserLogin(); // Check if user is logged in
+	
+				// Fetch all necessary data in parallel
+				await Promise.all([
+					userDetails ? Promise.resolve() : updateUserDetails(),
+					// Add conditions to fetch todayStats and userCommunities only if they haven't been fetched yet
+					todayStats ? Promise.resolve() : updateTodayStats(),
+					userCommunities.length > 0 ? Promise.resolve() : getUserCommunities()
+				]);
+			} catch (error) {
+				console.error("Error fetching data for dashboard:", error);
+				// Handle error appropriately
+			} finally {
+				setLoading(false); // Ensure loading is set to false after operations complete
+			}
+		};
+	
+		fetchData();
+	}, []);
+	
 
-        loadInitialData();
-    }, []);
 
-	// useEffect(() => {
-	// 	const fetchFoodStats = async () => {
-	// 		try {
-	// 			const token = await AsyncStorage.getItem('token');
-	// 			if (!token) {
-	// 				console.error("No token found");
-	// 				navigation.navigate('Login');
-	// 				return;
-	// 			}
-	// 			const response = await axios.get(`http://${LocalIP}:3000/foodStats`, {
-	// 				headers: {
-	// 					'Authorization': `Bearer ${token}`
-	// 				}
-	// 			});
-	// 			console.log("FOOD STATS:", response.data.data)
-	// 			updateFoodStats(response.data.data);
-	// 			setLoading(false);
-	// 			console.log("USER FOOD STATS:", foodStats)
-	// 		}
-	// 		catch (error) {
-	// 			console.error("Error fetching user food stats:", error);
-	// 		}
-	// 	};
 
-	// 	fetchFoodStats();
-	// }, []);
 
-    if (loading) {
-        return (
-            <View style={styles.dashboardContainer}>
-                <ActivityIndicator size="large" />
-            </View>
-        );
-    }
+	if (loading) {
+		return (
+			<View style={styles.dashboardContainer}>
+				<ActivityIndicator size="large" />
+			</View>
+		);
+	}
 
 	return (
 		<SafeAreaView style={styles.dashboardContainer}>
-		
-			<View style={styles.semiCircle} />
 
-			<View style={styles.dashboardHeader}>
-				<WelcomeBar name={userDetails?.data?.forename} />
-			</View>
+			{loading ? (
+				<ActivityIndicator size="large" />
+			) : (
+				<>
+					<View style={styles.semiCircle} />
+					<View style={styles.dashboardHeader}>
+						<WelcomeBar name={userDetails?.data?.forename} />
+					</View>
 
-			<CurrentGoalProgress foodStats={foodStats} />
+					<CurrentGoalProgress todayStats={todayStats} />
 
-			<CommunityStatus communities={userCommunities}/>
+					<CommunityStatus communities={userCommunities} />
 
-			<View style={styles.bottomDashboardContainer}>
-				<View style={styles.leftComponentContainer}>
-					<AchievementsFeature />
-				</View>
+					<View style={styles.bottomDashboardContainer}>
+						<View style={styles.leftComponentContainer}>
+							<AchievementsFeature />
+						</View>
 
-				<View style={styles.rightComponentContainer}>
-					<RecentLog streak={userDetails?.data?.streak} userLogStats={null} />
-				</View>
-			</View>
+						<View style={styles.rightComponentContainer}>
+							<RecentLog streak={userDetails?.data?.streak} userLogStats={null} />
+						</View>
+					</View>
+
+				</>
+			)}
 
 		</SafeAreaView>
 	);
