@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
+		backgroundColor: '#F0F0F0',
 	},
 	scrollViewContainer: {
 		width: '100%',
@@ -462,7 +463,7 @@ function Reminders() {
 				))}
 			</ScrollView>
 
-			<View style={styles.semiCircle}></View>
+			{/* <View style={styles.semiCircle}></View> */}
 
 			<Pressable style={styles.addReminderButton} onPress={openModalAndResetFields}>
 				<Text style={styles.addReminderButtonText}>

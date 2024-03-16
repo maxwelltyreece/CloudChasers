@@ -44,7 +44,10 @@ const styles = StyleSheet.create({
 		// marginBottom: 50,
 		// width: '18%',
 		width: 180,
-		height: '80%',
+		// height: '80%',
+		// height: 60,
+		height: 'auto',
+		maxHeight: 70,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.22,
@@ -54,16 +57,17 @@ const styles = StyleSheet.create({
 	groupName: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		marginBottom: 8,
+		marginBottom: 1,
 	},
 	detailText: {
-		fontSize: 14,
+		fontSize: 12.7,
+		// marginBottom: 20,
 	},
 	noCommunitiesText: {
         fontSize: 18,
 		fontWeight: 'bold',
         color: '#666',
-        textAlign: 'center', // Center the text if you have a full-width ScrollView
+        textAlign: 'center',
     },
 });
 

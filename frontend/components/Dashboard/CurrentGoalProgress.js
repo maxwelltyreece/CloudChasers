@@ -5,9 +5,9 @@ import {
 	View, Text, StyleSheet, Animated, Pressable, ScrollView
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useReminders } from '../../contexts/RemindersContext';
 import { useNavigation } from '@react-navigation/native';
+import moment from 'moment';
 
 
 const styles = StyleSheet.create({
@@ -128,6 +128,9 @@ const styles = StyleSheet.create({
 	remindersScrolView: {
 		width: '100%',
 		height: '62%',
+		// height: 'auto',
+		// maxHeight: '62%',
+		marginBottom: 4,
 	},
 	reminderItem: {
 		marginBottom: '2%',
@@ -209,6 +212,7 @@ const styles = StyleSheet.create({
 		fontSize: 14,
 		fontWeight: '400',
 		textAlign: 'center',
+		marginBottom: 15,
 	},
 });
 
@@ -285,64 +289,57 @@ ReminderItem.propTypes = {
 
 // Main component
 function GoalProgressBar({ todayStats }) {
-	const { reminders, setReminders } = useReminders();
+	const { reminders } = useReminders();
 	const navigation = useNavigation();
-	const [sortedReminders, setSortedReminders] = useState(reminders);
 
-	const getNextReminderDate = (reminder) => {
-		const today = new Date();
-		const timeParts = reminder.time.split(':');
-		const reminderHour = parseInt(timeParts[0], 10);
-		const reminderMinutes = parseInt(timeParts[1], 10);
+
+	function getClosestDate(reminder) {
+		let now = moment();
+		let reminderTime = moment(reminder.time, "hh:mm A"); // parse time string with format
+
+		let closestDate = now.clone().hour(reminderTime.hour()).minute(reminderTime.minute());
+
+		console.log('Closest date for reminder:', reminder, 'is:', closestDate);
 
 		if (reminder.frequency === 'daily') {
-			const nextOccurrence = new Date();
-			nextOccurrence.setHours(reminderHour, reminderMinutes, 0, 0);
-			// If the reminder time for today has already passed, set it for the next day
-			if (nextOccurrence <= today) {
-				nextOccurrence.setDate(today.getDate() + 1);
+			if (now.isAfter(closestDate)) {
+				closestDate.add(1, 'days');
 			}
-			return nextOccurrence;
 		} else if (reminder.frequency === 'weekly') {
-			// Find next Monday
-			const nextMonday = new Date();
-			nextMonday.setDate(today.getDate() + ((1 + 7 - today.getDay()) % 7 || 7)); // 1 is Monday
-			nextMonday.setHours(reminderHour, reminderMinutes, 0, 0);
-			// If today is Monday and the time hasn't passed, set the reminder for today
-			if (today.getDay() === 1 && today < nextMonday) {
-				nextMonday.setDate(today.getDate());
+			let nextMonday = new Date(closestDate);
+			nextMonday.setDate(closestDate.getDate() + ((1 + 7 - closestDate.getDay()) % 7));
+			if (now > closestDate) {
+				nextMonday.setDate(nextMonday.getDate() + 7);
 			}
-			return nextMonday;
+			closestDate = nextMonday;
 		}
-	};
 
-	useEffect(() => {
-        // Calculate next occurrence for each reminder and sort them
-        const remindersWithNextOccurrence = reminders.map(reminder => ({
-            ...reminder,
-            nextOccurrence: getNextReminderDate(reminder)
-        })).sort((a, b) => a.nextOccurrence - b.nextOccurrence);
+		return {
+			date: closestDate,
+			isDaily: reminder.frequency.toLowerCase() === 'daily'
+		};
+	}
 
-        setSortedReminders(remindersWithNextOccurrence);
-    }, [reminders]);
+	let sortedReminders = reminders.sort((a, b) => {
+		let aClosest = getClosestDate(a);
+		let bClosest = getClosestDate(b);
+	
+		let now = new Date();
+		let isMondaySoon = now.getDay() === 0 || now.getDay() === 1; // today is Sunday or Monday
+	
+		if (!isMondaySoon && aClosest.isDaily !== bClosest.isDaily) {
+			return aClosest.isDaily ? -1 : 1;
+		} else if (aClosest.isDaily === bClosest.isDaily || isMondaySoon) {
+			return aClosest.date - bClosest.date;
+		}
+	});
 
-	// useEffect(() => {
-	// 	const fetchReminders = async () => {
-	// 		const remindersData = await AsyncStorage.getItem('REMINDERS');
-	// 		const remindersList = remindersData ? JSON.parse(remindersData) : [];
 
-	// 		// Calculate next occurrence for each reminder and sort them
-	// 		remindersList.forEach(reminder => {
-	// 			reminder.nextOccurrence = getNextReminderDate(reminder);
-	// 		});
+	for (let i = 0; i < sortedReminders.length; i++) {
+		console.log(sortedReminders[i].description, getClosestDate(sortedReminders[i]));
+	}
+	console.log('Sorted reminders:', sortedReminders);
 
-	// 		remindersList.sort((a, b) => a.nextOccurrence - b.nextOccurrence);
-
-	// 		setReminders(remindersList.slice(0, 3)); // Keep only the top 3 reminders
-	// 	};
-
-	// 	fetchReminders();
-	// }, []);
 
 	return (
 		<View style={styles.progressBarComponentContainer}>
@@ -367,16 +364,26 @@ function GoalProgressBar({ todayStats }) {
 							<View style={styles.emptyRemindersSection}>
 								<Text style={styles.emptyRemindersTitle}>No reminders. </Text>
 								<Text style={styles.emptyRemindersText}>Go to the reminders page to add some!</Text>
+								<Pressable
+									style={styles.seeAllRemindersButton}
+									onPress={() => navigation.navigate('Reminders')}
+								>
+									<Text style={styles.seeAllRemindersButtonText}>Add Reminders</Text>
+								</Pressable>
 							</View>
 						)}
 					</ScrollView>
-					<Pressable
-						style={styles.seeAllRemindersButton}
-						onPress={() => navigation.navigate('Reminders')}
-					>
-						<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
-					</Pressable>
+					{reminders.length > 0 ? (
+						<Pressable
+							style={styles.seeAllRemindersButton}
+							onPress={() => navigation.navigate('Reminders')}
+						>
+							<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
+						</Pressable>
+					) : null}
 				</View>
+
+				
 			</Swiper>
 		</View>
 	);
@@ -387,3 +394,100 @@ GoalProgressBar.propTypes = {
 };
 
 export default GoalProgressBar;
+
+
+	// // const getNextReminderDate = (reminder) => {
+	// // 	const today = new Date();
+	// // 	const timeParts = reminder.time.split(':');
+	// // 	const reminderHour = parseInt(timeParts[0], 10);
+	// // 	const reminderMinutes = parseInt(timeParts[1], 10);
+
+	// // 	if (reminder.frequency === 'daily') {
+	// // 		const nextOccurrence = new Date();
+	// // 		nextOccurrence.setHours(reminderHour, reminderMinutes, 0, 0);
+	// // 		// If the reminder time for today has already passed, set it for the next day
+	// // 		if (nextOccurrence <= today) {
+	// // 			nextOccurrence.setDate(today.getDate() + 1);
+	// // 		}
+	// // 		return nextOccurrence;
+	// // 	} else if (reminder.frequency === 'weekly') {
+	// // 		// Find next Monday
+	// // 		const nextMonday = new Date();
+	// // 		nextMonday.setDate(today.getDate() + ((1 + 7 - today.getDay()) % 7 || 7)); // 1 is Monday
+	// // 		nextMonday.setHours(reminderHour, reminderMinutes, 0, 0);
+	// // 		// If today is Monday and the time hasn't passed, set the reminder for today
+	// // 		if (today.getDay() === 1 && today < nextMonday) {
+	// // 			nextMonday.setDate(today.getDate());
+	// // 		}
+	// // 		return nextMonday;
+	// // 	}
+	// // };
+
+	// const getNextReminderDate = (reminder) => {
+	// 	console.log('Calculating next occurrence for reminder:', reminder);
+	// 	const today = new Date();
+	// 	const timeParts = reminder.time.split(':');
+	// 	const reminderHour = parseInt(timeParts[0], 10);
+	// 	const reminderMinutes = parseInt(timeParts[1], 10);
+	// 	let nextOccurrence = new Date(today);
+
+	// 	if (reminder.frequency === 'daily') {
+	// 		nextOccurrence.setHours(reminderHour, reminderMinutes, 0, 0);
+	// 		if (nextOccurrence <= today) {
+	// 			nextOccurrence.setDate(today.getDate() + 1);
+	// 		}
+	// 	} else if (reminder.frequency === 'weekly') {
+	// 		nextOccurrence.setDate(today.getDate() + ((1 + 7 - today.getDay()) % 7 || 7));
+	// 		nextOccurrence.setHours(reminderHour, reminderMinutes, 0, 0);
+	// 		if (today.getDay() === 1 && today.getTime() < nextOccurrence.getTime()) {
+	// 			nextOccurrence.setDate(today.getDate());
+	// 		}
+	// 	}
+
+	// 	if (isNaN(nextOccurrence.getTime())) { 
+	// 		console.error('Invalid nextOccurrence calculated:', nextOccurrence);
+	// 		return undefined; // Explicitly return undefined for clarity
+	// 	}
+
+	// 	console.log('Next occurrence for reminder:', reminder, 'is:', nextOccurrence);
+	// 	return nextOccurrence;
+	// };
+ 
+	// useEffect(() => {
+	// 	// Calculate next occurrence for each reminder and sort them
+	// 	const remindersWithNextOccurrence = reminders.map(reminder => ({
+	// 		...reminder,
+	// 		nextOccurrence: getNextReminderDate(reminder)
+	// 	})).sort((a, b) => {
+	// 		const dateA = a.nextOccurrence.toDateString();
+	// 		const dateB = b.nextOccurrence.toDateString();
+	// 		if (dateA === dateB) {
+	// 			// When the dates are the same, sort by time
+	// 			const timeA = new Date(a.nextOccurrence).setFullYear(1970, 0, 1);
+	// 			const timeB = new Date(b.nextOccurrence).setFullYear(1970, 0, 1);
+	// 			return timeA - timeB;
+	// 		}
+	// 		return a.nextOccurrence - b.nextOccurrence;
+	// 	});
+	// 	console.log('Sorted reminders:', remindersWithNextOccurrence);
+	// 	setSortedReminders(remindersWithNextOccurrence);
+	// }, [reminders]);
+	
+
+	// useEffect(() => {
+	// 	const fetchReminders = async () => {
+	// 		const remindersData = await AsyncStorage.getItem('REMINDERS');
+	// 		const remindersList = remindersData ? JSON.parse(remindersData) : [];
+
+	// 		// Calculate next occurrence for each reminder and sort them
+	// 		remindersList.forEach(reminder => {
+	// 			reminder.nextOccurrence = getNextReminderDate(reminder);
+	// 		});
+
+	// 		remindersList.sort((a, b) => a.nextOccurrence - b.nextOccurrence);
+
+	// 		setReminders(remindersList.slice(0, 3)); // Keep only the top 3 reminders
+	// 	};
+
+	// 	fetchReminders();
+	// }, []);
