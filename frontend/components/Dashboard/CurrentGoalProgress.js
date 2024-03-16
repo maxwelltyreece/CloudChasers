@@ -312,29 +312,29 @@ const ProgressBar = ({ label, progress, max }) => {
 	
 
 // Main GoalProgressBar component
-function GoalProgressBar({ foodStats }) {
+function GoalProgressBar({ todayStats }) {
 	return (
 		<View style={styles.progressBarComponentContainer}>
 			<Swiper style={styles.swiperContainer} showsButtons={false} loop={false}>
 
 				<View style={styles.firstSlideContainer}>
 					<Text style={styles.slideTitle}>Calories & Water</Text>
-					<ProgressBar label="Calories" progress={foodStats.calories} max={100} />
-					<ProgressBar label="Water" progress={foodStats.water} max={100} />
+					<ProgressBar label="Calories" progress={todayStats.calories} max={100} />
+					<ProgressBar label="Water" progress={todayStats.water} max={100} />
 				</View>
 	
 				<View style={styles.slideContainer}>
 					<Text style={styles.slideTitle}>Macronutrients</Text>
-					<ProgressBar label="Carbs" progress={foodStats.carbs} max={100} />
-					<ProgressBar label="Protein" progress={foodStats.protein} max={100} />
-					<ProgressBar label="Fat" progress={foodStats.fat} max={100} />
+					<ProgressBar label="Carbs" progress={todayStats.carbs} max={100} /> 
+					<ProgressBar label="Protein" progress={todayStats.protein} max={100} />
+					<ProgressBar label="Fat" progress={todayStats.fat} max={100} />
 				</View>
 	
 				<View style={styles.slideContainer}>
 					<Text style={styles.slideTitle}>Micronutrients</Text>
-					<ProgressBar label="Sugar" progress={foodStats.sugar} max={100} />
-					<ProgressBar label="Sodium" progress={foodStats.sodium} max={100} />
-					<ProgressBar label="Fiber" progress={foodStats.fiber} max={100} />
+					<ProgressBar label="Sugar" progress={todayStats.sugar} max={100} />
+					<ProgressBar label="Sodium" progress={todayStats.sodium} max={100} />
+					<ProgressBar label="Fiber" progress={todayStats.fiber} max={100} />
 				</View>
 			</Swiper>
 		</View>
@@ -342,14 +342,14 @@ function GoalProgressBar({ foodStats }) {
 }
   
 GoalProgressBar.propTypes = {
-	foodStats: PropTypes.object.isRequired,
+	todayStats: PropTypes.object.isRequired,
 };
   
 ProgressBar.propTypes = {
 	label: PropTypes.string.isRequired,
 	progress: PropTypes.number.isRequired,
 	max: PropTypes.number.isRequired,
-};
+}; 
   
 export default GoalProgressBar;
 

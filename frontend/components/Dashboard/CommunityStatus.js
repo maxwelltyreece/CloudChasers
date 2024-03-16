@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 		marginRight: 8,
 		// marginBottom: 50,
 		// width: '18%',
-		width: 185,
+		width: 180,
 		height: '80%',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
@@ -87,7 +87,7 @@ function CommunityUpdates({ communities }) {
 				{hasCommunities ? (
 					communities.map((community, index) => (
 						<View key={index} style={styles.updateContainer}>
-							<Text style={styles.groupName}>{community.name}</Text>
+							<Text style={styles.groupName} numberOfLines={1}>{community.name}</Text>
 							<Text style={styles.detailText} numberOfLines={2}>
 								{community.description}
 							</Text>
