@@ -110,6 +110,22 @@ export function CommunityProvider({ children }) {
         }
     }
 
+    const makePost = async (postData) => {
+        const response = await communityService.makePost(postData);
+        return response;
+    };
+    
+    const getCommunityPosts = async (communityId) => {
+        const response = await communityService.getCommunityPosts(communityId);
+        console.log('Community Posts:', response);
+        return response.data;
+    };
+    
+    const removeMember = async (communityId, memberId) => {
+        const response = await communityService.removeMember(communityId, memberId);
+        return response;
+    };
+
 	const value = useMemo(() => ({
         deleteCommunity,
         leaveCommunity,
@@ -127,8 +143,11 @@ export function CommunityProvider({ children }) {
         getAvailableCommunities,
         resetUserCommunities,
         getUserCommunities,
+        makePost,
+        getCommunityPosts,
+        removeMember,
 	// eslint-disable-next-line max-len
-	}), [getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy]);
+	}), [makePost, getCommunityPosts, removeMember, getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy]);
 
 	return (
 		<CommunityContext.Provider value={value}>

@@ -172,3 +172,40 @@ export async function getCommunityImage(Id, folderName) {
     });
     return response;
 }
+
+export async function makePost(postData) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/makePost`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(postData),
+    });
+    return response.json();
+}
+
+export async function getCommunityPosts(communityId) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/posts?communityId=${communityId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.json();
+}
+
+export async function removeMember(communityId, memberId) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/removeMember`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ communityId, memberId }),
+    });
+    return response.json();
+}

@@ -135,5 +135,5 @@ NewPostPage.propTypes = {
     navigation: PropTypes.shape({
         goBack: PropTypes.func.isRequired,
     }).isRequired,
-    communityId: PropTypes.number.isRequired,
+    communityId: PropTypes.string.isRequired,
 };

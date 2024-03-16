@@ -54,7 +54,7 @@ function EditPage({ route }) {
 	const { userDetails, editUserDetails } = useUser();
 
 	// Get the value of the field we're editing
-	const fieldValue = userDetails[realName];
+    const fieldValue = userDetails && userDetails.data ? userDetails.data[realName] : '';
 
 	const [newValue, setNewValue] = useState('');
 

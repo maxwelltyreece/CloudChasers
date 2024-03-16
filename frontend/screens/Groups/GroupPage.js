@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
     View, Text, StyleSheet, Pressable, 
@@ -9,6 +9,8 @@ import { Feather } from '@expo/vector-icons';
 // import NewPostPage from './NewPost';
 import { KeyboardAvoidingView, Platform, FlatList, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import { useCommunity } from '../../contexts/CommunityContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container: {
@@ -145,13 +147,24 @@ const Message = ({ title, text, sender }) => (
 
 function GroupPage({ route, navigation }) {
     const { community } = route.params;
-    const messages = [];
-    // const [messages, setMessages] = useState(Array.from({ length: 50 }, (_, i) => ({
-    //     title: `${generateRandomWord()}`,
-    //     text: generateRandomMessage(),
-    //     sender: `@${generateRandomWord()}`,
-    // })));
-    // const [input, setInput] = useState('');
+    const { getCommunityPosts } = useCommunity();
+    const [messages, setMessages] = useState([]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchPosts = async () => {
+                console.log(community.id)
+                const posts = await getCommunityPosts(community.id);
+                setMessages(posts);
+            };
+
+            fetchPosts();
+            console.log('Fetching posts for community:', community.id);
+            console.log(messages);
+
+            return () => setMessages([]); // optional cleanup function
+        }, [community.id, getCommunityPosts])
+    );
 
     useEffect(() => {
         navigation.setOptions({
@@ -234,7 +247,7 @@ GroupPage.propTypes = {
     route: PropTypes.shape({
         params: PropTypes.shape({
             community: PropTypes.shape({
-                id: PropTypes.number,
+                id: PropTypes.string,
                 name: PropTypes.string,
                 description: PropTypes.string,
             }),
