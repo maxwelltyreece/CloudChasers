@@ -4,6 +4,7 @@ import {
 	View, Text, ScrollView, KeyboardAvoidingView, StyleSheet, Modal, 
 	TextInput, Pressable, Alert, Platform, Dimensions
 } from 'react-native';
+import { useReminders } from '../../../contexts/RemindersContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const { width} = Dimensions.get('window');
@@ -302,7 +303,6 @@ const styles = StyleSheet.create({
 
 const frequencyOptions = ['Daily', 'Weekly']; // Options for the segmented control
 
-const REMINDERS_KEY = 'REMINDERS';
 
 /**
  * Reminders is a screen component designed for displaying and managing the users created reminders.
@@ -310,7 +310,7 @@ const REMINDERS_KEY = 'REMINDERS';
  * @returns {React.Element} The rendered Reminders screen.
  */
 function Reminders() {
-	const [reminders, setReminders] = useState([]);
+	const { reminders, setReminders } = useReminders();
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [newReminder, setNewReminder] = useState({
 		id: null,
@@ -353,10 +353,10 @@ function Reminders() {
 	useEffect(() => {
 		const loadReminders = async () => {
 			try {
-				const storedReminders = await AsyncStorage.getItem(REMINDERS_KEY);
+				const storedReminders = await AsyncStorage.getItem('REMINDERS');
 				if (storedReminders) setReminders(JSON.parse(storedReminders));
 			} catch (error) {
-				Alert.alert('Error', 'Failed to load the reminders.');
+				// Alert.alert('Error', 'Failed to load the reminders.');
 			}
 		};
 
@@ -366,9 +366,9 @@ function Reminders() {
 	useEffect(() => {
 		const saveReminders = async () => {
 			try {
-				await AsyncStorage.setItem(REMINDERS_KEY, JSON.stringify(reminders));
+				await AsyncStorage.setItem('REMINDERS', JSON.stringify(reminders));
 			} catch (error) {
-				Alert.alert('Error', 'Failed to save the reminders.');
+				// Alert.alert('Error', 'Failed to save the reminders.');
 			}
 		};
 

@@ -16,10 +16,8 @@ import { useStats } from '../../contexts/StatsContext';
 
 // Other imports
 const { width } = Dimensions.get('window');
-import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { LocalIP } from '../../screens/IPIndex';
 
 
 
@@ -210,48 +208,3 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
-
-
-
-
-// useEffect(() => {
-//     async function loadInitialData() {
-//         setLoading(true);
-// 		console.log("GETTING USER COMMUNITIES")
-// 		console.log("USER COMMUNITIES:", userCommunities)
-//         await getUserCommunities();
-// 		console.log("USER COMMUNITIES:", userCommunities)
-//         setLoading(false);
-//     }
-
-//     loadInitialData();
-// }, []);
-
-// useEffect(() => {
-// 	const fetchFoodStats = async () => {
-// 		try {
-// 			const token = await AsyncStorage.getItem('token');
-// 			if (!token) {
-// 				console.error("No token found");
-// 				navigation.navigate('Login');
-// 				return;
-// 			}
-// 			const response = await axios.get(`http://${LocalIP}:3000/foodStats`, {
-// 				headers: {
-// 					'Authorization': `Bearer ${token}`
-// 				}
-// 			});
-// 			console.log("FOOD STATS:", response.data.data)
-// 			updateFoodStats(response.data.data);
-// 			setLoading(false);
-// 			console.log("USER FOOD STATS:", foodStats)
-// 		}
-// 		catch (error) {
-// 			console.error("Error fetching user food stats:", error);
-// 		}
-// 	};
-
-// 	fetchFoodStats();
-// }, []);
-

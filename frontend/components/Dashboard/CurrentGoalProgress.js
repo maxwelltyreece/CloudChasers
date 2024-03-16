@@ -2,156 +2,16 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Animated
+	View, Text, StyleSheet, Animated, Pressable, ScrollView
 } from 'react-native';
 import Swiper from 'react-native-swiper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useReminders } from '../../contexts/RemindersContext';
+import { useNavigation } from '@react-navigation/native';
+
 
 const styles = StyleSheet.create({
 	// -------Goal Progress Bar-------//
-	// progressBarComponentContainer: {
-	// 	justifyContent: 'center',
-	// 	alignContent: 'flex-start',
-	// 	// backgroundColor: '#EC6641',
-	// 	backgroundColor: '#FF815E',
-	// 	// backgroundColor: 'white',
-	// 	padding: 20,
-	// 	marginTop: '2%',
-	// 	// marginBottom: '14%',
-	// 	borderRadius: 15,
-	// 	width: '95%',
-	// 	height: '15%',
-	// 	shadowColor: '#000',
-	// 	shadowOffset: { width: 0, height: 1 },
-	// 	shadowOpacity: 0.22,
-	// 	shadowRadius: 2.22,
-	// 	elevation: 3,
-	// 	// borderColor: 'white',
-	// 	// borderWidth: 1,
-	// },
-	// topSection: {
-	// 	flexDirection: 'row',
-	// 	justifyContent: 'space-between',
-	// 	alignItems: 'flex-start',
-	// 	alignContent: 'center',
-	// 	marginTop: 4,
-	// 	width: '60%',
-	// 	height: '50%',
-	// },
-	// goalInfoSection: {
-	// 	justifyContent: 'center',
-	// 	alignItems: 'flex-end',
-	// 	width: '90%',
-	// },
-	// progressBarTitle: {
-	// 	fontSize: 20,
-	// 	fontWeight: 'bold',
-	// },
-	// currentGoalTitle: {
-	// 	fontSize: 12,
-	// 	fontWeight: '500',
-	// 	marginRight: 10,
-	// },
-	// selectGoalButton: {
-	// 	// backgroundColor: '#FF815E',
-	// 	backgroundColor: '#F0F0F0',
-	// 	marginTop: 5,
-	// 	marginRight: 10,
-	// 	paddingVertical: 3,
-	// 	paddingHorizontal: 8,
-	// 	borderRadius: 6,
-	// },
-	// selectGoalButtonText: {
-	// 	fontSize: 12,
-	// },
-	// progressBarContainer: {
-	// 	flexDirection: 'row',
-	// 	marginTop: 15,
-	// 	backgroundColor: '#F0F0F0',
-	// 	borderRadius: 32,
-	// 	overflow: 'hidden',
-	// },
-	// filledProgressBar: {
-	// 	backgroundColor: '#25A6EE',
-	// 	height: 20,
-	// 	borderRadius: 32,
-	// },
-	// currentProgressBarText: {
-	// 	fontSize: 15,
-	// 	fontWeight: '600',
-	// 	textAlign: 'left',
-	// 	marginTop: 5,
-	// 	paddingLeft: 8,
-	// },
-	// modalContainer: {
-	// 	flex: 1,
-	// 	marginVertical: 125,
-	// 	marginHorizontal: 20,
-	// 	backgroundColor: 'white',
-	// 	borderRadius: 20,
-	// 	padding: 35,
-	// 	alignItems: 'center',
-	// 	shadowColor: '#000',
-	// 	shadowOffset: {
-	// 		width: 0,
-	// 		height: 2,
-	// 	},
-	// 	shadowOpacity: 0.5,
-	// 	shadowRadius: 4,
-	// 	elevation: 5,
-	// 	borderTopEndRadius: 28,
-	// },
-	// modalTitle: {
-	// 	fontSize: 22,
-	// 	fontWeight: 'bold',
-	// 	marginBottom: 12,
-	// },
-	// goalListContainer: {
-	// 	width: '100%',
-	// },
-	// goalItemText: {
-	// 	fontSize: 16,
-	// 	fontWeight: '600',
-	// },
-	// goalItem: {
-	// 	// backgroundColor: '#EC6641',
-	// 	backgroundColor: 'lightblue',
-	// 	padding: 15,
-	// 	width: '100%',
-	// 	borderWidth: 1,
-	// 	borderColor: '#eee',
-	// 	borderRadius: 10,
-	// 	marginVertical: 10,
-	// 	shadowColor: '#000',
-	// 	shadowOffset: {
-	// 		width: 0,
-	// 		height: 1,
-	// 	},
-	// 	shadowOpacity: 0.2,
-	// 	shadowRadius: 2,
-	// 	elevation: 5,
-	// },
-	// modalCloseButtonText: {
-	// 	color: '#FFFFFF',
-	// 	marginTop: 20,
-	// 	backgroundColor: '#007BFF',
-	// 	paddingVertical: 10,
-	// 	paddingHorizontal: 20,
-	// 	borderRadius: 20,
-	// 	overflow: 'hidden',
-	// 	alignSelf: 'center',
-	// 	textTransform: 'uppercase',
-	// 	fontWeight: 'bold',
-	// 	letterSpacing: 1,
-	// 	shadowColor: '#000',
-	// 	shadowOffset: {
-	// 		width: 0,
-	// 		height: 2,
-	// 	},
-	// 	shadowOpacity: 0.25,
-	// 	shadowRadius: 3.84,
-	// 	elevation: 5,
-	// 	opacity: 0.9,
-	// },
 	progressBarComponentContainer: {
 		// flex: 1,
 		justifyContent: 'center',
@@ -215,6 +75,7 @@ const styles = StyleSheet.create({
 		alignItems: 'flex-start',
 		paddingHorizontal: 20,
 		paddingBottom: 10,
+		// backgroundColor: 'green',
 	},
 	firstSlideContainer: {
 		justifyContent: 'flex-start',
@@ -259,10 +120,95 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	slideTitle: {
-		fontSize: 19,
+		fontSize: 18,
 		fontWeight: 'bold',
 		marginBottom: 10,
 		alignSelf: 'center',
+	},
+	remindersScrolView: {
+		width: '100%',
+		height: '62%',
+	},
+	reminderItem: {
+		marginBottom: '2%',
+		justifyContent: 'center',
+		alignItems: 'flex-start',
+		paddingHorizontal: 20,
+		paddingVertical: '2%',
+		backgroundColor: 'white',
+		borderRadius: 12,
+		width: '100%',
+		// height: '20%',
+		height: 'auto',
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.22,
+		shadowRadius: 2.22,
+		elevation: 3,
+	},
+	reminderInfoSection: {
+		marginTop: 4,
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		alignContent: 'center',
+		alignItems: 'center',
+		width: '100%',
+		// backgroundColor: 'pink',
+	},
+	reminderDescriptionText: {
+		fontSize: 16,
+		fontWeight: 'bold',
+		// backgroundColor: 'yellow',
+	},
+	reminderInfoTitle: {
+		fontSize: 12.5,
+		fontWeight: '600',
+	},
+	reminderInfoText: {
+		fontSize: 12.5,
+		fontWeight: '400',
+		marginRight: 14,
+	},
+	seeAllRemindersButton: {
+		width: '100%',
+		height: 35,
+		backgroundColor: '#F0F0F0', // Example color
+		padding: 10,
+		borderRadius: 15,
+		alignItems: 'center',
+		alignContent: 'center',
+		justifyContent: 'center',
+	},
+	seeAllRemindersButtonText: {
+		fontSize: 12.5,
+		fontWeight: '500',
+		textTransform: 'uppercase',
+	},
+	emptyRemindersSection: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		alignSelf: 'center',
+		marginVertical: 15,
+		width: '90%',
+		padding: 25,
+		backgroundColor: 'white',
+		borderRadius: 15,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.22,
+		shadowRadius: 2.22,
+		elevation: 3,
+	},
+	emptyRemindersTitle: {
+		fontSize: 16,
+		fontWeight: 'bold',
+		textAlign: 'center',
+		marginBottom: 10,
+	},
+	emptyRemindersText: {
+		fontSize: 14,
+		fontWeight: '400',
+		textAlign: 'center',
 	},
 });
 
@@ -273,22 +219,23 @@ const ProgressBar = ({ label, progress, max }) => {
 	const animatedWidth = useRef(new Animated.Value(0)).current;
 
 	const progressBarStyle = label === 'Calories' ? styles.calorieProgressBarItem
-							: label === 'Water' ? styles.waterProgressBarItem
-							: styles.progressBarItem; // Default style
+		: label === 'Water' ? styles.waterProgressBarItem
+			: styles.progressBarItem; // Default style
 
 	const labelStyle = label === 'Calories' ? styles.firstLabel
-					: label === 'Water' ? styles.firstLabel
-					: styles.label; // Default style
+		: label === 'Water' ? styles.firstLabel
+			: styles.label; // Default style
 
 	// Function to measure the width of the container
 	const measureContainer = (event) => {
-	const { width } = event.nativeEvent.layout;
-	setContainerWidth(width);
+		const { width } = event.nativeEvent.layout;
+		setContainerWidth(width);
 	};
-	
+
+
 	useEffect(() => {
 		const finalWidth = (progress / max) * containerWidth;
-	
+
 		Animated.timing(animatedWidth, {
 			toValue: finalWidth,
 			duration: 1000,
@@ -299,161 +246,144 @@ const ProgressBar = ({ label, progress, max }) => {
 	return (
 		<View style={progressBarStyle}>
 			<View style={styles.labelContainer}>
-			<Text style={labelStyle}>{label}</Text>
-			<Text style={labelStyle}>{`${progress} / ${max}`}</Text>
+				<Text style={labelStyle}>{label}</Text>
+				<Text style={labelStyle}>{`${progress} / ${max}`}</Text>
 			</View>
 			<View style={styles.progressBarContainer} onLayout={measureContainer}>
 				<Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
 			</View>
 		</View>
 	);
-	
-};
-	
 
-// Main GoalProgressBar component
+};
+
+ProgressBar.propTypes = {
+	label: PropTypes.string.isRequired,
+	progress: PropTypes.number.isRequired,
+	max: PropTypes.number.isRequired,
+};
+
+
+// Single Reminder Component
+const ReminderItem = ({ reminder }) => {
+	return (
+		<View style={styles.reminderItem}>
+			<Text style={styles.reminderDescriptionText} numberOfLines={1}>{reminder.description}</Text>
+			<View style={styles.reminderInfoSection}>
+				<Text style={styles.reminderInfoTitle}>Time: </Text>
+				<Text style={styles.reminderInfoText}>{reminder.time}</Text>
+				<Text style={styles.reminderInfoTitle}>Frequency: </Text>
+				<Text style={styles.reminderInfoText}>{reminder.frequency}</Text>
+
+			</View>
+		</View>
+	);
+};
+ReminderItem.propTypes = {
+	reminder: PropTypes.object.isRequired,
+};
+
+// Main component
 function GoalProgressBar({ todayStats }) {
+	const { reminders, setReminders } = useReminders();
+	const navigation = useNavigation();
+	const [sortedReminders, setSortedReminders] = useState(reminders);
+
+	const getNextReminderDate = (reminder) => {
+		const today = new Date();
+		const timeParts = reminder.time.split(':');
+		const reminderHour = parseInt(timeParts[0], 10);
+		const reminderMinutes = parseInt(timeParts[1], 10);
+
+		if (reminder.frequency === 'daily') {
+			const nextOccurrence = new Date();
+			nextOccurrence.setHours(reminderHour, reminderMinutes, 0, 0);
+			// If the reminder time for today has already passed, set it for the next day
+			if (nextOccurrence <= today) {
+				nextOccurrence.setDate(today.getDate() + 1);
+			}
+			return nextOccurrence;
+		} else if (reminder.frequency === 'weekly') {
+			// Find next Monday
+			const nextMonday = new Date();
+			nextMonday.setDate(today.getDate() + ((1 + 7 - today.getDay()) % 7 || 7)); // 1 is Monday
+			nextMonday.setHours(reminderHour, reminderMinutes, 0, 0);
+			// If today is Monday and the time hasn't passed, set the reminder for today
+			if (today.getDay() === 1 && today < nextMonday) {
+				nextMonday.setDate(today.getDate());
+			}
+			return nextMonday;
+		}
+	};
+
+	useEffect(() => {
+        // Calculate next occurrence for each reminder and sort them
+        const remindersWithNextOccurrence = reminders.map(reminder => ({
+            ...reminder,
+            nextOccurrence: getNextReminderDate(reminder)
+        })).sort((a, b) => a.nextOccurrence - b.nextOccurrence);
+
+        setSortedReminders(remindersWithNextOccurrence);
+    }, [reminders]);
+
+	// useEffect(() => {
+	// 	const fetchReminders = async () => {
+	// 		const remindersData = await AsyncStorage.getItem('REMINDERS');
+	// 		const remindersList = remindersData ? JSON.parse(remindersData) : [];
+
+	// 		// Calculate next occurrence for each reminder and sort them
+	// 		remindersList.forEach(reminder => {
+	// 			reminder.nextOccurrence = getNextReminderDate(reminder);
+	// 		});
+
+	// 		remindersList.sort((a, b) => a.nextOccurrence - b.nextOccurrence);
+
+	// 		setReminders(remindersList.slice(0, 3)); // Keep only the top 3 reminders
+	// 	};
+
+	// 	fetchReminders();
+	// }, []);
+
 	return (
 		<View style={styles.progressBarComponentContainer}>
 			<Swiper style={styles.swiperContainer} showsButtons={false} loop={false}>
 
+				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>
-					<Text style={styles.slideTitle}>Calories & Water</Text>
+					<Text style={styles.slideTitle}>Today</Text>
 					<ProgressBar label="Calories" progress={todayStats.calories} max={100} />
 					<ProgressBar label="Water" progress={todayStats.water} max={100} />
 				</View>
-	
+
+				{/* Reminders slide */}
 				<View style={styles.slideContainer}>
-					<Text style={styles.slideTitle}>Macronutrients</Text>
-					<ProgressBar label="Carbs" progress={todayStats.carbs} max={100} /> 
-					<ProgressBar label="Protein" progress={todayStats.protein} max={100} />
-					<ProgressBar label="Fat" progress={todayStats.fat} max={100} />
-				</View>
-	
-				<View style={styles.slideContainer}>
-					<Text style={styles.slideTitle}>Micronutrients</Text>
-					<ProgressBar label="Sugar" progress={todayStats.sugar} max={100} />
-					<ProgressBar label="Sodium" progress={todayStats.sodium} max={100} />
-					<ProgressBar label="Fiber" progress={todayStats.fiber} max={100} />
+					<Text style={styles.slideTitle}>Reminders</Text>
+					<ScrollView style={styles.remindersScrolView}>
+						{sortedReminders.length > 0 ? (
+							sortedReminders.map((reminder, index) => (
+								<ReminderItem key={index} reminder={reminder} />
+							))
+						) : (
+							<View style={styles.emptyRemindersSection}>
+								<Text style={styles.emptyRemindersTitle}>No reminders. </Text>
+								<Text style={styles.emptyRemindersText}>Go to the reminders page to add some!</Text>
+							</View>
+						)}
+					</ScrollView>
+					<Pressable
+						style={styles.seeAllRemindersButton}
+						onPress={() => navigation.navigate('Reminders')}
+					>
+						<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
+					</Pressable>
 				</View>
 			</Swiper>
 		</View>
 	);
 }
-  
+
 GoalProgressBar.propTypes = {
 	todayStats: PropTypes.object.isRequired,
 };
-  
-ProgressBar.propTypes = {
-	label: PropTypes.string.isRequired,
-	progress: PropTypes.number.isRequired,
-	max: PropTypes.number.isRequired,
-}; 
-  
+
 export default GoalProgressBar;
-
-// function GoalProgressBar() {
-// 	const [modalVisible, setModalVisible] = useState(false);
-// 	const [selectedGoal, setSelectedGoal] = useState({
-// 		id: 1,
-// 		description: '2000ml Water',
-// 		frequency: 'per day',
-// 		currentAmount: 1200,
-// 		goalAmount: 2000,
-// 	});
-
-// 	// Mock database of dietary goals
-// 	const goals = [
-// 		{
-// 			id: 1, description: '2000ml Water', frequency: 'per day', currentAmount: 1200, goalAmount: 2000,
-// 		},
-// 		{
-// 			id: 2, description: '150g Protein', frequency: 'per day', currentAmount: 80, goalAmount: 150,
-// 		},
-// 		{
-// 			id: 3, description: '80g Carbohydrates', frequency: 'per day', currentAmount: 40, goalAmount: 80,
-// 		},
-// 		{
-// 			id: 4, description: '1000mg Sodium', frequency: 'per day', currentAmount: 500, goalAmount: 1000,
-// 		},
-// 		{
-// 			id: 5, description: '75g Fat', frequency: 'per day', currentAmount: 60, goalAmount: 75,
-// 		},
-// 	];
-
-// 	const progressPercent = Math.min((
-// 		selectedGoal.currentAmount / selectedGoal.goalAmount) * 100, 100);
-
-// 	const selectGoal = (goal) => {
-// 		setSelectedGoal(goal);
-// 		setModalVisible(false);
-// 	};
-
-// 	return (
-// 		<View style={styles.progressBarComponentContainer}>
-// 			{/* Title and Goal Info */}
-// 			<View style={styles.topSection}>
-// 				<Text style={styles.progressBarTitle}>Current Progress:</Text>
-// 				<View style={styles.goalInfoSection}>
-// 					<Text style={styles.currentGoalTitle}>
-// 						{selectedGoal.description}
-// 						{' '}
-// 						{selectedGoal.frequency}
-// 					</Text>
-// 					<Pressable style={styles.selectGoalButton} onPress={() => setModalVisible(true)}>
-// 						<Text style={styles.selectGoalButtonText}>Select Other Goal</Text>
-// 					</Pressable>
-// 				</View>
-// 			</View>
-
-// 			{/* Progress Bar */}
-// 			<View style={styles.progressBarContainer}>
-// 				<View style={[styles.filledProgressBar, { width: `${progressPercent}%` }]} />
-// 			</View>
-
-// 			{/* Display Current vs. Goal Amount */}
-// 			<Text style={styles.currentProgressBarText}>
-// 				{selectedGoal.currentAmount}
-// 				/
-// 				{selectedGoal.goalAmount}
-// 			</Text>
-
-// 			<Modal
-// 				animationType="slide"
-// 				transparent
-// 				visible={modalVisible}
-// 				onRequestClose={() => setModalVisible(!modalVisible)}
-// 			>
-// 				<View style={styles.modalContainer}>
-// 					<Text style={styles.modalTitle}>Select a Goal</Text>
-// 					<FlatList
-// 						data={goals}
-// 						renderItem={({ item }) => (
-// 							<Pressable style={styles.goalItem} onPress={() => selectGoal(item)}>
-// 								<Text style={styles.goalItemText}>
-// 									{item.description}
-// 									{' '}
-// 									{item.frequency}
-// 								</Text>
-// 							</Pressable>
-// 						)}
-// 						keyExtractor={(item) => item.id.toString()}
-// 						style={styles.goalListContainer}
-// 					/>
-// 					<Pressable onPress={() => setModalVisible(!modalVisible)}>
-// 						<Text style={styles.modalCloseButtonText}>Close</Text>
-// 					</Pressable>
-// 				</View>
-// 			</Modal>
-// 		</View>
-// 	);
-// }
-
-// export default GoalProgressBar;
-
-// // Add prop validation for 'foodStats'
-// GoalProgressBar.propTypes = {
-// 	foodStats: PropTypes.object.isRequired,
-// 	nutrient: PropTypes.string.isRequired,
-// };

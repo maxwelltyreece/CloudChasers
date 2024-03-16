@@ -28,6 +28,7 @@ import {
 import { UserProvider } from './frontend/contexts/UserContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
 import { StatsProvider } from './frontend/contexts/StatsContext';
+import { RemindersProvider } from './frontend/contexts/RemindersContext';
 // import AuthNavigator from './frontend/navigation/AuthNavigator';
 // import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
@@ -82,7 +83,7 @@ export default function App() {
 
 	if (!fontsLoaded || !initialRoute) {
 		return null;
-	} 
+	}
 
 
 
@@ -90,12 +91,14 @@ export default function App() {
 		<CommunityProvider>
 			<UserProvider>
 				<StatsProvider>
-					<NavigationContainer>
-						<Stack.Navigator initialRouteName={initialRoute}>
-							<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-							<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-						</Stack.Navigator>
-					</NavigationContainer>
+					<RemindersProvider>
+						<NavigationContainer>
+							<Stack.Navigator initialRouteName={initialRoute}>
+								<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+								<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+							</Stack.Navigator>
+						</NavigationContainer>
+					</RemindersProvider>
 				</StatsProvider>
 			</UserProvider>
 		</CommunityProvider>
