@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, FlatList, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TextInput} from 'react-native';
 import proptypes from 'prop-types';
 import { useGoals } from '../../../contexts/GoalsContext';
 
@@ -141,11 +141,6 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
 
     const handleUpdate = () => {
         onUpdate(nutrient, goalValue);
-        setIsEditing(false);
-    };
-
-    const handleCancel = () => {
-        setGoalValue(currentGoal.value.toString());
         setIsEditing(false);
     };
 
