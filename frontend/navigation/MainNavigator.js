@@ -6,6 +6,7 @@ import SettingsNavigator from './SettingsNavigator';
 import GroupNavigator from './GroupNavigator';
 import { useUser } from '../contexts/UserContext';
 import { useCommunity } from '../contexts/CommunityContext';
+import DataEntryNavigator from './DataEntryNavigator';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,11 @@ export default function MainNavigator() {
 			<Stack.Screen
 				name="Group"
 				component={GroupNavigator}
+				options={{ headerShown: false }}
+			/>
+            <Stack.Screen
+				name="Group"
+				component={DataEntryNavigator}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
