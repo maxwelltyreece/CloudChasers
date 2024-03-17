@@ -101,9 +101,19 @@ exports.getAwardsToBeIssued = async (req, res) => {
             const newAwardID = await createAwardItem(await award._id, await user._id);
             newlyIssuedAwards[awardName] = await newAwardID._id;
         }
-        
-
         return res.status(200).send(newlyIssuedAwards);
+    } catch (error) {
+        return res.status(500).send({ error: error.toString() });
+    }
+}
+
+exports.getNumberOfCompletedAwards = async (req, res) => {
+    try {
+        const user = req.user;
+        const awards = await getUserAwards(await user._id);
+        const awardsCompleted = awards.length;
+        const totalAwards = await personalAward.find().countDocuments();
+        return res.status(200).send({ completed : awardsCompleted, Total : totalAwards, percentage: (awardsCompleted / totalAwards) * 100 });
     } catch (error) {
         return res.status(500).send({ error: error.toString() });
     }

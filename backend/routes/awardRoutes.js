@@ -10,5 +10,6 @@ router.get('/getAward', userMiddleware, awardController.getAward);
 router.post('/awardUser', userMiddleware, awardController.awardUser);
 router.get('/getUserAwards', userMiddleware, awardController.getUserAwards);
 router.get('/getAwardsToBeIssued', userMiddleware, awardController.getAwardsToBeIssued);
+router.get('/getNumberOfCompletedAwards', userMiddleware, awardController.getNumberOfCompletedAwards);
 
 module.exports = router;
