@@ -111,7 +111,7 @@ exports.deleteGoal = async (req, res) => {
 
 exports.updateGoal = async (req, res) => {
     try {
-        const { goalID, goalName, description, measurement, minTargetMass, maxTargetMass } = req.body;
+        const { goalID, goalName, measurement, minTargetMass, maxTargetMass } = req.body;
         const user = req.user;
         var goal = await Goal.findById(goalID);
         var userIDWithGoalAccess = await getUserIDsWhoHaveAccessToGoal(goalID);
