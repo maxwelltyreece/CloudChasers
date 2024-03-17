@@ -8,7 +8,7 @@ const getStreaks = async () => {
         return await axios.post(`${LocalIP}/streak`, {}, { headers: { Authorization: `Bearer ${token}` } });
     } catch (error) {
         console.error('Error fetching streaks:', error);
-        throw error; // Re-throw the error if you want calling code to handle it
+        throw error;
     }
 };
 

@@ -28,7 +28,9 @@ import {
 import { UserProvider } from './frontend/contexts/UserContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
 import { StatsProvider } from './frontend/contexts/StatsContext';
+import { GoalsProvider } from './frontend/contexts/GoalsContext';
 import { RemindersProvider } from './frontend/contexts/RemindersContext';
+import { FoodLogProvider } from './frontend/contexts/FoodLogContext';
 // import AuthNavigator from './frontend/navigation/AuthNavigator';
 // import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
@@ -90,16 +92,20 @@ export default function App() {
 	return (
 		<CommunityProvider>
 			<UserProvider>
-				<StatsProvider>
-					<RemindersProvider>
-						<NavigationContainer>
-							<Stack.Navigator initialRouteName={initialRoute}>
-								<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-								<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-							</Stack.Navigator>
-						</NavigationContainer>
-					</RemindersProvider>
-				</StatsProvider>
+				<FoodLogProvider>
+					<StatsProvider>
+						<GoalsProvider>
+							<RemindersProvider>
+								<NavigationContainer>
+									<Stack.Navigator initialRouteName={initialRoute}>
+										<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+										<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+									</Stack.Navigator>
+								</NavigationContainer>
+							</RemindersProvider>
+						</GoalsProvider>
+					</StatsProvider>
+				</FoodLogProvider>
 			</UserProvider>
 		</CommunityProvider>
 	);
