@@ -192,9 +192,19 @@ exports.changeGoalMacroValue = async (req, res) => {
         }
 
         const goals = await getAllGoalsOfUser(await user._id);
-        const goal = goals.filter(goal => goal.measurement == macroLowerCase);
-        console.log(goal);
-        return res.status(200).send({ message: 'Macro value changed' });
+        var goal = goals.filter(goal => goal.measurement == macroLowerCase);
+        if (goal.length == 0) {
+            return res.status(404).send({ message: 'No goal for this macro' });
+        }
+        goal = goal[0];
+        console.log(goal.minTargetMass, goal.maxTargetMass);
+        if (!checkValidMinMaxValues(newMinValue, newMaxValue)) {
+            return res.status(400).send({ message: 'Invalid min or max values' });
+        }
+        goal.minTargetMass = newMinValue;
+        goal.maxTargetMass = newMaxValue;
+        await goal.save();
+        return res.status(200).send({ message: 'Macro value changed', goal: goal });
     } catch (error) {
         return res.status(500).send({ error: error.toString() });
     }
@@ -235,4 +245,15 @@ async function getUntrackedMacros(goal){
         untrackedMacros = untrackedMacros.filter(macro => macro != goalMeasurement);
     }
     return untrackedMacros;
+}
+
+function checkValidMinMaxValues(min, max) {
+    if (!min && !max) {
+        return false;
+    } else if (min < 0 || max < 0) {
+        return false;
+    } else if (min > max && max != null) {
+        return false;
+    }
+    return true; 
 }
