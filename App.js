@@ -29,6 +29,7 @@ import { UserProvider } from './frontend/contexts/UserContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
 import { StatsProvider } from './frontend/contexts/StatsContext';
 import { RemindersProvider } from './frontend/contexts/RemindersContext';
+import { FoodLogProvider } from './frontend/contexts/FoodLogContext';
 // import AuthNavigator from './frontend/navigation/AuthNavigator';
 // import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
@@ -90,6 +91,7 @@ export default function App() {
 	return (
 		<CommunityProvider>
 			<UserProvider>
+				<FoodLogProvider>
 				<StatsProvider>
 					<RemindersProvider>
 						<NavigationContainer>
@@ -100,6 +102,7 @@ export default function App() {
 						</NavigationContainer>
 					</RemindersProvider>
 				</StatsProvider>
+			</FoodLogProvider>
 			</UserProvider>
 		</CommunityProvider>
 	);

@@ -13,6 +13,7 @@ import {
 import { useUser } from '../../contexts/UserContext';
 import { useCommunity } from '../../contexts/CommunityContext';
 import { useStats } from '../../contexts/StatsContext';
+import { useFoodLog } from '../../contexts/FoodLogContext';
 
 // Other imports
 const { width } = Dimensions.get('window');
@@ -115,11 +116,13 @@ function Dashboard() {
 	const { userDetails, updateUserDetails } = useUser();
 	const { userCommunities, getUserCommunities } = useCommunity([]);
 	const { todayStats, updateTodayStats } = useStats();
+	const { latestLoggedFood, setLatestLoggedFood } = useFoodLog();
 	console.log({ userDetails });
 	// console.log(userDetails.data.forename);
 	// console.log(userDetails.data.streak);
 	console.log({ userCommunities });
 	console.log({ todayStats });
+	console.log({ latestLoggedFood });
 	// console.log({ 'COMMUNITIES': userCommunities });
 
 	const checkUserLogin = async () => {
@@ -135,7 +138,7 @@ function Dashboard() {
 			console.error("Error accessing AsyncStorage:", error);
 			navigation.navigate('Login'); // Redirect to login if error
 		}
-	};
+	}; 
 
 	useEffect(() => {
 		setLoading(true);
@@ -149,7 +152,8 @@ function Dashboard() {
 					userDetails ? Promise.resolve() : updateUserDetails(),
 					// Add conditions to fetch todayStats and userCommunities only if they haven't been fetched yet
 					todayStats ? Promise.resolve() : updateTodayStats(),
-					userCommunities.length > 0 ? Promise.resolve() : getUserCommunities()
+					userCommunities.length > 0 ? Promise.resolve() : getUserCommunities(),
+					latestLoggedFood ? Promise.resolve() : setLatestLoggedFood()
 				]);
 			} catch (error) {
 				console.error("Error fetching data for dashboard:", error);
@@ -162,9 +166,6 @@ function Dashboard() {
 		fetchData();
 	}, []);
 	
-
-
-
 
 	if (loading) {
 		return (
@@ -196,7 +197,7 @@ function Dashboard() {
 						</View>
 
 						<View style={styles.rightComponentContainer}>
-							<RecentLog streak={userDetails?.data?.streak} userLogStats={null} />
+							<RecentLog streak={userDetails?.data?.streak} userLogStats={setLatestLoggedFood} />
 						</View>
 					</View>
 
