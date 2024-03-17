@@ -181,6 +181,10 @@ exports.getUntrackedMacroGoals = async (req, res) => {
     }
 }
 
+
+// This function is used to change the min and max values of a goal
+// It takes in the macro of the goal you want to change, the new min and max values for that goal
+// It then updates the goal if valid min and max values are given
 exports.changeGoalMacroValue = async (req, res) => {
     try {
         const user = req.user;
@@ -208,9 +212,7 @@ exports.changeGoalMacroValue = async (req, res) => {
     } catch (error) {
         return res.status(500).send({ error: error.toString() });
     }
-}
-
-        
+}        
 
 async function getUserIDsWhoHaveAccessToGoal(goalID) {
     var goalItem = await GoalItem.find({ goalID: goalID });
