@@ -11,9 +11,9 @@ const request = require('supertest');
 
 exports.createGoal = async (req, res) => {
     try {
-        const {goalName, description, measurement, minTargetMass, maxTargetMass} = req.body;
+        const {goalName, measurement, minTargetMass, maxTargetMass} = req.body;
         const user = req.user;
-        requiredFields = ['goalName', 'description', 'measurement'];
+        requiredFields = ['goalName', 'measurement'];
         var missingFields = [];
         requiredFields.forEach(field => {
             if (!req.body[field]) {
@@ -174,17 +174,33 @@ exports.getUntrackedMacroGoals = async (req, res) => {
     try {
         const user = req.user;
         const goals = await getAllGoalsOfUser(await user._id);
-        var untrackedMacros = ["protein", "carbs", "fat", "fibre", "sugar", "sodium", "water", "calories"];
-        for (let i = 0; i < goals.length; i++) {
-            const goalMeasurement = await goals[i].measurement;
-            untrackedMacros = untrackedMacros.filter(macro => macro != goalMeasurement);
-        }
+        const untrackedMacros = getUntrackedMacros(goals);
         return res.status(200).send({ untrackedMacros: untrackedMacros });
     } catch (error) {
         return res.status(500).send({ error: error.toString() });
     }
 }
 
+exports.changeGoalMacroValue = async (req, res) => {
+    try {
+        const user = req.user;
+        const { macro, newMinValue, newMaxValue } = req.body;
+        const macroLowerCase = macro.toLowerCase();
+        const macroList = ["protein", "carbs", "fat", "fibre", "sugar", "sodium", "water", "calories"];
+        if (!macroList.includes(macroLowerCase)) {
+            return res.status(400).send({ message: 'Macro not found' });
+        }
+
+        const goals = await getAllGoalsOfUser(await user._id);
+        const goal = goals.filter(goal => goal.measurement == macroLowerCase);
+        console.log(goal);
+        return res.status(200).send({ message: 'Macro value changed' });
+    } catch (error) {
+        return res.status(500).send({ error: error.toString() });
+    }
+}
+
+        
 
 async function getUserIDsWhoHaveAccessToGoal(goalID) {
     var goalItem = await GoalItem.find({ goalID: goalID });
@@ -210,4 +226,13 @@ async function getMinAndMaxFromGoal(goal) {
         "Max": await goal.maxTargetMass
     }
     return minMax;
+}
+
+async function getUntrackedMacros(goal){
+    var untrackedMacros = ["protein", "carbs", "fat", "fibre", "sugar", "sodium", "water", "calories"];
+    for (let i = 0; i < goal.length; i++) {
+        const goalMeasurement = await goal[i].measurement;
+        untrackedMacros = untrackedMacros.filter(macro => macro != goalMeasurement);
+    }
+    return untrackedMacros;
 }
