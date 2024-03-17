@@ -6,22 +6,22 @@ const StatsContext = createContext();
 
 export function StatsProvider({ children }) {
   const [ todayStats, setTodayStats] = useState({
-    // calories: 72,
-    // water: 55,
-    // protein: 40,
-    // carbs: 50,
-    // fat: 32,
-    // sugar: 12,
-    // sodium: 15,
-    // fiber: 22,
-    calories: 0,
-    water: 0,
-    protein: 0,
-    carbs: 0,
-    fat: 0,
-    sugar: 0,
-    sodium: 0,
-    fiber: 0,
+    calories: 1250,
+    water: 800,
+    protein: 40,
+    carbs: 50,
+    fat: 32,
+    sugar: 12,
+    sodium: 15,
+    fiber: 22,
+    // calories: 0,
+    // water: 0,
+    // protein: 0,
+    // carbs: 0,
+    // fat: 0,
+    // sugar: 0,
+    // sodium: 0,
+    // fiber: 0,
   });
 
   const getDailyNutrientIntake = async (nutrient) => {

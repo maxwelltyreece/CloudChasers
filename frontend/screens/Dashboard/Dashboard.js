@@ -11,9 +11,11 @@ import {
 
 // Context imports
 import { useUser } from '../../contexts/UserContext';
-import { useCommunity } from '../../contexts/CommunityContext';
+import { useCommunity } from '../../contexts/CommunityContext'; 
 import { useStats } from '../../contexts/StatsContext';
+import { useGoals } from '../../contexts/GoalsContext';
 import { useFoodLog } from '../../contexts/FoodLogContext';
+
 
 // Other imports
 const { width } = Dimensions.get('window');
@@ -116,6 +118,7 @@ function Dashboard() {
 	const { userDetails, updateUserDetails } = useUser();
 	const { userCommunities, getUserCommunities } = useCommunity([]);
 	const { todayStats, updateTodayStats } = useStats();
+	const { macroGoals, fetchMacroGoals } = useGoals(); 
 	const { latestLoggedFood, setLatestLoggedFood } = useFoodLog();
 	console.log({ userDetails });
 	// console.log(userDetails.data.forename);
@@ -123,6 +126,7 @@ function Dashboard() {
 	console.log({ userCommunities });
 	console.log({ todayStats });
 	console.log({ latestLoggedFood });
+	console.log({ macroGoals });
 	// console.log({ 'COMMUNITIES': userCommunities });
 
 	const checkUserLogin = async () => {
@@ -147,14 +151,24 @@ function Dashboard() {
 			try {
 				await checkUserLogin(); // Check if user is logged in
 	
+				// // Fetch all necessary data in parallel
+				// await Promise.all([
+				// 	userDetails ? Promise.resolve() : updateUserDetails(),
+				// 	// Add conditions to fetch todayStats and userCommunities only if they haven't been fetched yet
+				// 	todayStats ? Promise.resolve() : updateTodayStats(),
+					
+				// 	userCommunities.length > 0 ? Promise.resolve() : getUserCommunities(),
+				// 	latestLoggedFood ? Promise.resolve() : setLatestLoggedFood()
+				// ]);
+ 
 				// Fetch all necessary data in parallel
 				await Promise.all([
-					userDetails ? Promise.resolve() : updateUserDetails(),
-					// Add conditions to fetch todayStats and userCommunities only if they haven't been fetched yet
-					todayStats ? Promise.resolve() : updateTodayStats(),
-					userCommunities.length > 0 ? Promise.resolve() : getUserCommunities(),
-					latestLoggedFood ? Promise.resolve() : setLatestLoggedFood()
-				]);
+                    updateUserDetails(),
+                    updateTodayStats(),
+                    getUserCommunities(),
+                    setLatestLoggedFood(),
+                    fetchMacroGoals()
+                ]);
 			} catch (error) {
 				console.error("Error fetching data for dashboard:", error);
 				// Handle error appropriately
@@ -187,9 +201,9 @@ function Dashboard() {
 						<WelcomeBar name={userDetails?.data?.forename} />
 					</View>
 
-					<CurrentGoalProgress todayStats={todayStats} />
+					<CurrentGoalProgress todayStats={todayStats} nutrientGoals={macroGoals}/>
 
-					<CommunityStatus communities={userCommunities} />
+					<CommunityStatus communities={userCommunities} /> 
 
 					<View style={styles.bottomDashboardContainer}>
 						<View style={styles.leftComponentContainer}>

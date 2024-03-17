@@ -288,7 +288,7 @@ ReminderItem.propTypes = {
 };
 
 // Main component
-function GoalProgressBar({ todayStats }) {
+function GoalProgressBar({ todayStats, nutrientGoals }) {
 	const { reminders } = useReminders();
 	const navigation = useNavigation();
 
@@ -338,6 +338,7 @@ function GoalProgressBar({ todayStats }) {
 	for (let i = 0; i < sortedReminders.length; i++) {
 		console.log(sortedReminders[i].description, getClosestDate(sortedReminders[i]));
 	}
+
 	console.log('Sorted reminders:', sortedReminders);
 
 
@@ -348,8 +349,8 @@ function GoalProgressBar({ todayStats }) {
 				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>
 					<Text style={styles.slideTitle}>Today</Text>
-					<ProgressBar label="Calories" progress={todayStats.calories} max={100} />
-					<ProgressBar label="Water" progress={todayStats.water} max={100} />
+					<ProgressBar label="Calories" progress={todayStats.calories} max={nutrientGoals.calories.value} />
+					<ProgressBar label="Water" progress={todayStats.water} max={nutrientGoals.water.value} />
 				</View>
 
 				{/* Reminders slide */}
@@ -391,6 +392,7 @@ function GoalProgressBar({ todayStats }) {
 
 GoalProgressBar.propTypes = {
 	todayStats: PropTypes.object.isRequired,
+	nutrientGoals: PropTypes.object.isRequired,
 };
 
 export default GoalProgressBar;
