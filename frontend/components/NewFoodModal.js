@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { View, Pressable, StyleSheet, Animated, Text, TextInput,  TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text, TextInput,  TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
@@ -15,7 +15,7 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal}) => {
                 value={value}
                 onChangeText={onChangeText}
                 keyboardType={'numeric'}
-                placeholder={`Enter ${label}`}
+                placeholder={`...`}
                 placeholderTextColor='#c7c7c7'
             />
         </View>
@@ -61,7 +61,7 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal}) => {
           style={styles.input}
           value={foodItem}
           onChangeText={setFoodItem}
-          placeholder="Enter food item"
+          placeholder="..."
           placeholderTextColor='#c7c7c7'
         />
       </View>
