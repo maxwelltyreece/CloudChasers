@@ -1,14 +1,34 @@
 // MainNavigator.js
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Feather } from '@expo/vector-icons';
+import { View
+ } from 'react-native';
 import Navbar from '../components/Navbar';
 import SettingsNavigator from './SettingsNavigator';
 import GroupNavigator from './GroupNavigator';
 import { useUser } from '../contexts/UserContext';
 import { useCommunity } from '../contexts/CommunityContext';
-import DataEntryNavigator from './DataEntryNavigator';
+import { FoodEntry, WaterEntry } from '../screens';
 
 const Stack = createStackNavigator();
+
+const commonOptions = {
+	headerShown: true,
+	headerStyle: {
+		backgroundColor: '#F0F0F0',
+	},
+	headerTitleStyle: {
+		fontFamily: 'Montserrat_700Bold',
+		fontSize: 14,
+	},
+	headerBackImage: () => (
+		<View style={{ paddingLeft: 10 }}>
+			<Feather name="chevron-left" size={25} color="#6B6868" />
+		</View>
+	),
+	headerBackTitleVisible: false,
+};
 
 export default function MainNavigator() {
 	const { userDetails, updateUserDetails } = useUser();
@@ -28,11 +48,6 @@ export default function MainNavigator() {
 				component={Navbar}
 				options={{ headerShown: false }}
 			/>
-            <Stack.Screen
-				name="Data"
-				component={DataEntryNavigator}
-				options={{ headerShown: false }}
-			/>
 			<Stack.Screen
 				name="Settings"
 				component={SettingsNavigator}
@@ -43,6 +58,8 @@ export default function MainNavigator() {
 				component={GroupNavigator}
 				options={{ headerShown: false }}
 			/>
+            <Stack.Screen name='FoodEntry' component={FoodEntry} options={{...commonOptions, title:'Food'}}/>
+            <Stack.Screen name='WaterEntry' component={WaterEntry} options={{...commonOptions, title:'Water'}} />
 		</Stack.Navigator>
 	);
 }

@@ -18,7 +18,6 @@ import {
 	Dashboard, Stats, Groups, DataEntry,
 } from '../screens';
 import UserNavigator from '../navigation/UserNavigator';
-import DataEntryNavigator from '../navigation/DataEntryNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -29,7 +28,7 @@ const Tab = createBottomTabNavigator();
 const screens = [
 	{ name: 'Home', component: Dashboard, icon: 'home' },
 	{ name: 'Groups', component: Groups, icon: 'users' },
-	{ name: '+', component: DataEntryNavigator, icon: '+' },
+	{ name: '+', component: DataEntry, icon: '+' },
 	{ name: 'Stats', component: Stats, icon: 'chart-pie' },
 	{ name: 'You', component: UserNavigator, icon: 'user' },
 ];

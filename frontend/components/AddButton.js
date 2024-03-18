@@ -9,7 +9,6 @@ const CustomIcon = ({ width = 80, height = 82 }) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
-    console.log("toggle modal");
     setModalVisible(!isModalVisible);
   };
 
@@ -35,8 +34,8 @@ const CustomIcon = ({ width = 80, height = 82 }) => {
         isVisible={isModalVisible}
         onBackdropPress={toggleModal}
             
-        navigator={navigation} // Assuming 'navigation' is your navigator object
-        pageNames={{ food: 'FoodEntry', water: 'WaterEntry' }} // Dynamic page names
+        navigator={navigation} 
+        pageNames={{ food: 'FoodEntry', water: 'WaterEntry' }}
         toggleModal={toggleModal}
       /> 
     </View>

@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexGrow: 1, 
     paddingHorizontal: 20,
+    backgroundColor: '#F0F0F0',
+    paddingBottom: 15, 
   },
   inputContainer: {
     marginBottom: 20,
-    width: '100%',
   },
   label: {
     marginBottom: 5,
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 14,
   },
   input: {
     height: 40,
@@ -22,17 +23,25 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
     marginBottom: 10,
-    width: '100%',
+  },
+  buttonContainer: {
+    marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#FF815E',
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderRadius: 15,
+    alignSelf: 'center',
+  },
+  buttonText: {
+    color: '#fff', // White text color
+    textAlign: 'center',
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 16,
   },
 });
 
-
-/**
- * DataEntry is a screen component designed for user food entry.
- * It uses styles from both the global styles and its own styles.
- *
- * @returns {React.Element} The rendered DataEntry screen.
- */
 function FoodEntry() {
   const [foodItem, setFoodItem] = useState('');
   const [calories, setCalories] = useState('');
@@ -43,7 +52,7 @@ function FoodEntry() {
   const [sodium, setSodium] = useState('');
 
   const handleLogFood = () => {
-    // Here you can handle the food logging data, for now, we'll just log the entered values
+    // Here you can handle the food logging data
     console.log('Food Item:', foodItem);
     console.log('Calories:', calories);
     console.log('Protein:', protein);
@@ -57,7 +66,7 @@ function FoodEntry() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Food name:</Text>
+        <Text style={styles.label}>Food Item:</Text>
         <TextInput
           style={styles.input}
           value={foodItem}
@@ -125,7 +134,9 @@ function FoodEntry() {
           placeholder="Enter sodium"
         />
       </View>
-      <Button title="Log Food" onPress={handleLogFood} />
+      <TouchableOpacity style={styles.button} onPress={handleLogFood}>
+        <Text style={styles.buttonText}>Log Food</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 }
