@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet, TextInput} from 'react-native';
+import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
 import proptypes from 'prop-types';
 import { useGoals } from '../../../contexts/GoalsContext';
 
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     },
     button: {
         height: '82%',
+        width: 'auto',
         // marginTop: 10,
         backgroundColor: '#FF815E',
         paddingHorizontal: 20,
@@ -111,20 +112,33 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    updateGoalButton: {
-        height: '82%',
-        // marginTop: 10,
+    intialiseButton: {
         backgroundColor: '#FF815E',
         paddingHorizontal: 20,
         paddingVertical: 10,
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 60,
+        marginBottom: 20,
+        // Comment out or adjust the following line if it's causing positioning issues
+        // top: '40%',
+    },
+    initialiseButtonText: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 22,
+        alignSelf: 'center',
+    },
+    initialiseInfoText: {
+        textAlign: 'center',
+        fontSize: 15,
+        alignSelf: 'center',
     },
     buttonText: {
         textAlign: 'center',
         color: 'white',
-        fontSize: 18,
+        fontSize: 16,
         alignSelf: 'center',
     },
 });
@@ -138,6 +152,11 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
     useEffect(() => {
         setGoalValue(currentGoal.value.toString());
     }, [currentGoal]);
+
+    // const handleUpdate = () => {
+    //     onUpdate(nutrient, goalValue);
+    //     setIsEditing(false);
+    // };
 
     const handleUpdate = () => {
         onUpdate(nutrient, goalValue);
@@ -162,7 +181,7 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
                                     onChangeText={setGoalValue}
                                     value={goalValue}
                                     keyboardType="numeric"
-                                    placeholder="Enter new goal"
+                                    placeholder="New Goal"
                                 />
                             </View>
                         </View>
@@ -181,7 +200,6 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
                             <Text style={styles.currentGoalInfoText}>{currentGoal.value} {currentGoal.unit}</Text>
                         </View>
                     </View>
-                    {/* <Text style={styles.text}>{nutrient.toUpperCase()}: {currentGoal.value} {currentGoal.unit}</Text> */}
                     <View style={styles.buttonSection}>
                         <Pressable style={styles.button} onPress={() => setIsEditing(true)}>
                             <Text style={styles.buttonText}>Change Goal</Text>
@@ -203,49 +221,125 @@ GoalItem.propTypes = {
 
 
 const Goals = () => {
-    const { macroGoals, updateMacroGoals, fetchMacroGoals } = useGoals();
+    const { goals, updateGoal, createGoal, fetchGoals } = useGoals();
+    const [isGoalsFetched, setIsGoalsFetched] = useState(false);
+    const [fetchedGoals, setFetchedGoals] = useState([]);
+
+    // Default daily values for each nutrient
+    const defaultMacroGoals = {
+        calories: { value: 2000, unit: 'kcal' },
+        protein: { value: 50, unit: 'g' },
+        carbs: { value: 275, unit: 'g' },
+        fat: { value: 77, unit: 'g' },
+        fiber: { value: 28, unit: 'g' },
+        sugar: { value: 50, unit: 'g' },
+        sodium: { value: 2300, unit: 'mg' },
+        water: { value: 2000, unit: 'ml' },
+    };
+
+    const nutrientUnits = {
+        calories: 'kcal',
+        protein: 'g',
+        carbs: 'g',
+        fat: 'g',
+        fiber: 'g',
+        sugar: 'g',
+        sodium: 'mg',
+        water: 'ml',
+    };
 
     useEffect(() => {
-        fetchMacroGoals();
-    }, [fetchMacroGoals]);
+        const fetchData = async () => {
+            await fetchGoals(); // Assuming this updates the goals in your context
+            if (goals && goals.goals && goals.goals.length > 0) {
+                setFetchedGoals(goals.goals); // Set the fetched goals from the context
+                setIsGoalsFetched(true); // Indicate that goals have been fetched
+            } else {
+                setIsGoalsFetched(true); // No goals found, but fetch attempt was made
+            }
+        };
 
-    const handleUpdateGoal = (nutrient, value) => {
-        const newValue = { value: parseInt(value, 10), unit: macroGoals[nutrient].unit };
-        updateMacroGoals(nutrient, newValue);
+        if (!isGoalsFetched) {
+            fetchData();
+        }
+
+        console.log('Goals:', goals);
+        console.log('Fetched Goals:', fetchedGoals);
+    }, [fetchGoals, isGoalsFetched, goals.goals]);
+
+
+    const handleUpdateGoal = async (nutrient, newMaxValue) => {
+        console.log('Updating goal for', nutrient, 'to new max value:', newMaxValue);
+
+        // Find the goal ID for the nutrient being updated
+        const goalToUpdate = fetchedGoals.find(goal => goal.measurement === nutrient);
+        if (!goalToUpdate) {
+            console.error('Goal not found for nutrient:', nutrient);
+            return;
+        }
+
+        try {
+            await updateGoal(goalToUpdate._id, {
+                maxTargetMass: newMaxValue,
+            });
+
+            // Find the index of the goal to update in the local state
+            const goalIndex = fetchedGoals.findIndex(goal => goal._id === goalToUpdate._id);
+            if (goalIndex !== -1) {
+                // Create a new array with updated goal
+                const newFetchedGoals = [...fetchedGoals];
+                newFetchedGoals[goalIndex] = { ...newFetchedGoals[goalIndex], maxTargetMass: newMaxValue };
+
+                setFetchedGoals(newFetchedGoals);
+
+                await fetchGoals();
+            }
+        } catch (error) {
+            console.error('Error updating goal GOALS:', error);
+        }
+    };
+
+
+    const handleInitializeGoals = () => {
+        console.log('Initializing goals');
+        // Iterate over the defaultMacroGoals and create each one
+        Object.entries(defaultMacroGoals).forEach(([nutrient, goal]) => {
+            console.log(nutrient, goal, `Daily ${nutrient}`, goal.value);
+            createGoal({
+                goalName: `Daily ${nutrient}`,
+                measurement: nutrient,
+                minTargetMass: 0, // 0 as the min target mass
+                maxTargetMass: goal.value,
+            });
+        });
     };
 
     return (
         <View style={styles.container}>
+            {isGoalsFetched && fetchedGoals.length === 0 && (
+                <View style={styles.container}>
+                    <Pressable style={styles.intialiseButton} onPress={handleInitializeGoals}>
+                        <Text style={styles.initialiseButtonText}>Initialize Goals to Begin</Text>
+                    </Pressable>
+                    <Text style={styles.initialiseInfoText}>(Leave page and enter again after intialising goals)</Text>
+                </View>
+            )}
             <View style={styles.goalsContainer}>
-                {Object.keys(macroGoals).map((nutrient) => (
+                {fetchedGoals.map((goal) => (
                     <GoalItem
-                        key={nutrient}
-                        nutrient={nutrient}
-                        currentGoal={macroGoals[nutrient]}
+                        key={goal._id}
+                        nutrient={goal.measurement}
+                        currentGoal={{
+                            value: goal.maxTargetMass,
+                            unit: nutrientUnits[goal.measurement] || ' ',
+                        }}
                         onUpdate={handleUpdateGoal}
                     />
-                ))
-                }
+                ))}
             </View>
-
-            {/* <FlatList
-                style={styles.goalsListContainer}
-                data={Object.keys(macroGoals)}
-                keyExtractor={(item) => item}
-                renderItem={({ item }) => (
-                    <GoalItem
-                        nutrient={item}
-                        currentGoal={macroGoals[item]}
-                        onUpdate={handleUpdateGoal}
-                    />
-                )}
-            /> */}
         </View>
     );
 };
 
 export default Goals;
 
-GoalItem.propTypes = {
-    title: proptypes.string.isRequired,
-};

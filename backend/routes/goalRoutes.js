@@ -13,4 +13,5 @@ router.get('/getMacroGoal', userMiddleware, goalController.getMacroGoal);
 router.get('/getUntrackedMacroGoals', userMiddleware, goalController.getUntrackedMacroGoals);
 router.post('/changeGoalMacroValue', userMiddleware, goalController.changeGoalMacroValue);
 
+
 module.exports = router;

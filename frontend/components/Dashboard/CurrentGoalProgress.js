@@ -299,7 +299,7 @@ function GoalProgressBar({ todayStats, nutrientGoals }) {
 
 		let closestDate = now.clone().hour(reminderTime.hour()).minute(reminderTime.minute());
 
-		console.log('Closest date for reminder:', reminder, 'is:', closestDate);
+		// console.log('Closest date for reminder:', reminder, 'is:', closestDate);
 
 		if (reminder.frequency === 'daily') {
 			if (now.isAfter(closestDate)) {
@@ -335,11 +335,11 @@ function GoalProgressBar({ todayStats, nutrientGoals }) {
 	});
 
 
-	for (let i = 0; i < sortedReminders.length; i++) {
-		console.log(sortedReminders[i].description, getClosestDate(sortedReminders[i]));
-	}
+	// for (let i = 0; i < sortedReminders.length; i++) {
+	// 	console.log(sortedReminders[i].description, getClosestDate(sortedReminders[i]));
+	// }
 
-	console.log('Sorted reminders:', sortedReminders);
+	// console.log('Sorted reminders:', sortedReminders);
 
 
 	return (
@@ -349,8 +349,8 @@ function GoalProgressBar({ todayStats, nutrientGoals }) {
 				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>
 					<Text style={styles.slideTitle}>Today</Text>
-					<ProgressBar label="Calories" progress={todayStats.calories} max={nutrientGoals.calories.value} />
-					<ProgressBar label="Water" progress={todayStats.water} max={nutrientGoals.water.value} />
+					<ProgressBar label="Calories" progress={todayStats.calories} max={100} />
+					<ProgressBar label="Water" progress={todayStats.water} max={100} />
 				</View>
 
 				{/* Reminders slide */}

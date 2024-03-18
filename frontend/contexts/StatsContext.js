@@ -5,7 +5,7 @@ import propTypes from 'prop-types';
 const StatsContext = createContext();
 
 export function StatsProvider({ children }) {
-  const [ todayStats, setTodayStats] = useState({
+  const [todayStats, setTodayStats] = useState({
     calories: 1250,
     water: 800,
     protein: 40,
@@ -14,23 +14,15 @@ export function StatsProvider({ children }) {
     sugar: 12,
     sodium: 15,
     fiber: 22,
-    // calories: 0,
-    // water: 0,
-    // protein: 0,
-    // carbs: 0,
-    // fat: 0,
-    // sugar: 0,
-    // sodium: 0,
-    // fiber: 0,
   });
 
-  const getDailyNutrientIntake = async (nutrient) => {
+  const updateStat = async (nutrientFunction, nutrient) => {
     try {
-      const data = await statsService.getDailyNutrientIntake(nutrient);
-      if (data) {
-        setTodayStats((prevStats) => ({
+      const response = await nutrientFunction();
+      if (response.data) {
+        setTodayStats(prevStats => ({
           ...prevStats,
-          [nutrient]: data[`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`],
+          [nutrient]: response.data.total,
         }));
       }
     } catch (error) {
@@ -38,22 +30,42 @@ export function StatsProvider({ children }) {
     }
   };
 
+  const getDailyCaloricIntake = () => updateStat(statsService.getDailyCaloricIntake, 'calories');
+  const getDailyWaterIntake = () => updateStat(statsService.getDailyWaterIntake, 'water');
+  const getDailyProteinIntake = () => updateStat(statsService.getDailyProteinIntake, 'protein');
+  const getDailyCarbIntake = () => updateStat(statsService.getDailyCarbIntake, 'carbs');
+  const getDailyFatIntake = () => updateStat(statsService.getDailyFatIntake, 'fat');
+  const getDailySugarIntake = () => updateStat(statsService.getDailySugarIntake, 'sugar');
+  const getDailySodiumIntake = () => updateStat(statsService.getDailySodiumIntake, 'sodium');
+  const getDailyFibreIntake = () => updateStat(statsService.getDailyFibreIntake, 'fiber');
+
   const updateTodayStats = async () => {
     console.log('Updating food stats...');
-    // This could be used to fetch all relevant nutrient data in one go, if your API supports it
-    // For simplicity, you might call getDailyNutrientIntake for each nutrient here
-    const nutrients = ['calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fiber']; // Add other nutrients as needed
-    nutrients.forEach((nutrient) => {
-      getDailyNutrientIntake(nutrient);
-    });
+    await Promise.all([
+      getDailyCaloricIntake(),
+      getDailyWaterIntake(),
+      getDailyProteinIntake(),
+      getDailyCarbIntake(),
+      getDailyFatIntake(),
+      getDailySugarIntake(),
+      getDailySodiumIntake(),
+      getDailyFibreIntake(),
+    ]);
   };
-
 
   const value = useMemo(() => ({
     todayStats,
-    getDailyNutrientIntake,
     updateTodayStats,
-  }), [todayStats, getDailyNutrientIntake, updateTodayStats]);
+    // Add individual nutrient functions if needed externally
+    getDailyCaloricIntake,
+    getDailyWaterIntake,
+    getDailyProteinIntake,
+    getDailyCarbIntake,
+    getDailyFatIntake,
+    getDailySugarIntake,
+    getDailySodiumIntake,
+    getDailyFibreIntake,
+  }), [todayStats]);
 
   return (
     <StatsContext.Provider value={value}>

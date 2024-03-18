@@ -119,7 +119,7 @@ function Dashboard() {
 	const { userCommunities, getUserCommunities } = useCommunity([]);
 	const { todayStats, updateTodayStats } = useStats();
 	const { macroGoals, fetchMacroGoals } = useGoals(); 
-	const { latestLoggedFood, setLatestLoggedFood } = useFoodLog();
+	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
 	console.log({ userDetails });
 	// console.log(userDetails.data.forename);
 	// console.log(userDetails.data.streak);
@@ -137,13 +137,13 @@ function Dashboard() {
 				navigation.navigate('Login'); // Redirect to login if no token
 				return;
 			}
-			return token;
-		} catch (error) {
+			return token; 
+		} catch (error) { 
 			console.error("Error accessing AsyncStorage:", error);
 			navigation.navigate('Login'); // Redirect to login if error
 		}
-	}; 
-
+	};  
+	
 	useEffect(() => {
 		setLoading(true);
 	
@@ -166,7 +166,7 @@ function Dashboard() {
                     updateUserDetails(),
                     updateTodayStats(),
                     getUserCommunities(),
-                    setLatestLoggedFood(),
+                    getLatestLoggedFood(),
                     fetchMacroGoals()
                 ]);
 			} catch (error) {
@@ -211,7 +211,7 @@ function Dashboard() {
 						</View>
 
 						<View style={styles.rightComponentContainer}>
-							<RecentLog streak={userDetails?.data?.streak} userLogStats={setLatestLoggedFood} />
+							<RecentLog streak={userDetails?.data?.streak} userLogStats={latestLoggedFood} />
 						</View>
 					</View>
 
