@@ -20,7 +20,7 @@ export function FoodLogProvider({ children }) {
         }
         const food = await foodLogService.getLatestLoggedFood();
 		console.log('Updating latestLoggedFood to:', food.data);
-		setLatestLoggedFood(prevState => ({ ...prevState, ...food.data}));
+        setLatestLoggedFood(food.data);
         console.log('Latest logged food CONTEXT:', food.data.macros);
     } catch (error) {
         console.error("Error fetching latest logged food:", error);
