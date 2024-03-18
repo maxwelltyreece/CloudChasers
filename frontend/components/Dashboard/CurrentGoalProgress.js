@@ -238,8 +238,18 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 
 
 	useEffect(() => {
-		const finalWidth = (progress / max) * containerWidth;
-
+		// Safe division function to avoid dividing by zero
+		const safeDivision = (numerator, denominator, containerWidth) => {
+			if (denominator > 0) {
+				return (numerator / denominator) * containerWidth;
+			} else {
+				// Default to 0 or any other fallback width
+				return 0;
+			}
+		};
+	
+		const finalWidth = safeDivision(progress, max, containerWidth);
+	
 		Animated.timing(animatedWidth, {
 			toValue: finalWidth,
 			duration: 1000,
@@ -296,7 +306,7 @@ function GoalProgressBar({ todayStats, goals }) {
 	let calorieGoal = 2500;
 	let waterGoal = 2000;
 	if (goals.goals) {
-
+		
 		calorieGoal = goals.goals.find(goal => goal.measurement === 'calories')?.maxTargetMass || 0;
 		waterGoal = goals.goals.find(goal => goal.measurement === 'water')?.maxTargetMass || 0;
 

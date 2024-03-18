@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
 });
 
 function RecentLog({ streak, userLogStats }) {
-	// const { lastLogDate, lastLogMealType, calories, protein, carbs, fat, fiber, water, sugar, sodium } = userLogStats;
+	// const { lastLogDate, lastLogMealType, calories, protein, carbs, fat, fibre, water, sugar, sodium } = userLogStats;
 	const {
 		lastLogDate = 'N/A',
 		lastLogMealType = 'N/A',
@@ -100,7 +100,7 @@ function RecentLog({ streak, userLogStats }) {
 		protein = 0,
 		carbs = 0,
 		fat = 0,
-		fiber = 0,
+		fibre = 0,
 		water = 0,
 		sugar = 0,
 		sodium = 0,
@@ -141,7 +141,7 @@ RecentLog.propTypes = {
 		protein: PropTypes.number,
 		carbs: PropTypes.number,
 		fat: PropTypes.number,
-		fiber: PropTypes.number,
+		fibre: PropTypes.number,
 		water: PropTypes.number,
 		sugar: PropTypes.number,
 		sodium: PropTypes.number,

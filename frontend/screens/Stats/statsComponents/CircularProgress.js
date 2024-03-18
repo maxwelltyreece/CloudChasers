@@ -1,74 +1,94 @@
-import React, { useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { CircularProgressBase } from 'react-native-circular-progress-indicator';
-import { useFocusEffect } from '@react-navigation/native';
+import Proptypes from 'prop-types';
 
-const CircularProgressComponent = () => {
+const CircularProgressComponent = ({ todayStats, goals }) => {
   const [progressValues, setProgressValues] = useState({
-    value1: 0,
-    value2: 0,
-    value3: 0,
+    calories: 0,
+    protein: 0,
+    water: 0,
   });
+
   const colorScheme = {
-    value1: '#9f41ec',
-    value2: '#ec41aa',
-    value3: '#4160ec',
+    calories: '#ff592b',
+    middleRing: '#ff815e',
+    water: '#5edcff',
   };
 
-//carbs, fat, fibre, sugar, sodium
-  const resetProgressValues = () => setProgressValues({ value1: 0, value2: 0, value3: 0 });
-  const loadProgressValues = () => {
-    setProgressValues({ value1: 80, value2: 87, value3: 62 });
+  // Safe divide function to avoid dividing by zero
+  const safeDivide = (numerator, denominator) => {
+    return denominator === 0 ? 0 : (numerator / denominator) * 100;
   };
-  useFocusEffect(
-    useCallback(() => {
-      loadProgressValues();
-      return () => {
-        resetProgressValues();
-      };
-    }, [])
-  );
+
+  useEffect(() => {
+    const calculateProgress = () => {
+      let newProgressValues = { calories: 0, protein: 0, water: 0 };
+      if (goals && goals.goals && todayStats) {
+        goals.goals.forEach((goal) => {
+          switch (goal.measurement) {
+            case 'calories':
+              newProgressValues.calories = safeDivide(todayStats.calories, goal.maxTargetMass);
+              break;
+            case 'protein':
+              newProgressValues.protein = safeDivide(todayStats.protein, goal.maxTargetMass);
+              break;
+            case 'water':
+              newProgressValues.water = safeDivide(todayStats.water, goal.maxTargetMass);
+              break;
+            default:
+              break;
+          }
+        });
+      }
+      setProgressValues(newProgressValues);
+    };
+
+    calculateProgress();
+  }, [todayStats, goals]);
 
   return (
     <View style={styles.container}>
       <CircularProgressBase
-          {...props}
-          value={progressValues.value1}
-          radius={180}
-          activeStrokeColor={colorScheme.value1}
-          inActiveStrokeColor={colorScheme.value1}
-          displayValue={true}
+        value={progressValues.calories}
+        radius={140}
+        activeStrokeColor={colorScheme.calories}
+        inActiveStrokeColor={colorScheme.calories}
+        inActiveStrokeOpacity={0.2}
+        activeStrokeWidth={30}
+        inActiveStrokeWidth={30}
+        displayValue={false}
+      >
+        <CircularProgressBase
+          value={progressValues.protein}
+          radius={110}
+          activeStrokeColor={colorScheme.middleRing}
+          inActiveStrokeColor={colorScheme.middleRing}
+          inActiveStrokeOpacity={0.2}
+          activeStrokeWidth={22}
+          inActiveStrokeWidth={22}
+          displayValue={false}
         >
           <CircularProgressBase
-            {...props}
-            value={progressValues.value2}
-            radius={150}
-            activeStrokeColor={colorScheme.value2}
-            inActiveStrokeColor={colorScheme.value2}
-          >
-            <CircularProgressBase
-              {...props}
-              value={progressValues.value3}
-              radius={120}
-              activeStrokeColor={colorScheme.value3}
-              inActiveStrokeColor={colorScheme.value3}
-            />
+            value={progressValues.water}
+            radius={80}
+            activeStrokeColor={colorScheme.water}
+            inActiveStrokeColor={colorScheme.water}
+            inActiveStrokeOpacity={0.2}
+            activeStrokeWidth={15}
+            inActiveStrokeWidth={15}
+            displayValue={false}
+          />
         </CircularProgressBase>
       </CircularProgressBase>
 
       <View style={styles.keyContainer}>
-        <Text style={[styles.keyText, { color: colorScheme.value1 }]}>Calories: {progressValues.value1}%</Text>
-        <Text style={[styles.keyText, { color: colorScheme.value2 }]}>Protein: {progressValues.value2}%</Text>
-        <Text style={[styles.keyText, { color: colorScheme.value3 }]}>Water: {progressValues.value3}%</Text>
+        <Text style={[styles.keyText, { color: colorScheme.calories }]}>Calories: {progressValues.calories.toFixed(0)}%</Text>
+        <Text style={[styles.keyText, { color: colorScheme.middleRing }]}>Protein: {progressValues.protein.toFixed(0)}%</Text>
+        <Text style={[styles.keyText, { color: colorScheme.water }]}>Water: {progressValues.water.toFixed(0)}%</Text>
       </View>
     </View>
   );
-};
-
-const props = {
-  activeStrokeWidth: 30,
-  inActiveStrokeWidth: 30,
-  inActiveStrokeOpacity: 0.2,
 };
 
 const styles = StyleSheet.create({
@@ -79,13 +99,19 @@ const styles = StyleSheet.create({
   keyContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingTop: 10,
+    paddingTop: 20,
     width: '100%',
   },
   keyText: {
     marginHorizontal: 5,
-    fontSize: 18,
+    fontSize: 16,
+    fontFamily: 'Montserrat_700Bold',
   },
 });
+
+CircularProgressComponent.propTypes = {
+  todayStats: Proptypes.object,
+  goals: Proptypes.object,
+};
 
 export default CircularProgressComponent;

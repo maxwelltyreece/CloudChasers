@@ -236,7 +236,7 @@ const Goals = () => {
         protein: { value: 50, unit: 'g' },
         carbs: { value: 275, unit: 'g' },
         fat: { value: 77, unit: 'g' },
-        fiber: { value: 28, unit: 'g' },
+        fibre: { value: 28, unit: 'g' },
         sugar: { value: 50, unit: 'g' },
         sodium: { value: 2300, unit: 'mg' },
         water: { value: 2000, unit: 'ml' },
@@ -247,7 +247,7 @@ const Goals = () => {
         protein: 'g',
         carbs: 'g',
         fat: 'g',
-        fiber: 'g',
+        fibre: 'g',
         sugar: 'g',
         sodium: 'mg',
         water: 'ml',
@@ -322,7 +322,7 @@ const Goals = () => {
     return (
         <KeyboardAvoidingView
             style={{ flex: 1, marginTop: 20}}
-            behavior={Platform.OS === "ios" ? "height" : "height"}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
             keyboardVerticalOffset={Platform.OS === "ios" ? 92 : 0}
         >
             <View style={styles.container}>
