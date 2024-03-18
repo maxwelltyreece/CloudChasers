@@ -1,21 +1,24 @@
 import React, {useState} from 'react';
+
 import { View, FlatList, StyleSheet } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 //import Box from '../frontend/components/box';
 import RecipeBox from '../../../components/RecipeBox' 
+import ActionButton from './subscreensComponents/ActionButton.js';
+
 
 const recipes = [
-  { id: '1', title: 'Charred Cabbage', image: 'image-url-1' },
-  { id: '2', title: 'Roast Chicken', image: 'image-url-2' },
-  { id: '3', title: 'Pasta with Tomato Sauce', image: 'image-url-3' },
-  { id: '4', title: 'Grilled Salmon', image: 'image-url-4' },
-  { id: '5', title: 'Tofu Stir Fry', image: 'image-url-5'},
-  { id: '6', title: 'Roast Chicken', image: 'image-url-2' },
-  { id: '7', title: 'Pasta with Tomato Sauce', image: 'image-url-3' },
-  { id: '8', title: 'Grilled Salmon', image: 'image-url-4' },
-  { id: '9', title: 'Tofu Stir Fry', image: 'image-url-5'},
-  { id: '9', title: 'Tofu Stir Fry', image: 'image-url-5'},
-  { id: '9', title: 'Tofu Stir Fry', image: 'image-url-5'},
+//   { id: '1', title: 'Charred Cabbage', image: 'image-url-1' },
+//   { id: '2', title: 'Roast Chicken', image: 'image-url-2' },
+//   { id: '3', title: 'Pasta with Tomato Sauce', image: 'image-url-3' },
+//   { id: '4', title: 'Grilled Salmon', image: 'image-url-4' },
+//   { id: '5', title: 'Tofu Stir Fry', image: 'image-url-5'},
+//   { id: '6', title: 'Roast Chicken', image: 'image-url-2' },
+//   { id: '7', title: 'Pasta with Tomato Sauce', image: 'image-url-3' },
+//   { id: '8', title: 'Grilled Salmon', image: 'image-url-4' },
+//   { id: '9', title: 'Tofu Stir Fry', image: 'image-url-5'},
+//   { id: '9', title: 'Tofu Stir Fry', image: 'image-url-5'},
+//   { id: '9', title: 'Tofu Stir Fry', image: 'image-url-5'},
 ];
 
 function MyMeals() {
@@ -28,6 +31,10 @@ function MyMeals() {
 	const filteredRecipes = recipes.filter(recipe => 
 	  recipe.title.toLowerCase().includes(search.toLowerCase())
 	);
+
+	const handlePress = () => {
+		console.log("ActionButton clicked!");
+	  };
   
 	return (
 		<View style={styles.container}>
@@ -59,6 +66,12 @@ function MyMeals() {
 				columnWrapperStyle={styles.row}
 				style={styles.list}
 			/>
+			
+			<ActionButton
+				buttonColor="blue"
+				onPress={handlePress}
+			/>
+
 		</View>
 	);
   }
@@ -98,3 +111,7 @@ const styles = StyleSheet.create({
 });
 
 export default MyMeals;
+
+
+
+
