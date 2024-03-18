@@ -1,19 +1,18 @@
 import React, { useState, useRef } from 'react';
 import { View, Pressable, StyleSheet, Animated, Text } from 'react-native';
 import Modal from 'react-native-modal';
-import { useNavigation } from '@react-navigation/native'; // Assuming you are using React Navigation
 import TabBarIcon from './TabBarIcon';
 
-const AddModal = ({ isVisible, onClose, navigator, pageNames}) => {
+const AddModal = ({ isVisible, onBackdropPress, navigator, pageNames, toggleModal}) => {
   const [highlightedButton, setHighlightedButton] = useState(null);
-  const navigation = useNavigation(); // Navigation object
   const pulseAnimationFood = useRef(new Animated.Value(0)).current;
   const pulseAnimationWater = useRef(new Animated.Value(0)).current;
 
   const handleButtonPress = (buttonType) => {
     if (highlightedButton === buttonType) {
-      navigator.navigate(pageNames[buttonType]); // Navigate if pressed twice
-      setHighlightedButton(null); // Reset if pressed twice
+        toggleModal();
+        navigator.navigate(pageNames[buttonType]); // Navigate if pressed twice
+        setHighlightedButton(null); // Reset if pressed twice
     } else {
       setHighlightedButton(buttonType);
       startPulseAnimation(buttonType);
@@ -55,7 +54,8 @@ const AddModal = ({ isVisible, onClose, navigator, pageNames}) => {
   return (
     <Modal
       isVisible={isVisible}
-      onBackdropPress={onClose}
+      onBackdropPress={onBackdropPress}
+      
       backdropTransitionOutTiming={0}
       animationIn="fadeIn"
       animationOut="fadeOut"

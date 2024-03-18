@@ -23,9 +23,14 @@ export default function MainNavigator() {
 
 	return (
 		<Stack.Navigator initialRouteName="Navbar">
-			<Stack.Screen
+            <Stack.Screen
 				name="Navbar"
 				component={Navbar}
+				options={{ headerShown: false }}
+			/>
+            <Stack.Screen
+				name="Data"
+				component={DataEntryNavigator}
 				options={{ headerShown: false }}
 			/>
 			<Stack.Screen
@@ -36,11 +41,6 @@ export default function MainNavigator() {
 			<Stack.Screen
 				name="Group"
 				component={GroupNavigator}
-				options={{ headerShown: false }}
-			/>
-            <Stack.Screen
-				name="Group"
-				component={DataEntryNavigator}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>
