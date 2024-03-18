@@ -12,18 +12,6 @@ export function GoalsProvider({ children }) {
     // State for all goals of the user
     const [goals, setGoals] = useState([]);
 
-    // Default daily values for each nutrient
-    // const defaultMacroGoals = {
-    //     calories: { value: 2000, unit: 'kcal' },
-    //     protein: { value: 50, unit: 'g' },
-    //     carbs: { value: 275, unit: 'g' },
-    //     fat: { value: 77, unit: 'g' },
-    //     fiber: { value: 28, unit: 'g' },
-    //     sugar: { value: 50, unit: 'g' },
-    //     sodium: { value: 2300, unit: 'mg' },
-    //     water: { value: 2000, unit: 'ml' },
-    // };
-
     // Initialize macroGoals state with defaultMacroGoals
     const [macroGoals, setMacroGoals] = useState({});
     

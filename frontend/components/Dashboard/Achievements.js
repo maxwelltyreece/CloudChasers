@@ -37,15 +37,19 @@ const styles = StyleSheet.create({
   },
 });
 
-// eslint-disable-next-line no-unused-vars
-const AchievementsFeature = ({ totalAchievements, completedAchievements }) => {
+const AchievementsFeature = ({ userAwards, allAwards }) => {
 
-    const screenWidth = Dimensions.get('window').width;
-    const ringSize = screenWidth * 0.26; // Ring size as a percentage of screen width, adjust as needed
-    const strokeWidth = ringSize * 0.14; // Stroke width as a percentage of ring size, adjust as needed
+  // console.log('USER AWARDS', userAwards);
+  // console.log('ALL AWARDS', allAwards);
 
-//  const percentage = (completedAchievements / totalAchievements) * 100;
-    const percentage = (10 / 25) * 100;
+  const screenWidth = Dimensions.get('window').width;
+  const ringSize = screenWidth * 0.26; // Ring size as a percentage of screen width, adjust as needed
+  const strokeWidth = ringSize * 0.14; // Stroke width as a percentage of ring size, adjust as needed
+
+  // Calculate the percentage of achievements completed
+  const completedAchievements = userAwards ? userAwards.length : 0;
+  const totalAchievements = allAwards ? allAwards.length : 0;
+  const percentage = totalAchievements > 0 ? (completedAchievements / totalAchievements) * 100 : 0;
 
   return (
     <View style={styles.container}>
@@ -58,13 +62,11 @@ const AchievementsFeature = ({ totalAchievements, completedAchievements }) => {
         backgroundColor="#F0F0F0"
         padding={10}
         lineCap="round"
-        rotation={0}
-        >
+        rotation={0}>
         {
           () => (
             <Text style={styles.progressText}>
-              {/* {`${completedAchievements}/${totalAchievements}`} */}
-              {'10/25'}
+              {`${completedAchievements}/${totalAchievements}`}
             </Text>
           )
         }
@@ -74,10 +76,14 @@ const AchievementsFeature = ({ totalAchievements, completedAchievements }) => {
   );
 };
 
+AchievementsFeature.propTypes = {
+  userAwards: PropTypes.array.isRequired,
+  allAwards: PropTypes.array.isRequired,
+};
 
 export default AchievementsFeature;
 
-AchievementsFeature.propTypes = {
-  totalAchievements: PropTypes.number.isRequired,
-  completedAchievements: PropTypes.number.isRequired,
-};
+// AchievementsFeature.defaultProps = {
+//   userAwards: [],
+//   allAwards: [],
+// };

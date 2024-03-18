@@ -293,11 +293,18 @@ function GoalProgressBar({ todayStats, goals }) {
 	const { reminders } = useReminders();
 	const navigation = useNavigation();
 
-	const calorieGoal = goals.goals.find(goal => goal.measurement === 'calories')?.maxTargetMass || 0;
-	const waterGoal = goals.goals.find(goal => goal.measurement === 'water')?.maxTargetMass || 0;
+	let calorieGoal = 2500;
+	let waterGoal = 2000;
+	if (goals.goals) {
 
+		calorieGoal = goals.goals.find(goal => goal.measurement === 'calories')?.maxTargetMass || 0;
+		waterGoal = goals.goals.find(goal => goal.measurement === 'water')?.maxTargetMass || 0;
 
-	console.log('Goals:', goals);
+	}
+
+	// console.log('Goals:', goals);
+
+	console.log('TODAY STATS:', todayStats);
 
 
 	function getClosestDate(reminder) {
@@ -340,14 +347,6 @@ function GoalProgressBar({ todayStats, goals }) {
 			return aClosest.date - bClosest.date;
 		}
 	});
-
-
-	// for (let i = 0; i < sortedReminders.length; i++) {
-	// 	console.log(sortedReminders[i].description, getClosestDate(sortedReminders[i]));
-	// }
-
-	// console.log('Sorted reminders:', sortedReminders);
-
 
 	return (
 		<View style={styles.progressBarComponentContainer}>

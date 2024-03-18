@@ -268,13 +268,13 @@ const Goals = () => {
             fetchData();
         }
 
-        console.log('Goals:', goals);
-        console.log('Fetched Goals:', fetchedGoals);
+        // console.log('Goals:', goals);
+        // console.log('Fetched Goals:', fetchedGoals);
     }, [fetchGoals, isGoalsFetched, goals.goals]);
 
 
     const handleUpdateGoal = async (nutrient, newMaxValue) => {
-        console.log('Updating goal for', nutrient, 'to new max value:', newMaxValue);
+        // console.log('Updating goal for', nutrient, 'to new max value:', newMaxValue);
 
         // Find the goal ID for the nutrient being updated
         const goalToUpdate = fetchedGoals.find(goal => goal.measurement === nutrient);
@@ -306,10 +306,10 @@ const Goals = () => {
 
 
     const handleInitializeGoals = () => {
-        console.log('Initializing goals');
+        // console.log('Initializing goals');
         // Iterate over the defaultMacroGoals and create each one
         Object.entries(defaultMacroGoals).forEach(([nutrient, goal]) => {
-            console.log(nutrient, goal, `Daily ${nutrient}`, goal.value);
+            // console.log(nutrient, goal, `Daily ${nutrient}`, goal.value);
             createGoal({
                 goalName: `Daily ${nutrient}`,
                 measurement: nutrient,

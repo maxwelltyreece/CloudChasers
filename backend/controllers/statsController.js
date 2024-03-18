@@ -62,13 +62,17 @@ exports.getStreaks = async (req, res) => {
 };
 
 const getNutrientIntake = async (req, res, nutrient) => {
+	console.log("Received date CONTROLLER:", req.query.date); // For GET requests
 	try {
 		const { date } = req.query;  // Ensure consistency in how you receive the date, query or body.
+		console.log("Received date CONTROLLER:", req.query.date); // For GET requests
 		const user = req.user;
 		const userDay = await UserDay.findOne({ userID: user._id, date: date });
 		if (!userDay) {
-			return res.status(400).send({ message: "No data for this day." });
-		}
+			//return res.status(400).send({ message: "No data for this day." });
+			// // Instead of sending a 400 error, return a response with a total nutrient value of 0
+            return res.status(200).send({ [`total${nutrient}`]: 0 });
+        }
 
 		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
 

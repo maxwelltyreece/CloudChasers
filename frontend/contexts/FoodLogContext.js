@@ -19,7 +19,7 @@ export function FoodLogProvider({ children }) {
 		}
 		const food = await foodLogService.getLatestLoggedFood();
 		setLatestLoggedFood(food);
-		console.log('Latest logged food:', food);
+		console.log('Latest logged food CONTEXT:', food);
 	}
 
 	const value = useMemo(() => ({

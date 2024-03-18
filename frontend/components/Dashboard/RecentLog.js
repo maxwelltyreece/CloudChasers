@@ -133,7 +133,7 @@ function RecentLog({ streak, userLogStats }) {
 export default RecentLog;
 
 RecentLog.propTypes = {
-	streak: PropTypes.number.isRequired,
+	streak: PropTypes.number,
 	userLogStats: PropTypes.shape({
 		lastLogDate: PropTypes.string,
 		lastLogMealType: PropTypes.string,

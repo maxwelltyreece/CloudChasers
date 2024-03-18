@@ -5,53 +5,50 @@ import propTypes from 'prop-types';
 const StatsContext = createContext();
 
 export function StatsProvider({ children }) {
-  const [todayStats, setTodayStats] = useState({
-    calories: 1250,
-    water: 800,
-    protein: 40,
-    carbs: 50,
-    fat: 32,
-    sugar: 12,
-    sodium: 15,
-    fiber: 22,
-  });
+  const [todayStats, setTodayStats] = useState({});
 
-  const updateStat = async (nutrientFunction, nutrient) => {
+  const updateStat = async (nutrientFunction, nutrient, date) => {
     try {
-      const response = await nutrientFunction();
+      const response = await nutrientFunction(date);
       if (response.data) {
+        console.log('RESPONSE DATAA', response.data);
         setTodayStats(prevStats => ({
           ...prevStats,
-          [nutrient]: response.data.total,
+          [nutrient]: response.data[`total${nutrient}`],
         }));
+        console.log('TODAY STATS:', todayStats);
       }
     } catch (error) {
-      console.error(`Error fetching daily ${nutrient} intake:`, error);
+      console.error(`Error fetching daily ${nutrient} intake CONTEXT:`, error);
     }
   };
 
-  const getDailyCaloricIntake = () => updateStat(statsService.getDailyCaloricIntake, 'calories');
-  const getDailyWaterIntake = () => updateStat(statsService.getDailyWaterIntake, 'water');
-  const getDailyProteinIntake = () => updateStat(statsService.getDailyProteinIntake, 'protein');
-  const getDailyCarbIntake = () => updateStat(statsService.getDailyCarbIntake, 'carbs');
-  const getDailyFatIntake = () => updateStat(statsService.getDailyFatIntake, 'fat');
-  const getDailySugarIntake = () => updateStat(statsService.getDailySugarIntake, 'sugar');
-  const getDailySodiumIntake = () => updateStat(statsService.getDailySodiumIntake, 'sodium');
-  const getDailyFibreIntake = () => updateStat(statsService.getDailyFibreIntake, 'fiber');
+
+  const getDailyCaloricIntake = (date) => updateStat(statsService.getDailyCaloricIntake, 'calories', date);
+  const getDailyWaterIntake = (date) => updateStat(statsService.getDailyWaterIntake, 'water', date);
+  const getDailyProteinIntake = (date) => updateStat(statsService.getDailyProteinIntake, 'protein', date);
+  const getDailyCarbIntake = (date) => updateStat(statsService.getDailyCarbIntake, 'carbs', date);
+  const getDailyFatIntake = (date) => updateStat(statsService.getDailyFatIntake, 'fat', date);
+  const getDailySugarIntake = (date) => updateStat(statsService.getDailySugarIntake, 'sugar', date);
+  const getDailySodiumIntake = (date) => updateStat(statsService.getDailySodiumIntake, 'sodium', date);
+  const getDailyFibreIntake = (date) => updateStat(statsService.getDailyFibreIntake, 'fibre', date);
 
   const updateTodayStats = async () => {
+    const today = new Date().toISOString().split('T')[0];
+    console.log('TODAY:', today);
+
     console.log('Updating food stats...');
     await Promise.all([
-      getDailyCaloricIntake(),
-      getDailyWaterIntake(),
-      getDailyProteinIntake(),
-      getDailyCarbIntake(),
-      getDailyFatIntake(),
-      getDailySugarIntake(),
-      getDailySodiumIntake(),
-      getDailyFibreIntake(),
+        getDailyCaloricIntake(today),
+        getDailyWaterIntake(today),
+        getDailyProteinIntake(today),
+        getDailyCarbIntake(today),
+        getDailyFatIntake(today),
+        getDailySugarIntake(today),
+        getDailySodiumIntake(today),
+        getDailyFibreIntake(today),
     ]);
-  };
+};
 
   const value = useMemo(() => ({
     todayStats,
