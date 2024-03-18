@@ -57,7 +57,7 @@ const AddModal = ({ isVisible, onBackdropPress, navigator, pageNames, toggleModa
       onBackdropPress={onBackdropPress}
       
       backdropTransitionOutTiming={0}
-      animationIn="fadeIn"
+      animationIn="pulse"
       animationOut="fadeOut"
       backdropColor="rgba(0,0,0,0.5)"
       animationInTiming={300}

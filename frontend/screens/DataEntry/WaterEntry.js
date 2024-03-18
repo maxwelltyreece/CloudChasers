@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import globalStyles from '../../styles/global';
 
@@ -8,7 +8,8 @@ const styles = StyleSheet.create({
     flexGrow: 1, 
     paddingHorizontal: 20,
     backgroundColor: '#F0F0F0',
-    paddingBottom: 15, 
+    paddingVertical: 25,
+    justifyContent: 'center',
   },
   label: {
     marginBottom: 5,
@@ -17,13 +18,14 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     marginBottom: 20,
+    paddingTop: 30,
   },
   picker: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
+    height: 200,
     marginBottom: 10,
+    borderColor: '#c7c7c7',
+    borderWidth: 5,
+    borderRadius: 30,
   },
   buttonContainer: {
     marginBottom: 20,
@@ -34,9 +36,10 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderRadius: 15,
+    alignSelf: 'center',
   },
   buttonText: {
-    color: '#fff', // White text color
+    color: '#fff',
     textAlign: 'center',
     fontFamily: 'Montserrat_700Bold',
     fontSize: 16,
@@ -64,9 +67,9 @@ function WaterEntry() {
           ))}
         </Picker>
       </View>
-      <View style={styles.buttonContainer}>
-        <Button title="Submit" onPress={handleWaterEntry} />
-      </View>
+      <TouchableOpacity style={styles.button} onPress={handleWaterEntry}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
     </View>
   );
 }
