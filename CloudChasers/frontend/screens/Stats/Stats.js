@@ -1,39 +1,40 @@
 import React, { useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import { StatsContext } from '../../contexts/StatsContext.js';
-import { fetchStats } from '../../services/StatsService.js';
+import { useStats } from '../../contexts/StatsContext';
+import { useGoals } from '../../contexts/GoalsContext';
 
 import globalStyles from '../../styles/global';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../../screens/IPIndex';
-
 import WelcomeBar from './statsComponents/WelcomeBar';
 import CircularProgressComponent from './statsComponents/CircularProgress.js';
 import NutritionProgress from './statsComponents/NutritionProgress.js';
 
+
+
 const Stats = () => {
 
-  const { stats, setStats } = useContext(StatsContext);
+  //const { todayStats, updateTodayStats } = useStats();
+  //const { streaks, dailyCaloricIntake, dailyWaterIntake, dailyProteinIntake, dailyCarbIntake, dailyFatIntake, dailySugarIntake, dailySodiumIntake, dailyFibreIntake } = useStats();
+  
+  // const { todaysStats, updateTodaysStats } = useStats();
+  // //const { goals, fetchGoals } = useGoals();
 
-  useEffect(() => {
-    const getStats = async () => {
-      const data = await fetchStats();
-      setStats(data);
-    };
+  // console.log('todaysStats:', todaysStats);
+  // //console.log('goals:', goals);
 
-    getStats();
-  }, []);
+  // console.log('streaks:', streaks);
+  // console.log('dailyCaloricIntake:', dailyCaloricIntake);
 
+  // useEffect(() => {
+  //   const getStats = async () => {
+  //     const data = await fetchStats();
+  //     setStats(data);
+  //   };
 
-  useEffect(() => {
-    const getStats = async () => {
-      const data = await fetchStats();
-      setStats(data);
-    };
-
-    getStats();
-  }, []);
+  //   getStats();
+  // }, []);
 
   // Dummy Data
   const nutrientValues = {
@@ -54,11 +55,12 @@ const Stats = () => {
   ];
 
   // Dummy goals for protein, carbs, and calories
-  const goals = {
+  const macrogoals = {
     protein: 100, 
     carbs: 60, 
     calories: 1200 
   };
+  
   const prepareChartData = (nutrient) => {
     return weeklyIntake.map(day => ({
       day: day.day,
@@ -74,11 +76,12 @@ const Stats = () => {
       </View>
       
       <View style={styles.ringComp}>
-        <CircularProgressComponent value={75} maxValue={100} />
+        <CircularProgressComponent value={75} maxValue={100}  />
+       
       </View>
 
       <View style={styles.progressBarContainer}>
-      <NutritionProgress label="Carbs" value={nutrientValues.carbs} maxValue={100}  />
+        <NutritionProgress label="Carbs" value={nutrientValues.carbs} maxValue={100}  />
         <NutritionProgress label="Sugar" value={nutrientValues.sugar} maxValue={100}  />
         <NutritionProgress label="Fat" value={nutrientValues.fat} maxValue={100} />
         <NutritionProgress label="Sodium" value={nutrientValues.sodium} maxValue={100} />
