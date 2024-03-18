@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet, TextInput } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TextInput, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import proptypes from 'prop-types';
 import { useGoals } from '../../../contexts/GoalsContext';
 
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     button: {
-        height: '82%',
+        height: '85%',
         width: 'auto',
         // marginTop: 10,
         backgroundColor: '#FF815E',
@@ -159,7 +159,8 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
     // };
 
     const handleUpdate = () => {
-        onUpdate(nutrient, goalValue);
+        const updatedValue = goalValue.trim() === '' ? '0' : goalValue;
+        onUpdate(nutrient, updatedValue);
         setIsEditing(false);
     };
 
@@ -176,13 +177,17 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
                         <View style={styles.infoSection}>
                             <View style={styles.currentGoalInfoSection}>
                                 <Text style={styles.currentGoalInfoTitle}>{capitalizeFirstLetter(nutrient)}: </Text>
+                                {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}> */}
                                 <TextInput
                                     style={styles.input}
                                     onChangeText={setGoalValue}
                                     value={goalValue}
                                     keyboardType="numeric"
-                                    placeholder="New Goal"
+                                    placeholder="Goal"
+                                    returnKeyType="done"
+                                    onSubmitEditing={Keyboard.dismiss}
                                 />
+                                {/* </TouchableWithoutFeedback> */}
                             </View>
                         </View>
                         <View style={styles.buttonSection}>
@@ -315,29 +320,35 @@ const Goals = () => {
     };
 
     return (
-        <View style={styles.container}>
-            {isGoalsFetched && fetchedGoals.length === 0 && (
-                <View style={styles.container}>
-                    <Pressable style={styles.intialiseButton} onPress={handleInitializeGoals}>
-                        <Text style={styles.initialiseButtonText}>Initialize Goals to Begin</Text>
-                    </Pressable>
-                    <Text style={styles.initialiseInfoText}>(Leave page and enter again after intialising goals)</Text>
+        <KeyboardAvoidingView
+            style={{ flex: 1, marginTop: 20}}
+            behavior={Platform.OS === "ios" ? "height" : "height"}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 92 : 0}
+        >
+            <View style={styles.container}>
+                {isGoalsFetched && fetchedGoals.length === 0 && (
+                    <View style={styles.container}>
+                        <Pressable style={styles.intialiseButton} onPress={handleInitializeGoals}>
+                            <Text style={styles.initialiseButtonText}>Initialize Goals to Begin</Text>
+                        </Pressable>
+                        <Text style={styles.initialiseInfoText}>(Leave page and enter again after intialising goals)</Text>
+                    </View>
+                )}
+                <View style={styles.goalsContainer}>
+                    {fetchedGoals.map((goal) => (
+                        <GoalItem
+                            key={goal._id}
+                            nutrient={goal.measurement}
+                            currentGoal={{
+                                value: goal.maxTargetMass,
+                                unit: nutrientUnits[goal.measurement] || ' ',
+                            }}
+                            onUpdate={handleUpdateGoal}
+                        />
+                    ))}
                 </View>
-            )}
-            <View style={styles.goalsContainer}>
-                {fetchedGoals.map((goal) => (
-                    <GoalItem
-                        key={goal._id}
-                        nutrient={goal.measurement}
-                        currentGoal={{
-                            value: goal.maxTargetMass,
-                            unit: nutrientUnits[goal.measurement] || ' ',
-                        }}
-                        onUpdate={handleUpdateGoal}
-                    />
-                ))}
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 };
 

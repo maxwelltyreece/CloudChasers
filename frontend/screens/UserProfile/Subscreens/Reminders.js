@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import {
 	View, Text, ScrollView, KeyboardAvoidingView, StyleSheet, Modal, 
-	TextInput, Pressable, Alert, Platform, Dimensions
+	TextInput, Pressable, Alert, Platform, Dimensions,
 } from 'react-native';
 import { useReminders } from '../../../contexts/RemindersContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -487,7 +487,7 @@ function Reminders() {
 							<TextInput
 								style={[styles.descriptionInput]}
 								placeholder="Description"
-								onChangeText={(text) => setNewReminder({ ...newReminder, description: text })}
+								onChange={(text) => setNewReminder({ ...newReminder, description: text })}
 								value={newReminder.description}
 								multiline
 							/>

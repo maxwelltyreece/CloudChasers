@@ -117,8 +117,8 @@ function Dashboard() {
 	const [loading, setLoading] = useState(false);
 	const { userDetails, updateUserDetails } = useUser();
 	const { userCommunities, getUserCommunities } = useCommunity([]);
-	const { todayStats, updateTodayStats } = useStats();
-	const { macroGoals, fetchMacroGoals } = useGoals(); 
+	const { todayStats, updateTodayStats } = useStats(); 
+	const { goals, fetchGoals } = useGoals(); 
 	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
 	console.log({ userDetails });
 	// console.log(userDetails.data.forename);
@@ -126,7 +126,7 @@ function Dashboard() {
 	console.log({ userCommunities });
 	console.log({ todayStats });
 	console.log({ latestLoggedFood });
-	console.log({ macroGoals });
+	console.log({ goals });
 	// console.log({ 'COMMUNITIES': userCommunities });
 
 	const checkUserLogin = async () => {
@@ -167,7 +167,7 @@ function Dashboard() {
                     updateTodayStats(),
                     getUserCommunities(),
                     getLatestLoggedFood(),
-                    fetchMacroGoals()
+                    fetchGoals()
                 ]);
 			} catch (error) {
 				console.error("Error fetching data for dashboard:", error);
@@ -201,7 +201,7 @@ function Dashboard() {
 						<WelcomeBar name={userDetails?.data?.forename} />
 					</View>
 
-					<CurrentGoalProgress todayStats={todayStats} nutrientGoals={macroGoals}/>
+					<CurrentGoalProgress todayStats={todayStats} goals={goals}/>
 
 					<CommunityStatus communities={userCommunities} /> 
 
