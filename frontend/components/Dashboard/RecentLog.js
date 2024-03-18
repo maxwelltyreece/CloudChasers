@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 // React Imports
 import React from 'react';
@@ -74,20 +75,24 @@ const styles = StyleSheet.create({
 	recentLogDatetimeText: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		marginBottom: 4,
+		marginBottom: 5,
+		marginLeft: 4,
 	},
 	recentLogMealTypeText: {
 		fontSize: 15,
 		fontWeight: 'bold',
+		marginLeft: 4,
 	},
 	logInfoText: {
-		fontSize: 14,
+		fontSize: 17,
 		fontWeight: '500',
+		marginLeft: 4,
 	},
 	logInfoMeasurementText: {
 		// marginTop: 5,
-		fontSize: 14,
+		fontSize: 17,
 		fontWeight: '500',
+		marginLeft: 4,
 	},
 });
 
@@ -106,6 +111,8 @@ function RecentLog({ streak, userLogStats }) {
 		sodium = 0,
 	} = userLogStats || {};
 
+	console.log('userLogStats:', userLogStats);
+
 	return (
 		<View style={styles.recentLogContainer}>
 			<View style={styles.recentLogTitleContainer}>
@@ -114,10 +121,10 @@ function RecentLog({ streak, userLogStats }) {
 			</View>
 			{userLogStats ? (
 				<View style={styles.innerRecentLogContainer}>
-					<Text style={styles.recentLogDatetimeText}>{userLogStats.lastLogDate}</Text>
+					<Text style={styles.recentLogDatetimeText}>{userLogStats.latestUserDayMeal.name}</Text>
 					{/* Additional details from userLogStats */}
 					<Text style={styles.logInfoText}>Calories:
-						<Text style={styles.logInfoMeasurementText}> {userLogStats.calories} kcal</Text>
+						<Text style={styles.logInfoMeasurementText}> {userLogStats.macros.calories} kcal</Text>
 					</Text>
 					{/* Display other details similarly */}
 				</View>

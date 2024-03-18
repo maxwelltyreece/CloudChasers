@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#FF815E',
 	},
 });
-
+ 
 
 // Dashboard screen
 function Dashboard() {
@@ -125,6 +125,8 @@ function Dashboard() {
 	// console.log({ userAwards });
 	// console.log({ 'COMMUNITIES': userCommunities });
 
+	console.log('Latest logged food: DASHBOARD', latestLoggedFood);
+
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
@@ -139,23 +141,13 @@ function Dashboard() {
 			navigation.navigate('Login'); // Redirect to login if error
 		}
 	};
-
+ 
 	useEffect(() => {
 		setLoading(true);
 
 		const fetchData = async () => {
 			try {
 				await checkUserLogin(); // Check if user is logged in
-
-				// // Fetch all necessary data in parallel
-				// await Promise.all([
-				// 	userDetails ? Promise.resolve() : updateUserDetails(),
-				// 	// Add conditions to fetch todayStats and userCommunities only if they haven't been fetched yet
-				// 	todayStats ? Promise.resolve() : updateTodayStats(),
-
-				// 	userCommunities.length > 0 ? Promise.resolve() : getUserCommunities(),
-				// 	latestLoggedFood ? Promise.resolve() : setLatestLoggedFood()
-				// ]);
 
 				// Fetch all necessary data in parallel
 				await Promise.all([
@@ -178,7 +170,7 @@ function Dashboard() {
 		fetchData();
 	}, []); 
 	
- 
+
 	if (loading) {
 		return (
 			<View style={styles.dashboardContainer}>

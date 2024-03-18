@@ -12,15 +12,22 @@ export function FoodLogProvider({ children }) {
 	const [latestLoggedFood, setLatestLoggedFood] = useState(null);
 
 	const getLatestLoggedFood = async () => {
-		const token = await AsyncStorage.getItem('token');
-		if (!token) {
-			console.error('Token not available');
-			return;
-		}
-		const food = await foodLogService.getLatestLoggedFood();
-		setLatestLoggedFood(food);
-		console.log('Latest logged food CONTEXT:', food);
-	}
+    try {
+        const token = await AsyncStorage.getItem('token');
+        if (!token) {
+            console.error('Token not available');
+            return;
+        }
+        const food = await foodLogService.getLatestLoggedFood();
+		console.log('Updating latestLoggedFood to:', food.data);
+		setLatestLoggedFood(prevState => ({ ...prevState, ...food.data}));
+        console.log('Latest logged food CONTEXT:', food.data.macros);
+    } catch (error) {
+        console.error("Error fetching latest logged food:", error);
+        // Optionally, handle the error by setting some state or through other means
+    }
+};
+
 
 	const value = useMemo(() => ({
 		latestLoggedFood,

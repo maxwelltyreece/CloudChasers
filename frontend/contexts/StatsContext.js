@@ -11,12 +11,10 @@ export function StatsProvider({ children }) {
     try {
       const response = await nutrientFunction(date);
       if (response.data) {
-        console.log('RESPONSE DATAA', response.data);
         setTodayStats(prevStats => ({
           ...prevStats,
           [nutrient]: response.data[`total${nutrient}`],
         }));
-        console.log('TODAY STATS:', todayStats);
       }
     } catch (error) {
       console.error(`Error fetching daily ${nutrient} intake CONTEXT:`, error);

@@ -314,7 +314,7 @@ function GoalProgressBar({ todayStats, goals }) {
 
 	// console.log('Goals:', goals);
 
-	console.log('TODAY STATS:', todayStats);
+	// console.log('TODAY STATS:', todayStats);
 
 
 	function getClosestDate(reminder) {

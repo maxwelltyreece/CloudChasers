@@ -125,8 +125,8 @@ ProgressBar.propTypes = {
 
 const NutritionProgress = ({ todayStats, goals }) => {
 
-    console.log('Today Stats: COMPONMENT', todayStats);
-    console.log('Goals: COMPONENT', goals);
+    // console.log('Today Stats: COMPONMENT', todayStats);
+    // console.log('Goals: COMPONENT', goals);
 
     // Initializing an object to hold the nutrient goals
     let nutrientGoals = {
@@ -149,8 +149,8 @@ const NutritionProgress = ({ todayStats, goals }) => {
         });
     }
 
-    console.log('Nutrient Goals:', nutrientGoals);
-    console.log('Today Stats TEST:', todayStats['carbs']);
+    // console.log('Nutrient Goals:', nutrientGoals);
+    // console.log('Today Stats TEST:', todayStats['carbs']);
   
     // Define the list of nutrients we want to display progress bars for
     const nutrientsOfInterest = ['carbs', 'fat', 'sodium', 'sugar', 'fibre'];
