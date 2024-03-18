@@ -234,128 +234,89 @@ exports.searchFoods = async (req, res) => {
 	}
 };
 
-//TODO: last log
-exports.getLastLoggedFoodOrRecipe2 = async (req, res) => {
-    const { userID } = req.user;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    try {
-        const userDay = await UserDay.findOne({ userID, date: today });
-
-        if (!userDay) {
-            return res.status(404).send({ message: 'No day logs found' });
-        }
-
-		const countMeals = await UserDayMeal.countDocuments({ userDayID: userDay._id });
-        const latestUserDayMeal = await UserDayMeal.find({ userDayID: userDay._id, order: countMeals})
-
-        if (!latestUserDayMeal) {
-            return res.status(404).send({ message: 'No meal logs found' });
-        }
-        const mealItems = await MealItem.find({ userDayMealID: latestUserDayMeal._id });
-
-        if (mealItems.length > 0) {
-            return res.status(200).send({ latestUserDayMeal, mealItems });
-        }
-
-        return res.status(404).send({ message: 'No food or recipe logs found' });
-    }
-    catch (error) {
-        res.status(500).send({ error: error.toString() });
-    }
-};
-
 exports.getLastLoggedFoodOrRecipe = async (req, res) => {
-    const user = req.user;
+	const user = req.user;
 
-    try {
-        const latestUserDay = await UserDay
-            .findOne({ userID: user._id })
-            .sort({ date: -1 });
+	try {
+		const latestUserDay = await UserDay
+			.findOne({ userID: user._id })
+			.sort({ date: -1 });
 
-        if (!latestUserDay) {
-            return res.status(404).send({ message: 'No day logs found' });
-        }
+		if (!latestUserDay) {
+			return res.status(404).send({ message: 'No day logs found' });
+		}
 
-        const latestUserDayMeal = await UserDayMeal
-            .findOne({ userDayID: latestUserDay._id })
-            .sort({ order: -1 });
+		const latestUserDayMeal = await UserDayMeal
+			.findOne({ userDayID: latestUserDay._id })
+			.sort({ order: -1 });
 
-        if (!latestUserDayMeal) {
-            return res.status(404).send({ message: 'No meal logs found' });
-        }
+		if (!latestUserDayMeal) {
+			return res.status(404).send({ message: 'No meal logs found' });
+		}
 
-        const mealItems = await MealItem.find({ userDayMealID: latestUserDayMeal._id });
+		const mealItems = await MealItem.find({ userDayMealID: latestUserDayMeal._id });
 
-        if (mealItems.length > 0) {
+		if (mealItems.length > 0) {
 			let macros = await getUserDayMealMacros(latestUserDayMeal._id);
 			return res.status(200).send({ latestUserDayMeal, mealItems, macros });
 				
-        }
+		}
 
-        return res.status(404).send({ message: 'No food or recipe logs found' });
-    }
-    catch (error) {
-        res.status(500).send({ error: error.toString() });
-    }
+		return res.status(404).send({ message: 'No food or recipe logs found' });
+	}
+	catch (error) {
+		res.status(500).send({ error: error.toString() });
+	}
 };
 
 async function getUserDayMealMacros(userDayMealID) {
-    try {
-        const mealItems = await MealItem.find({ userDayMealID });
-        let totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
+	try {
+		const mealItems = await MealItem.find({ userDayMealID });
+		let totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
 
-        for (const mealItem of mealItems) {
-            let macroTotals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
-            let totalWeight = 0;
+		for (const mealItem of mealItems) {
+			let macroTotals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
+			let totalWeight = 0;
 
-            if (mealItem.foodItemID) {
-                const foodItem = await FoodItem.findById(mealItem.foodItemID);
-                const food = await Food.findById(foodItem.foodID);
-                for (const macro in macroTotals) {
-                    macroTotals[macro] += food[macro] * (foodItem.weight / 100);
-                }
-                totalWeight = foodItem.weight;
-            } else {
+			if (mealItem.foodItemID) {
+				const foodItem = await FoodItem.findById(mealItem.foodItemID);
+				const food = await Food.findById(foodItem.foodID);
+				for (const macro in macroTotals) {
+					macroTotals[macro] += food[macro] * (foodItem.weight / 100);
+				}
+				totalWeight = foodItem.weight;
+			} else {
 
 				const recipeQuantity = await RecipeQuantity.findById(mealItem.recipeQuantityID);
-				
 				const allRecipeItems = await RecipeItem.find({ recipeID: recipeQuantity.recipeID });
 				
 				for (const recipeItem of allRecipeItems) {
-				
 					const foodItem = await FoodItem.findById(recipeItem.foodItemID);
-				
 					const food = await Food.findById(foodItem.foodID);
 				
 					for (const macro in macroTotals) {
 						macroTotals[macro] += food[macro] * (foodItem.weight / 100);
 					}
-				
 					totalWeight += foodItem.weight;
 				}
 				
 				for (const macro in macroTotals) {
 					macroTotals[macro] *= (recipeQuantity.totalRecipeWeight / totalWeight);
 				}
-            }
-
-            for (const macro in totals) {
-                totals[macro] += macroTotals[macro];
-            }
-        }
-        return totals;
-    } catch (error) {
-        console.error(error);
-        throw new Error('Failed to get meal macros: ' + error.toString());
-    }
+			}
+			for (const macro in totals) {
+				totals[macro] += macroTotals[macro];
+			}
+		}
+		return totals;
+	} catch (error) {
+		console.error(error);
+		throw new Error('Failed to get meal macros: ' + error.toString());
+	}
 }
 
-//TODO: Userdays for the last week
-
 //TODO: saerch recipes
-
+//TODO: add ingredients 
 //exporting createUserDayMeal
 exports.createUserDayMeal = createUserDayMeal;
 //exporting createUserDay
