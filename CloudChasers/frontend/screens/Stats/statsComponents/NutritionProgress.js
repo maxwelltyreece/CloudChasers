@@ -42,14 +42,13 @@ const NutritionProgress = ({ label, value, maxValue = 100, unit = 'g', backgroun
   );
 };
 
-// ... rest of your code ...
 
 const styles = StyleSheet.create({
   container: {
     marginBottom: 5,
+    width: '90%',
     paddingHorizontal: 18,
     paddingVertical: 8,
-    width: '90%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.22,
