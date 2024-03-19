@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import proptypes from 'prop-types';
 
 const messages = {
   good: [
@@ -19,8 +20,9 @@ const messages = {
   ],
 };
 
-const AnnouncementBar = ({ streak, progressData }) => {
+const AnnouncementBar = ({ progressData }) => {
   const averageProgress = progressData.data.reduce((acc, curr) => acc + curr, 0) / progressData.data.length;
+
 
   let progressLevel;
   if (averageProgress < 0.5) {
@@ -64,5 +66,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
+AnnouncementBar.propTypes = {
+  progressData: proptypes.object.isRequired,
+};
 
 export default AnnouncementBar;

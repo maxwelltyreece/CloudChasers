@@ -138,7 +138,7 @@ const getMacroGoals = async () => {
  * @param {Object} macroGoalData The data for the macro goal to update.
  * @returns {Promise} Axios Response Promise with the updated macro goal.
  */
-const updateMacroGoals = async (nutrient, goalMaxValue) => {
+const updateMacroGoals = async (nutrient) => {
     try {
         const token = await AsyncStorage.getItem('token');
         const payload = {
