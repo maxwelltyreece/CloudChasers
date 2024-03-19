@@ -2,12 +2,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import { View } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import NewGroup from '../screens/Groups/NewGroup';
-import GroupPage from '../screens/Groups/GroupPage';
-import GroupMembers from '../screens/Groups/GroupMembers';
-import GroupSettings from '../screens/Groups/GroupSettings';
-import JoinGroup from '../screens/Groups/JoinGroup';
-import NewPost from '../screens/Groups/NewPost';
+import NewGroup from '../screens/Groups/NewGroup/NewGroup';
+import GroupPage from '../screens/Groups/GroupPage/GroupPage';
+import GroupMembers from '../screens/Groups/GroupMembers/GroupMembers';
+import GroupSettings from '../screens/Groups/GroupSettings/GroupSettings';
+import JoinGroup from '../screens/Groups/JoinGroup/JoinGroup';
+import NewPost from '../screens/Groups/NewPost/NewPost';
 
 const GroupStack = createStackNavigator();
 

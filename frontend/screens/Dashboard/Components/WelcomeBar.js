@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 
 const styles = StyleSheet.create({
-    // -------Weclome Bar-------//
     welcomeContainer: {
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
@@ -14,10 +13,9 @@ const styles = StyleSheet.create({
     },
     welcomeText: {
         fontSize: 32,
-        fontWeight: 'bold',
         color: '#333',
         left: '4%',
-        // fontFamily: 'Montserrat_700Bold',
+        fontFamily: 'Montserrat_700Bold',
     },
 });
 

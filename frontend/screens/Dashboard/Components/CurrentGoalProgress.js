@@ -5,7 +5,7 @@ import {
 	View, Text, StyleSheet, Animated, Pressable, ScrollView
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { useReminders } from '../../contexts/RemindersContext';
+import { useReminders } from '../../../contexts/RemindersContext';
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
 

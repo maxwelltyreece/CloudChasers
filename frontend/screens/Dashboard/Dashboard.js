@@ -5,7 +5,7 @@ import {
 
 import {
 	WelcomeBar, RecentLog, CommunityStatus, CurrentGoalProgress, AchievementsFeature,
-} from '../../components/Dashboard';
+} from './Components';
 
 import { useUser } from '../../contexts/UserContext';
 import { useCommunity } from '../../contexts/CommunityContext'; 
