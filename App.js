@@ -11,6 +11,7 @@ import React, { useState, useEffect } from 'react';
 // import { useFocusEffect } from '@react-navigation/native';
 import * as NavigationBar from 'expo-navigation-bar';
 
+// Font imports
 import {
 	useFonts,
 	Montserrat_100Thin,
@@ -26,10 +27,14 @@ import {
 
 import { UserProvider } from './frontend/contexts/UserContext';
 import { CommunityProvider } from './frontend/contexts/CommunityContext';
-import { FoodStatsProvider } from './frontend/contexts/foodStatsContext';
+import { StatsProvider } from './frontend/contexts/StatsContext';
+import { GoalsProvider } from './frontend/contexts/GoalsContext';
+import { RemindersProvider } from './frontend/contexts/RemindersContext';
+import { FoodLogProvider } from './frontend/contexts/FoodLogContext';
 // import AuthNavigator from './frontend/navigation/AuthNavigator';
 // import MainNavigator from './frontend/navigation/MainNavigator';
 import { getUserCommunities } from './frontend/services/CommunityService';
+import { Platform } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -57,8 +62,11 @@ export default function App() {
 
 	const [initialRoute, setInitialRoute] = useState(null);
 
+
 	useEffect(() => {
-		NavigationBar.setBackgroundColorAsync('#000');
+		if (Platform.OS === 'android') {
+			NavigationBar.setBackgroundColorAsync('#000');
+		}
 	}, []);
 
 	useEffect(() => {
@@ -84,14 +92,20 @@ export default function App() {
 	return (
 		<CommunityProvider>
 			<UserProvider>
-				<FoodStatsProvider>
-					<NavigationContainer>
-						<Stack.Navigator initialRouteName={initialRoute}>
-							<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-							<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-						</Stack.Navigator>
-					</NavigationContainer>
-				</FoodStatsProvider>
+				<FoodLogProvider>
+					<StatsProvider>
+						<GoalsProvider>
+							<RemindersProvider>
+								<NavigationContainer>
+									<Stack.Navigator initialRouteName={initialRoute}>
+										<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+										<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+									</Stack.Navigator>
+								</NavigationContainer>
+							</RemindersProvider>
+						</GoalsProvider>
+					</StatsProvider>
+				</FoodLogProvider>
 			</UserProvider>
 		</CommunityProvider>
 	);

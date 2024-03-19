@@ -11,5 +11,6 @@ router.get('/deleteGoal', userMiddleware, goalController.deleteGoal);
 router.post('/updateGoal', userMiddleware, goalController.updateGoal);
 router.get('/getMacroGoal', userMiddleware, goalController.getMacroGoal);
 router.get('/getUntrackedMacroGoals', userMiddleware, goalController.getUntrackedMacroGoals);
+router.post('/changeGoalMacroValue', userMiddleware, goalController.changeGoalMacroValue);
 
 module.exports = router;

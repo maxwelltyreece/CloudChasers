@@ -11,6 +11,7 @@ const communityRoutes = require('./routes/communityRoutes');
 const statsRoutes = require('./routes/statsRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const goalRoutes = require('./routes/goalRoutes');
+const awardRoutes = require('./routes/awardRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -39,6 +40,7 @@ app.use('/community', communityRoutes);
 app.use('/stats', statsRoutes);
 app.use('/image', imageRoutes);
 app.use('/goals', goalRoutes);
+app.use('/awards', awardRoutes);
 
 const { login } = require('./controllers/userController');
 
