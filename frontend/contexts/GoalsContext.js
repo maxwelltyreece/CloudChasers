@@ -80,25 +80,6 @@ export function GoalsProvider({ children }) {
             console.error('Error fetching macro goals:', error);
         }
     };
-    // const fetchMacroGoals = async () => {
-    //     try {
-    //         const { data } = await goalsService.getMacroGoals();
-            
-    //         // Creates a new object that merges default goals with fetched goals.
-    //         // This ensures that all nutrients are present and avoids direct modification of fetched data.
-    //         const mergedGoals = { ...defaultMacroGoals };
-    //         for (const nutrient in data) {
-    //             if (Object.prototype.hasOwnProperty.call(data, nutrient)) {
-    //                 mergedGoals[nutrient] = data[nutrient];
-    //             }
-    //         }
-    
-    //         setMacroGoals(mergedGoals);
-    //     } catch (error) {
-    //         console.error('Error fetching macro goals:', error);
-    //         setMacroGoals(defaultMacroGoals); // Reset to default values if fetching fails
-    //     }
-    // };
     
 
     /**

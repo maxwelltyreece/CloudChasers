@@ -14,7 +14,6 @@ const nutrientUnits = {
 };
 
 const styles = StyleSheet.create({
-    // -------Goal Progress Bar-------//
     progressBarComponentContainer: {
         justifyContent: 'center',
         alignContent: 'center',
