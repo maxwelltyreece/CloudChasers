@@ -5,10 +5,17 @@ import { LocalIP } from '../screens/IPIndex';
 const getLatestLoggedFood = async () => {
     try {
         const token = await AsyncStorage.getItem('token');
-        return await axios.get(`${LocalIP}/getLatestLoggedFood`, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-        console.error('Error fetching latest logged food:', error);
-        throw error;
+        const response = await axios.get(`http://${LocalIP}:3000/food/getLatestLoggedFood`, { 
+            headers: { Authorization: `Bearer ${token}` } 
+        });
+        return response;
+    } catch (error) { 
+        // Check if the error is due to a 404 status code
+        if (error.response && error.response.status === 404) {
+            return {}; // Return an empty object for a 404 error
+        }
+        console.error('Error fetching latest logged food SERVICE:', error);
+        throw error; // For any other errors, re-throw them to be handled elsewhere
     }
 }
 

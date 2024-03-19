@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const { get } = require('mongoose');
 const personalAward = require('../models/personalAward');
 const personalAwardItem = require('../models/personalAwardItem');

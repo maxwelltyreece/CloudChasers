@@ -31,8 +31,8 @@ import { StatsProvider } from './frontend/contexts/StatsContext';
 import { GoalsProvider } from './frontend/contexts/GoalsContext';
 import { RemindersProvider } from './frontend/contexts/RemindersContext';
 import { FoodLogProvider } from './frontend/contexts/FoodLogContext';
-// import AuthNavigator from './frontend/navigation/AuthNavigator';
-// import MainNavigator from './frontend/navigation/MainNavigator';
+import { AwardsProvider } from './frontend/contexts/AwardsContext';
+
 import { getUserCommunities } from './frontend/services/CommunityService';
 import { Platform } from 'react-native';
 
@@ -95,14 +95,16 @@ export default function App() {
 				<FoodLogProvider>
 					<StatsProvider>
 						<GoalsProvider>
-							<RemindersProvider>
-								<NavigationContainer>
-									<Stack.Navigator initialRouteName={initialRoute}>
-										<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
-										<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
-									</Stack.Navigator>
-								</NavigationContainer>
-							</RemindersProvider>
+							<AwardsProvider>
+								<RemindersProvider>
+									<NavigationContainer>
+										<Stack.Navigator initialRouteName={initialRoute}>
+											<Stack.Screen name="Auth" component={AuthNavigator} options={{ headerShown: false }} />
+											<Stack.Screen name="Main" component={MainNavigator} options={{ headerShown: false }} />
+										</Stack.Navigator>
+									</NavigationContainer>
+								</RemindersProvider>
+							</AwardsProvider>
 						</GoalsProvider>
 					</StatsProvider>
 				</FoodLogProvider>

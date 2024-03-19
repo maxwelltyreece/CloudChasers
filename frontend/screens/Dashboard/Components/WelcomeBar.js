@@ -23,14 +23,14 @@ function WelcomeBar({ name }) {
     return (
         <View style={styles.welcomeContainer}>
             <Text style={styles.welcomeText}>
-                Welcome, {name ? name : 'Loading...'}!
+                Welcome {name ? name : 'Loading...'}!
             </Text>
         </View>
     );
 }
 
 WelcomeBar.propTypes = {
-    name: PropTypes.string.isRequired,
+    name: PropTypes.string,
 };
 
 export default WelcomeBar;
