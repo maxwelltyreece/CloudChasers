@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 //import Box from '../frontend/components/box';
-import RecipeBox from '../../../components/RecipeBox'
+import RecipeBox from '../../../../components/RecipeBox'
+import { styles } from './styles';
 
 const recipes = [
 	{ id: '1', title: 'Charred Cabbage', image: 'image-url-1' },
@@ -18,7 +19,7 @@ const recipes = [
 	{ id: '9', title: 'Tofu Stir Fry', image: 'image-url-5' },
 ];
 
-function MyMeals() {
+function Recipes() {
 	const [search, setSearch] = useState('');
 
 	const updateSearch = (search) => {
@@ -63,39 +64,4 @@ function MyMeals() {
 	);
 }
 
-const styles = StyleSheet.create({
-	container: {
-		marginTop: 5,
-		flex: 1,
-		paddingHorizontal: 5,
-
-	},
-	list: {
-		flex: 1,
-	},
-	row: {
-		justifyContent: 'space-between',
-		paddingHorizontal: 8,
-	},
-	box: {
-		width: '45%',
-		aspectRatio: 1,
-		margin: 8,
-	},
-	searchInput: {
-		fontFamily: 'Montserrat_600SemiBold',
-		height: 40,
-		borderColor: 'black',
-		borderWidth: 1,
-		showCancel: true,
-		padding: 10,
-		borderRadius: 10,
-	},
-
-	titleContainer: {
-		alignSelf: 'stretch',
-		paddingHorizontal: '5%',
-	},
-});
-
-export default MyMeals;
+export default Recipes;

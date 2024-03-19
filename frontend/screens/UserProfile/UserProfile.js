@@ -18,8 +18,8 @@ function UserProfile() {
 
 	const UserProfileOptions = [
 		{
-			name: 'My Meals',
-			handler: () => navigation.navigate('MyMeals'),
+			name: 'Recipes',
+			handler: () => navigation.navigate('Recipes'),
 		},
 		{
 			name: 'Reminders',

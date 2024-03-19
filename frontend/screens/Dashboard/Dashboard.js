@@ -1,15 +1,12 @@
-// React related imports
 import React, { useState, useEffect } from 'react';
 import {
-	View, SafeAreaView, ActivityIndicator, Dimensions
+	View, SafeAreaView, ActivityIndicator
 } from 'react-native';
 
-// Component imports
 import {
 	WelcomeBar, RecentLog, CommunityStatus, CurrentGoalProgress, AchievementsFeature,
 } from '../../components/Dashboard';
 
-// Context imports
 import { useUser } from '../../contexts/UserContext';
 import { useCommunity } from '../../contexts/CommunityContext'; 
 import { useStats } from '../../contexts/StatsContext';
@@ -17,48 +14,33 @@ import { useGoals } from '../../contexts/GoalsContext';
 import { useFoodLog } from '../../contexts/FoodLogContext';
 
 
-// Other imports
-const { width } = Dimensions.get('window');
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 
 
-
-// Fake database
-// const fakeDB = {
-// 	recentMeals: [
-// 		{ id: 1, name: 'Breakfast Burrito', timestamp: new Date().setDate(new Date().getDate() - 1) },
-// 		{ id: 2, name: 'Chicken Salad', timestamp: new Date().setDate(new Date().getDate() - 2) },
-// 	],
-// 	currentStreak: 5, // Example streak
-// };
-
-// Dashboard screen
 function Dashboard() {
 	const navigation = useNavigation();
-	// const [meals] = useState(fakeDB.recentMeals);
 	const [loading, setLoading] = useState(false);
 	const { userDetails, updateUserDetails } = useUser();
 	const { userCommunities, getUserCommunities } = useCommunity([]);
 	const { todayStats, updateTodayStats } = useStats();
 	const { macroGoals, fetchMacroGoals } = useGoals(); 
 	const { latestLoggedFood, setLatestLoggedFood } = useFoodLog();
-	console.log({ userDetails });
-	// console.log(userDetails.data.forename);
-	// console.log(userDetails.data.streak);
+	
+    console.log({ userDetails });
 	console.log({ userCommunities });
 	console.log({ todayStats });
 	console.log({ latestLoggedFood });
 	console.log({ macroGoals });
-	// console.log({ 'COMMUNITIES': userCommunities });
 
+    
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
 			if (!token) {
 				console.error("No token found");
-				navigation.navigate('Login'); // Redirect to login if no token
+				navigation.navigate('Login');
 				return;
 			}
 			return token;
@@ -73,7 +55,7 @@ function Dashboard() {
 	
 		const fetchData = async () => {
 			try {
-				await checkUserLogin(); // Check if user is logged in
+				await checkUserLogin();
 	
 				// // Fetch all necessary data in parallel
 				// await Promise.all([
