@@ -57,7 +57,7 @@ const Stats = () => {
     <SafeAreaView style={styles.statsContainer}>
       
       <View style={styles.statsHeader}>
-        <WelcomeBar name="Emily" />
+        <WelcomeBar />
       </View>
       
       {/* <View style={styles.statsHeader}>
