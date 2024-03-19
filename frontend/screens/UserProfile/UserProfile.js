@@ -1,65 +1,10 @@
 import React from 'react';
 import {
-	View, Text, StyleSheet, Image, FlatList, TouchableOpacity,
+	View, Text, Image, FlatList, TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SettingsButton from '../../components/SettingsButton';
-// import globalStyles from '../../styles/global';
-
-/**
- * UserProfile is a screen component designed for displaying user profile information.
- * It includes a SettingsButton component and uses styles from both the global styles
- * and its own styles.
- *
- * @returns {React.Element} The rendered UserProfile screen.
- */
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: '#f0f0f0',
-		alignItems: 'center',
-		justifyContent: 'center',
-		paddingTop: '30%',
-		marginHorizontal: '5%',
-	},
-	profilePic: {
-		width: 120,
-		height: 120,
-		borderRadius: 60,
-	},
-	username: {
-		fontSize: 30,
-		color: '#6B6868',
-		fontFamily: 'Montserrat_400Regular',
-		paddingTop: '8%',
-	},
-	bio: {
-		fontSize: 12,
-		color: '#000000',
-		fontFamily: 'Montserrat_400Regular',
-		padding: '2%',
-	},
-	subPageList: {
-		width: '100%',
-		height: '50%',
-		marginTop: '5%',
-	},
-	itemButton: {
-		width: '70%',
-		height: 'auto',
-		backgroundColor: '#FF815E',
-		marginVertical: '2%',
-		borderRadius: 14,
-		alignSelf: 'center',
-	},
-	item: {
-		fontSize: 20,
-		padding: '6%',
-		textAlign: 'center',
-	},
-});
-
+import { styles } from './styles';
 function UserProfile() {
 	const navigation = useNavigation();
 
@@ -73,8 +18,8 @@ function UserProfile() {
 
 	const UserProfileOptions = [
 		{
-			name: 'My Meals',
-			handler: () => navigation.navigate('MyMeals'),
+			name: 'Recipes',
+			handler: () => navigation.navigate('Recipes'),
 		},
 		{
 			name: 'Reminders',

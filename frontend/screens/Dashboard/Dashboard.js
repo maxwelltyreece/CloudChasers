@@ -1,15 +1,12 @@
-// React related imports
 import React, { useState, useEffect } from 'react';
 import {
-	View, StyleSheet, SafeAreaView, ActivityIndicator, Dimensions
+	View, SafeAreaView, ActivityIndicator
 } from 'react-native';
 
-// Component imports
 import {
 	WelcomeBar, RecentLog, CommunityStatus, CurrentGoalProgress, AchievementsFeature,
-} from '../../components/Dashboard';
+} from './Components';
 
-// Context imports
 import { useUser } from '../../contexts/UserContext';
 import { useCommunity } from '../../contexts/CommunityContext';
 import { useStats } from '../../contexts/StatsContext';
@@ -18,10 +15,11 @@ import { useFoodLog } from '../../contexts/FoodLogContext';
 import { useAwards } from '../../contexts/AwardsContext';
 
 
-// Other imports
-const { width } = Dimensions.get('window');
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { styles } from './styles';
+
+
 
 
 
@@ -112,7 +110,6 @@ const styles = StyleSheet.create({
 // Dashboard screen
 function Dashboard() {
 	const navigation = useNavigation();
-	// const [meals] = useState(fakeDB.recentMeals);
 	const [loading, setLoading] = useState(false);
 	const { userDetails, updateUserDetails } = useUser();
 	const { userCommunities, getUserCommunities } = useCommunity([]);
@@ -131,14 +128,14 @@ function Dashboard() {
 	// console.log({ userAwards });
 	// console.log({ 'COMMUNITIES': userCommunities });
 
-	console.log('STREAKS DASHBOARD:', streak);
+	// console.log('STREAKS DASHBOARD:', streak);
 
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
 			if (!token) {
 				console.error("No token found");
-				navigation.navigate('Login'); // Redirect to login if no token
+				navigation.navigate('Login');
 				return;
 			}
 			return token;

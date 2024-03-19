@@ -1,84 +1,33 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, View, TextInput, TouchableOpacity, StyleSheet, Text, Platform } from 'react-native';
+import { KeyboardAvoidingView, View, TextInput, TouchableOpacity, Text, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import PropTypes from 'prop-types';
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20,
-    },
-    input: {
-        height: 40,
-        borderColor: '#E8E8E8', // change the border color to a lighter shade
-        borderWidth: 1,
-        marginBottom: 20,
-        padding: 10,
-        borderRadius: 10,
-        fontFamily: 'Montserrat_600SemiBold',
-        backgroundColor: '#F8F8F8', // add a light background color
-    },
-    messageInput: {
-        height: 200,
-        borderColor: '#E8E8E8', // change the border color to a lighter shade
-        borderWidth: 1,
-        marginBottom: 20,
-        padding: 10,
-        borderRadius: 10,
-        fontFamily: 'Montserrat_600SemiBold',
-        backgroundColor: '#F8F8F8', // add a light background color
-    },
-    button: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 50,
-        backgroundColor: '#FF815E',
-        borderRadius: 25,
-        marginTop: 50,
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 18,
-        fontFamily: 'Montserrat_700Bold',
-    },
-    tabContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginBottom: 20,
-        borderColor: 'gray',
-        borderWidth: 1,
-        borderRadius: 10,
-    },
-    tabButton: {
-        flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 10,
-        borderColor: 'gray',
-        borderRightWidth: 1,
-        borderRadius: 0,
-    },
-    activeTab: {
-        color: '#FF815E',
-    },
-    tabText: {
-        paddingLeft: 10,
-        color: '#6B6868',
-        fontSize: 14,
-        fontFamily: 'Montserrat_700Bold',
-    },
-});
-
+import { useCommunity } from '../../../contexts/CommunityContext';
+import { styles } from './styles';
 
 // eslint-disable-next-line no-unused-vars
-function NewPostPage({ navigation, communityId }) {
+function NewPostPage({ navigation, route }) {
+    const { makePost } = useCommunity();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [tab, setTab] = useState('message');
+    const { communityId } = route.params;
+    console.log("THIS IS ID",communityId);
 
-    const handlePost = () => {
-        navigation.goBack();
+    const handlePost = async () => {
+        const postData = {
+            communityId,
+            title,
+            text: content,
+            recipeID: null,
+        };
+    
+        const response = await makePost(postData);
+        if (response.success) {
+            navigation.goBack();
+        } else {
+            console.error(response.error);
+        }
     };
 
     return (
@@ -135,5 +84,9 @@ NewPostPage.propTypes = {
     navigation: PropTypes.shape({
         goBack: PropTypes.func.isRequired,
     }).isRequired,
-    communityId: PropTypes.number.isRequired,
+    route: PropTypes.shape({
+        params: PropTypes.shape({
+            communityId: PropTypes.string.isRequired,
+        }),
+    }).isRequired,
 };
