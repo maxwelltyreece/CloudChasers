@@ -40,7 +40,6 @@ export function FoodLogProvider({ children }) {
 
     const getFood = async () => {
         const response = await foodLogService.getFood();
-        console.log(response);
         return response;
     }
 
