@@ -22,7 +22,7 @@ const CommunityPost = require('../models/communityPost');
 // - Update community description
 // - Update community privacy settings
 // - Admin can remove members
-
+ 
 exports.createCommunity = async (req, res) => {
     const { name, description, recipePrivacy, joinPrivacy } = req.body;
     try {
