@@ -1,7 +1,7 @@
 // Settings.js
 import React from 'react';
 import {
-	View, Text, StyleSheet, FlatList, Pressable,
+	View, Text, FlatList, Pressable,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
@@ -10,39 +10,7 @@ import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
 import LogoutButton from './settingsComponents/LogoutButton';
 import proptypes from 'prop-types'; // Import proptypes
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		paddingTop: 0,
-	},
-	item: {
-		paddingVertical: 24,
-		fontSize: 14,
-	},
-	separator: {
-		height: 1,
-		backgroundColor: '#A9A9A9',
-		width: '100%',
-	},
-	itemContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingHorizontal: 10,
-	},
-	usernameHeader: {
-		fontSize: 12,
-		textAlign: 'center',
-		marginTop: 30,
-	},
-	usernameText: {
-		fontSize: 14,
-		textAlign: 'center',
-		marginTop: 10,
-	},
-});
+import { styles } from './styles';
 
 const ICON_SIZE = 25;
 

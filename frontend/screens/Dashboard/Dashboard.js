@@ -1,7 +1,7 @@
 // React related imports
 import React, { useState, useEffect } from 'react';
 import {
-	View, StyleSheet, SafeAreaView, ActivityIndicator, Dimensions
+	View, SafeAreaView, ActivityIndicator, Dimensions
 } from 'react-native';
 
 // Component imports
@@ -21,85 +21,9 @@ import { useFoodLog } from '../../contexts/FoodLogContext';
 const { width } = Dimensions.get('window');
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { styles } from './styles';
 
 
-
-const styles = StyleSheet.create({
-	dashboardHeader: {
-		// flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		width: '100%',
-		height: '10%',
-		// backgroundColor: 'blue',
-	},
-	notificationBadgeContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginRight: 20,
-	},
-	dashboardContainer: {
-		flex: 1,
-		justifyContent: 'flex-start',
-		alignItems: 'center',
-		// flexWrap: 'nowrap',
-		// backgroundColor: '#F0F0F0',
-		top: '4%',
-		// backgroundColor: 'purple',
-		zIndex: 1,
-	},
-	middleDashboardContainer: {
-		justifyContent: 'flex-start',
-		alignItems: 'flex-start',
-		flexDirection: 'row',
-		marginVertical: 10,
-		// backgroundColor: '#F0F0F0',
-		width: '95%',
-		height: '30%',
-		marginBottom: '14%',
-	},
-	leftComponentContainer: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		paddingHorizontal: '1%',
-		paddingBottom: '2%',
-		width: '50%',
-		height: '100%',
-	},
-	rightComponentContainer: {
-		// flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		paddingHorizontal: '1%',
-		paddingBottom: '2%',
-		width: '50%',
-		height: '100%',
-	},
-	bottomDashboardContainer: {
-		position: 'absolute',
-		justifyContent: 'center',
-		alignItems: 'center',
-		flexDirection: 'row',
-		// marginVertical: 10,
-		// backgroundColor: '#F0F0F0',
-		width: '100%',
-		height: '25%',
-		bottom: '5%',
-		// marginBottom: '15%',
-
-	},
-	semiCircle: {
-		width: width * 2,
-		height: width * 2,
-		borderRadius: width,
-		position: 'absolute',
-		top: -width,
-		left: -width / 2,
-		backgroundColor: '#FF815E',
-	},
-});
 
 // Fake database
 // const fakeDB = {

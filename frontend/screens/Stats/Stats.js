@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 // import Swiper from 'react-native-swiper';
 // import { StatsContext } from '../../contexts/StatsContext.js';
 // import { fetchStats } from '../../services/StatsService.js';
@@ -15,6 +15,7 @@ import WelcomeBar from './statsComponents/WelcomeBar';
 // import GoalsBarChart from './statsComponents/GoalsBarChart';
 // import CommunityPanel from './statsComponents/CommunityPanel';
 import CircularProgressComponent from './statsComponents/CircularProgress.js';
+import { styles } from './styles.js';
 
 const Stats = () => {
 
@@ -72,36 +73,5 @@ const Stats = () => {
 }; 
 
 
-
-const styles = StyleSheet.create({
-  statsContainer: {
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    flexWrap: 'wrap',
-    flexDirection: 'column',
-    backgroundColor: '#f2f2f2'
-    
-  },
-  statsHeader: {
-    // justifyContent: 'flex-start',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    
-  },
-  ringComp: {
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    width: '100%',
-    padding: 10,
-  },
- 
-  slide: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
 
 export default Stats; 
