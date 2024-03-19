@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
     View, Text, StyleSheet, Pressable, 
@@ -9,6 +9,8 @@ import { Feather } from '@expo/vector-icons';
 // import NewPostPage from './NewPost';
 import { KeyboardAvoidingView, Platform, FlatList, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import { useCommunity } from '../../contexts/CommunityContext';
+import { useFocusEffect } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container: {
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
     feed: {
         flexDirection: 'column',
         alignItems: 'stretch',
-        flexGrow: '1',
+        flexGrow: 1,
         width: '100%',
         paddingTop: 20,
         paddingBottom: 50,
@@ -145,13 +147,24 @@ const Message = ({ title, text, sender }) => (
 
 function GroupPage({ route, navigation }) {
     const { community } = route.params;
-    const messages = [];
-    // const [messages, setMessages] = useState(Array.from({ length: 50 }, (_, i) => ({
-    //     title: `${generateRandomWord()}`,
-    //     text: generateRandomMessage(),
-    //     sender: `@${generateRandomWord()}`,
-    // })));
-    // const [input, setInput] = useState('');
+    const { getCommunityPosts } = useCommunity();
+    const [messages, setMessages] = useState([]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchPosts = async () => {
+                console.log(community.id)
+                const posts = await getCommunityPosts(community.id);
+                setMessages(posts);
+            };
+
+            fetchPosts();
+            console.log('Fetching posts for community:', community.id);
+            console.log(messages);
+
+            return () => setMessages([]); // optional cleanup function
+        }, [community.id, getCommunityPosts])
+    );
 
     useEffect(() => {
         navigation.setOptions({
@@ -180,34 +193,22 @@ function GroupPage({ route, navigation }) {
             <Text style={styles.description}>{community.description}</Text>
             <View style={styles.divider} />
             <View style={styles.feedContainer}>
-
                 <FlatList
                     data={messages.slice().reverse()}
                     renderItem={({ item, index }) => (
-                        <Message key={index} title={item.title} text={item.text} sender={item.sender} />
+                        <Message key={index} title={item.title} text={item.text} sender={item.username} />
                     )}
                     keyExtractor={(item, index) => index.toString()}
                     contentContainerStyle={styles.feed}
                     showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={<Text style={styles.description}>No posts yet</Text>} // Add this line
                 />
-                {/* <View style={styles.inputContainer}>
-                    <TextInput 
-                        style={styles.input} 
-                        placeholder="Message..."
-                        value={input}
-                        onChangeText={text => setInput(text)}
-                    />
-                    <IconButton 
-                        iconName="send" 
-                        onPress={() => {
-                            setMessages([...messages, { text: input }]);
-                            setInput('');
-                        }} 
-                    />
-                </View> */}
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('NewPostPage', { communityId: community.id })}
+                    onPress={() => {
+                        console.log("Passing communityId:", community.id);
+                        navigation.navigate('NewPostPage', { communityId: community.id });
+                    }}                
                 >
                     <Feather name="plus" size={30} color="white" />
                 </TouchableOpacity>
@@ -234,7 +235,7 @@ GroupPage.propTypes = {
     route: PropTypes.shape({
         params: PropTypes.shape({
             community: PropTypes.shape({
-                id: PropTypes.number,
+                id: PropTypes.string,
                 name: PropTypes.string,
                 description: PropTypes.string,
             }),

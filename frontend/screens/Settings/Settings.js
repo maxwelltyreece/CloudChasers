@@ -92,7 +92,8 @@ const keyExtractor = (item) => item.name;
 function Settings() {
 	const navigation = useNavigation();
 	const { userDetails } = useUser();
-	const email = userDetails ? userDetails.email : '';
+    console.log(userDetails);
+    const email = userDetails && userDetails.data ? userDetails.data.email : '';
 	return (
 		<View style={styles.container}>
 			<FlatList
