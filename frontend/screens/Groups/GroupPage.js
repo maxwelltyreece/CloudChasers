@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     feed: {
         flexDirection: 'column',
         alignItems: 'stretch',
-        flexGrow: '1',
+        flexGrow: 1,
         width: '100%',
         paddingTop: 20,
         paddingBottom: 50,
@@ -193,34 +193,22 @@ function GroupPage({ route, navigation }) {
             <Text style={styles.description}>{community.description}</Text>
             <View style={styles.divider} />
             <View style={styles.feedContainer}>
-
                 <FlatList
                     data={messages.slice().reverse()}
                     renderItem={({ item, index }) => (
-                        <Message key={index} title={item.title} text={item.text} sender={item.sender} />
+                        <Message key={index} title={item.title} text={item.text} sender={item.username} />
                     )}
                     keyExtractor={(item, index) => index.toString()}
                     contentContainerStyle={styles.feed}
                     showsVerticalScrollIndicator={false}
+                    ListEmptyComponent={<Text style={styles.description}>No posts yet</Text>} // Add this line
                 />
-                {/* <View style={styles.inputContainer}>
-                    <TextInput 
-                        style={styles.input} 
-                        placeholder="Message..."
-                        value={input}
-                        onChangeText={text => setInput(text)}
-                    />
-                    <IconButton 
-                        iconName="send" 
-                        onPress={() => {
-                            setMessages([...messages, { text: input }]);
-                            setInput('');
-                        }} 
-                    />
-                </View> */}
                 <TouchableOpacity
                     style={styles.button}
-                    onPress={() => navigation.navigate('NewPostPage', { communityId: community.id })}
+                    onPress={() => {
+                        console.log("Passing communityId:", community.id);
+                        navigation.navigate('NewPostPage', { communityId: community.id });
+                    }}                
                 >
                     <Feather name="plus" size={30} color="white" />
                 </TouchableOpacity>
