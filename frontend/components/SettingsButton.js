@@ -27,6 +27,8 @@ const styles = StyleSheet.create({
 export default function SettingsButton() {
 	const navigation = useNavigation();
 
+    console.log("settings nav loaded");
+
 	return (
 		<TouchableOpacity
 			style={styles.button}
