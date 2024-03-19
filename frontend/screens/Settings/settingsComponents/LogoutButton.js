@@ -4,6 +4,8 @@ import {
 	Text, Animated, StyleSheet, TouchableWithoutFeedback,
 } from 'react-native';
 import globalStyles from '../../../styles/global';
+import PropTypes from 'prop-types';
+
 
 const styles = StyleSheet.create({
 	logoutButton: {
@@ -73,3 +75,7 @@ function LogoutButton({ onPress }) {
 }
 
 export default LogoutButton;
+
+LogoutButton.propTypes = {
+	onPress: PropTypes.func.isRequired,
+};

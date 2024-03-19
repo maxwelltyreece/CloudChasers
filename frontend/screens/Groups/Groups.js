@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
 	View, Text, FlatList, StyleSheet, TextInput, TouchableOpacity, Pressable,
 } from 'react-native';
@@ -83,7 +83,7 @@ function Groups() {
     }
 
 	// eslint-disable-next-line max-len
-const filteredData = (userCommunities || []).filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
+    const filteredData = (userCommunities || []).filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
 
 	const handlePress = (item) => {
 		navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });

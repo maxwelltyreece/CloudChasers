@@ -1,23 +1,21 @@
 // userService.js
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../screens/IPIndex'; // adjust the path as needed
+import { LocalIP } from '../screens/IPIndex';
 
-const getUserDetails = async (token) => {
+const fetchUserDetails = async (token) => {
 	try {
 		const response = await axios.get(`http://${LocalIP}:3000/userDetails`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		return response.data.data;
+		console.log(response.data);
+		return response.data;
 	} catch (error) {
 		if (error.response) {
 			// The request was made and the server responded with a status code
 			// that falls out of the range of 2xx
-			console.log(error.response.data);
-			console.log(error.response.status);
-			console.log(error.response.headers);
 		} else if (error.request) {
 			// The request was made but no response was received
 			console.log(error.request);
@@ -33,14 +31,15 @@ const getUserDetails = async (token) => {
 const editUserDetails = async (field, newValue) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, {
+		// const response = await axios.put(`http://${LocalIP}:3000/updateProfile`
+		await axios.put(`http://${LocalIP}:3000/updateProfile`, {
 			[field]: newValue,
 		}, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		console.log(response.data);
+		// console.log(response.data);
 	} catch (error) {
 		console.error(error);
 	}
@@ -48,6 +47,6 @@ const editUserDetails = async (field, newValue) => {
 // Add other user-related functions, like login and register
 
 export default {
-	getUserDetails,
+	fetchUserDetails,
 	editUserDetails,
 };

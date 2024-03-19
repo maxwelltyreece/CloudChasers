@@ -1,57 +1,57 @@
-import React, { useContext, useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
-import Swiper from 'react-native-swiper';
-import { StatsContext } from '../../contexts/StatsContext.js';
-import { fetchStats } from '../../services/StatsService.js';
+import React from 'react';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
+// import Swiper from 'react-native-swiper';
+// import { StatsContext } from '../../contexts/StatsContext.js';
+// import { fetchStats } from '../../services/StatsService.js';
 
-import globalStyles from '../../styles/global';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../../screens/IPIndex';
+// import globalStyles from '../../styles/global';
+// import axios from 'axios';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { LocalIP } from '../../screens/IPIndex';
 
-import AnnouncementBar from './statsComponents/AnnouncementBar';
+// import AnnouncementBar from './statsComponents/AnnouncementBar';
 import WelcomeBar from './statsComponents/WelcomeBar';
-import ProgressChartComponent from './statsComponents/ProgressChartComponent';
-import GoalsBarChart from './statsComponents/GoalsBarChart';
-import CommunityPanel from './statsComponents/CommunityPanel';
+// import ProgressChartComponent from './statsComponents/ProgressChartComponent';
+// import GoalsBarChart from './statsComponents/GoalsBarChart';
+// import CommunityPanel from './statsComponents/CommunityPanel';
 import CircularProgressComponent from './statsComponents/CircularProgress.js';
 
 const Stats = () => {
 
-  const { stats, setStats } = useContext(StatsContext);
+  // const { stats, setStats } = useContext(StatsContext);
 
-  useEffect(() => {
-    const getStats = async () => {
-      const data = await fetchStats();
-      setStats(data);
-    };
+  // useEffect(() => {
+  //   const getStats = async () => {
+  //     const data = await fetchStats();
+  //     setStats(data);
+  //   };
 
-    getStats();
-  }, []);
+  //   getStats();
+  // }, []);
 
   // Dummy Data 
-  const weeklyIntake = [
-    { day: 'Mon', protein: 20, carbs: 50, calories: 1200 },
-    { day: 'Tue', protein: 25, carbs: 45, calories: 1900 },
-    { day: 'Wed', protein: 30, carbs: 35, calories: 1000 },
-    { day: 'Thu', protein: 22, carbs: 48, calories: 1200 },
-    { day: 'Fri', protein: 27, carbs: 40, calories: 3000 },
-    { day: 'Sat', protein: 29, carbs: 33, calories: 3000 },
-    { day: 'Sun', protein: 18, carbs: 55, calories: 1000 },
-  ];
+  // const weeklyIntake = [
+  //   { day: 'Mon', protein: 20, carbs: 50, calories: 1200 },
+  //   { day: 'Tue', protein: 25, carbs: 45, calories: 1900 },
+  //   { day: 'Wed', protein: 30, carbs: 35, calories: 1000 },
+  //   { day: 'Thu', protein: 22, carbs: 48, calories: 1200 },
+  //   { day: 'Fri', protein: 27, carbs: 40, calories: 3000 },
+  //   { day: 'Sat', protein: 29, carbs: 33, calories: 3000 },
+  //   { day: 'Sun', protein: 18, carbs: 55, calories: 1000 },
+  // ];
 
   // Dummy goals for protein, carbs, and calories
-  const goals = {
-    protein: 100, 
-    carbs: 60, 
-    calories: 1200 
-  };
-  const prepareChartData = (nutrient) => {
-    return weeklyIntake.map(day => ({
-      day: day.day,
-      amount: day[nutrient],
-    }));
-  };
+  // const goals = {
+  //   protein: 100, 
+  //   carbs: 60, 
+  //   calories: 1200 
+  // };
+  // const prepareChartData = (nutrient) => {
+  //   return weeklyIntake.map(day => ({
+  //     day: day.day,
+  //     amount: day[nutrient],
+  //   }));
+  // };
 
   return (
     <SafeAreaView style={styles.statsContainer}>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     
   },
   statsHeader: {
-    justifyContent: 'flex-start',
+    // justifyContent: 'flex-start',
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',

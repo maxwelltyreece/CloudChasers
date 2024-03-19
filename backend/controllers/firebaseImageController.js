@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 /**
  * @fileoverview This file contains the Firebase image controller functions for handling profile picture upload and retrieval.
  * @module controllers/firebaseImageController
@@ -54,6 +56,7 @@ exports.getPictureURL = async (req, res) => {
 		}
 
 		// Get the download URL of the profile picture
+		// eslint-disable-next-line no-redeclare
 		var url = await getDownloadURL(file);
 		return res.status(200).json({ url: url });
 	} catch (error) {

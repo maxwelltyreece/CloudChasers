@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useCommunity } from '../../contexts/CommunityContext';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import PropTypes from 'prop-types'; // Import PropTypes
 
 const styles = StyleSheet.create({
     container: {
@@ -64,3 +65,7 @@ function GroupMembers({ route }) {
 }
 
 export default GroupMembers;
+
+GroupMembers.propTypes = {
+    route: PropTypes.object.isRequired,
+};

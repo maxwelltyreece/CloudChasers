@@ -43,3 +43,9 @@ const CustomIcon = ({ width = 80, height = 82 }) => {
 };
 
 export default CustomIcon;
+
+CustomIcon.propTypes = {
+    width: PropTypes.number,
+    height: PropTypes.number,
+    startAnimation: PropTypes.func.isRequired,
+};

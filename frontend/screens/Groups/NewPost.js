@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, View, TextInput, TouchableOpacity, StyleSheet, Text, Button } from 'react-native';
+import { KeyboardAvoidingView, View, TextInput, TouchableOpacity, StyleSheet, Text, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import PropTypes from 'prop-types';
+import { useCommunity } from '../../contexts/CommunityContext';
 
 const styles = StyleSheet.create({
     container: {
@@ -69,13 +71,30 @@ const styles = StyleSheet.create({
     },
 });
 
-function NewPostPage({ navigation, communityId }) {
+
+// eslint-disable-next-line no-unused-vars
+function NewPostPage({ navigation, route }) {
+    const { makePost } = useCommunity();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [tab, setTab] = useState('message');
+    const { communityId } = route.params;
+    console.log("THIS IS ID",communityId);
 
-    const handlePost = () => {
-        navigation.goBack();
+    const handlePost = async () => {
+        const postData = {
+            communityId,
+            title,
+            text: content,
+            recipeID: null,
+        };
+    
+        const response = await makePost(postData);
+        if (response.success) {
+            navigation.goBack();
+        } else {
+            console.error(response.error);
+        }
     };
 
     return (
@@ -127,3 +146,14 @@ function NewPostPage({ navigation, communityId }) {
 }
 
 export default NewPostPage;
+
+NewPostPage.propTypes = {
+    navigation: PropTypes.shape({
+        goBack: PropTypes.func.isRequired,
+    }).isRequired,
+    route: PropTypes.shape({
+        params: PropTypes.shape({
+            communityId: PropTypes.string.isRequired,
+        }),
+    }).isRequired,
+};

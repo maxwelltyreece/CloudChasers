@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const UserDay = require("../models/userDay");
@@ -89,10 +91,10 @@ const getNutrientIntake = async (req, res, nutrient) => {
 					for (const recipeItem of allRecipeItems) {
 						foodItem = await FoodItem.findById(recipeItem.foodItemID);
 						food = await Food.findById(foodItem.foodID);
-						totalNutrient += food[nutrient] * (foodItem.weight / 100);
+						recipeNutrient += food[nutrient] * (foodItem.weight / 100);
 						totalRecipeWeight += foodItem.weight;
 					}
-					totalNutrient = totalNutrient * (recipeQuantity.quantity / totalRecipeWeight);
+					totalNutrient += recipeNutrient * (recipeQuantity.quantity / totalRecipeWeight);
 
 				}
 			}

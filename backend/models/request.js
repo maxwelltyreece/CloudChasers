@@ -1,11 +1,6 @@
 const mongoose = require("mongoose");
 
-
-module.exports = mongoose.model("user", userSchema);
-
-const mongoose = require("mongoose");
-
-const recipeSchema = new mongoose.Schema({
+const requestSchema = new mongoose.Schema({
   status: {
     type: String,
     enum: ["Pending", "Approved", "Rejected"],
@@ -23,4 +18,5 @@ const recipeSchema = new mongoose.Schema({
   }
 });
 
+// eslint-disable-next-line no-undef
 module.exports = mongoose.model("request", requestSchema);

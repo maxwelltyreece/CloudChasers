@@ -1,3 +1,5 @@
+/* eslint-disable no-dupe-keys */
+/* eslint-disable no-unused-vars */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -48,9 +50,8 @@ exports.register = async (req, res) => {
 			lastLogin,
 			profilePictureLink,
 		});
-		console.log('User created', newUser);
 		await newUser.save();
-		console.log('User created');
+		console.log('User created', newUser);
 		return res.status(200).json({ success: true, message: 'User created', data: newUser });
 	} catch (error) {
 		return res.status(400).json({ error: error.toString() });
@@ -106,7 +107,9 @@ exports.getUsers = async (req, res) => {
  * @returns {Object} res.data - The user object.
  */
 exports.getUserDetail =  async (req, res) => {
+	console.log('Getting user details'); 
 	try {
+		console.log('Getting user details2'); 
 		return res.status(200).json({data: req.user});
 
 	} catch (error) {

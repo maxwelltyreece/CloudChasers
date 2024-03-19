@@ -7,6 +7,7 @@ import { View
 import Navbar from '../components/Navbar';
 import SettingsNavigator from './SettingsNavigator';
 import GroupNavigator from './GroupNavigator';
+import UserNavigator from './UserNavigator';
 import { useUser } from '../contexts/UserContext';
 import { useCommunity } from '../contexts/CommunityContext';
 import { FoodEntry, WaterEntry } from '../screens';
@@ -58,8 +59,13 @@ export default function MainNavigator() {
 				component={GroupNavigator}
 				options={{ headerShown: false }}
 			/>
-            <Stack.Screen name='FoodEntry' component={FoodEntry} options={{...commonOptions, title:'Food'}}/>
-            <Stack.Screen name='WaterEntry' component={WaterEntry} options={{...commonOptions, title:'Water'}} />
+      <Stack.Screen name='FoodEntry' component={FoodEntry} options={{...commonOptions, title:'Food'}}/>
+      <Stack.Screen name='WaterEntry' component={WaterEntry} options={{...commonOptions, title:'Water'}} />
+			<Stack.Screen
+				name="User"
+				component={UserNavigator}
+				options={{ headerShown: false }}
+			/>
 		</Stack.Navigator>
 	);
 }

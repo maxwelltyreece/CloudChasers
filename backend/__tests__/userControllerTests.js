@@ -4,6 +4,11 @@ const jwt = require('jsonwebtoken');
 const app = require('../server');
 const User = require('../models/user');
 
+const jest = require('jest');
+import { expect, describe, beforeEach, test } from 'jest';
+
+
+
 jest.mock('../models/user');
 jest.mock('bcrypt');
 

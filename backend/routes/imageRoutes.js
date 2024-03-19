@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const express = require('express');
 const userMiddleware = require('../middleware/userMiddleware');
 const router = express.Router();

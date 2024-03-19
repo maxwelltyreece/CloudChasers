@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Modal, Pressable } from 'react-native';
+import proptypes from 'prop-types'; // Import PropTypes
 
 const styles = StyleSheet.create({
     box: {
@@ -82,3 +83,8 @@ function RecipeBox({ title, image }) {
 }
 
 export default RecipeBox;
+
+RecipeBox.propTypes = {
+  title: proptypes.string.isRequired,
+  image: proptypes.string,
+};

@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import SettingsButton from '../../components/SettingsButton';
-import globalStyles from '../../styles/global';
+// import globalStyles from '../../styles/global';
 
 /**
  * UserProfile is a screen component designed for displaying user profile information.
@@ -34,17 +34,29 @@ const styles = StyleSheet.create({
 		fontFamily: 'Montserrat_400Regular',
 		paddingTop: '8%',
 	},
-
 	bio: {
 		fontSize: 12,
 		color: '#000000',
 		fontFamily: 'Montserrat_400Regular',
 		padding: '2%',
 	},
+	subPageList: {
+		width: '100%',
+		height: '50%',
+		marginTop: '5%',
+	},
+	itemButton: {
+		width: '70%',
+		height: 'auto',
+		backgroundColor: '#FF815E',
+		marginVertical: '2%',
+		borderRadius: 14,
+		alignSelf: 'center',
+	},
 	item: {
-		padding: 30,
-		fontSize: 18,
-		height: 44,
+		fontSize: 20,
+		padding: '6%',
+		textAlign: 'center',
 	},
 });
 
@@ -53,7 +65,9 @@ function UserProfile() {
 
 	const renderItem = ({ item }) => (
 		<TouchableOpacity activeOpacity={0.3} onPress={item.handler}>
-			<Text style={[styles.item, globalStyles.medium]}>{item.name}</Text>
+			<View style={styles.itemButton}>
+				<Text style={[styles.item]}>{item.name}</Text>
+			</View>
 		</TouchableOpacity>
 	);
 
@@ -84,6 +98,7 @@ function UserProfile() {
                 sed do eiusmod tempor ut labore et dolore.
 			</Text>
 			<FlatList
+				style={styles.subPageList}
 				data={UserProfileOptions}
 				renderItem={renderItem}
 				keyExtractor={(item) => item.name}

@@ -1,14 +1,15 @@
+/* eslint-disable no-unused-vars */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Community = require('../models/community');
 const CommunityUser = require('../models/communityUser');
 const CommunityPost = require('../models/communityPost');
+const JoinRequest = require('../models/request');
 
 // TODO:
-// - Join private community
 // - Get pending requests
-// - Get community posts/recipes
+// - Accept/deny requests
 // 
 // DONE:
 // - Get community members
@@ -21,6 +22,8 @@ const CommunityPost = require('../models/communityPost');
 // - Update community description
 // - Update community privacy settings
 // - Admin can remove members
+// - Get community posts/recipes
+// - Join private community
 
 exports.createCommunity = async (req, res) => {
     const { name, description, recipePrivacy, joinPrivacy } = req.body;
@@ -74,20 +77,36 @@ exports.joinCommunity = async (req, res) => {
         if (isMember) {
             return res.status(400).send({ message: 'User is already a member of the community' });
         }
+        // Check if user has already requested to join community
+        const hasRequested = await JoinRequest.findOne({ communityID: communityId, userID: user._id });
+        if (hasRequested) {
+            return res.status(400).send({ message: 'User has already requested to join the community' });
+        }
+        // Check if community is private
+        if (community.joinPrivacy === 'private') {
+            const joinRequest = new JoinRequest({
+                status: 'Pending',
+                userID: user._id,
+                communityID: communityId,
+            });
+            await joinRequest.save();
+            return res.status(200).json({ success: true, message: 'Request to join sent' });
+        }
+        else if (community.joinPrivacy === 'public') {
+            console.log('Joining community');
+            // Create CommunityUser to join community
+            const newCommunityUser = new CommunityUser({
+                communityID: community._id,
+                userID: user._id,
+                role: 'member',
+            });
+            console.log('Community joined', newCommunityUser);
+            await newCommunityUser.save();
 
-        console.log('Joining community');
-        // Create CommunityUser to join community
-        const newCommunityUser = new CommunityUser({
-            communityID: community._id,
-            userID: user._id,
-            role: 'member',
-        });
-        console.log('Community joined', newCommunityUser);
-
-        await newCommunityUser.save();
-
-        console.log('Community joined');
-        return res.status(200).json({ success: true, message: 'Community joined', data: newCommunityUser });
+            console.log('Community joined');
+            return res.status(200).json({ success: true, message: 'Community joined', data: newCommunityUser });
+            
+        }
     }
     catch (error) {
         return res.status(400).json({ error: error.toString() });
