@@ -60,7 +60,6 @@ const keyExtractor = (item) => item.name;
 function Settings() {
 	const navigation = useNavigation();
 	const { userDetails } = useUser();
-	console.log('User details SETTINGS: ', userDetails);
 	const email = userDetails ? userDetails.email : '';
 	return (
 		<View style={styles.container}>

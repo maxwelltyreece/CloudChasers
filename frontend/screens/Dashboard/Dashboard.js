@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 
 import {
-	WelcomeBar, RecentLog, CommunityStatus, CurrentGoalProgress, AchievementsFeature,
+	WelcomeBar, RecentLog, CommunityStatus, CurrentGoalProgress, AchievementsFeature, Dimensions
 } from './Components';
 
 import { useUser } from '../../contexts/UserContext';
@@ -17,9 +17,9 @@ import { useAwards } from '../../contexts/AwardsContext';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
-import { styles } from './styles';
+// import { styles } from './styles';
 
-
+const {width} = Dimensions.get('window');
 
 
 
