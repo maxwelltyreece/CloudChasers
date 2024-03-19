@@ -302,20 +302,18 @@ function GoalProgressBar({ todayStats, goals }) {
 	const { reminders } = useReminders();
 	const navigation = useNavigation();
 
-	let currentMacroValues = {
-		calories: 1250,
-		water: 800,
-	};
+	let initialMacroValues = {
+        calories: 0,
+        water: 0,
+        fat: 0,
+        sodium: 0,
+        carbs: 0,
+        protein: 0,
+        sugar: 0,
+        fibre: 0,
+    };
 
-	if (todayStats && todayStats.calories && todayStats.water) {
-		todayStats.forEach(macro => {
-			console.log('Macro:', macro);
-			if (macro in currentMacroValues) {
-				currentMacroValues[macro] = todayStats[macro];
-			}
-
-		});
-	}
+    let currentMacroValues = { ...initialMacroValues, ...todayStats }
 
 	// Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
 	let nutrientGoals = {
@@ -428,7 +426,7 @@ function GoalProgressBar({ todayStats, goals }) {
 
 GoalProgressBar.propTypes = {
 	todayStats: PropTypes.object.isRequired,
-	goals: PropTypes.object.isRequired,
+	goals: PropTypes.any.isRequired,
 };
 
 export default GoalProgressBar;

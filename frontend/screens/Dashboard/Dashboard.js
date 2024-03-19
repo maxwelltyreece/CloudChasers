@@ -110,7 +110,7 @@ function Dashboard() {
 	const [loading, setLoading] = useState(false);
 	const { userDetails, updateUserDetails } = useUser();
 	const { userCommunities, getUserCommunities } = useCommunity([]);
-	const { todayStats, updateTodayStats } = useStats();
+	const { todayStats, streak, updateTodayStats } = useStats();
 	const { goals, fetchGoals } = useGoals();
 	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
 	const { userAwards, awards, fetchUserAwards, fetchAwards } = useAwards();
@@ -125,7 +125,7 @@ function Dashboard() {
 	// console.log({ userAwards });
 	// console.log({ 'COMMUNITIES': userCommunities });
 
-	console.log('Latest logged food: DASHBOARD', latestLoggedFood);
+	console.log('STREAKS DASHBOARD:', streak);
 
 	const checkUserLogin = async () => {
 		try {
@@ -144,7 +144,6 @@ function Dashboard() {
  
 	useEffect(() => {
 		setLoading(true);
-
 		const fetchData = async () => {
 			try {
 				await checkUserLogin(); // Check if user is logged in
@@ -201,7 +200,7 @@ function Dashboard() {
 						</View>
 
 						<View style={styles.rightComponentContainer}>
-							<RecentLog streak={userDetails?.streak} userLogStats={latestLoggedFood} />
+							<RecentLog streak={streak} userLogStats={latestLoggedFood} />
 						</View>
 					</View>
 

@@ -97,6 +97,7 @@ const styles = StyleSheet.create({
 });
 
 function RecentLog({ streak, userLogStats }) {
+	
 	// const {
 	// 	lastLogDate = 'N/A',
 	// 	lastLogMealType = 'N/A',
@@ -111,8 +112,8 @@ function RecentLog({ streak, userLogStats }) {
 	// } = userLogStats || {};
 
 	const {
-		latestUserDayMeal = {}, // Provide an empty object as default
-		macros = {}, // Provide an empty object as default
+		latestUserDayMeal = {},
+		macros = {},
 	} = userLogStats || {};
 
 	console.log('userLogStats: RECENT LOG', userLogStats);
@@ -127,7 +128,7 @@ function RecentLog({ streak, userLogStats }) {
 				<Text style={styles.recentLogTitle}>Last Log:</Text>
 				<CurrentStreak streak={streak} />
 			</View>
-			{userLogStats > 0 ? (
+			{userLogStats ? (
 				<View style={styles.innerRecentLogContainer}>
 					<Text style={styles.recentLogDatetimeText}>
 						{latestUserDayMeal.name ?? 'N/A'}

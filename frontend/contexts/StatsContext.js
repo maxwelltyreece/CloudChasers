@@ -6,6 +6,7 @@ const StatsContext = createContext();
 
 export function StatsProvider({ children }) {
   const [todayStats, setTodayStats] = useState({});
+  const [streak, setStreak] = useState(0);
 
   console.log('TODAY STATS: CONTEXT ', todayStats);
 
@@ -20,6 +21,17 @@ export function StatsProvider({ children }) {
       }
     } catch (error) {
       console.error(`Error fetching daily ${nutrient} intake CONTEXT:`, error);
+    }
+  };
+  
+  const updateStreak = async (date) => {
+    try {
+      const response = await statsService.getStreaks(date);
+      if (response.streak !== undefined) {
+        setStreak(response.streak);
+      }
+    } catch (error) {
+      console.error('Error fetching streak CONTEXT:', error);
     }
   };
 
@@ -47,13 +59,15 @@ export function StatsProvider({ children }) {
         getDailySugarIntake(today),
         getDailySodiumIntake(today),
         getDailyFibreIntake(today),
+        updateStreak(today),
     ]);
 };
 
   const value = useMemo(() => ({
     todayStats,
+    streak,
     updateTodayStats,
-    // Add individual nutrient functions if needed externally
+    updateStreak,
     getDailyCaloricIntake,
     getDailyWaterIntake,
     getDailyProteinIntake,
@@ -62,6 +76,7 @@ export function StatsProvider({ children }) {
     getDailySugarIntake,
     getDailySodiumIntake,
     getDailyFibreIntake,
+    
   }), [todayStats]);
 
   return (
