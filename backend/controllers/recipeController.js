@@ -338,4 +338,37 @@ exports.duplicateRecipeToUser = async (req, res) => {
 
 //TODO: add macro
 
-//TODO: Add manual
+//TODO: Add pure macro food items to a recipe
+exports.addMacroToRecipe = async (req, res) => {
+	const { recipeID, protein, carbs, fat, calories } = req.body;
+	try {
+		const recipe = await Recipe.findById(recipeID);
+		if (!recipe) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+		const newFood = new Food({
+			name: 'Macro',
+			group: 'Macro',
+			calories,
+			protein,
+			carbs,
+			fat,
+			privacy: 'private'
+		});
+		await newFood.save();
+		const newFoodItem = new FoodItem({
+			foodID: newFood._id,
+			weight: 100
+	});
+		await newFoodItem.save();
+		const newRecipeItem = new RecipeItem({
+			foodItemID: newFoodItem._id,
+			recipeID
+		});
+		await newRecipeItem.save();
+		return res.status(200).json({ message: 'Macro added to recipe', data: newRecipeItem });
+	}
+	catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}
