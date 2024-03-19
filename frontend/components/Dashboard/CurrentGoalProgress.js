@@ -247,9 +247,9 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 				return 0;
 			}
 		};
-	
+
 		const finalWidth = safeDivision(progress, max, containerWidth);
-	
+
 		Animated.timing(animatedWidth, {
 			toValue: finalWidth,
 			duration: 1000,
@@ -261,7 +261,6 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 		<View style={progressBarStyle}>
 			<View style={styles.labelContainer}>
 				<Text style={labelStyle}>{label}</Text>
-				{/* Use the unit prop to display the unit next to the max value */}
 				<Text style={labelStyle}>{`${progress} / ${max} ${unit}`}</Text>
 			</View>
 			<View style={styles.progressBarContainer} onLayout={measureContainer}>
@@ -275,7 +274,7 @@ ProgressBar.propTypes = {
 	label: PropTypes.string.isRequired,
 	progress: PropTypes.number.isRequired,
 	max: PropTypes.number.isRequired,
-	unit: PropTypes.string, // Add unit to PropTypes
+	unit: PropTypes.string,
 };
 
 
@@ -303,18 +302,41 @@ function GoalProgressBar({ todayStats, goals }) {
 	const { reminders } = useReminders();
 	const navigation = useNavigation();
 
-	let calorieGoal = 2500;
-	let waterGoal = 2000;
-	if (goals.goals) {
-		
-		calorieGoal = goals.goals.find(goal => goal.measurement === 'calories')?.maxTargetMass || 0;
-		waterGoal = goals.goals.find(goal => goal.measurement === 'water')?.maxTargetMass || 0;
+	let currentMacroValues = {
+		calories: 1250,
+		water: 800,
+	};
 
+	if (todayStats && todayStats.calories && todayStats.water) {
+		todayStats.forEach(macro => {
+			console.log('Macro:', macro);
+			if (macro in currentMacroValues) {
+				currentMacroValues[macro] = todayStats[macro];
+			}
+
+		});
 	}
 
-	// console.log('Goals:', goals);
+	// Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
+	let nutrientGoals = {
+		calories: 2000,
+		fat: 70,
+		sodium: 2300,
+		carbs: 300,
+		water: 3700,
+		protein: 50,
+		sugar: 25,
+		fibre: 30,
+	};
 
-	// console.log('TODAY STATS:', todayStats);
+	// If the goals object contains goals, populate the nutrientGoals with actual values
+	if (goals && goals.goals) {
+		goals.goals.forEach(goal => {
+			if (goal.measurement in nutrientGoals) {
+				nutrientGoals[goal.measurement] = goal.maxTargetMass;
+			}
+		});
+	}
 
 
 	function getClosestDate(reminder) {
@@ -322,8 +344,6 @@ function GoalProgressBar({ todayStats, goals }) {
 		let reminderTime = moment(reminder.time, "hh:mm A"); // parse time string with format
 
 		let closestDate = now.clone().hour(reminderTime.hour()).minute(reminderTime.minute());
-
-		// console.log('Closest date for reminder:', reminder, 'is:', closestDate);
 
 		if (reminder.frequency === 'daily') {
 			if (now.isAfter(closestDate)) {
@@ -365,8 +385,8 @@ function GoalProgressBar({ todayStats, goals }) {
 				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>
 					<Text style={styles.slideTitle}>Today</Text>
-					<ProgressBar label="Calories" progress={todayStats.calories} max={calorieGoal} unit="kcal" />
-					<ProgressBar label="Water" progress={todayStats.water} max={waterGoal} unit="ml" />
+					<ProgressBar label="Calories" progress={currentMacroValues.calories} max={nutrientGoals.calories} unit="kcal" />
+					<ProgressBar label="Water" progress={currentMacroValues.water} max={nutrientGoals.water} unit="ml" />
 				</View>
 
 				{/* Reminders slide */}

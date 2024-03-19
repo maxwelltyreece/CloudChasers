@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 		backgroundColor: '#FF815E',
 	},
 });
- 
+
 
 // Dashboard screen
 function Dashboard() {
@@ -188,7 +188,7 @@ function Dashboard() {
 				<>
 					<View style={styles.semiCircle} />
 					<View style={styles.dashboardHeader}>
-						<WelcomeBar name={userDetails?.data?.forename} />
+						<WelcomeBar name={userDetails?.forename} />
 					</View>
 
 					<CurrentGoalProgress todayStats={todayStats} goals={goals} />
@@ -201,7 +201,7 @@ function Dashboard() {
 						</View>
 
 						<View style={styles.rightComponentContainer}>
-							<RecentLog streak={userDetails?.data?.streak} userLogStats={latestLoggedFood} />
+							<RecentLog streak={userDetails?.streak} userLogStats={latestLoggedFood} />
 						</View>
 					</View>
 

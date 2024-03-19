@@ -97,21 +97,29 @@ const styles = StyleSheet.create({
 });
 
 function RecentLog({ streak, userLogStats }) {
-	// const { lastLogDate, lastLogMealType, calories, protein, carbs, fat, fibre, water, sugar, sodium } = userLogStats;
+	// const {
+	// 	lastLogDate = 'N/A',
+	// 	lastLogMealType = 'N/A',
+	// 	calories = 0,
+	// 	protein = 0,
+	// 	carbs = 0,
+	// 	fat = 0,
+	// 	fibre = 0,
+	// 	water = 0,
+	// 	sugar = 0,
+	// 	sodium = 0,
+	// } = userLogStats || {};
+
 	const {
-		lastLogDate = 'N/A',
-		lastLogMealType = 'N/A',
-		calories = 0,
-		protein = 0,
-		carbs = 0,
-		fat = 0,
-		fibre = 0,
-		water = 0,
-		sugar = 0,
-		sodium = 0,
+		latestUserDayMeal = {}, // Provide an empty object as default
+		macros = {}, // Provide an empty object as default
 	} = userLogStats || {};
 
-	console.log('userLogStats:', userLogStats);
+	console.log('userLogStats: RECENT LOG', userLogStats);
+
+	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal);
+
+	console.log('MACROS: RECENT LOG', macros);
 
 	return (
 		<View style={styles.recentLogContainer}>
@@ -119,18 +127,20 @@ function RecentLog({ streak, userLogStats }) {
 				<Text style={styles.recentLogTitle}>Last Log:</Text>
 				<CurrentStreak streak={streak} />
 			</View>
-			{userLogStats ? (
+			{userLogStats > 0 ? (
 				<View style={styles.innerRecentLogContainer}>
-					<Text style={styles.recentLogDatetimeText}>{userLogStats.latestUserDayMeal.name}</Text>
-					{/* Additional details from userLogStats */}
-					<Text style={styles.logInfoText}>Calories:
-						<Text style={styles.logInfoMeasurementText}> {userLogStats.macros.calories} kcal</Text>
+					<Text style={styles.recentLogDatetimeText}>
+						{latestUserDayMeal.name ?? 'N/A'}
 					</Text>
-					{/* Display other details similarly */}
+					<Text style={styles.logInfoText}>Calories:{' '}
+						<Text style={styles.logInfoMeasurementText}>
+							{macros.calories ?? 0} kcal
+						</Text>
+					</Text>
 				</View>
 			) : (
 				<View style={styles.innerRecentLogContainer}>
-					<Text numberOfLines={2} style={{textAlign: 'center'}}>No log details available yet.</Text>
+					<Text numberOfLines={2} style={{ textAlign: 'center' }}>No log details available yet.</Text>
 				</View>
 			)}
 		</View>
@@ -153,4 +163,9 @@ RecentLog.propTypes = {
 		sugar: PropTypes.number,
 		sodium: PropTypes.number,
 	}).isRequired,
+};
+
+RecentLog.defaultProps = {
+	streak: 0, // Default streak value if not provided
+	userLogStats: {},
 };

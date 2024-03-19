@@ -7,6 +7,8 @@ const StatsContext = createContext();
 export function StatsProvider({ children }) {
   const [todayStats, setTodayStats] = useState({});
 
+  console.log('TODAY STATS: CONTEXT ', todayStats);
+
   const updateStat = async (nutrientFunction, nutrient, date) => {
     try {
       const response = await nutrientFunction(date);

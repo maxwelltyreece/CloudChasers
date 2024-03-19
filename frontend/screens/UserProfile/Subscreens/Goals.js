@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet, TextInput, KeyboardAvoidingView, Platform, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TextInput, KeyboardAvoidingView, Platform, Keyboard, } from 'react-native';
 import proptypes from 'prop-types';
 import { useGoals } from '../../../contexts/GoalsContext';
 
@@ -153,10 +153,6 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
         setGoalValue(currentGoal.value.toString());
     }, [currentGoal]);
 
-    // const handleUpdate = () => {
-    //     onUpdate(nutrient, goalValue);
-    //     setIsEditing(false);
-    // };
 
     const handleUpdate = () => {
         const updatedValue = goalValue.trim() === '' ? '0' : goalValue;
@@ -177,7 +173,6 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
                         <View style={styles.infoSection}>
                             <View style={styles.currentGoalInfoSection}>
                                 <Text style={styles.currentGoalInfoTitle}>{capitalizeFirstLetter(nutrient)}: </Text>
-                                {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}> */}
                                 <TextInput
                                     style={styles.input}
                                     onChangeText={setGoalValue}
@@ -187,7 +182,6 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
                                     returnKeyType="done"
                                     onSubmitEditing={Keyboard.dismiss}
                                 />
-                                {/* </TouchableWithoutFeedback> */}
                             </View>
                         </View>
                         <View style={styles.buttonSection}>
@@ -230,16 +224,16 @@ const Goals = () => {
     const [isGoalsFetched, setIsGoalsFetched] = useState(false);
     const [fetchedGoals, setFetchedGoals] = useState([]);
 
-    // Default daily values for each nutrient
+    // Default nutrient goals based on recommended daily amount for each nutrient (unisex).
     const defaultMacroGoals = {
         calories: { value: 2000, unit: 'kcal' },
         protein: { value: 50, unit: 'g' },
-        carbs: { value: 275, unit: 'g' },
-        fat: { value: 77, unit: 'g' },
-        fibre: { value: 28, unit: 'g' },
-        sugar: { value: 50, unit: 'g' },
+        carbs: { value: 300, unit: 'g' },
+        fat: { value: 70, unit: 'g' },
+        fibre: { value: 30, unit: 'g' },
+        sugar: { value: 25, unit: 'g' },
         sodium: { value: 2300, unit: 'mg' },
-        water: { value: 2000, unit: 'ml' },
+        water: { value: 3700, unit: 'ml' },
     };
 
     const nutrientUnits = {
@@ -268,13 +262,10 @@ const Goals = () => {
             fetchData();
         }
 
-        // console.log('Goals:', goals);
-        // console.log('Fetched Goals:', fetchedGoals);
     }, [fetchGoals, isGoalsFetched, goals.goals]);
 
 
     const handleUpdateGoal = async (nutrient, newMaxValue) => {
-        // console.log('Updating goal for', nutrient, 'to new max value:', newMaxValue);
 
         // Find the goal ID for the nutrient being updated
         const goalToUpdate = fetchedGoals.find(goal => goal.measurement === nutrient);
@@ -306,14 +297,13 @@ const Goals = () => {
 
 
     const handleInitializeGoals = () => {
-        // console.log('Initializing goals');
         // Iterate over the defaultMacroGoals and create each one
         Object.entries(defaultMacroGoals).forEach(([nutrient, goal]) => {
             // console.log(nutrient, goal, `Daily ${nutrient}`, goal.value);
             createGoal({
                 goalName: `Daily ${nutrient}`,
                 measurement: nutrient,
-                minTargetMass: 0, // 0 as the min target mass
+                minTargetMass: 0, // 0 as the min target mass always
                 maxTargetMass: goal.value,
             });
         });

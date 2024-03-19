@@ -65,7 +65,7 @@ const Stats = () => {
   const { todayStats, updateTodayStats } = useStats();
   const { goals, fetchGoals } = useGoals();
 
-  // console.log('Today Stats: STATS', todayStats);
+  console.log('Today Stats: STATS', todayStats);
   // console.log('Goals: STATS', goals);
 
   const checkUserLogin = async () => {
@@ -100,7 +100,6 @@ const Stats = () => {
 
       } catch (error) {
         console.error("Error fetching data for dashboard:", error);
-        // Handle error appropriately
       } finally {
         setLoading(false); // Ensure loading is set to false after operations complete
       }
@@ -128,7 +127,7 @@ const Stats = () => {
       
       <View style={styles.ringCompContainer}>
         <View style={styles.ringComp}>
-          <CircularProgressComponent value={75} maxValue={100} />
+          <CircularProgressComponent todayStats={todayStats} goals={goals} />
         </View>
       </View>
 

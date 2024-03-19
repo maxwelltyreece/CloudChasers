@@ -61,13 +61,13 @@ function SettingsItem({ item }) {
 	);
 }
 
-function SettingsFooter({ username, navigation }) {
+function SettingsFooter({ userEmail, navigation }) {
 	const { logout } = useUser();
 	return (
 		<View>
 			<View style={styles.separator} />
 			<Text style={[styles.usernameHeader, globalStyles.bold]}>Logged in as</Text>
-			<Text style={[styles.usernameText, globalStyles.medium]}>{username}</Text>
+			<Text style={[styles.usernameText, globalStyles.medium]}>{userEmail}</Text>
 			<LogoutButton onPress={() => logout(navigation)} />
 		</View>
 	);
@@ -92,6 +92,7 @@ const keyExtractor = (item) => item.name;
 function Settings() {
 	const navigation = useNavigation();
 	const { userDetails } = useUser();
+	console.log('User details SETTINGS: ', userDetails);
 	const email = userDetails ? userDetails.email : '';
 	return (
 		<View style={styles.container}>
@@ -100,7 +101,7 @@ function Settings() {
 				renderItem={SettingsItem}
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={ItemSeparator}
-				ListFooterComponent={<SettingsFooter username={email} navigation={navigation} />}
+				ListFooterComponent={<SettingsFooter userEmail={email} navigation={navigation} />}
 			/>
 		</View>
 	);
@@ -116,7 +117,7 @@ SettingsItem.propTypes = {
 };
 
 SettingsFooter.propTypes = {
-	username: proptypes.string.isRequired,
+	userEmail: proptypes.string.isRequired,
 	navigation: proptypes.shape({
 		navigate: proptypes.func,
 	}).isRequired,

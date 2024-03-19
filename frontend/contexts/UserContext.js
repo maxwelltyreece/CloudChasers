@@ -20,8 +20,8 @@ export function UserProvider({ children }) {
 			return;
 		}
 		const details = await userService.fetchUserDetails(token);
-		setUserDetails(details);
-		console.log('User details:', details);
+		setUserDetails(details.data);
+		console.log('User details:', details.data);
 	}
 
 	const updateUserDetails = async () => {
@@ -31,7 +31,7 @@ export function UserProvider({ children }) {
 			return;
 		}
 		const details = await userService.fetchUserDetails(token);
-		setUserDetails(details);
+		setUserDetails(details.data);
 	};
 
 	const editUserDetails = async (field, newValue) => {

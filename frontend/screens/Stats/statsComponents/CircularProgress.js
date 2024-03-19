@@ -1,9 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { CircularProgressBase } from 'react-native-circular-progress-indicator';
+// import { useFocusEffect } from '@react-navigation/native';
 import Proptypes from 'prop-types';
 
 const CircularProgressComponent = ({ todayStats, goals }) => {
+
+  let initialMacroValues = {
+    calories: 0,
+    water: 0,
+    fat: 0,
+    sodium: 0,
+    carbs: 0,
+    protein: 0,
+    sugar: 0,
+    fibre: 0,
+};
+  
+  let currentMacroValues = { ...initialMacroValues, ...todayStats };
+
+  // Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
+  let nutrientGoals = {
+    calories: 2000, 
+    fat: 70, 
+    sodium: 2300, 
+    carbs: 300, 
+    water: 3700,
+    protein: 50,
+    sugar: 25,
+    fibre: 30,
+  };
+ 
+  if (goals && goals.goals) {
+    goals.goals.forEach(goal => {
+        if (goal.measurement in nutrientGoals) {
+            nutrientGoals[goal.measurement] = goal.maxTargetMass;
+        }
+    });
+}
+
+
   const [progressValues, setProgressValues] = useState({
     calories: 0,
     protein: 0,
@@ -12,40 +48,24 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
 
   const colorScheme = {
     calories: '#ff592b',
-    middleRing: '#ff815e',
+    protein: '#ff815e',
     water: '#5edcff',
   };
 
-  // Safe divide function to avoid dividing by zero
+  // Safe divide function to avoid dividing by zero or if filled to 100%
   const safeDivide = (numerator, denominator) => {
-    return denominator === 0 ? 0 : (numerator / denominator) * 100;
+    const ratio = denominator === 0 ? 0 : numerator / denominator;
+    return ratio >= 1 ? 100 : ratio * 100;
   };
 
   useEffect(() => {
-    const calculateProgress = () => {
-      let newProgressValues = { calories: 0, protein: 0, water: 0 };
-      if (goals && goals.goals && todayStats) {
-        goals.goals.forEach((goal) => {
-          switch (goal.measurement) {
-            case 'calories':
-              newProgressValues.calories = safeDivide(todayStats.calories, goal.maxTargetMass);
-              break;
-            case 'protein':
-              newProgressValues.protein = safeDivide(todayStats.protein, goal.maxTargetMass);
-              break;
-            case 'water':
-              newProgressValues.water = safeDivide(todayStats.water, goal.maxTargetMass);
-              break;
-            default:
-              break;
-          }
-        });
-      }
-      setProgressValues(newProgressValues);
-    };
-
-    calculateProgress();
+    setProgressValues({
+      calories: safeDivide(currentMacroValues.calories, nutrientGoals.calories),
+      protein: safeDivide(currentMacroValues.protein, nutrientGoals.protein),
+      water: safeDivide(currentMacroValues.water, nutrientGoals.water),
+    });
   }, [todayStats, goals]);
+
 
   return (
     <View style={styles.container}>
@@ -62,8 +82,8 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
         <CircularProgressBase
           value={progressValues.protein}
           radius={110}
-          activeStrokeColor={colorScheme.middleRing}
-          inActiveStrokeColor={colorScheme.middleRing}
+          activeStrokeColor={colorScheme.protein}
+          inActiveStrokeColor={colorScheme.protein}
           inActiveStrokeOpacity={0.2}
           activeStrokeWidth={22}
           inActiveStrokeWidth={22}
@@ -84,12 +104,13 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
 
       <View style={styles.keyContainer}>
         <Text style={[styles.keyText, { color: colorScheme.calories }]}>Calories: {progressValues.calories.toFixed(0)}%</Text>
-        <Text style={[styles.keyText, { color: colorScheme.middleRing }]}>Protein: {progressValues.protein.toFixed(0)}%</Text>
+        <Text style={[styles.keyText, { color: colorScheme.protein }]}>Protein: {progressValues.protein.toFixed(0)}%</Text>
         <Text style={[styles.keyText, { color: colorScheme.water }]}>Water: {progressValues.water.toFixed(0)}%</Text>
       </View>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
