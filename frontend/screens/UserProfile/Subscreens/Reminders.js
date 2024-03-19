@@ -487,9 +487,9 @@ function Reminders() {
 							<TextInput
 								style={[styles.descriptionInput]}
 								placeholder="Description"
-								onChange={(text) => setNewReminder({ ...newReminder, description: text })}
+								onChangeText={(text) => setNewReminder({ ...newReminder, description: text })}
 								value={newReminder.description}
-								multiline
+								returnKeyType='done'
 							/>
 
 							<Text style={{ fontSize: 16, fontWeight: 'bold' }}>Current Time Selected:</Text>

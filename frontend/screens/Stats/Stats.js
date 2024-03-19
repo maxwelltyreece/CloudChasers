@@ -22,6 +22,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f2f2f2'
   },
+  loadingContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignContent: 'center',
+		alignItems: 'center',
+	},
   progressBarContainer: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -111,7 +117,7 @@ const Stats = () => {
 
   if (loading) {
     return (
-      <View style={styles.statsContainer}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" />
       </View>
     );

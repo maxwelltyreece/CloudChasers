@@ -51,6 +51,12 @@ const styles = StyleSheet.create({
 		// backgroundColor: 'purple',
 		zIndex: 1,
 	},
+	loadingContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignContent: 'center',
+		alignItems: 'center',
+	},
 	middleDashboardContainer: {
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
@@ -172,7 +178,7 @@ function Dashboard() {
 
 	if (loading) {
 		return (
-			<View style={styles.dashboardContainer}>
+			<View style={styles.loadingContainer}>
 				<ActivityIndicator size="large" />
 			</View>
 		);

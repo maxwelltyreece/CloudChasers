@@ -13,20 +13,12 @@ import moment from 'moment';
 const styles = StyleSheet.create({
 	// -------Goal Progress Bar-------//
 	progressBarComponentContainer: {
-		// flex: 1,
 		justifyContent: 'center',
-		// backgroundColor: '#F2F2F2',
-		// padding: 15,
 		marginTop: '1%',
 		// marginBottom: '1%',
 		borderRadius: 15,
 		width: '100%',
 		height: '40%',
-		// shadowColor: '#000',
-		// shadowOffset: { width: 0, height: 1 },
-		// shadowOpacity: 0.22,
-		// shadowRadius: 2.22,
-		// elevation: 3,
 		// backgroundColor: 'red',
 	},
 	progressBarContainer: {
@@ -74,7 +66,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
 		paddingHorizontal: 20,
-		paddingBottom: 10,
+		// paddingBottom: 10,
 		// backgroundColor: 'green',
 	},
 	firstSlideContainer: {
@@ -127,10 +119,10 @@ const styles = StyleSheet.create({
 	},
 	remindersScrolView: {
 		width: '100%',
-		height: '62%',
+		height: '60%',
 		// height: 'auto',
 		// maxHeight: '62%',
-		marginBottom: 4,
+		marginBottom: 6,
 	},
 	reminderItem: {
 		marginBottom: '2%',
@@ -150,7 +142,7 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	reminderInfoSection: {
-		marginTop: 4,
+		marginTop: 6,
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignContent: 'center',
