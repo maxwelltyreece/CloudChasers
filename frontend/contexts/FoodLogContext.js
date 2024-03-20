@@ -20,8 +20,8 @@ export function FoodLogProvider({ children }) {
             return;
         }
         const food = await foodLogService.getLatestLoggedFood();
-        setLatestLoggedFood(food);
-        console.log('Latest logged food:', food);
+        setLatestLoggedFood(food.data);
+        console.log('Latest logged food:', food.data);
     }
 
     const logDatabaseFood = async (data) => {

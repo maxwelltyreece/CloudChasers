@@ -1,10 +1,13 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-	View, Text, ScrollView, StyleSheet,
+	View, Text, ScrollView, StyleSheet, Pressable
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useCommunity } from '../../../contexts/CommunityContext';
 import PropTypes from 'prop-types';
+
 
 const styles = StyleSheet.create({
 	container: {
@@ -43,7 +46,7 @@ const styles = StyleSheet.create({
 		marginRight: 8,
 		// marginBottom: 50,
 		// width: '18%',
-		width: 180,
+		width: 190,
 		// height: '80%',
 		// height: 60,
 		height: 'auto',
@@ -54,35 +57,78 @@ const styles = StyleSheet.create({
 		shadowRadius: 2.22,
 		elevation: 3,
 	},
+	communityItemHeader: {
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignContent: 'center',
+		alignItems: 'center',
+		marginBottom: 1,
+	},
+	groupNameSection: {
+		justifyContent: 'center',
+		alignContent: 'flex-start',
+		alignItems: 'flex-start',
+		width: '65%',
+	},
+	postCountSection: {
+		flexDirection: 'row',
+		alignContent: 'center',
+		alignItems: 'center',
+		width: '35%',
+		backgroundColor: '#F0F0F0',
+		borderRadius: 10,
+		paddingHorizontal: 5,
+		paddingVertical: 2,
+		left: 1,
+		bottom: 3,
+	},
 	groupName: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		marginBottom: 1,
+		right: 2,
+
+	},
+	postCount: {
+		fontSize: 12,
+		fontWeight: '600',
 	},
 	detailText: {
 		fontSize: 12.7,
 		// marginBottom: 20,
 	},
 	noCommunitiesText: {
-        fontSize: 18,
+		fontSize: 18,
 		fontWeight: 'bold',
-        color: '#666',
-        textAlign: 'center',
-    },
+		color: '#666',
+		textAlign: 'center',
+	},
 });
 
 
-// const fakeCommunities = [
-// 	{ groupName: 'Pasta Lovers', description: 'A community for pasta enthusiasts' },
-// 	{ groupName: 'Meat Meat Meat', description: 'A community for meat lovers' },
-// 	{ groupName: 'Health Gurus', description: 'A community for health and wellness' },
-// 	{ groupName: 'Veggie Heads', description: 'A community for vegetarians and vegans' },
-// 	{ groupName: 'Bread Heads', description: 'A community for bread lovers and pasta and pizza and sandwiches and wraps and spreads and toast' },
-// ];
-
 function CommunityUpdates({ communities }) {
-	// Check if communities is truthy and has length greater than 0
+	const navigation = useNavigation();
+	const { getCommunityPosts } = useCommunity();
+	const [communityPostCounts, setCommunityPostCounts] = useState({});
 	const hasCommunities = communities && communities.length > 0;
+
+	useEffect(() => {
+		const fetchPostsCounts = async () => {
+			const counts = {};
+			for (const community of communities) {
+				const postsData = await getCommunityPosts(community.id);
+				counts[community.id] = postsData.length;
+			}
+			setCommunityPostCounts(counts);
+		};
+
+		if (communities.length > 0) {
+			fetchPostsCounts();
+		}
+	}, [communities]);
+
+	const handlePress = (community) => {
+		navigation.navigate('Group', { screen: 'GroupPage', params: { community: community } });
+	};
 
 	return (
 		<View style={styles.container}>
@@ -90,12 +136,25 @@ function CommunityUpdates({ communities }) {
 			<ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
 				{hasCommunities ? (
 					communities.map((community, index) => (
-						<View key={index} style={styles.updateContainer}>
-							<Text style={styles.groupName} numberOfLines={1}>{community.name}</Text>
+						<Pressable
+							key={index}
+							onPress={() => handlePress(community)}
+							style={styles.updateContainer}
+						>
+
+							<View style={styles.communityItemHeader}>
+								<View style={styles.groupNameSection}>
+									<Text style={styles.groupName} numberOfLines={1}>{community.name}</Text>
+								</View>
+								<View style={styles.postCountSection}>
+									<Text style={styles.postCount} numberOfLines={1}>Posts: {communityPostCounts[community.id] || 0}</Text>
+								</View>
+							</View>
 							<Text style={styles.detailText} numberOfLines={2}>
 								{community.description}
 							</Text>
-						</View>
+
+						</Pressable>
 					))
 				) : (
 					// Render a "No communities" message if there are no communities
@@ -116,31 +175,3 @@ CommunityUpdates.propTypes = {
 		description: PropTypes.string,
 	})),
 };
-
-// const communityUpdates = [
-// 	{ groupName: 'Pasta Lovers', likes: 120, members: 80 },
-// 	{ groupName: 'Meat Meat Meat', likes: 150, members: 50 },
-// 	{ groupName: 'Health Gurus', likes: 90, members: 40 },
-// ];
-
-// function CommunityUpdates() {
-// 	return (
-// 		<View style={styles.container}>
-// 			<Text style={styles.header}>Community Updates</Text>
-// 			<ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.scrollContainer}>
-// 				{communityUpdates.map((update, index) => (
-// 					<View key={index} style={styles.updateContainer}>
-// 						<Text style={styles.groupName}>{update.groupName}</Text>
-// 						<Text style={styles.detailText}>
-//     						Likes: {update.likes} {' '} | Members:
-// 							{update.members}
-// 						</Text>
-// 						{/* <Text style={styles.detailText}>Members: {update.members}</Text> */}
-// 					</View>
-// 				))}
-// 			</ScrollView>
-// 		</View>
-// 	);
-// }
-
-// Update the function to accept `communities` prop
