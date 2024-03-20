@@ -10,6 +10,7 @@ router.post('/logDatabaseFood', userMiddleware, foodController.logDatabaseFood);
 router.post('/createNewRecipeByUser', userMiddleware, recipeController.createNewRecipeByUser);
 router.post('/logRecipeFood', userMiddleware, recipeController.logRecipeFood);
 router.post('/duplicateRecipe', userMiddleware, recipeController.duplicateRecipeToUser);
+router.post("/logManualMacro", userMiddleware, foodController.logManualMacro);
 
 router.get('/getFood', foodController.getFood);
 router.get('/searchFoods', foodController.searchFoods);
