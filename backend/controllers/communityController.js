@@ -8,9 +8,8 @@ const CommunityPost = require('../models/communityPost');
 const JoinRequest = require('../models/request');
 
 // TODO:
-// - Get pending requests
-// - Accept/deny requests
-// 
+//    ٩(^‿^)۶ 
+//
 // DONE:
 // - Get community members
 // - Get admin status
@@ -24,6 +23,8 @@ const JoinRequest = require('../models/request');
 // - Admin can remove members
 // - Get community posts/recipes
 // - Join private community
+// - Get pending requests
+// - Accept/deny requests
 
 exports.createCommunity = async (req, res) => {
     const { name, description, recipePrivacy, joinPrivacy } = req.body;
@@ -39,7 +40,7 @@ exports.createCommunity = async (req, res) => {
             description,
             recipePrivacy,
             joinPrivacy,
-            createdBy: user,
+            createdBy: user._id,
         });
        
         await newCommunity.save();
