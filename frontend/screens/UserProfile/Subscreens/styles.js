@@ -31,6 +31,8 @@ export const styles = StyleSheet.create({
     },
 
     titleContainer: {
+        flexDirection: 'row', 
+        alignItems: 'center', 
         alignSelf: 'stretch',
         paddingHorizontal: '5%',
     },

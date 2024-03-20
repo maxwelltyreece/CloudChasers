@@ -113,13 +113,10 @@ const RecipeModal = ({ isVisible, onClose }) => {
                             style={[styles.input, styles.inputDescription]}
                             placeholder="Description"
                             multiline={true}
-                            // onChangeText={onChangeRecipeDescription}
-                            // value={recipeDescription}
                         />
                         <View style={[styles.button]}>
                             <Button title="Pick Recipe Image" onPress={pickImage}/>
                             {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-                            
                         </View>
 
                         
