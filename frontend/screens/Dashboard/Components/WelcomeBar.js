@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
 function WelcomeBar({ name }) {
     return (
         <View style={styles.welcomeContainer}>
-            <Text style={styles.welcomeText}>
+            <Text style={styles.welcomeText} numberOfLines={1}>
                 Welcome {name ? name : 'Loading...'}!
             </Text>
         </View>
