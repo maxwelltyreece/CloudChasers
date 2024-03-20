@@ -11,7 +11,7 @@ import { styles } from './styles';
 function Groups() {
 	const [searchText, setSearchText] = useState('');
 	const navigation = useNavigation();
-	const { userCommunities } = useCommunity();
+	const { userCommunities, getUserRole } = useCommunity();
 
 	function NewGroupButton() {
 		return (
@@ -32,9 +32,12 @@ function Groups() {
 	// eslint-disable-next-line max-len
     const filteredData = (userCommunities || []).filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
 
-	const handlePress = (item) => {
-		navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });
-	};
+	const handlePress = async (item) => {
+        const role = await getUserRole(item.id);
+        console.log('Role:', role);
+        const isAdmin = role === 'admin';
+        navigation.navigate('Group', { screen: 'GroupPage', params: { community: item, isAdmin } });
+    };
 	return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>

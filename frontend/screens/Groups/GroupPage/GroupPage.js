@@ -50,27 +50,33 @@ const Message = ({ title, text, sender }) => (
 // }
 
 function GroupPage({ route, navigation }) {
-    const { community } = route.params;
-    const { getCommunityPosts } = useCommunity();
+    const { community, isAdmin } = route.params;
+    const { getCommunityPosts, getPendingRequests } = useCommunity();
     const [messages, setMessages] = useState([]);
+    const [requestsCount, setRequestsCount] = useState(0);
 
     useFocusEffect(
         React.useCallback(() => {
-            const fetchPosts = async () => {
-                console.log(community.id)
+            const fetchPostsAndRequests = async () => {
                 const posts = await getCommunityPosts(community.id);
                 setMessages(posts);
+
+                if (isAdmin) {
+                    const requests = await getPendingRequests(community.id);
+                    setRequestsCount(requests.length);
+                }
             };
 
-            fetchPosts();
-            console.log('Fetching posts for community:', community.id);
-            console.log(messages);
+            fetchPostsAndRequests();
 
-            return () => setMessages([]); // optional cleanup function
-        }, [community.id, getCommunityPosts])
+            return () => {
+                setMessages([]);
+            };
+        }, [community.id, getCommunityPosts, getPendingRequests, isAdmin])
     );
 
     useEffect(() => {
+        console.log(isAdmin);
         navigation.setOptions({
             title: community.name,
             headerTitleStyle: {
@@ -81,6 +87,16 @@ function GroupPage({ route, navigation }) {
             headerRight: () => (
                 <View style={styles.headerButton}>
                     <IconButton iconName="book" onPress={() => navigation.navigate('GroupSettings', { community })} />
+                    {isAdmin && (
+                        <View style={styles.mailButton}>
+                            <IconButton iconName="mail" onPress={() => navigation.navigate('PendingRequests', { community })} />
+                            {requestsCount > 0 && (
+                                <View style={styles.requestsCount}>
+                                    <Text>{requestsCount}</Text>
+                                </View>
+                            )}
+                        </View>
+                    )}
                     <IconButton iconName="settings" onPress={() => navigation.navigate('GroupSettings', { community })} />
                     <IconButton iconName="users" onPress={() => navigation.navigate('GroupMembers', { community })} />
                 </View>

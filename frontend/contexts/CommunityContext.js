@@ -38,8 +38,10 @@ export function CommunityProvider({ children }) {
 	// eslint-disable-next-line max-len
 	const getCommunityMembers = async (communityId) => communityService.getCommunityMembers(communityId);
 
-	const getUserRole = async (communityId) => communityService.getUserRole(communityId);
-
+    const getUserRole = async (communityId) => {
+        const response = await communityService.getUserRole(communityId);
+        return response.data.role;
+    };
 	const getAllCommunities = async () => communityService.getAllCommunities();
 
 	const createCommunity = async (communityData) => {
@@ -126,6 +128,21 @@ export function CommunityProvider({ children }) {
         return response;
     };
 
+    const acceptRequest = async (communityId, userId) => {
+        const response = await communityService.acceptRequest(communityId, userId);
+        return response;
+    };
+    
+    const denyRequest = async (communityId, userId) => {
+        const response = await communityService.denyRequest(communityId, userId);
+        return response;
+    };
+    
+    const getPendingRequests = async (communityId) => {
+        const response = await communityService.getPendingRequests(communityId);
+        return response;
+    };
+
 	const value = useMemo(() => ({
         deleteCommunity,
         leaveCommunity,
@@ -146,8 +163,11 @@ export function CommunityProvider({ children }) {
         makePost,
         getCommunityPosts,
         removeMember,
+        acceptRequest,
+        denyRequest,
+        getPendingRequests,
 	// eslint-disable-next-line max-len
-	}), [makePost, getCommunityPosts, removeMember, getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy]);
+	}), [makePost, getCommunityPosts, removeMember, getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy, getCommunityImage, acceptRequest, denyRequest, getPendingRequests]);
 
 	return (
 		<CommunityContext.Provider value={value}>

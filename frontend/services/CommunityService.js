@@ -209,3 +209,40 @@ export async function removeMember(communityId, memberId) {
     });
     return response.json();
 }
+
+export async function acceptRequest(communityId, userId) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/acceptRequest`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ communityId, userId }),
+    });
+    return response.json();
+}
+
+export async function denyRequest(communityId, userId) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/denyRequest`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ communityId, userId }),
+    });
+    return response.json();
+}
+
+export async function getPendingRequests(communityId) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/requests?communityId=${communityId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.json();
+}
