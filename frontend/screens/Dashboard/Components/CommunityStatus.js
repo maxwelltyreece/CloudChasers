@@ -68,29 +68,29 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignContent: 'flex-start',
 		alignItems: 'flex-start',
-		width: '65%',
+		width: '60%',
 	},
 	postCountSection: {
 		flexDirection: 'row',
-		alignContent: 'center',
-		alignItems: 'center',
-		width: '35%',
+		alignContent: 'flex-end',
+		alignItems: 'flex-end',
+		width: '40%',
 		backgroundColor: '#F0F0F0',
 		borderRadius: 10,
 		paddingHorizontal: 5,
 		paddingVertical: 2,
-		left: 1,
+		left: 2,
 		bottom: 3,
 	},
 	groupName: {
 		fontSize: 16,
 		fontWeight: 'bold',
 		right: 2,
-
 	},
 	postCount: {
-		fontSize: 12,
+		fontSize: 11.5,
 		fontWeight: '600',
+		
 	},
 	detailText: {
 		fontSize: 12.7,
