@@ -8,10 +8,11 @@ import {
 } from './Components';
 
 import { useUser } from '../../contexts/UserContext';
-import { useCommunity } from '../../contexts/CommunityContext'; 
+import { useCommunity } from '../../contexts/CommunityContext';
 import { useStats } from '../../contexts/StatsContext';
 import { useGoals } from '../../contexts/GoalsContext';
 import { useFoodLog } from '../../contexts/FoodLogContext';
+import { useAwards } from '../../contexts/AwardsContext';
 
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -19,22 +20,29 @@ import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
 
 
+// Dashboard screen
 function Dashboard() {
 	const navigation = useNavigation();
 	const [loading, setLoading] = useState(false);
 	const { userDetails, updateUserDetails } = useUser();
 	const { userCommunities, getUserCommunities } = useCommunity([]);
-	const { todayStats, updateTodayStats } = useStats();
-	const { macroGoals, fetchMacroGoals } = useGoals(); 
-	const { latestLoggedFood, setLatestLoggedFood } = useFoodLog();
-	
-    console.log({ userDetails });
-	console.log({ userCommunities });
-	console.log({ todayStats });
-	console.log({ latestLoggedFood });
-	console.log({ macroGoals });
+	const { todayStats, streak, updateTodayStats } = useStats();
+	const { goals, fetchGoals } = useGoals();
+	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
+	const { userAwards, awards, fetchUserAwards, fetchAwards } = useAwards();
 
-    
+	//console.log({ userDetails });
+	// console.log(userDetails.data.forename);
+	// console.log(userDetails.data.streak);
+	// console.log({ userCommunities });
+	// console.log({ todayStats });
+	// console.log({ latestLoggedFood });
+	// console.log({ goals });
+	// console.log({ userAwards });
+	// console.log({ 'COMMUNITIES': userCommunities });
+
+	// console.log('STREAKS DASHBOARD:', streak);
+
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
@@ -48,33 +56,24 @@ function Dashboard() {
 			console.error("Error accessing AsyncStorage:", error);
 			navigation.navigate('Login'); // Redirect to login if error
 		}
-	}; 
-
+	};
+ 
 	useEffect(() => {
 		setLoading(true);
-	
 		const fetchData = async () => {
 			try {
-				await checkUserLogin();
-	
-				// // Fetch all necessary data in parallel
-				// await Promise.all([
-				// 	userDetails ? Promise.resolve() : updateUserDetails(),
-				// 	// Add conditions to fetch todayStats and userCommunities only if they haven't been fetched yet
-				// 	todayStats ? Promise.resolve() : updateTodayStats(),
-					
-				// 	userCommunities.length > 0 ? Promise.resolve() : getUserCommunities(),
-				// 	latestLoggedFood ? Promise.resolve() : setLatestLoggedFood()
-				// ]);
- 
+				await checkUserLogin(); // Check if user is logged in
+
 				// Fetch all necessary data in parallel
 				await Promise.all([
-                    updateUserDetails(),
-                    updateTodayStats(),
-                    getUserCommunities(),
-                    setLatestLoggedFood(),
-                    fetchMacroGoals()
-                ]);
+					updateUserDetails(),
+					updateTodayStats(),
+					getUserCommunities(),
+					getLatestLoggedFood(),
+					fetchGoals(),
+					fetchUserAwards(),
+					fetchAwards()
+				]);
 			} catch (error) {
 				console.error("Error fetching data for dashboard:", error);
 				// Handle error appropriately
@@ -82,14 +81,14 @@ function Dashboard() {
 				setLoading(false); // Ensure loading is set to false after operations complete
 			}
 		};
-	
+
 		fetchData();
-	}, []);
-	
+	}, []); 
+
 
 	if (loading) {
 		return (
-			<View style={styles.dashboardContainer}>
+			<View style={styles.loadingContainer}>
 				<ActivityIndicator size="large" />
 			</View>
 		);
@@ -100,24 +99,24 @@ function Dashboard() {
 
 			{loading ? (
 				<ActivityIndicator size="large" />
-			) : (
+			) : ( 
 				<>
 					<View style={styles.semiCircle} />
 					<View style={styles.dashboardHeader}>
-						<WelcomeBar name={userDetails?.data?.forename} />
+						<WelcomeBar name={userDetails?.forename} />
 					</View>
 
-					<CurrentGoalProgress todayStats={todayStats} nutrientGoals={macroGoals}/>
+					<CurrentGoalProgress todayStats={todayStats} goals={goals} />
 
-					<CommunityStatus communities={userCommunities} /> 
+					<CommunityStatus communities={userCommunities} />
 
 					<View style={styles.bottomDashboardContainer}>
 						<View style={styles.leftComponentContainer}>
-							<AchievementsFeature />
+							<AchievementsFeature userAwards={userAwards} allAwards={awards} />
 						</View>
 
 						<View style={styles.rightComponentContainer}>
-							<RecentLog streak={userDetails?.data?.streak} userLogStats={setLatestLoggedFood} />
+							<RecentLog streak={streak} userLogStats={latestLoggedFood} />
 						</View>
 					</View>
 

@@ -2,28 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import proptypes from 'prop-types';
 
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#EC6641',
-    padding: 10,
-    borderRadius: 10,
-    margin: 10,
-    width: '95%',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 3,
-  },
-  message: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#FFFFFF',
-    textAlign: 'center',
-  },
-});
-
 const messages = {
   good: [
     'Doing great this week, keep it up!',
@@ -42,9 +20,9 @@ const messages = {
   ],
 };
 
-// eslint-disable-next-line no-unused-vars
-const AnnouncementBar = ({ streak, progressData }) => {
+const AnnouncementBar = ({ progressData }) => {
   const averageProgress = progressData.data.reduce((acc, curr) => acc + curr, 0) / progressData.data.length;
+
 
   let progressLevel;
   if (averageProgress < 0.5) {
@@ -68,11 +46,29 @@ const AnnouncementBar = ({ streak, progressData }) => {
   );
 };
 
-
-
-export default AnnouncementBar;
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#EC6641',
+    padding: 10,
+    borderRadius: 10,
+    margin: 10,
+    width: '95%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 3,
+  },
+  message: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    textAlign: 'center',
+  },
+});
 
 AnnouncementBar.propTypes = {
-  streak: proptypes.number.isRequired,
   progressData: proptypes.object.isRequired,
 };
+
+export default AnnouncementBar;

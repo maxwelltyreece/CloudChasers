@@ -9,9 +9,11 @@ import PropTypes from 'prop-types';
 const FoodLogContext = createContext();
 
 export function FoodLogProvider({ children }) {
+
     const [latestLoggedFood, setLatestLoggedFood] = useState(null);
 
     const getLatestLoggedFood = async () => {
+
         const token = await AsyncStorage.getItem('token');
         if (!token) {
             console.error('Token not available');
@@ -104,6 +106,7 @@ export function FoodLogProvider({ children }) {
             {children}
         </FoodLogContext.Provider>
     );
+
 }
 
 export const useFoodLog = () => useContext(FoodLogContext);

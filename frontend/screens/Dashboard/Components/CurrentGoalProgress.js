@@ -13,20 +13,12 @@ import moment from 'moment';
 const styles = StyleSheet.create({
 	// -------Goal Progress Bar-------//
 	progressBarComponentContainer: {
-		// flex: 1,
 		justifyContent: 'center',
-		// backgroundColor: '#F2F2F2',
-		// padding: 15,
 		marginTop: '1%',
 		// marginBottom: '1%',
 		borderRadius: 15,
 		width: '100%',
 		height: '40%',
-		// shadowColor: '#000',
-		// shadowOffset: { width: 0, height: 1 },
-		// shadowOpacity: 0.22,
-		// shadowRadius: 2.22,
-		// elevation: 3,
 		// backgroundColor: 'red',
 	},
 	progressBarContainer: {
@@ -74,7 +66,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
 		paddingHorizontal: 20,
-		paddingBottom: 10,
+		// paddingBottom: 10,
 		// backgroundColor: 'green',
 	},
 	firstSlideContainer: {
@@ -127,10 +119,10 @@ const styles = StyleSheet.create({
 	},
 	remindersScrolView: {
 		width: '100%',
-		height: '62%',
+		height: '60%',
 		// height: 'auto',
 		// maxHeight: '62%',
-		marginBottom: 4,
+		marginBottom: 6,
 	},
 	reminderItem: {
 		marginBottom: '2%',
@@ -150,7 +142,7 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	reminderInfoSection: {
-		marginTop: 4,
+		marginTop: 6,
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
 		alignContent: 'center',
@@ -217,7 +209,7 @@ const styles = StyleSheet.create({
 });
 
 // ProgressBar component
-const ProgressBar = ({ label, progress, max }) => {
+const ProgressBar = ({ label, progress, max, unit }) => {
 
 	const [containerWidth, setContainerWidth] = useState(0);
 	const animatedWidth = useRef(new Animated.Value(0)).current;
@@ -238,7 +230,17 @@ const ProgressBar = ({ label, progress, max }) => {
 
 
 	useEffect(() => {
-		const finalWidth = (progress / max) * containerWidth;
+		// Safe division function to avoid dividing by zero
+		const safeDivision = (numerator, denominator, containerWidth) => {
+			if (denominator > 0) {
+				return (numerator / denominator) * containerWidth;
+			} else {
+				// Default to 0 or any other fallback width
+				return 0;
+			}
+		};
+
+		const finalWidth = safeDivision(progress, max, containerWidth);
 
 		Animated.timing(animatedWidth, {
 			toValue: finalWidth,
@@ -251,20 +253,20 @@ const ProgressBar = ({ label, progress, max }) => {
 		<View style={progressBarStyle}>
 			<View style={styles.labelContainer}>
 				<Text style={labelStyle}>{label}</Text>
-				<Text style={labelStyle}>{`${progress} / ${max}`}</Text>
+				<Text style={labelStyle}>{`${progress} / ${max} ${unit}`}</Text>
 			</View>
 			<View style={styles.progressBarContainer} onLayout={measureContainer}>
 				<Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
 			</View>
 		</View>
 	);
-
 };
 
 ProgressBar.propTypes = {
 	label: PropTypes.string.isRequired,
 	progress: PropTypes.number.isRequired,
 	max: PropTypes.number.isRequired,
+	unit: PropTypes.string,
 };
 
 
@@ -288,9 +290,43 @@ ReminderItem.propTypes = {
 };
 
 // Main component
-function GoalProgressBar({ todayStats, nutrientGoals }) {
+function GoalProgressBar({ todayStats, goals }) {
 	const { reminders } = useReminders();
 	const navigation = useNavigation();
+
+	let initialMacroValues = {
+        calories: 0,
+        water: 0,
+        fat: 0,
+        sodium: 0,
+        carbs: 0,
+        protein: 0,
+        sugar: 0,
+        fibre: 0,
+    };
+
+    let currentMacroValues = { ...initialMacroValues, ...todayStats }
+
+	// Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
+	let nutrientGoals = {
+		calories: 2000,
+		fat: 70,
+		sodium: 2300,
+		carbs: 300,
+		water: 3700,
+		protein: 50,
+		sugar: 25,
+		fibre: 30,
+	};
+
+	// If the goals object contains goals, populate the nutrientGoals with actual values
+	if (goals && goals.goals) {
+		goals.goals.forEach(goal => {
+			if (goal.measurement in nutrientGoals) {
+				nutrientGoals[goal.measurement] = goal.maxTargetMass;
+			}
+		});
+	}
 
 
 	function getClosestDate(reminder) {
@@ -298,8 +334,6 @@ function GoalProgressBar({ todayStats, nutrientGoals }) {
 		let reminderTime = moment(reminder.time, "hh:mm A"); // parse time string with format
 
 		let closestDate = now.clone().hour(reminderTime.hour()).minute(reminderTime.minute());
-
-		console.log('Closest date for reminder:', reminder, 'is:', closestDate);
 
 		if (reminder.frequency === 'daily') {
 			if (now.isAfter(closestDate)) {
@@ -323,24 +357,16 @@ function GoalProgressBar({ todayStats, nutrientGoals }) {
 	let sortedReminders = reminders.sort((a, b) => {
 		let aClosest = getClosestDate(a);
 		let bClosest = getClosestDate(b);
-	
+
 		let now = new Date();
 		let isMondaySoon = now.getDay() === 0 || now.getDay() === 1; // today is Sunday or Monday
-	
+
 		if (!isMondaySoon && aClosest.isDaily !== bClosest.isDaily) {
 			return aClosest.isDaily ? -1 : 1;
 		} else if (aClosest.isDaily === bClosest.isDaily || isMondaySoon) {
 			return aClosest.date - bClosest.date;
 		}
 	});
-
-
-	for (let i = 0; i < sortedReminders.length; i++) {
-		console.log(sortedReminders[i].description, getClosestDate(sortedReminders[i]));
-	}
-
-	console.log('Sorted reminders:', sortedReminders);
-
 
 	return (
 		<View style={styles.progressBarComponentContainer}>
@@ -349,8 +375,8 @@ function GoalProgressBar({ todayStats, nutrientGoals }) {
 				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>
 					<Text style={styles.slideTitle}>Today</Text>
-					<ProgressBar label="Calories" progress={todayStats.calories} max={nutrientGoals.calories.value} />
-					<ProgressBar label="Water" progress={todayStats.water} max={nutrientGoals.water.value} />
+					<ProgressBar label="Calories" progress={currentMacroValues.calories} max={nutrientGoals.calories} unit="kcal" />
+					<ProgressBar label="Water" progress={currentMacroValues.water} max={nutrientGoals.water} unit="ml" />
 				</View>
 
 				{/* Reminders slide */}
@@ -384,7 +410,7 @@ function GoalProgressBar({ todayStats, nutrientGoals }) {
 					) : null}
 				</View>
 
-				
+
 			</Swiper>
 		</View>
 	);
@@ -392,104 +418,7 @@ function GoalProgressBar({ todayStats, nutrientGoals }) {
 
 GoalProgressBar.propTypes = {
 	todayStats: PropTypes.object.isRequired,
-	nutrientGoals: PropTypes.object.isRequired,
+	goals: PropTypes.any.isRequired,
 };
 
 export default GoalProgressBar;
-
-
-	// // const getNextReminderDate = (reminder) => {
-	// // 	const today = new Date();
-	// // 	const timeParts = reminder.time.split(':');
-	// // 	const reminderHour = parseInt(timeParts[0], 10);
-	// // 	const reminderMinutes = parseInt(timeParts[1], 10);
-
-	// // 	if (reminder.frequency === 'daily') {
-	// // 		const nextOccurrence = new Date();
-	// // 		nextOccurrence.setHours(reminderHour, reminderMinutes, 0, 0);
-	// // 		// If the reminder time for today has already passed, set it for the next day
-	// // 		if (nextOccurrence <= today) {
-	// // 			nextOccurrence.setDate(today.getDate() + 1);
-	// // 		}
-	// // 		return nextOccurrence;
-	// // 	} else if (reminder.frequency === 'weekly') {
-	// // 		// Find next Monday
-	// // 		const nextMonday = new Date();
-	// // 		nextMonday.setDate(today.getDate() + ((1 + 7 - today.getDay()) % 7 || 7)); // 1 is Monday
-	// // 		nextMonday.setHours(reminderHour, reminderMinutes, 0, 0);
-	// // 		// If today is Monday and the time hasn't passed, set the reminder for today
-	// // 		if (today.getDay() === 1 && today < nextMonday) {
-	// // 			nextMonday.setDate(today.getDate());
-	// // 		}
-	// // 		return nextMonday;
-	// // 	}
-	// // };
-
-	// const getNextReminderDate = (reminder) => {
-	// 	console.log('Calculating next occurrence for reminder:', reminder);
-	// 	const today = new Date();
-	// 	const timeParts = reminder.time.split(':');
-	// 	const reminderHour = parseInt(timeParts[0], 10);
-	// 	const reminderMinutes = parseInt(timeParts[1], 10);
-	// 	let nextOccurrence = new Date(today);
-
-	// 	if (reminder.frequency === 'daily') {
-	// 		nextOccurrence.setHours(reminderHour, reminderMinutes, 0, 0);
-	// 		if (nextOccurrence <= today) {
-	// 			nextOccurrence.setDate(today.getDate() + 1);
-	// 		}
-	// 	} else if (reminder.frequency === 'weekly') {
-	// 		nextOccurrence.setDate(today.getDate() + ((1 + 7 - today.getDay()) % 7 || 7));
-	// 		nextOccurrence.setHours(reminderHour, reminderMinutes, 0, 0);
-	// 		if (today.getDay() === 1 && today.getTime() < nextOccurrence.getTime()) {
-	// 			nextOccurrence.setDate(today.getDate());
-	// 		}
-	// 	}
-
-	// 	if (isNaN(nextOccurrence.getTime())) { 
-	// 		console.error('Invalid nextOccurrence calculated:', nextOccurrence);
-	// 		return undefined; // Explicitly return undefined for clarity
-	// 	}
-
-	// 	console.log('Next occurrence for reminder:', reminder, 'is:', nextOccurrence);
-	// 	return nextOccurrence;
-	// };
- 
-	// useEffect(() => {
-	// 	// Calculate next occurrence for each reminder and sort them
-	// 	const remindersWithNextOccurrence = reminders.map(reminder => ({
-	// 		...reminder,
-	// 		nextOccurrence: getNextReminderDate(reminder)
-	// 	})).sort((a, b) => {
-	// 		const dateA = a.nextOccurrence.toDateString();
-	// 		const dateB = b.nextOccurrence.toDateString();
-	// 		if (dateA === dateB) {
-	// 			// When the dates are the same, sort by time
-	// 			const timeA = new Date(a.nextOccurrence).setFullYear(1970, 0, 1);
-	// 			const timeB = new Date(b.nextOccurrence).setFullYear(1970, 0, 1);
-	// 			return timeA - timeB;
-	// 		}
-	// 		return a.nextOccurrence - b.nextOccurrence;
-	// 	});
-	// 	console.log('Sorted reminders:', remindersWithNextOccurrence);
-	// 	setSortedReminders(remindersWithNextOccurrence);
-	// }, [reminders]);
-	
-
-	// useEffect(() => {
-	// 	const fetchReminders = async () => {
-	// 		const remindersData = await AsyncStorage.getItem('REMINDERS');
-	// 		const remindersList = remindersData ? JSON.parse(remindersData) : [];
-
-	// 		// Calculate next occurrence for each reminder and sort them
-	// 		remindersList.forEach(reminder => {
-	// 			reminder.nextOccurrence = getNextReminderDate(reminder);
-	// 		});
-
-	// 		remindersList.sort((a, b) => a.nextOccurrence - b.nextOccurrence);
-
-	// 		setReminders(remindersList.slice(0, 3)); // Keep only the top 3 reminders
-	// 	};
-
-	// 	fetchReminders();
-	// }, []);

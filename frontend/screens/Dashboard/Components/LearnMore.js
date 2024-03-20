@@ -149,9 +149,9 @@ function LearnMore() {
                             and fish.
 						</Text>
 
-						{/* Fiber */}
+						{/* Fibre */}
 						<Text style={styles.modalContentText}>
-							<Text style={styles.modalSubheaderText}>Fiber:</Text>
+							<Text style={styles.modalSubheaderText}>Fibre:</Text>
 							{'\n'}
                             A type of carbohydrate that the body can&apos;t digest. It helps
                             regulate the body&apos;s use of sugars, helping to keep hunger
