@@ -16,6 +16,7 @@ const AcButton = () => {
       <ActionButton
         buttonColor="#FF815E"
         onPress={handlePress}
+        shadow={false}
       />
       <RecipeModal
         isVisible={isModalVisible}
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f3f3f3',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor:'blue',
   },
 });
 

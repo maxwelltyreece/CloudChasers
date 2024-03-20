@@ -6,8 +6,6 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
-
 const RecipeModal = ({ isVisible, onClose }) => {
 
   function getFileName(image){
@@ -64,6 +62,7 @@ const RecipeModal = ({ isVisible, onClose }) => {
         console.log("Recipe ID = " + recipeID);
         formData.append('objectID', recipeID);
         formData.append('folderName', 'Recipe_Pictures');
+        console.log("Image = " + image);
         formData.append('file', {
           uri: image,
           name: getFileName(image),
@@ -76,6 +75,9 @@ const RecipeModal = ({ isVisible, onClose }) => {
             'Content-Type': 'multipart/form-data',
           },
         })
+
+        setRecipeName('');
+        setImage(null);
         onClose();
        }
 
