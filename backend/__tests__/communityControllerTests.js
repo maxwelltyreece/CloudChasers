@@ -38,7 +38,26 @@ describe("Community Management", () => {
 			password: "securepassword",
 			dateOfBirth: new Date(1990, 0, 1),
 		});
+		user2 = await User.create({
+			forename: "Jane",
+			surname: "Doe",
+			username: "janedoe",
+			email: "janedoe@example.com",
+			password: "securepassword",
+			dateOfBirth: new Date(1990, 0, 1)
+		});
+		user3 = await User.create({
+			forename: "Jim",
+			surname: "Doe",
+			username: "jimdoe",
+			email: "jimdoe@example.com",
+			password: "securepassword",
+			dateOfBirth: new Date(1990, 0, 1)
+		});
+
 		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+		token2 = jwt.sign({ userId: user2._id }, process.env.SECRET_KEY);
+		token3 = jwt.sign({ userId: user3._id }, process.env.SECRET_KEY);
 		
 
 	
@@ -57,6 +76,12 @@ describe("Community Management", () => {
 			userID: user._id,
 			role: 'admin'
 		});
+		await CommunityUser.create({
+			communityID: community._id,
+			userID: user2._id,
+			role: 'member'
+		});
+		
 
 	});
 
@@ -180,22 +205,9 @@ describe("Community Management", () => {
 			expect(response.body).toHaveProperty("message", "Community not found");
 		});
 		it("should return an error if the user is not an admin", async () => {
-			const newUser = await User.create({
-				forename: "Jane",
-				surname: "Doe",
-				username: "janedoe",
-				email: "janedoe@example.com",
-				password: "securepassword",
-				dateOfBirth: new Date(1990, 0, 1)});
-			await CommunityUser.create({
-				communityID: community._id,
-				userID: newUser._id,
-				role: 'member'
-			});
-			const newToken = jwt.sign({ userId: newUser._id }, process.env.SECRET_KEY);
 			const response = await request(app)
 				.put("/community/delete")
-				.set("Authorization", `Bearer ${newToken}`)
+				.set("Authorization", `Bearer ${token2}`)
 				.send({ communityId: community._id.toString() });
 			
 			expect(response.statusCode).toBe(400);
@@ -218,10 +230,163 @@ describe("Community Management", () => {
 
 			// Restore the original implementation after the test
 			jest.restoreAllMocks();
-		});
-		
+		});	
 	});
+	describe("Getting community details", () => {
+		// get community
+		it("should retrieve a community and its details", async () => {
+			const response = await request(app)
+			.get("/community/details")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ communityId: community._id.toString() });
+			
+			expect(response.statusCode).toBe(200);
+			expect(response.body).toHaveProperty("success", true);
+			expect(response.body.data).toHaveProperty("community");
+			expect(response.body.data).toHaveProperty("members");
+			expect(response.body.data.community._id.toString()).toBe(community._id.toString());
+			expect(response.body.data.members).toBe(2);
+			expect(response.body.data.community.createdBy.toString()).toBe(user._id.toString());
+		});
+		it("should return 404 if the community does not exist", async () => {
+			const fakeCommunityId = new mongoose.Types.ObjectId();
 
+			const response = await request(app)
+				.get("/community/details")
+				.set("Authorization", `Bearer ${token}`)
+				.send({ communityId: fakeCommunityId.toString() });
+
+			expect(response.statusCode).toBe(404);
+			expect(response.body).toHaveProperty("message", "Community not found");
+		});
+		it("should handle errors during community retrieval", async () => {
+			const fakeCommunityId = new mongoose.Types.ObjectId().toString();
+			jest.spyOn(Community, "findById").mockImplementationOnce(() => {
+				throw new Error("Database error");
+			}
+			);
+			const response = await request(app)
+				.get("/community/details")
+				.set("Authorization", `Bearer ${token}`)
+				.send({ communityId: fakeCommunityId });
+
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty("error");
+			expect(response.body.error).toBe("Error: Database error");
+		});
+	});
+	describe("Getting community members", () => {
+		it("should retrieve all members of a community", async () => {
+			const response = await request(app)
+				.get("/community/members")
+				.set("Authorization", `Bearer ${token}`)
+				.query({ communityId: community._id.toString() });
+
+			expect(response.statusCode).toBe(200);
+			expect(response.body).toHaveProperty("success", true);
+			expect(response.body.data.length).toBe(2);
+			expect(response.body.data[0]).toHaveProperty("_id");
+			expect(response.body.data[0]).toHaveProperty("username", "johndoe");
+			expect(response.body.data[0]).toHaveProperty("role", "admin");
+			expect(response.body.data[0]).toHaveProperty("profilePictureLink");
+			expect(response.body.data[1]).toHaveProperty("_id");
+			expect(response.body.data[1]).toHaveProperty("username", "janedoe");
+			expect(response.body.data[1]).toHaveProperty("role", "member");
+			expect(response.body.data[1]).toHaveProperty("profilePictureLink");
+		});
+		it("should return 404 if the community does not exist", async () => {
+			const fakeCommunityId = new mongoose.Types.ObjectId();
+
+			const response = await request(app)
+				.get("/community/members")
+				.set("Authorization", `Bearer ${token}`)
+				.query({ communityId: fakeCommunityId.toString() });
+
+			expect(response.statusCode).toBe(404);
+			expect(response.body).toHaveProperty("message", "Community not found");
+		});
+		it("should return 400 if the user is not a member of the community", async () => {
+			const response = await request(app)
+				.get("/community/members")
+				.set("Authorization", `Bearer ${token3}`)
+				.query({ communityId: community._id.toString() });
+
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty("message", "User is not a member of the community");
+		});
+		it("should handle errors during member retrieval", async () => {
+			const fakeCommunityId = new mongoose.Types.ObjectId().toString();
+			jest.spyOn(Community, "findById").mockImplementationOnce(() => {
+				throw new Error("Database error");
+			});
+
+			const response = await request(app)
+				.get("/community/members")
+				.set("Authorization", `Bearer ${token}`)
+				.query({ communityId: fakeCommunityId });
+
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty("error");
+			expect(response.body.error).toBe("Error: Database error");
+		});
+	});
+	describe("Getting user role in community", () => {
+		it("should retrieve the user's role in the community - admin", async () => {
+			const response = await request(app)
+				.get("/community/role")
+				.set("Authorization", `Bearer ${token}`)
+				.query({ communityId: community._id.toString() });
+
+			expect(response.statusCode).toBe(200);
+			expect(response.body).toHaveProperty("success", true);
+			expect(response.body.data).toHaveProperty("role", "admin");
+		});
+		it("should retrieve the user's role in the community - member", async () => {
+			const response = await request(app)
+				.get("/community/role")
+				.set("Authorization", `Bearer ${token2}`)
+				.query({ communityId: community._id.toString() });
+
+			expect(response.statusCode).toBe(200);
+			expect(response.body).toHaveProperty("success", true);
+			expect(response.body.data).toHaveProperty("role", "member");
+		});
+		it("should return 404 if the community does not exist", async () => {
+			const fakeCommunityId = new mongoose.Types.ObjectId();
+
+			const response = await request(app)
+				.get("/community/role")
+				.set("Authorization", `Bearer ${token}`)
+				.query({ communityId: fakeCommunityId.toString() });
+
+			expect(response.statusCode).toBe(404);
+			expect(response.body).toHaveProperty("message", "Community not found");
+		});
+		it("should return 400 if the user is not a member of the community", async () => {
+			const response = await request(app)
+				.get("/community/role")
+				.set("Authorization", `Bearer ${token3}`)
+				.query({ communityId: community._id.toString() });
+
+			expect(response.statusCode).toBe(400);
+			expect(response.body.data).toHaveProperty("role", "none");
+		});
+		it("should handle errors during role retrieval", async () => {
+			const fakeCommunityId = new mongoose.Types.ObjectId().toString();
+			jest.spyOn(Community, "findById").mockImplementationOnce(() => {
+				throw new Error("Database error");
+			});
+
+			const response = await request(app)
+				.get("/community/role")
+				.set("Authorization", `Bearer ${token}`)
+				.query({ communityId: fakeCommunityId });
+
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty("error");
+			expect(response.body.error).toBe("Error: Database error");
+		});
+	});
 });
 
 
