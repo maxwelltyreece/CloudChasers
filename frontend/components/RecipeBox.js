@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Modal, Pressable } from 'react-native';
-import proptypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
     box: {
@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         justifyContent: 'flex-end',
         padding: 10,
-        width: '48%', 
+        width: 150, 
         aspectRatio: 1, 
         margin: 8,
       },
@@ -45,29 +45,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: 300, // Set a fixed width
-    height: 400, // Set a fixed height
+    width: 300, 
+    height: 400,
   },
   
 });
+
 
 function RecipeBox({ title, image }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.box}>
-      <Pressable onPress={() => setModalVisible(true)}>
+      <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
         {image && <Image source={{ uri: image }} style={styles.image} />}
         <Text style={styles.title}>{title}</Text>
       </Pressable>
-
       <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
-        }}>
+        }}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.text}>{title}</Text>
@@ -85,6 +86,6 @@ function RecipeBox({ title, image }) {
 export default RecipeBox;
 
 RecipeBox.propTypes = {
-  title: proptypes.string.isRequired,
-  image: proptypes.string,
+  title: PropTypes.string.isRequired,
+  image: PropTypes.string,
 };
