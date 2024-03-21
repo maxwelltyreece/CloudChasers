@@ -8,6 +8,7 @@ import { useFoodLog } from '../../../../contexts/FoodLogContext';
 function Recipes() {
     const { getAllUserRecipes } = useFoodLog();
     const [search, setSearch] = useState('');
+    const { getPictureURL } = useFoodLog();
     const [recipes, setRecipes] = useState([]); 
 
     const updateSearch = (search) => {
@@ -19,9 +20,8 @@ function Recipes() {
             
     
             const recipesWithImages = await Promise.all(fetchedRecipes.map(async (recipe) => {
-                
                 //Line below not working
-                console.log('recipeID:', recipe._id);
+                console.log('THISrecipeID:', recipe._id);
                 const imageUrl = await getPictureURL(recipe._id, "Recipe_Pictures"); 
                 console.log('imageUrl:', imageUrl);
                 return {

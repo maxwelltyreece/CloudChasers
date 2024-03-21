@@ -83,7 +83,7 @@ export function FoodLogProvider({ children }) {
     }
 
     const getPictureURL = async (data) => {
-        console.log('IMAGE:');
+        console.log('IMAGE:' + data);
         return await foodLogService.getPictureURL(data);
     }
 

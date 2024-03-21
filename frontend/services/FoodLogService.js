@@ -87,7 +87,9 @@ export const deleteIngredientFromRecipe = async (data) => {
 }
 
 export const getPictureURL = async (RecipeId) => {
-    console.log('RECIPESERVICE:')
+    console.log('RecipeID:' + RecipeId);
     const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getPictureURL?id=${RecipeId}&folderName=Recipe_Pictures`, { headers: { Authorization: `Bearer ${token}` } });
+    const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${RecipeId}&folderName=Recipe_Pictures`, { headers: { Authorization: `Bearer ${token}` } });
+    const url =  response.data.url;
+    return url;
 }
