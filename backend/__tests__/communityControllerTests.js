@@ -606,11 +606,137 @@ describe("Community Management", () => {
 			expect(updatedCommunity.joinPrivacy).toBe(community.joinPrivacy);
 
 		});
-		
-
 	});
-	// describe("Joining and leaving communities", () => {
-		// describe()
+	describe("Joining communities", () => {
+		describe("Joining a public community", () => {
+			beforeEach(async () => {
+				newPublicCommunity = await Community.create({
+					name: "Public Community",
+					description: "A public community",
+					recipePrivacy: "public",
+					joinPrivacy: "public",
+					createdBy: user3._id,
+				});
+				newPublicCommunityUser = await CommunityUser.create({
+					communityID: newPublicCommunity._id,
+					userID: user3._id,
+					role: 'admin'
+				});
+			});
+			afterEach(async () => {
+				await Community.deleteOne({ _id: newPublicCommunity._id });
+				await CommunityUser.deleteOne({ communityID: newPublicCommunity._id });
+			});
+			it("should allow a user to join a public community", async () => {
+				const response = await request(app)
+					.post("/community/join")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: newPublicCommunity._id.toString() });
+
+				expect(response.statusCode).toBe(200);
+				expect(response.body).toHaveProperty("success", true);
+				expect(response.body).toHaveProperty("message", "Community joined");
+
+				const communityUser = await CommunityUser.findOne({ communityID: newPublicCommunity._id, userID: user._id });
+				expect(communityUser).toBeTruthy();
+				expect(communityUser.role).toBe('member');
+			});
+			it("should return an error if the community does not exist", async () => {
+				const fakeCommunityId = new mongoose.Types.ObjectId();
+
+				const response = await request(app)
+					.post("/community/join")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: fakeCommunityId.toString() });
+
+				expect(response.statusCode).toBe(404);
+				expect(response.body).toHaveProperty("message", "Community not found");
+			});
+			it("should return an error if the user is already a member", async () => {
+				await CommunityUser.create({
+					communityID: newPublicCommunity._id,
+					userID: user._id,
+					role: 'member'
+				});
+				const response = await request(app)
+					.post("/community/join")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: newPublicCommunity._id.toString() });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("message", "User is already a member of the community");
+			});
+			it("should handle errors during community join", async () => {
+				// Mock the save function to simulate a failure
+				jest.spyOn(CommunityUser.prototype, "save").mockImplementationOnce(() =>
+					Promise.reject(new Error("Database error"))
+				);
+				const response = await request(app)
+					.post("/community/join")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: newPublicCommunity._id.toString() });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("error");
+				expect(response.body.error).toBe("Error: Database error");
+
+				// Ensure that no new communityUser entry was created
+				const communityUser = await CommunityUser.findOne({ communityID: newPublicCommunity._id, userID: user._id });
+				expect(communityUser).toBeNull();
+			});
+		});
+		describe("Requesting to join a private community", () => {
+			beforeEach(async () => {
+				newPrivateCommunity = await Community.create({
+					name: "Private Community",
+					description: "A private community",
+					recipePrivacy: "private",
+					joinPrivacy: "private",
+					createdBy: user3._id,
+				});
+				newPrivateCommunityUser = await CommunityUser.create({
+					communityID: newPublicCommunity._id,
+					userID: user3._id,
+					role: 'admin'
+				});
+			});
+			afterEach(async () => {
+				await Community.deleteOne({ _id: newPrivateCommunity._id });
+				await CommunityUser.deleteOne({ communityID: newPrivateCommunity._id });
+			});
+			it("should allow a user to request to join a private community", async () => {
+				const response = await request(app)
+					.post("/community/join")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: newPrivateCommunity._id.toString() });
+
+				expect(response.statusCode).toBe(200);
+				expect(response.body).toHaveProperty("success", true);
+				expect(response.body).toHaveProperty("message", "Request to join sent");
+
+				const joinRequest = await JoinRequest.findOne({ communityID: newPrivateCommunity._id, userID: user._id });
+				expect(joinRequest).toBeTruthy();
+			});
+			it("should return an error if the user has already requested to join", async () => {
+				await JoinRequest.create({
+					communityID: newPrivateCommunity._id,
+					userID: user._id,
+				});
+				const response = await request(app)
+					.post("/community/join")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: newPrivateCommunity._id.toString() });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("message", "User has already requested to join the community");
+			});
+		});
+	});
+
+
+
+
+
 	describe("Test valid user tokens", () => {
 		it("should test with an invalid user", async () => {
 			fakeUserId = new mongoose.Types.ObjectId();
