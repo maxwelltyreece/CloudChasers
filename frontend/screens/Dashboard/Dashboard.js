@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
 	View, SafeAreaView, ActivityIndicator
 } from 'react-native';
@@ -13,12 +13,12 @@ import { useStats } from '../../contexts/StatsContext';
 import { useGoals } from '../../contexts/GoalsContext';
 import { useFoodLog } from '../../contexts/FoodLogContext';
 import { useAwards } from '../../contexts/AwardsContext';
-
+ 
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { styles } from './styles';
- 
+
 
 // Dashboard screen
 function Dashboard() {
@@ -29,7 +29,7 @@ function Dashboard() {
 	const { todayStats, streak, updateTodayStats } = useStats();
 	const { goals, fetchGoals } = useGoals();
 	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
-	const { userAwards, awards, fetchUserAwards, fetchAwards } = useAwards();
+	const { userAwards, awards, fetchUserAwards, fetchAwards, fetchAwardsToBeIssued } = useAwards();
 
 	//console.log({ userDetails });
 	// console.log(userDetails.data.forename);
@@ -54,17 +54,16 @@ function Dashboard() {
 			return token;
 		} catch (error) {
 			console.error("Error accessing AsyncStorage:", error);
-			navigation.navigate('Login'); // Redirect to login if error
+			navigation.navigate('Login');
 		}
 	};
- 
+
 	useEffect(() => {
 		setLoading(true);
 		const fetchData = async () => {
 			try {
-				await checkUserLogin(); // Check if user is logged in
+				await checkUserLogin();
 
-				// Fetch all necessary data in parallel
 				await Promise.all([
 					updateUserDetails(),
 					updateTodayStats(),
@@ -72,18 +71,43 @@ function Dashboard() {
 					getLatestLoggedFood(),
 					fetchGoals(),
 					fetchUserAwards(),
-					fetchAwards()
+					fetchAwards(),
+					// fetchAwardsToBeIssued(),
 				]);
 			} catch (error) {
 				console.error("Error fetching data for dashboard:", error);
-				// Handle error appropriately
 			} finally {
-				setLoading(false); // Ensure loading is set to false after operations complete
+				setLoading(false);
 			}
 		};
 
 		fetchData();
 	}, []); 
+
+	const updateDashboardData = async () => {
+        try {
+            await checkUserLogin();
+
+            await Promise.all([
+                updateUserDetails(),
+                updateTodayStats(),
+                getUserCommunities(),
+                getLatestLoggedFood(),
+                fetchGoals(),
+                fetchUserAwards(),
+                fetchAwards(),
+				// fetchAwardsToBeIssued()
+            ]);
+        } catch (error) {
+            console.error("Error fetching data for dashboard:", error);
+        }
+    };
+	
+	useFocusEffect(
+        useCallback(() => {
+            updateDashboardData();
+        }, [])
+    ); 
 
 
 	if (loading) {

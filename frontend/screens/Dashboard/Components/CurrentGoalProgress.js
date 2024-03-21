@@ -323,7 +323,6 @@ function GoalProgressBar({ todayStats, goals }) {
 		fibre: 30,
 	};
 
-	// If the goals object contains goals, populate the nutrientGoals with actual values
 	if (goals && goals.goals) {
 		goals.goals.forEach(goal => {
 			if (goal.measurement in nutrientGoals) {
@@ -335,7 +334,7 @@ function GoalProgressBar({ todayStats, goals }) {
 
 	function getClosestDate(reminder) {
 		let now = moment();
-		let reminderTime = moment(reminder.time, "hh:mm A"); // parse time string with format
+		let reminderTime = moment(reminder.time, "hh:mm A");
 
 		let closestDate = now.clone().hour(reminderTime.hour()).minute(reminderTime.minute());
 
@@ -397,7 +396,7 @@ function GoalProgressBar({ todayStats, goals }) {
 								<Text style={styles.emptyRemindersText}>Go to the reminders page to add some!</Text>
 								<Pressable
 									style={styles.seeAllRemindersButton}
-									onPress={() => navigation.navigate('Reminders')}
+									onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
 								>
 									<Text style={styles.seeAllRemindersButtonText}>Add Reminders</Text>
 								</Pressable>

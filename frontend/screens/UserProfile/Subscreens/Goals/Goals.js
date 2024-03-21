@@ -269,6 +269,7 @@ const Goals = () => {
 
         // Find the goal ID for the nutrient being updated
         const goalToUpdate = fetchedGoals.find(goal => goal.measurement === nutrient);
+
         if (!goalToUpdate) {
             console.error('Goal not found for nutrient:', nutrient);
             return;
@@ -281,6 +282,7 @@ const Goals = () => {
 
             // Find the index of the goal to update in the local state
             const goalIndex = fetchedGoals.findIndex(goal => goal._id === goalToUpdate._id);
+            
             if (goalIndex !== -1) {
                 // Create a new array with updated goal
                 const newFetchedGoals = [...fetchedGoals];
