@@ -89,7 +89,11 @@ const ProgressBar = ({ label, progress, max, unit }) => {
             }
         };
 
-        const finalWidth = safeDivision(progress, max, containerWidth);
+        let finalWidth = 0;
+
+		{(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ? 
+			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0} // Still load app of error occurs and data is any data is undefined.
+		
 
         Animated.timing(animatedWidth, {
             toValue: finalWidth,
@@ -103,8 +107,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
         <View style={styles.progressBarItem}>
             <View style={styles.labelContainer}>
                 <Text style={styles.label}>{label}</Text>
-                {/* Use the unit prop to display the unit next to the max value */}
-                <Text style={styles.label}>{`${progress} / ${max} ${unit}`}</Text>
+                <Text style={styles.label}>{`${progress ?? 0} / ${max} ${unit}`}</Text>
             </View>
             <View style={styles.progressBarContainer} onLayout={measureContainer}>
                 <Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
@@ -120,6 +123,10 @@ ProgressBar.propTypes = {
     unit: PropTypes.string,
 };
 
+ProgressBar.defaultProps = {
+    progress: 0,
+    unit: '',
+};
 
 
 const NutritionProgress = ({ todayStats, goals }) => {
@@ -173,7 +180,7 @@ const NutritionProgress = ({ todayStats, goals }) => {
                         label={nutrient.charAt(0).toUpperCase() + nutrient.slice(1)} // Capitalize the first letter for display
                         progress={currentMacroValues[nutrient]}
                         max={nutrientGoals[nutrient]}
-                        unit={nutrientUnits[nutrient]} // Assuming grams as a default unit, adjust if necessary
+                        unit={nutrientUnits[nutrient]}
                     />
                 );
             })}

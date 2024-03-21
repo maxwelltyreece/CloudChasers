@@ -59,8 +59,15 @@ export default function MainNavigator() {
 				component={GroupNavigator}
 				options={{ headerShown: false }}
 			/>
-      <Stack.Screen name='FoodEntry' component={FoodEntry} options={{...commonOptions, title:'Food'}}/>
-      <Stack.Screen name='WaterEntry' component={WaterEntry} options={{...commonOptions, title:'Water'}} />
+			<Stack.Screen 
+				name='FoodEntry' 
+				component={FoodEntry} 
+				options={{...commonOptions, 
+				title:'Food'}}/>
+			<Stack.Screen 
+				name='WaterEntry' 
+				component={WaterEntry} 
+				options={{...commonOptions, title:'Water'}} />
 			<Stack.Screen
 				name="User"
 				component={UserNavigator}

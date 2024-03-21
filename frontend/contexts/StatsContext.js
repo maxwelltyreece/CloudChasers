@@ -16,7 +16,7 @@ export function StatsProvider({ children }) {
       if (response.data) {
         setTodayStats(prevStats => ({
           ...prevStats,
-          [nutrient]: response.data[`total${nutrient}`],
+          [nutrient]: response.data[`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`], // Capitalising first letter of nutrient
         }));
       }
     } catch (error) {

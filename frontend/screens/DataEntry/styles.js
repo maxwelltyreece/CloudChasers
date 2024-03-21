@@ -53,4 +53,7 @@ export const styles = StyleSheet.create({
         marginBottom: 20,
         alignSelf: 'center',
     },
+    selectedItem: {
+        backgroundColor: 'pink',
+    },
 });

@@ -4,9 +4,29 @@ import { CircularProgressBase } from 'react-native-circular-progress-indicator';
 // import { useFocusEffect } from '@react-navigation/native';
 import Proptypes from 'prop-types';
 
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  keyContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingTop: 20,
+    width: '100%',
+  },
+  keyText: {
+    marginHorizontal: 5,
+    fontSize: 16,
+    fontFamily: 'Montserrat_700Bold',
+  },
+});
+
 const CircularProgressComponent = ({ todayStats, goals }) => {
 
-  let initialMacroValues = {
+  // Initial macro values moved into state
+  const [currentMacroValues, setCurrentMacroValues] = useState({
     calories: 0,
     water: 0,
     fat: 0,
@@ -15,9 +35,7 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     protein: 0,
     sugar: 0,
     fibre: 0,
-};
-  
-  let currentMacroValues = { ...initialMacroValues, ...todayStats };
+  });
 
   // Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
   let nutrientGoals = {
@@ -52,25 +70,41 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     water: '#5edcff',
   };
 
+  useEffect(() => {
+    const newCurrentMacroValues = { ...currentMacroValues, ...todayStats };
+    setCurrentMacroValues(newCurrentMacroValues);
+  }, [todayStats]);
+
   // Safe divide function to avoid dividing by zero or if filled to 100%
   const safeDivide = (numerator, denominator) => {
     const ratio = denominator === 0 ? 0 : numerator / denominator;
     return ratio >= 1 ? 100 : ratio * 100;
   };
 
-  useEffect(() => {
-    setProgressValues({
-      calories: safeDivide(currentMacroValues.calories, nutrientGoals.calories),
-      protein: safeDivide(currentMacroValues.protein, nutrientGoals.protein),
-      water: safeDivide(currentMacroValues.water, nutrientGoals.water),
-    });
-  }, [todayStats, goals]);
+  const updateProgressValues = () => {
+    const newProgressValues = {
+      calories: todayStats.calories != undefined
+        ? safeDivide(currentMacroValues.calories, nutrientGoals.calories)
+        : 0,
+      protein: todayStats.protein != undefined
+        ? safeDivide(currentMacroValues.protein, nutrientGoals.protein)
+        : 0,
+      water: todayStats.water != undefined
+        ? safeDivide(currentMacroValues.water, nutrientGoals.water)
+        : 0,
+    };
 
+    setProgressValues(newProgressValues);
+  };
+
+  useEffect(() => {
+    updateProgressValues();
+  }, [currentMacroValues, goals]);
 
   return (
     <View style={styles.container}>
       <CircularProgressBase
-        value={progressValues.calories}
+        value={isNaN(progressValues.calories) ? 0 : progressValues.calories}
         radius={140}
         activeStrokeColor={colorScheme.calories}
         inActiveStrokeColor={colorScheme.calories}
@@ -80,7 +114,7 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
         displayValue={false}
       >
         <CircularProgressBase
-          value={progressValues.protein}
+          value={isNaN(progressValues.protein) ? 0 : progressValues.protein}
           radius={110}
           activeStrokeColor={colorScheme.protein}
           inActiveStrokeColor={colorScheme.protein}
@@ -90,7 +124,7 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
           displayValue={false}
         >
           <CircularProgressBase
-            value={progressValues.water}
+            value={isNaN(progressValues.water) ? 0 : progressValues.water}
             radius={80}
             activeStrokeColor={colorScheme.water}
             inActiveStrokeColor={colorScheme.water}
@@ -103,32 +137,13 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
       </CircularProgressBase>
 
       <View style={styles.keyContainer}>
-        <Text style={[styles.keyText, { color: colorScheme.calories }]}>Calories: {progressValues.calories.toFixed(0)}%</Text>
-        <Text style={[styles.keyText, { color: colorScheme.protein }]}>Protein: {progressValues.protein.toFixed(0)}%</Text>
-        <Text style={[styles.keyText, { color: colorScheme.water }]}>Water: {progressValues.water.toFixed(0)}%</Text>
+        <Text style={[styles.keyText, { color: colorScheme.calories }]}>Calories: {isNaN(progressValues.calories) ? 0 : progressValues.calories.toFixed(0)}%</Text>
+        <Text style={[styles.keyText, { color: colorScheme.protein }]}>Protein: {isNaN(progressValues.protein) ? 0 : progressValues.protein.toFixed(0)}%</Text>
+        <Text style={[styles.keyText, { color: colorScheme.water }]}>Water: {isNaN(progressValues.water) ? 0 : progressValues.water.toFixed(0)}%</Text>
       </View>
     </View>
   );
 };
-
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  keyContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 20,
-    width: '100%',
-  },
-  keyText: {
-    marginHorizontal: 5,
-    fontSize: 16,
-    fontFamily: 'Montserrat_700Bold',
-  },
-});
 
 CircularProgressComponent.propTypes = {
   todayStats: Proptypes.object,
