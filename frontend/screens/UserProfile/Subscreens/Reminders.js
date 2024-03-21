@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
 		borderWidth: 1,
 		borderRadius: 12,
         backgroundColor: '#F0F0F0',
-        borderWidth: 0,
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginHorizontal: 5,
@@ -488,7 +487,8 @@ function Reminders() {
 								placeholder="Description"
 								onChangeText={(text) => setNewReminder({ ...newReminder, description: text })}
 								value={newReminder.description}
-								multiline
+								multiline={false}
+								returnKeyType="done"
 							/>
 
 							<Text style={{ fontSize: 16, fontWeight: 'bold' }}>Current Time Selected:</Text>

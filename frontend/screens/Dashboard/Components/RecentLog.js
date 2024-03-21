@@ -72,25 +72,31 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: 'bold',
 	},
-	recentLogDatetimeText: {
+	recentLogMealTypeText: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		marginBottom: 5,
+		marginBottom: 4,
 		marginLeft: 4,
 	},
-	recentLogMealTypeText: {
+	logItemInfoText : {
+		fontSize: 16,
+		fontWeight: '500',
+		marginLeft: 4,
+		marginBottom: 4,
+	},
+	recentLogCaloriesText: {
 		fontSize: 15,
 		fontWeight: 'bold',
 		marginLeft: 4,
 	},
 	logInfoText: {
-		fontSize: 17,
+		fontSize: 16,
 		fontWeight: '500',
 		marginLeft: 4,
 	},
 	logInfoMeasurementText: {
 		// marginTop: 5,
-		fontSize: 17,
+		fontSize: 16,
 		fontWeight: '500',
 		marginLeft: 4,
 	},
@@ -114,13 +120,16 @@ function RecentLog({ streak, userLogStats }) {
 	const {
 		latestUserDayMeal = {},
 		macros = {},
+		mealItems = [{}],
 	} = userLogStats || {};
 
 	console.log('userLogStats: RECENT LOG', userLogStats);
 
-	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal);
+	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal.name);
 
 	console.log('MACROS: RECENT LOG', macros);
+
+	console.log('MEAL ITEMS: RECENT LOG', mealItems[0].name);
 
 	return (
 		<View style={styles.recentLogContainer}>
@@ -130,10 +139,17 @@ function RecentLog({ streak, userLogStats }) {
 			</View>
 			{userLogStats ? (
 				<View style={styles.innerRecentLogContainer}>
-					<Text style={styles.recentLogDatetimeText}>
-						{latestUserDayMeal.name ?? 'N/A'}
-					</Text>
-					<Text style={styles.logInfoText}>Calories:{' '}
+
+						<Text style={styles.recentLogMealTypeText}>
+							{ (latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)) ?? 'N/A' }
+						</Text>
+						
+			
+					<Text style={styles.logItemInfoText}>
+							{mealItems[0].name ?? 'N/A'}
+						</Text>
+
+					<Text style={styles.recentLogCaloriesText}>Calories:{' '}
 						<Text style={styles.logInfoMeasurementText}>
 							{macros.calories ?? 0} kcal
 						</Text>
@@ -167,6 +183,8 @@ RecentLog.propTypes = {
 };
 
 RecentLog.defaultProps = {
-	streak: 0, // Default streak value if not provided
+	streak: 0,
 	userLogStats: {},
+	macros: {},
+	mealItems: [{}],
 };

@@ -35,6 +35,7 @@ function Groups() {
 	const handlePress = (item) => {
 		navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });
 	};
+    
 	return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>

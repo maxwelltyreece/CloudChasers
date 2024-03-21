@@ -240,7 +240,11 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 			}
 		};
 
-		const finalWidth = safeDivision(progress, max, containerWidth);
+		let finalWidth = 0;
+
+		{(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ? 
+			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0} // Still load app of error occurs and data is any data is undefined.
+		
 
 		Animated.timing(animatedWidth, {
 			toValue: finalWidth,
@@ -253,7 +257,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 		<View style={progressBarStyle}>
 			<View style={styles.labelContainer}>
 				<Text style={labelStyle}>{label}</Text>
-				<Text style={labelStyle}>{`${progress} / ${max} ${unit}`}</Text>
+				<Text style={labelStyle}>{`${progress ?? 0} / ${max} ${unit}`}</Text>
 			</View>
 			<View style={styles.progressBarContainer} onLayout={measureContainer}>
 				<Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
@@ -403,7 +407,7 @@ function GoalProgressBar({ todayStats, goals }) {
 					{reminders.length > 0 ? (
 						<Pressable
 							style={styles.seeAllRemindersButton}
-							onPress={() => navigation.navigate('Reminders')}
+							onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
 						>
 							<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
 						</Pressable>

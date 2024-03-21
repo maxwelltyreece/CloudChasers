@@ -18,7 +18,7 @@ import { useAwards } from '../../contexts/AwardsContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
-
+ 
 
 // Dashboard screen
 function Dashboard() {
@@ -89,11 +89,11 @@ function Dashboard() {
 	if (loading) {
 		return (
 			<View style={styles.loadingContainer}>
-				<ActivityIndicator size="large" />
+				<ActivityIndicator testID="loading-indicator" size="large" />
 			</View>
 		);
 	}
-
+ 
 	return (
 		<SafeAreaView style={styles.dashboardContainer}>
 
