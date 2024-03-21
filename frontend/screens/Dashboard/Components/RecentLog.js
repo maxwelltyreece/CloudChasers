@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
 		marginLeft: 4,
 	},
 	logInfoText: {
-		fontSize: 16,
+		fontSize: 1,
 		fontWeight: '500',
 		marginLeft: 4,
 	},
@@ -103,19 +103,6 @@ const styles = StyleSheet.create({
 });
 
 function RecentLog({ streak, userLogStats }) {
-
-	// const {
-	// 	lastLogDate = 'N/A',
-	// 	lastLogMealType = 'N/A',
-	// 	calories = 0,
-	// 	protein = 0,
-	// 	carbs = 0,
-	// 	fat = 0,
-	// 	fibre = 0,
-	// 	water = 0,
-	// 	sugar = 0,
-	// 	sodium = 0,
-	// } = userLogStats || {};
 
 	const {
 		latestUserDayMeal = {},
@@ -169,22 +156,33 @@ export default RecentLog;
 RecentLog.propTypes = {
 	streak: PropTypes.number,
 	userLogStats: PropTypes.shape({
-		lastLogDate: PropTypes.string,
-		lastLogMealType: PropTypes.string,
-		calories: PropTypes.number,
-		protein: PropTypes.number,
-		carbs: PropTypes.number,
-		fat: PropTypes.number,
-		fibre: PropTypes.number,
-		water: PropTypes.number,
-		sugar: PropTypes.number,
-		sodium: PropTypes.number,
-	}).isRequired,
+		latestUserDayMeal: PropTypes.shape({
+			__v: PropTypes.number,
+			_id: PropTypes.string,
+			name: PropTypes.string,
+			order: PropTypes.number,
+			userDayID: PropTypes.string,
+		}),
+		macros: PropTypes.shape({
+			calories: PropTypes.number,
+			carbs: PropTypes.number,
+			fat: PropTypes.number,
+			protein: PropTypes.number,
+		}),
+		mealItems: PropTypes.arrayOf(PropTypes.shape({
+			__v: PropTypes.number,
+			_id: PropTypes.string,
+			foodItemID: PropTypes.string,
+			name: PropTypes.string,
+			userDayMealID: PropTypes.string,
+		})),
+	}),
 };
 
 RecentLog.defaultProps = {
 	streak: 0,
 	userLogStats: {},
+	latestUserDayMeal: {},
 	macros: {},
 	mealItems: [{}],
 };

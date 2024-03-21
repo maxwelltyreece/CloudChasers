@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Pressable, StyleSheet, TextInput, KeyboardAvoidingView, Platform, Keyboard, } from 'react-native';
 import proptypes from 'prop-types';
+import { useFocusEffect } from '@react-navigation/native';
 import { useGoals } from '../../../../contexts/GoalsContext';
 
 const styles = StyleSheet.create({
@@ -249,12 +250,12 @@ const Goals = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchGoals(); // Assuming this updates the goals in your context
+            await fetchGoals();
             if (goals && goals.goals && goals.goals.length > 0) {
-                setFetchedGoals(goals.goals); // Set the fetched goals from the context
-                setIsGoalsFetched(true); // Indicate that goals have been fetched
+                setFetchedGoals(goals.goals);
+                setIsGoalsFetched(true);
             } else {
-                setIsGoalsFetched(true); // No goals found, but fetch attempt was made
+                setIsGoalsFetched(true);
             }
         };
 
@@ -263,6 +264,19 @@ const Goals = () => {
         }
 
     }, [fetchGoals, isGoalsFetched, goals.goals]);
+
+    useFocusEffect(
+        useCallback(() => {
+            const fetchData = async () => {
+                await fetchGoals();
+                if (goals && goals.length > 0) {
+                    setFetchedGoals(goals);
+                }
+            };
+
+            fetchData();
+        }, [fetchGoals, goals])
+    );
 
 
     const handleUpdateGoal = async (nutrient, newMaxValue) => {

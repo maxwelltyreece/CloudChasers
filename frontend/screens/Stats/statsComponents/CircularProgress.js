@@ -4,6 +4,25 @@ import { CircularProgressBase } from 'react-native-circular-progress-indicator';
 // import { useFocusEffect } from '@react-navigation/native';
 import Proptypes from 'prop-types';
 
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  keyContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingTop: 20,
+    width: '100%',
+  },
+  keyText: {
+    marginHorizontal: 5,
+    fontSize: 16,
+    fontFamily: 'Montserrat_700Bold',
+  },
+});
+
 const CircularProgressComponent = ({ todayStats, goals }) => {
 
   // Initial macro values moved into state
@@ -125,25 +144,6 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     </View>
   );
 };
-
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  keyContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 20,
-    width: '100%',
-  },
-  keyText: {
-    marginHorizontal: 5,
-    fontSize: 16,
-    fontFamily: 'Montserrat_700Bold',
-  },
-});
 
 CircularProgressComponent.propTypes = {
   todayStats: Proptypes.object,
