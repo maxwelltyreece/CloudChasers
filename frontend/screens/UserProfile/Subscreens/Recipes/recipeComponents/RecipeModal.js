@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Alert, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Button, Image } from 'react-native';
+import { View, Text, StyleSheet,Alert, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Button, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { LocalIP } from '../../../../IPIndex';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const RecipeModal = ({ isVisible, onClose }) => {
-  const [image, setImage] = useState(null);
-  const [recipeName, setRecipeName] = useState('');
-  let recipeID = '';
 
-  function getFileName(image) {
+
+
+const RecipeModal = ({ isVisible, onClose }) => {
+
+  function getFileName(image){
+    console.log("Gets to here");
     const fileName = image.split('/').pop();
+    console.log(fileName);
     return fileName;
   }
 
-  const pickImage = async () => {
+   const [image, setImage] = useState(null);
+   const [recipeName, setRecipeName] = useState('');
+   var recipeID = '';
+   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -23,103 +28,117 @@ const RecipeModal = ({ isVisible, onClose }) => {
       quality: 1,
     });
 
+
+
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      getFileName(result.assets[0].uri);
     }
+
+    getFileName(result.assets[0].uri);
+
   };
 
-  const handleSubmit = async () => {
-    if (!recipeName.trim()) {
-      Alert.alert('Error', 'Recipe name is required');
-      return;
-    }
+    const handleSubmit = async () => {
+        if (!recipeName.trim()) {
+          Alert.alert('Error', 'Recipe name is required');
+          return;
+        }
 
-    const token = await AsyncStorage.getItem('token');
-    const recipeData = {
-      name: recipeName,
-      description: null,
-      communityThatOwnsRecipe: null,
-    };
+        const token = await AsyncStorage.getItem('token');
+        const recipeData = {
+          name: recipeName,
+          description: null,
+          communityThatOwnsRecipe: null
+        }
+        axios.post(`http://${LocalIP}:3000/food/createNewRecipeByUser`, recipeData,{ headers: { Authorization: `Bearer ${token}`}},
+        ).then((response) => {
+          console.log('Recipe created:', response.data.data._id);
+          recipeID = response.data.data._id;
+          console.log("Recipe ID = " + recipeID);
+        }).catch((error) => {
+          console.error('Error creating recipe:', error);
+        });
 
-    // Make sure to await the recipe creation before proceeding
-    try {
-      console.log('Creating recipe...');
-      const response = await axios.post(`http://${LocalIP}:3000/food/createNewRecipeByUser`, recipeData, { headers: { Authorization: `Bearer ${token}` } });
-      console.log('Recipe created:', response.data.data._id);
-      recipeID = response.data.data._id;
 
-      const formData = new FormData();
-      formData.append('objectID', recipeID);
-      formData.append('folderName', 'Recipe_Pictures');
-      formData.append('file', {
-        uri: image,
-        name: getFileName(image),
-        type: 'image/jpeg', // Consider dynamically determining the MIME type
-      });
+        const formData = new FormData();
+        console.log("Recipe ID = " + recipeID);
+        formData.append('objectID', recipeID);
+        formData.append('folderName', 'Recipe_Pictures');
+        formData.append('file', {
+          uri: image,
+          name: getFileName(image),
+          type: 'image',
+        
+        });
+        axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        onClose();
+       }
 
-      await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-    } catch (error) {
-      console.error('Error creating recipe or uploading image:', error);
-    }
-
-    setRecipeName('');
-    setImage(null);
-    onClose();
-  };
-
-  return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isVisible}
-      onRequestClose={onClose}
-    >
+return (
+  <Modal
+    animationType="slide"
+    transparent={true}
+    visible={isVisible}
+    onRequestClose={onClose}
+  >
+    <TouchableWithoutFeedback onPressOut={Modal.onRequestClose}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={onClose}
-            >
-              <Text style={styles.closeButtonText}>X</Text>
-            </TouchableOpacity>
-            <Text style={styles.modalText}>Add New Recipe</Text>
+          <TouchableWithoutFeedback onPress={() => {}}>
+            <View style={styles.modalView}>
+              <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+                <Text style={styles.closeButtonText}>X</Text>
+              </TouchableOpacity>
+              <Text style={styles.modalText}>Add New Recipe</Text>
 
-            <TextInput
-              style={styles.input}
-              placeholder="Name of Recipe"
-              onChangeText={text => setRecipeName(text)}
-              value={recipeName}
-            />
+              <TextInput
+                style={styles.input}
+                placeholder="Name of Recipe"
+                onChangeText={(text) => setRecipeName(text)}
+                value={recipeName}
+                returnKeyType="done"
+                onSubmitEditing={Keyboard.dismiss}
+              />
 
-            <TextInput
-              style={[styles.input, styles.inputDescription]}
-              placeholder="Description"
-              multiline={true}
-            />
-            <View style={[styles.button]}>
-              <Button title="Pick Recipe Image" onPress={pickImage} />
-              {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+              <TextInput
+                style={[styles.input, styles.inputDescription]}
+                placeholder="Description"
+                multiline={true}
+                returnKeyType="done"
+                blurOnSubmit={true}
+                onSubmitEditing={Keyboard.dismiss}
+              />
+
+              <View style={[styles.button]}>
+                <Button title="Pick Recipe Image" onPress={pickImage} />
+                {image && (
+                  <Image
+                    source={{ uri: image }}
+                    style={{ width: 200, height: 200 }}
+                  />
+                )}
+              </View>
+
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={handleSubmit}
+              >
+                <Text style={styles.textStyle}>Submit Recipe</Text>
+              </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
-              style={[styles.button, styles.buttonClose]}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.textStyle}>Submit Recipe</Text>
-            </TouchableOpacity>
-          </View>
+          </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
-    </Modal>
-  );
+    </TouchableWithoutFeedback>
+  </Modal>
+);
 };
+
 
 const styles = StyleSheet.create({
  centeredView: {
@@ -132,7 +151,6 @@ const styles = StyleSheet.create({
   position: 'absolute',
   top: 10,
   right: 10,
-  backgroundColor: 'lightgrey', 
   borderRadius: 15,
   width: 30,
   height: 30,

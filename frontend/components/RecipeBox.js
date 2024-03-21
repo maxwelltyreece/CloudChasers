@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Modal, Pressable } from 'react-native';
-import proptypes from 'prop-types'; // Import PropTypes
+import proptypes from 'prop-types'; 
 
 const styles = StyleSheet.create({
     box: {
@@ -51,15 +51,14 @@ const styles = StyleSheet.create({
   
 });
 
+
 function RecipeBox({ title, image }) {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <View style={styles.box}>
-      <Pressable onPress={() => setModalVisible(true)}>
-        {image && <Image source={{ uri: image }} style={styles.image} />}
-        <Text style={styles.title}>{title}</Text>
-      </Pressable>
+    <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
+      {image && <Image source={{ uri: image }} style={styles.image} />}
+      <Text style={styles.title}>{title}</Text>
 
       <Modal
         animationType="slide"
@@ -78,7 +77,7 @@ function RecipeBox({ title, image }) {
           </View>
         </View>
       </Modal>
-    </View>
+    </Pressable>
   );
 }
 
