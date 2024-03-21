@@ -1,29 +1,34 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, Modal, Pressable } from 'react-native';
-import proptypes from 'prop-types'; 
+import proptypes from 'prop-types';
 
 const styles = StyleSheet.create({
-    box: {
-        backgroundColor: 'white',
-        borderRadius: 10,
-        justifyContent: 'flex-end',
-        padding: 10,
-        width: '48%', 
-        aspectRatio: 1, 
-        margin: 8,
-      },
-
-  text: {
-    fontSize: 20,
+  box: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    overflow: 'hidden', // Ensure the image corners are also rounded
+    width: '48%',
+    aspectRatio: 1,
+    margin: 8,
   },
   image: {
-    width: '70%',
-    height: '70%',
-    resizeMode: 'cover',
+    position: 'absolute', // Position image absolute to cover the whole box
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover', // Cover the entire area of the box
+  },
+  titleContainer: {
+    flex: 1,
+    justifyContent: 'flex-end', // Position the title at the bottom of the box
+    padding: 10,
   },
   title: {
     fontSize: 16,
     fontFamily: 'Montserrat_700Bold',
+    color: 'white', // Ensure the title is visible on the image
+    textShadowColor: 'rgba(0, 0, 0, 0.75)', // Optional: Add shadow to text for better readability
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   centeredView: {
     flex: 1,
@@ -45,20 +50,27 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: 300, // Set a fixed width
-    height: 400, // Set a fixed height
+    width: 300,
+    height: 400,
+  },
+  modalImage: {
+    width: 250,
+    height: 250, 
+    resizeMode: 'contain', 
   },
   
 });
 
-
-function RecipeBox({ title, image }) {
+function RecipeBox({ title }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const imageUrl = "https://firebasestorage.googleapis.com/v0/b/gobl-b4e3d.appspot.com/o/Recipe_Pictures%2F65fc78d19e672bbcbb30ca4b.jpg?alt=media&token=0d6af43d-3343-49b4-bc5f-abd74f5bca4d";
 
   return (
     <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
-      {image && <Image source={{ uri: image }} style={styles.image} />}
-      <Text style={styles.title}>{title}</Text>
+      <Image source={{ uri: imageUrl }} style={styles.image} />
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>{title}</Text>
+      </View>
 
       <Modal
         animationType="slide"
@@ -70,9 +82,10 @@ function RecipeBox({ title, image }) {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.text}>{title}</Text>
-            {image && <Image source={{ uri: image }} style={styles.image} />}
+            
+            <Image source={{ uri: imageUrl }} style={styles.modalImage} />
             <Pressable onPress={() => setModalVisible(false)}>
-              <Text style={styles.text}>Close</Text>
+              <Text style={styles.closeText}>Close</Text>
             </Pressable>
           </View>
         </View>
@@ -80,6 +93,7 @@ function RecipeBox({ title, image }) {
     </Pressable>
   );
 }
+
 
 export default RecipeBox;
 
