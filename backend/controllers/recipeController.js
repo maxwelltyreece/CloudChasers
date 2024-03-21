@@ -11,13 +11,6 @@ const Recipe = require('../models/recipe');
 const RecipeItem = require('../models/recipeItem');
 const RecipeQuantity = require('../models/recipeQuantity');
 
-
-/**
- *     name : { type: String, required: true },
-	description : { type: String, required: true },
-	createdBy : { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: false },	
-	communityThatOwnsRecipe
- */
 exports.createNewRecipeByUser = async (req, res) => {
 	const user = req.user;
 	const { name, description, communityThatOwnsRecipe } = req.body;
@@ -106,7 +99,7 @@ exports.getRecipeIngredients = async (req, res) => {
 		for (const recipeItem of recipeItems) {
 			const foodItem = await FoodItem.findById(recipeItem.foodItemID);
 			const food = await Food.findById(foodItem.foodID);
-			recipeIngredients.push({ food, weight: foodItem.weight, recipeItem }); // Add recipeItem here
+			recipeIngredients.push({ food, weight: foodItem.weight, recipeItem });
 		}
 
 		//removes any fields from the food other than name and id and weight

@@ -44,9 +44,9 @@ async function createUserDayMeal(mealType, userDay) {
 			userDayID: userDay._id,
 		});
 		console.log("existingUserDayMeal:", existingUserDayMeal);
-		// count how many previous meals have been logged in the userDay
-		const order =
-			(await UserDayMeal.countDocuments({ userDayID: userDay._id })) + 1;
+
+		const order = (await UserDayMeal.countDocuments({ userDayID: userDay._id })) + 1;
+
 		if (!existingUserDayMeal) {
 			newUserDayMeal = new UserDayMeal({
 				name: mealType,
@@ -210,7 +210,6 @@ exports.searchFoods = async (req, res) => {
 		"fibre",
 	];
 
-	// Check for invalid fields
 	const invalidFields = Object.keys(searchParams).filter(
 		(field) => !validFields.includes(field)
 	);
@@ -257,6 +256,7 @@ exports.searchFoods = async (req, res) => {
 			page,
 			limit,
 		});
+
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}
@@ -354,7 +354,6 @@ async function getUserDayMealMacros(userDayMealID) {
 	}
 }
 
-// Log manual macro entry
 exports.logManualMacro = async (req, res) => {
 	const { mealType, calories, protein, carbs, fat } = req.body;
 	let session;

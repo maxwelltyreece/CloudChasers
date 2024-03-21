@@ -74,7 +74,7 @@ exports.getStreaks = async (req, res) => {
  */
 const getNutrientIntake = async (req, res, nutrient) => {
 	try {
-		const { date } = req.query;  // Ensure consistency in how you receive the date, query or body.
+		const { date } = req.query; 
 		const user = req.user;
 		const userDay = await UserDay.findOne({ userID: user._id, date: date });
 		if (!userDay) {
