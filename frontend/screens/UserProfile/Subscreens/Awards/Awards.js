@@ -25,6 +25,20 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     top: '18%',
   },
+  legendContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    paddingTop: 25,
+    paddingBottom: 10,
+    height: '10%',
+  },
+  legendIcon: {
+    marginRight: 5,
+  },
+  legendText: {
+    fontSize: 14,
+  },
   awardsListContainer: {
     width: '100%',
     height: '85%',
@@ -91,13 +105,20 @@ const Awards = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Text style={styles.title}>Available Awards:</Text>
+      </View> */}
+      {/* Legend Section */}
+      <View style={styles.legendContainer}>
+        <Icon name="check-circle" size={24} color="green" style={styles.legendIcon} />
+        <Text style={styles.legendText}>Completed</Text>
+        <Icon name="circle" size={24} color="#FF815E" style={[styles.legendIcon, { marginLeft: 32 }]} />
+        <Text style={styles.legendText}>Not Completed</Text>
       </View>
       <View style={styles.awardsListContainer}>
         {awards.map((award) => (
           <View key={award._id} style={styles.awardItem}>
-            <Text style={styles.awardDescription}>{award.description}</Text>
+            <Text style={styles.awardDescription} numberOfLines={1}>{award.description}</Text>
             <View style={styles.doneCheckSection}>
               {isAwardCompleted(award._id) ? (
                 <Icon name="check-circle" size={24} color="green" />
