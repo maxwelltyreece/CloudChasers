@@ -21,18 +21,21 @@ const RecipeQuantity = require('../models/recipeQuantity');
  */
 exports.createNewRecipeByUser = async (req, res) => {
 	const user = req.user;
+	console.log('user:', user);
 	const { name, description, communityThatOwnsRecipe } = req.body;
 	try {
+		console.log('name:', name, 'description:', description, 'communityThatOwnsRecipe:', communityThatOwnsRecipe);
 		const newRecipe = new Recipe({
 			name,
 			description,
-			createdBy: user._id,
+			createdBy: await user._id,
 			communityThatOwnsRecipe
 		});
 		await newRecipe.save();
 		return res.status(200).json({ message: 'Recipe created', data: newRecipe });
 	}
 	catch (error) {
+		console.log('ERROR');
 		return res.status(400).json({ error: error.toString() });
 	}
 }

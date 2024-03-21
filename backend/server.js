@@ -12,6 +12,8 @@ const statsRoutes = require('./routes/statsRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const goalRoutes = require('./routes/goalRoutes');
 const awardRoutes = require('./routes/awardRoutes');
+
+
 require('dotenv').config();
 
 const app = express();

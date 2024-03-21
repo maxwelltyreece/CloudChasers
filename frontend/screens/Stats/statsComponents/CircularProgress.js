@@ -89,32 +89,32 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     <View style={styles.container}>
       <CircularProgressBase
         value={isNaN(progressValues.calories) ? 0 : progressValues.calories}
-        radius={140}
+        radius={160}
         activeStrokeColor={colorScheme.calories}
         inActiveStrokeColor={colorScheme.calories}
         inActiveStrokeOpacity={0.2}
-        activeStrokeWidth={30}
-        inActiveStrokeWidth={30}
+        activeStrokeWidth={28}
+        inActiveStrokeWidth={28}
         displayValue={false}
       >
         <CircularProgressBase
           value={isNaN(progressValues.protein) ? 0 : progressValues.protein}
-          radius={110}
+          radius={130}
           activeStrokeColor={colorScheme.protein}
           inActiveStrokeColor={colorScheme.protein}
           inActiveStrokeOpacity={0.2}
-          activeStrokeWidth={22}
-          inActiveStrokeWidth={22}
+          activeStrokeWidth={28}
+          inActiveStrokeWidth={28}
           displayValue={false}
         >
           <CircularProgressBase
             value={isNaN(progressValues.water) ? 0 : progressValues.water}
-            radius={80}
+            radius={100}
             activeStrokeColor={colorScheme.water}
             inActiveStrokeColor={colorScheme.water}
             inActiveStrokeOpacity={0.2}
-            activeStrokeWidth={15}
-            inActiveStrokeWidth={15}
+            activeStrokeWidth={28}
+            inActiveStrokeWidth={28}
             displayValue={false}
           />
         </CircularProgressBase>
@@ -134,11 +134,12 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical:0,
   },
   keyContainer: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingTop: 20,
+    paddingTop: 12,
     width: '100%',
   },
   keyText: {
