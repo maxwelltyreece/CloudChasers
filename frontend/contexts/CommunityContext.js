@@ -128,13 +128,13 @@ export function CommunityProvider({ children }) {
         return response;
     };
 
-    const acceptRequest = async (communityId, userId) => {
-        const response = await communityService.acceptRequest(communityId, userId);
+    const acceptRequest = async (requestId) => {
+        const response = await communityService.acceptRequest(requestId);
         return response;
     };
-    
-    const denyRequest = async (communityId, userId) => {
-        const response = await communityService.denyRequest(communityId, userId);
+
+    const denyRequest = async (requestId) => {
+        const response = await communityService.denyRequest(requestId);
         return response;
     };
     

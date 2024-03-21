@@ -34,11 +34,7 @@ function GroupSettings({ route }) {
 	useEffect(() => {
 		async function fetchUserRole() {
 			const response = await getUserRole(community.id); // pass the community ID to getUserRole
-			if (response.success) {
-				setUserRole(response.data.role);
-			} else {
-				console.error('Failed to fetch user role:', response);
-			}
+			setUserRole(response);
 		}
 
 		fetchUserRole();

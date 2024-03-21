@@ -45,17 +45,15 @@ export async function joinCommunity(communityId) {
 }
 
 export async function getCommunityDetails(communityId) {
-	const token = await AsyncStorage.getItem('token');
-	const response = await fetch(`http://${LocalIP}:3000/community/details`, {
-		method: 'POST',
-		headers: {
-			Authorization: `Bearer ${token}`,
-		},
-		body: JSON.stringify({ communityId }),
-	});
-	return response.json();
+    const token = await AsyncStorage.getItem('token');
+    const response = await fetch(`http://${LocalIP}:3000/community/details?communityId=${communityId}`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    return response.json();
 }
-
 export async function getCommunityMembers(communityId) {
 	const token = await AsyncStorage.getItem('token');
 	const response = await fetch(`http://${LocalIP}:3000/community/members?communityId=${communityId}`, {
@@ -210,7 +208,7 @@ export async function removeMember(communityId, memberId) {
     return response.json();
 }
 
-export async function acceptRequest(communityId, userId) {
+export async function acceptRequest(requestId) {
     const token = await AsyncStorage.getItem('token');
     const response = await fetch(`http://${LocalIP}:3000/community/acceptRequest`, {
         method: 'POST',
@@ -218,12 +216,12 @@ export async function acceptRequest(communityId, userId) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ communityId, userId }),
+        body: JSON.stringify({ requestId }),
     });
     return response.json();
 }
 
-export async function denyRequest(communityId, userId) {
+export async function denyRequest(requestId) {
     const token = await AsyncStorage.getItem('token');
     const response = await fetch(`http://${LocalIP}:3000/community/denyRequest`, {
         method: 'POST',
@@ -231,7 +229,7 @@ export async function denyRequest(communityId, userId) {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ communityId, userId }),
+        body: JSON.stringify({ requestId }),
     });
     return response.json();
 }

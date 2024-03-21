@@ -8,6 +8,7 @@ import GroupMembers from '../screens/Groups/GroupMembers/GroupMembers';
 import GroupSettings from '../screens/Groups/GroupSettings/GroupSettings';
 import JoinGroup from '../screens/Groups/JoinGroup/JoinGroup';
 import NewPost from '../screens/Groups/NewPost/NewPost';
+import PendingRequests from '../screens/Groups/PendingRequests/PendingRequests';
 
 const GroupStack = createStackNavigator();
 
@@ -41,6 +42,7 @@ export default function GroupNavigator() {
 			<GroupStack.Screen name="GroupSettings" component={GroupSettings} />
             <GroupStack.Screen name="JoinGroup" component={JoinGroup} />
             <GroupStack.Screen name="NewPostPage" component={NewPost} />
+            <GroupStack.Screen name="PendingRequests" component={PendingRequests} />
 		</GroupStack.Navigator>
 	);
 }

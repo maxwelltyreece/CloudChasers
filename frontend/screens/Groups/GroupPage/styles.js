@@ -80,7 +80,6 @@ export const styles = StyleSheet.create({
         marginBottom: 8,
         color: 'darkgrey',
     },
-
     messageText: {
         fontFamily: 'Montserrat_500Medium',
     },
@@ -94,5 +93,20 @@ export const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 10,
         right: 0,
+    },
+    requestsCount: {
+        position: 'absolute',
+        top: -10,
+        right: 0,
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        backgroundColor: '#FF815E',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    requestsCountText: {
+        color: 'white',
+        fontSize: 12,
     },
 });

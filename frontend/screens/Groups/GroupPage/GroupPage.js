@@ -50,33 +50,29 @@ const Message = ({ title, text, sender }) => (
 // }
 
 function GroupPage({ route, navigation }) {
-    const { community, isAdmin } = route.params;
-    const { getCommunityPosts, getPendingRequests } = useCommunity();
-    const [messages, setMessages] = useState([]);
+    const { community, isAdmin, posts } = route.params;
+    const { getPendingRequests } = useCommunity();
+    const [messages, setMessages] = useState(posts || []);
     const [requestsCount, setRequestsCount] = useState(0);
 
     useFocusEffect(
         React.useCallback(() => {
-            const fetchPostsAndRequests = async () => {
-                const posts = await getCommunityPosts(community.id);
-                setMessages(posts);
-
+            const fetchRequests = async () => {
                 if (isAdmin) {
                     const requests = await getPendingRequests(community.id);
-                    setRequestsCount(requests.length);
+                    setRequestsCount(requests.data.length);
                 }
             };
 
-            fetchPostsAndRequests();
+            fetchRequests();
 
             return () => {
                 setMessages([]);
             };
-        }, [community.id, getCommunityPosts, getPendingRequests, isAdmin])
+        }, [community.id, getPendingRequests, isAdmin])
     );
 
     useEffect(() => {
-        console.log(isAdmin);
         navigation.setOptions({
             title: community.name,
             headerTitleStyle: {
@@ -92,7 +88,7 @@ function GroupPage({ route, navigation }) {
                             <IconButton iconName="mail" onPress={() => navigation.navigate('PendingRequests', { community })} />
                             {requestsCount > 0 && (
                                 <View style={styles.requestsCount}>
-                                    <Text>{requestsCount}</Text>
+                                    <Text style={styles.requestsCountText}>{requestsCount}</Text>
                                 </View>
                             )}
                         </View>
@@ -102,7 +98,7 @@ function GroupPage({ route, navigation }) {
                 </View>
             ),
         });
-    }, [navigation, community]);
+    }, [navigation, community, isAdmin, requestsCount]);
 
     return (
         <KeyboardAvoidingView
@@ -126,7 +122,6 @@ function GroupPage({ route, navigation }) {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        console.log("Passing communityId:", community.id);
                         navigation.navigate('NewPostPage', { communityId: community.id });
                     }}                
                 >
@@ -159,6 +154,8 @@ GroupPage.propTypes = {
                 name: PropTypes.string,
                 description: PropTypes.string,
             }),
+            isAdmin: PropTypes.bool,
+            posts: PropTypes.arrayOf(PropTypes.object),
         }),
     }).isRequired,
     navigation: PropTypes.shape({
