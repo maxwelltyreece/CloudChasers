@@ -5,13 +5,10 @@ import { LocalIP } from '../../../../IPIndex';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
-
 const RecipeModal = ({ isVisible, onClose }) => {
 
   function getFileName(image){
-    console.log("Gets to here");
+    console.log("RHIS ONGGets to here");
     const fileName = image.split('/').pop();
     console.log(fileName);
     return fileName;
@@ -55,28 +52,27 @@ const RecipeModal = ({ isVisible, onClose }) => {
           console.log('Recipe created:', response.data.data._id);
           recipeID = response.data.data._id;
           console.log("Recipe ID = " + recipeID);
+          const formData = new FormData();
+          console.log("Recipe ID = " + recipeID);
+          formData.append('objectID', recipeID);
+          formData.append('folderName', 'Recipe_Pictures');
+          formData.append('file', {
+            uri: image,
+            name: getFileName(image),
+            type: 'image',
+          
+          });
+          axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          onClose();
+        
         }).catch((error) => {
           console.error('Error creating recipe:', error);
         });
-
-
-        const formData = new FormData();
-        console.log("Recipe ID = " + recipeID);
-        formData.append('objectID', recipeID);
-        formData.append('folderName', 'Recipe_Pictures');
-        formData.append('file', {
-          uri: image,
-          name: getFileName(image),
-          type: 'image',
-        
-        });
-        axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        onClose();
        }
 
 return (

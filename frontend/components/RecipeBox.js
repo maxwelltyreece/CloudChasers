@@ -128,6 +128,6 @@ function RecipeBox({ title, image }) {
 export default RecipeBox;
 
 RecipeBox.propTypes = {
-  title: PropTypes.string.isRequired,
-  image: PropTypes.string,
+  title: proptypes.string.isRequired,
+  image: proptypes.string,
 };
