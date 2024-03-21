@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const WelcomeBar = () => (
     <View style={styles.welcomeContainer}>
-      <Text style={styles.title}>Today&apos;s Statistics</Text>
+      <Text style={styles.title}>Today's Statistics</Text>
     </View>
 );
 

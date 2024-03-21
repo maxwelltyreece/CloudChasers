@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function RecipeBox({ title }) {
+function RecipeBox({ title, image }) {
   const [modalVisible, setModalVisible] = useState(false);
   const imageUrl =
     "https://firebasestorage.googleapis.com/v0/b/gobl-b4e3d.appspot.com/o/Recipe_Pictures%2F65fc78d19e672bbcbb30ca4b.jpg?alt=media&token=0d6af43d-3343-49b4-bc5f-abd74f5bca4d";
@@ -128,6 +128,6 @@ function RecipeBox({ title }) {
 export default RecipeBox;
 
 RecipeBox.propTypes = {
-  title: proptypes.string.isRequired,
-  image: proptypes.string,
+  title: PropTypes.string.isRequired,
+  image: PropTypes.string,
 };
