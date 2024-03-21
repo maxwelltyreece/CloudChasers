@@ -14,21 +14,27 @@ function Recipes() {
         setSearch(search);
     };
     useEffect(() => {
-		const fetchRecipes = async () => {
-			const fetchedRecipes = await getAllUserRecipes();
-			console.log('fetchedRecipes:', fetchedRecipes);
-		
-			const mappedRecipes = fetchedRecipes.map(recipe => ({
-				id: recipe._id,
-				title: recipe.name,
-				image: recipe.image,
-			}));
-		
-			setRecipes(mappedRecipes);
-		};
-	
-		fetchRecipes();
-	}, [getAllUserRecipes]);
+        const fetchRecipes = async () => {
+            const fetchedRecipes = await getAllUserRecipes();
+            
+    
+            const recipesWithImages = await Promise.all(fetchedRecipes.map(async (recipe) => {
+                
+                //Line below not working
+                console.log('recipeID:', recipe._id);
+                const imageUrl = await getPictureURL(recipe._id, "Recipe_Pictures"); 
+                console.log('imageUrl:', imageUrl);
+                return {
+                    ...recipe,
+                    image: imageUrl,
+                };
+            }));
+    
+            setRecipes(recipesWithImages);
+        };
+    
+        fetchRecipes();
+    }, [getAllUserRecipes]);
 
 	const filteredRecipes = recipes.filter(recipe =>
 		recipe.title && recipe.title.toLowerCase().includes(search.toLowerCase())
