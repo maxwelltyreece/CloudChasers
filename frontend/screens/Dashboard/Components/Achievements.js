@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Pressable } from 'react-native';
 import { AnimatedCircularProgress } from 'react-native-circular-progress';
+import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
@@ -50,6 +51,7 @@ const getMotivationalMessage = (percentage) => {
 };
 
 const AchievementsFeature = ({ userAwards, allAwards }) => {
+  const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
   const ringSize = screenWidth * 0.26;
   const strokeWidth = ringSize * 0.14;
@@ -61,25 +63,27 @@ const AchievementsFeature = ({ userAwards, allAwards }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.containerTitle}>Awards</Text>
-      <AnimatedCircularProgress
-        size={ringSize}
-        width={strokeWidth}
-        fill={percentage}
-        tintColor="#FF815E"
-        backgroundColor="#F0F0F0"
-        padding={10}
-        lineCap="round"
-        rotation={0}>
-        {
-          () => (
-            <Text style={styles.progressText}>
-              {`${completedAchievements}/${totalAchievements}`}
-            </Text>
-          )
-        }
-      </AnimatedCircularProgress>
-      <Text style={styles.motivationalMessage}>{motivationalMessage}</Text>
+      <Pressable onPress={() => navigation.navigate('User', { screen: 'Awards' })} style={{justifyContent: 'center', alignItems: 'center', alignContent: 'center'}}>
+        <Text style={styles.containerTitle}>Awards</Text>
+        <AnimatedCircularProgress
+          size={ringSize}
+          width={strokeWidth}
+          fill={percentage}
+          tintColor="#FF815E"
+          backgroundColor="#F0F0F0"
+          padding={10}
+          lineCap="round"
+          rotation={0}>
+          {
+            () => (
+              <Text style={styles.progressText}>
+                {`${completedAchievements}/${totalAchievements}`}
+              </Text>
+            )
+          }
+        </AnimatedCircularProgress>
+        <Text style={styles.motivationalMessage}>{motivationalMessage}</Text>
+      </Pressable>
     </View>
   );
 };

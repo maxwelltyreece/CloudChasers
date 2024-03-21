@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, StyleSheet, ScrollView, TextInput, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView, } from 'react-native';
 import proptypes from 'prop-types';
-import Icon from 'react-native-vector-icons/Feather'; // Import Feather icons
+import Icon from 'react-native-vector-icons/Feather';
+import { useFocusEffect } from '@react-navigation/native';
 import { useAwards } from '../../../../contexts/AwardsContext';
 
 const styles = StyleSheet.create({
@@ -65,7 +66,20 @@ const styles = StyleSheet.create({
 });
 
 const Awards = () => {
-  const { userAwards, awards } = useAwards();
+  const { userAwards, awards, fetchUserAwards, fetchAwards, fetchAwardsToBeIssued } = useAwards();
+
+  useEffect(() => {
+    fetchUserAwards();
+    fetchAwards();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserAwards();
+      fetchAwards();
+    }, [])
+  );
+
   
   console.log('userAwards:', userAwards);
   console.log('awards:', awards);

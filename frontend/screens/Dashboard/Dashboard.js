@@ -31,7 +31,7 @@ function Dashboard() {
 	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
 	const { userAwards, awards, fetchUserAwards, fetchAwards, fetchAwardsToBeIssued } = useAwards();
 
-	console.log({ userDetails });
+	//console.log({ userDetails });
 	// console.log(userDetails.data.forename);
 	// console.log(userDetails.data.streak);
 	// console.log({ userCommunities });
@@ -54,7 +54,7 @@ function Dashboard() {
 			return token;
 		} catch (error) {
 			console.error("Error accessing AsyncStorage:", error);
-			navigation.navigate('Login'); // Redirect to login if error
+			navigation.navigate('Login');
 		}
 	};
 

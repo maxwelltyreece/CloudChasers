@@ -1,14 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	View, Text, Image, FlatList, TouchableOpacity,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUser } from '../../contexts/UserContext';
 import SettingsButton from '../../components/SettingsButton';
 import { styles } from './styles';
 function UserProfile() {
 	const navigation = useNavigation();
 	const { userDetails, updateUserDetails } = useUser();
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+	useEffect(() => {
+		const verifyLoginStatus = async () => {
+			const token = await AsyncStorage.getItem('token');
+			setIsLoggedIn(!!token);
+		};
+
+		verifyLoginStatus();
+	}, []);
 
 	const renderItem = ({ item }) => (
 		<TouchableOpacity activeOpacity={0.3} onPress={item.handler}>
@@ -43,11 +54,8 @@ function UserProfile() {
 				source={{ uri: 'https://placekitten.com/200/200' }}
 				style={styles.profilePic}
 			/>
-			<Text style={styles.username}>{userDetails.username}</Text>
-			{/* <Text style={styles.bio}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor ut labore et dolore.
-			</Text> */}
+			{/* {isLoggedIn && <Text style={styles.username}>{userDetails.username}</Text>} */}
+			<Text>TODO! fix bug when logging out while showing backend username</Text>
 			<FlatList
 				style={styles.subPageList}
 				data={UserProfileOptions}
