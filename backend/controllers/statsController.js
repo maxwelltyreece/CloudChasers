@@ -10,6 +10,8 @@ const Recipe = require("../models/recipe");
 const RecipeItem = require("../models/recipeItem");
 const RecipeQuantity = require("../models/recipeQuantity");
 
+const logger = require("../../logger");
+
 /**
  * Handles the GET /streaks route.
  * This function updates the user"s login streak based on the date provided in the request body.
@@ -29,6 +31,7 @@ exports.getStreaks = async (req, res) => {
 		const user = req.user;
 
 		if (!Date.parse(today)) {
+			logger.error("Invalid date");
 			return res.status(400).send({ error: 'Invalid date' });
 		}
 
@@ -52,6 +55,7 @@ exports.getStreaks = async (req, res) => {
 
 		await user.save();
 
+		logger.info(`Streak updated for user ${user._id}`);
 		return res.status(200).send({ streak: user.streak, message: "Streak updated" });
 
 	} catch (error) {
@@ -59,6 +63,15 @@ exports.getStreaks = async (req, res) => {
 	}
 };
 
+/**
+ * Retrieves the total nutrient intake for a given date and user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {string} nutrient - The nutrient to calculate the intake for.
+ * @returns {Promise<void>} - A promise that resolves with the total nutrient intake.
+ * @throws {Error} - If there is an error retrieving the nutrient intake.
+ */
 const getNutrientIntake = async (req, res, nutrient) => {
 	try {
 		const { date } = req.query;  // Ensure consistency in how you receive the date, query or body.
@@ -108,11 +121,82 @@ const getNutrientIntake = async (req, res, nutrient) => {
 	}
 };
 
+/**
+ * Retrieves the total daily caloric intake for a given date and user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves with the total daily caloric intake.
+ * @throws {Error} - If there is an error retrieving the caloric intake.
+ */
 exports.getDailyCaloricIntake = (req, res) => getNutrientIntake(req, res, 'calories');
+
+/**
+ * Retrieves the total daily water intake for a given date and user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves with the total daily water intake.
+ * @throws {Error} - If there is an error retrieving the water intake.
+ */
 exports.getDailyWaterIntake = (req, res) => getNutrientIntake(req, res, 'water');
+
+/**
+ * Retrieves the total daily protein intake for a given date and user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves with the total daily protein intake.
+ * @throws {Error} - If there is an error retrieving the protein intake.
+ */
 exports.getDailyProteinIntake = (req, res) => getNutrientIntake(req, res, 'protein');
+
+/**
+ * Retrieves the total daily carb intake for a given date and user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves with the total daily carb intake.
+ * @throws {Error} - If there is an error retrieving the carb intake.
+ */
 exports.getDailyCarbIntake = (req, res) => getNutrientIntake(req, res, 'carbs');
+
+/**
+ * Retrieves the total daily fat intake for a given date and user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves with the total daily fat intake.
+ * @throws {Error} - If there is an error retrieving the fat intake.
+ */
 exports.getDailyFatIntake = (req, res) => getNutrientIntake(req, res, 'fat');
+
+/**
+ * Retrieves the total daily sugar intake for a given date and user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves with the total daily sugar intake.
+ * @throws {Error} - If there is an error retrieving the sugar intake.
+ */
 exports.getDailySugarIntake = (req, res) => getNutrientIntake(req, res, 'sugar');
+
+/**
+ * Retrieves the total daily sodium intake for a given date and user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves with the total daily sodium intake.
+ * @throws {Error} - If there is an error retrieving the sodium intake.
+ */
 exports.getDailySodiumIntake = (req, res) => getNutrientIntake(req, res, 'sodium');
+
+/**
+ * Retrieves the total daily fibre intake for a given date and user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @returns {Promise<void>} - A promise that resolves with the total daily fibre intake.
+ * @throws {Error} - If there is an error retrieving the fibre intake.
+ */
 exports.getDailyFibreIntake = (req, res) => getNutrientIntake(req, res, 'fibre');
