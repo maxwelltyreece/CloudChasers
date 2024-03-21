@@ -84,6 +84,11 @@ export function FoodLogProvider({ children }) {
         await foodLogService.deleteIngredientFromRecipe(data);
     }
 
+    const getPictureURL = async (data) => {
+        console.log('IMAGE:' + data);
+        return await foodLogService.getPictureURL(data);
+    }
+
     const value = useMemo(() => ({
         latestLoggedFood,
         getLatestLoggedFood,
@@ -101,7 +106,8 @@ export function FoodLogProvider({ children }) {
         getCommunityRecipes,
         addItemToRecipe,
         deleteIngredientFromRecipe,
-    }), [latestLoggedFood, getLatestLoggedFood, logDatabaseFood, createNewRecipeByUser, logRecipeFood, duplicateRecipeToUser, getFood, searchFoods, getRecipe, getRecipeWeight, getRecipeMacro, getAllUserRecipes, getRecipeIngredients, getCommunityRecipes, addItemToRecipe, deleteIngredientFromRecipe]);
+        getPictureURL,
+    }), [latestLoggedFood, getLatestLoggedFood, logDatabaseFood, createNewRecipeByUser, logRecipeFood, duplicateRecipeToUser, getFood, searchFoods, getRecipe, getRecipeWeight, getRecipeMacro, getAllUserRecipes, getRecipeIngredients, getCommunityRecipes, addItemToRecipe, deleteIngredientFromRecipe, getPictureURL]);
 
     return (
         <FoodLogContext.Provider value={value}>

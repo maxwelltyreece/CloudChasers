@@ -13,7 +13,7 @@ import { useStats } from '../../contexts/StatsContext';
 import { useGoals } from '../../contexts/GoalsContext';
 import { useFoodLog } from '../../contexts/FoodLogContext';
 import { useAwards } from '../../contexts/AwardsContext';
- 
+
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -75,39 +75,43 @@ function Dashboard() {
 					// fetchAwardsToBeIssued(),
 				]);
 			} catch (error) {
-				console.error("Error fetching data for dashboard:", error);
+				if (latestLoggedFood != undefined) {
+					console.error("Error fetching data for dashboard:", error);
+				}
 			} finally {
 				setLoading(false);
 			}
 		};
 
 		fetchData();
-	}, []); 
+	}, []);
 
 	const updateDashboardData = async () => {
-        try {
-            await checkUserLogin();
+		try {
+			await checkUserLogin();
 
-            await Promise.all([
-                updateUserDetails(),
-                updateTodayStats(),
-                getUserCommunities(),
-                getLatestLoggedFood(),
-                fetchGoals(),
-                fetchUserAwards(),
-                fetchAwards(),
-				// fetchAwardsToBeIssued()
-            ]);
-        } catch (error) {
-            console.error("Error fetching data for dashboard:", error);
-        }
-    };
-	
+			await Promise.all([
+				updateUserDetails(),
+				updateTodayStats(),
+				getUserCommunities(),
+				getLatestLoggedFood(),
+				fetchGoals(),
+				fetchUserAwards(),
+				fetchAwards(),
+				fetchAwardsToBeIssued()
+			]);
+		} catch (error) {
+			if (latestLoggedFood != undefined) {
+				console.error("Error updating data for dashboard:", error);
+			}
+		}
+	};
+
 	useFocusEffect(
-        useCallback(() => {
-            updateDashboardData();
-        }, [])
-    ); 
+		useCallback(() => {
+			updateDashboardData();
+		}, [])
+	);
 
 
 	if (loading) {
@@ -117,13 +121,13 @@ function Dashboard() {
 			</View>
 		);
 	}
- 
+
 	return (
 		<SafeAreaView style={styles.dashboardContainer}>
 
 			{loading ? (
 				<ActivityIndicator size="large" />
-			) : ( 
+			) : (
 				<>
 					<View style={styles.semiCircle} />
 					<View style={styles.dashboardHeader}>

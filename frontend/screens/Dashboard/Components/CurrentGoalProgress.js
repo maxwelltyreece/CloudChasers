@@ -273,6 +273,11 @@ ProgressBar.propTypes = {
 	unit: PropTypes.string,
 };
 
+ProgressBar.defaultProps = {
+	progress: 0,
+	unit: '',
+};
+
 
 // Single Reminder Component
 const ReminderItem = ({ reminder }) => {
