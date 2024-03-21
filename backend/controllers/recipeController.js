@@ -339,4 +339,37 @@ exports.duplicateRecipeToUser = async (req, res) => {
 	}
 }
 
+exports.deleteRecipe = async (req, res) => {
+	const { recipeID } = req.body;
+	const session = await mongoose.startSession();
+	session.startTransaction();
+	try {
+		const recipe = await Recipe.findById(recipeID);
+		if (!recipe) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+		const recipeItems = await RecipeItem.find({ recipeID });
+		for (const recipeItem of recipeItems) {
+			await FoodItem.findByIdAndDelete(recipeItem.foodItemID);
+		}
+		await RecipeItem.deleteMany({ recipeID });
+
+		const recipeQuantities = await RecipeQuantity.find({ recipeID });
+		for (const recipeQuantity of recipeQuantities) {
+			await MealItem.findByIdAndDelete(recipeQuantity.mealItemID);
+		}
+		await RecipeQuantity.deleteMany({ recipeID });
+
+		await Recipe.findByIdAndDelete(recipeID);
+
+		await session.commitTransaction();
+		session.endSession();
+		return res.status(200).json({ message: 'Recipe deleted' });
+	}
+	catch (error) {
+		await session.abortTransaction();
+		session.endSession();
+		return res.status(400).json({ error: error.toString() });
+	}
+}
 //TODO: add macro
