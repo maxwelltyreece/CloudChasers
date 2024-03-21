@@ -17,7 +17,16 @@ const JoinRequest = require('../models/request');
 //const { it } = require("node:test");
 
 
-//todo: delete item from recipe
+// TODO
+// - Test that a user can join a public community
+// - Test that a user can request to join a private community
+// - Test that an admin can retrieve all pending join requests
+// - Test that an admin can accept a join request
+// - Test that an admin can deny a join request
+// - Test that a user can leave a community
+// - Test that an admin can remove a member from a community
+// - Test that a user can make a post in a community
+// - Test that a user can retrieve all posts in a community
 
 
 describe("Community Management", () => {
@@ -484,6 +493,144 @@ describe("Community Management", () => {
 				expect(response.body).toHaveProperty("error");
 				expect(response.body.error).toBe("Error: Database error");
 			});
+		});
+	});
+	describe("Modifying community details", () => {
+		it("should update the community description", async () => {
+			const newDescription = "Updated community description";
+
+			const response = await request(app)
+				.put("/community/updateDesc")
+				.set("Authorization", `Bearer ${token}`)
+				.send({ communityId: community._id.toString(), description: newDescription });
+
+			expect(response.statusCode).toBe(200);
+			expect(response.body).toHaveProperty("success", true);
+			expect(response.body).toHaveProperty("message", "Community updated");
+
+			const updatedCommunity = await Community.findById(community._id);
+			expect(updatedCommunity.description).toBe(newDescription);
+		});
+		it("should return an error if the community does not exist", async () => {
+			const fakeCommunityId = new mongoose.Types.ObjectId();
+
+			const response = await request(app)
+				.put("/community/updateDesc")
+				.set("Authorization", `Bearer ${token}`)
+				.send({ communityId: fakeCommunityId.toString(), description: "New description" });
+
+			expect(response.statusCode).toBe(404);
+			expect(response.body).toHaveProperty("message", "Community not found");
+		});
+		it("should return an error if the user is not an admin", async () => {
+			const response = await request(app)
+				.put("/community/updateDesc")
+				.set("Authorization", `Bearer ${token2}`)
+				.send({ communityId: community._id.toString(), description: "New description" });
+
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty("message", "User is not an admin of the community");
+		});
+		it("should handle errors during community update", async () => {
+			// Mock the save function to simulate a failure
+			jest.spyOn(Community, "findById").mockImplementationOnce(() => {
+				throw new Error("Database error");
+			});
+
+			const response = await request(app)
+				.put("/community/updateDesc")
+				.set("Authorization", `Bearer ${token}`)
+				.send({ communityId: community._id.toString(), description: "New description" });
+
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty("error");
+			expect(response.body.error).toBe("Error: Database error");
+
+			// Ensure that the community description was not updated
+			const updatedCommunity = await Community.findById(community._id);
+			expect(updatedCommunity.description).toBe(community.description);
+
+		});
+		it("should update the community join privacy", async () => {
+			const newPrivacy = "private";
+
+			const response = await request(app)
+				.put("/community/updateJoinPrivacy")
+				.set("Authorization", `Bearer ${token}`)
+				.send({ communityId: community._id.toString(), joinPrivacy: newPrivacy });
+
+			expect(response.statusCode).toBe(200);
+			expect(response.body).toHaveProperty("success", true);
+			expect(response.body).toHaveProperty("message", "Community updated");
+
+			const updatedCommunity = await Community.findById(community._id);
+			expect(updatedCommunity.joinPrivacy).toBe(newPrivacy);
+		});
+		it("should return an error if the community does not exist", async () => {
+			const fakeCommunityId = new mongoose.Types.ObjectId();
+
+			const response = await request(app)
+				.put("/community/updateJoinPrivacy")
+				.set("Authorization", `Bearer ${token}`)
+				.send({ communityId: fakeCommunityId.toString(), joinPrivacy: "private" });
+
+			expect(response.statusCode).toBe(404);
+			expect(response.body).toHaveProperty("message", "Community not found");
+		});
+		it("should return an error if the user is not an admin", async () => {
+			const response = await request(app)
+				.put("/community/updateJoinPrivacy")
+				.set("Authorization", `Bearer ${token2}`)
+				.send({ communityId: community._id.toString(), joinPrivacy: "private" });
+
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty("message", "User is not an admin of the community");
+		});
+		it("should handle errors during community update", async () => {
+			// Mock the save function to simulate a failure
+			jest.spyOn(Community, "findById").mockImplementationOnce(() => {
+				throw new Error("Database error");
+			});
+
+			const response = await request(app)
+				.put("/community/updateJoinPrivacy")
+				.set("Authorization", `Bearer ${token}`)
+				.send({ communityId: community._id.toString(), joinPrivacy: "private"  });
+
+			expect(response.statusCode).toBe(400);
+			expect(response.body).toHaveProperty("error");
+			expect(response.body.error).toBe("Error: Database error");
+
+			// Ensure that the community privacy was not updated
+			const updatedCommunity = await Community.findById(community._id);
+			expect(updatedCommunity.joinPrivacy).toBe(community.joinPrivacy);
+
+		});
+		
+
+	});
+	// describe("Joining and leaving communities", () => {
+		// describe()
+	describe("Test valid user tokens", () => {
+		it("should test with an invalid user", async () => {
+			fakeUserId = new mongoose.Types.ObjectId();
+			fakeToken = jwt.sign({ userId: fakeUserId }, process.env.SECRET_KEY);
+			const response = await request(app)
+				.get("/community/all")
+				.set("Authorization", `Bearer ${fakeToken}`)
+
+			expect(response.statusCode).toBe(404);
+			expect(response.body).toHaveProperty("message", "User not found");
+		});
+		it("should test with an unauthorized user", async () => {
+			jest.spyOn(User, "findById").mockImplementationOnce(() => {
+				throw new Error("Database error");
+			});
+			const response = await request(app)
+				.get("/community/all")
+				.set("Authorization", `Bearer ${token}`)
+			expect(response.statusCode).toBe(401);
+			expect(response.body).toHaveProperty("message", "Unauthorized2");
 		});
 	});
 });
