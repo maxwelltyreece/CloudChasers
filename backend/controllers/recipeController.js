@@ -12,30 +12,20 @@ const Recipe = require('../models/recipe');
 const RecipeItem = require('../models/recipeItem');
 const RecipeQuantity = require('../models/recipeQuantity');
 
-
-/**
- *     name : { type: String, required: true },
-	description : { type: String, required: true },
-	createdBy : { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: false },	
-	communityThatOwnsRecipe
- */
 exports.createNewRecipeByUser = async (req, res) => {
 	const user = req.user;
-	console.log('user:', user);
 	const { name, description, communityThatOwnsRecipe } = req.body;
 	try {
-		console.log('name:', name, 'description:', description, 'communityThatOwnsRecipe:', communityThatOwnsRecipe);
 		const newRecipe = new Recipe({
 			name,
 			description,
-			createdBy: await user._id,
+			createdBy: user._id,
 			communityThatOwnsRecipe
 		});
 		await newRecipe.save();
 		return res.status(200).json({ message: 'Recipe created', data: newRecipe });
 	}
 	catch (error) {
-		console.log('ERROR');
 		return res.status(400).json({ error: error.toString() });
 	}
 }
@@ -110,7 +100,7 @@ exports.getRecipeIngredients = async (req, res) => {
 		for (const recipeItem of recipeItems) {
 			const foodItem = await FoodItem.findById(recipeItem.foodItemID);
 			const food = await Food.findById(foodItem.foodID);
-			recipeIngredients.push({ food, weight: foodItem.weight, recipeItem }); // Add recipeItem here
+			recipeIngredients.push({ food, weight: foodItem.weight, recipeItem });
 		}
 
 		//removes any fields from the food other than name and id and weight
@@ -376,3 +366,38 @@ exports.deleteRecipe = async (req, res) => {
 	}
 }
 //TODO: add macro
+
+//TODO: Add pure macro food items to a recipe
+exports.addMacroToRecipe = async (req, res) => {
+	const { recipeID, protein, carbs, fat, calories } = req.body;
+	try {
+		const recipe = await Recipe.findById(recipeID);
+		if (!recipe) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+		const newFood = new Food({
+			name: 'Macro',
+			group: 'Macro',
+			calories,
+			protein,
+			carbs,
+			fat,
+			privacy: 'private'
+		});
+		await newFood.save();
+		const newFoodItem = new FoodItem({
+			foodID: newFood._id,
+			weight: 100
+	});
+		await newFoodItem.save();
+		const newRecipeItem = new RecipeItem({
+			foodItemID: newFoodItem._id,
+			recipeID
+		});
+		await newRecipeItem.save();
+		return res.status(200).json({ message: 'Macro added to recipe', data: newRecipeItem });
+	}
+	catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}

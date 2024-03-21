@@ -22,6 +22,8 @@ const food = require("../models/food");
 const recipe = require("../models/recipe");
 const recipeItem = require("../models/recipeItem");
 const recipeQuantity = require("../models/recipeQuantity");
+const user = require("../models/user");
+
 
 jest.mock("../models/user", () => ({ findById: jest.fn() }));
 jest.mock("../models/userDay", () => ({ findOne: jest.fn() }));
@@ -86,9 +88,33 @@ describe("Streaks Endpoint", () => {
 		expect(response.body).toHaveProperty("streak");
 		expect(response.body.streak).toBe(1);
 	});
+
+	it("should return 400 if the date is invalid", async () => {
+		const response = await request(app)
+			.post("/stats/streak")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ today: "invalid date" });
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body).toHaveProperty("error");
+	});
+
+	it("should return 500 if an error occurs during streak update", async () => {
+		jest.spyOn(user, "save").mockImplementation(() => {
+			throw new Error("database save error");
+		});
+
+		const response = await request(app)
+			.post("/stats/streak")
+			.set('Authorization', `Bearer ${token}`)
+			.send({ today: new Date().toISOString() });
+		expect(response.statusCode).toBe(500);
+		expect(response.body).toHaveProperty("error");
+	});
+	
 });
 
-describe("Daily Caloric Intake Endpoint", () => {
+describe("Daily Nutrient Intake Endpoint", () => {
 	beforeEach(() => {
 		jest.clearAllMocks();
 	});
@@ -144,5 +170,134 @@ describe("Daily Caloric Intake Endpoint", () => {
 		expect(response.body).toHaveProperty("totalCalories");
 		expect(response.body.totalCalories).toBe(289.8);
 	}); 
-});
 
+	it("should return 200 and the correct total water intake for the day", async () => {
+		userDay.findOne.mockResolvedValue({ _id: "testUserDayID", date: new Date().toISOString(), userID: "testUserID", save: jest.fn().mockResolvedValue(true)});
+		userDayMeal.find.mockResolvedValue([ { _id: "testUserDayMealID", name: "Dinner", userDayID: "testUserDayID2", save: jest.fn().mockResolvedValue(true)}]);
+		mealItem.find.mockResolvedValue([{ _id: "testMealItemID", name: "testmealItem", foodItemID: "testFoodItemID", userDayMealID: "testUserDayMealID", save: jest.fn().mockResolvedValue(true) }]);
+		foodItem.findById.mockResolvedValue({ _id: "testFoodItemID",  weight: 200, foodID: "testFoodID", save: jest.fn().mockResolvedValue(true) });
+		food.findById.mockResolvedValue({ _id: "testFoodID", water: 100, save: jest.fn().mockResolvedValue(true) });
+
+		const response = await request(app)
+			.get("/stats/dailyWaterIntake")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ date: new Date().toISOString() });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toHaveProperty("totalWater");
+		expect(response.body.totalWater).toBe(200);
+	});
+
+	it("should return 200 and the correct total protein intake for the day", async () => {
+		userDay.findOne.mockResolvedValue({ _id: "testUserDayID", date: new Date().toISOString(), userID: "testUserID", save: jest.fn().mockResolvedValue(true)});
+		userDayMeal.find.mockResolvedValue([ { _id: "testUserDayMealID", name: "Dinner", userDayID: "testUserDayID2", save: jest.fn().mockResolvedValue(true)}]);
+		mealItem.find.mockResolvedValue([{ _id: "testMealItemID", name: "testmealItem", foodItemID: "testFoodItemID", userDayMealID: "testUserDayMealID", save: jest.fn().mockResolvedValue(true) }]);
+		foodItem.findById.mockResolvedValue({ _id: "testFoodItemID",  weight: 200, foodID: "testFoodID", save: jest.fn().mockResolvedValue(true) });
+		food.findById.mockResolvedValue({ _id: "testFoodID", protein: 100, save: jest.fn().mockResolvedValue(true) });
+
+		const response = await request(app)
+			.get("/stats/dailyProteinIntake")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ date: new Date().toISOString() });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toHaveProperty("totalProtein");
+		expect(response.body.totalProtein).toBe(200);
+	});
+
+	it("should return 200 and the correct total carb intake for the day", async () => {
+		userDay.findOne.mockResolvedValue({ _id: "testUserDayID", date: new Date().toISOString(), userID: "testUserID", save: jest.fn().mockResolvedValue(true)});
+		userDayMeal.find.mockResolvedValue([ { _id: "testUserDayMealID", name: "Dinner", userDayID: "testUserDayID2", save: jest.fn().mockResolvedValue(true)}]);
+		mealItem.find.mockResolvedValue([{ _id: "testMealItemID", name: "testmealItem", foodItemID: "testFoodItemID", userDayMealID: "testUserDayMealID", save: jest.fn().mockResolvedValue(true) }]);
+		foodItem.findById.mockResolvedValue({ _id: "testFoodItemID",  weight: 200, foodID: "testFoodID", save: jest.fn().mockResolvedValue(true) });
+		food.findById.mockResolvedValue({ _id: "testFoodID", carbs: 100, save: jest.fn().mockResolvedValue(true) });
+
+		const response = await request(app)
+			.get("/stats/dailyCarbIntake")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ date: new Date().toISOString() });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toHaveProperty("totalCarbs");
+		expect(response.body.totalCarbs).toBe(200);
+	});
+
+	it("should return 200 and the correct total fat intake for the day", async () => {
+		userDay.findOne.mockResolvedValue({ _id: "testUserDayID", date: new Date().toISOString(), userID: "testUserID", save: jest.fn().mockResolvedValue(true)});
+		userDayMeal.find.mockResolvedValue([ { _id: "testUserDayMealID", name: "Dinner", userDayID: "testUserDayID2", save: jest.fn().mockResolvedValue(true)}]);
+		mealItem.find.mockResolvedValue([{ _id: "testMealItemID", name: "testmealItem", foodItemID: "testFoodItemID", userDayMealID: "testUserDayMealID", save: jest.fn().mockResolvedValue(true) }]);
+		foodItem.findById.mockResolvedValue({ _id: "testFoodItemID",  weight: 200, foodID: "testFoodID", save: jest.fn().mockResolvedValue(true) });
+		food.findById.mockResolvedValue({ _id: "testFoodID", fat: 100, save: jest.fn().mockResolvedValue(true) });
+
+		const response = await request(app)
+			.get("/stats/dailyFatIntake")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ date: new Date().toISOString() });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toHaveProperty("totalFat");
+		expect(response.body.totalFat).toBe(200);
+	});
+
+	it("should return 200 and the correct total sugar intake for the day", async () => {
+		userDay.findOne.mockResolvedValue({ _id: "testUserDayID", date: new Date().toISOString(), userID: "testUserID", save: jest.fn().mockResolvedValue(true)});
+		userDayMeal.find.mockResolvedValue([ { _id: "testUserDayMealID", name: "Dinner", userDayID: "testUserDayID2", save: jest.fn().mockResolvedValue(true)}]);
+		mealItem.find.mockResolvedValue([{ _id: "testMealItemID", name: "testmealItem", foodItemID: "testFoodItemID", userDayMealID: "testUserDayMealID", save: jest.fn().mockResolvedValue(true) }]);
+		foodItem.findById.mockResolvedValue({ _id: "testFoodItemID",  weight: 200, foodID: "testFoodID", save: jest.fn().mockResolvedValue(true) });
+		food.findById.mockResolvedValue({ _id: "testFoodID", sugar: 100, save: jest.fn().mockResolvedValue(true) });
+
+		const response = await request(app)
+			.get("/stats/dailySugarIntake")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ date: new Date().toISOString() });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toHaveProperty("totalSugar");
+		expect(response.body.totalSugar).toBe(200);
+	});
+
+	it("should return 200 and the correct total sodium intake for the day", async () => {
+		userDay.findOne.mockResolvedValue({ _id: "testUserDayID", date: new Date().toISOString(), userID: "testUserID", save: jest.fn().mockResolvedValue(true)});
+		userDayMeal.find.mockResolvedValue([ { _id: "testUserDayMealID", name: "Dinner", userDayID: "testUserDayID2", save: jest.fn().mockResolvedValue(true)}]);
+		mealItem.find.mockResolvedValue([{ _id: "testMealItemID", name: "testmealItem", foodItemID: "testFoodItemID", userDayMealID: "testUserDayMealID", save: jest.fn().mockResolvedValue(true) }]);
+		foodItem.findById.mockResolvedValue({ _id: "testFoodItemID",  weight: 200, foodID: "testFoodID", save: jest.fn().mockResolvedValue(true) });
+		food.findById.mockResolvedValue({ _id: "testFoodID", sodium: 100, save: jest.fn().mockResolvedValue(true) });
+
+		const response = await request(app)
+			.get("/stats/dailySodiumIntake")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ date: new Date().toISOString() });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toHaveProperty("totalSodium");
+		expect(response.body.totalSodium).toBe(200);
+	});
+
+	it("should return 200 and the correct total fiber (fibre) intake for the day", async () => {
+		userDay.findOne.mockResolvedValue({ _id: "testUserDayID", date: new Date().toISOString(), userID: "testUserID", save: jest.fn().mockResolvedValue(true)});
+		userDayMeal.find.mockResolvedValue([ { _id: "testUserDayMealID", name: "Dinner", userDayID: "testUserDayID2", save: jest.fn().mockResolvedValue(true)}]);
+		mealItem.find.mockResolvedValue([{ _id: "testMealItemID", name: "testmealItem", foodItemID: "testFoodItemID", userDayMealID: "testUserDayMealID", save: jest.fn().mockResolvedValue(true) }]);
+		foodItem.findById.mockResolvedValue({ _id: "testFoodItemID",  weight: 200, foodID: "testFoodID", save: jest.fn().mockResolvedValue(true) });
+		food.findById.mockResolvedValue({ _id: "testFoodID", fibre: 100, save: jest.fn().mockResolvedValue(true) });
+
+		const response = await request(app)
+			.get("/stats/dailyFibreIntake")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ date: new Date().toISOString() });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body).toHaveProperty("totalFibre");
+		expect(response.body.totalFibre).toBe(200);
+	});
+
+	it("should return 500 if an error occurs", async () => {
+		jest.spyOn(userDay, "findOne").mockRejectedValue(new Error("test error"));
+		const response = await request(app)
+			.get("/stats/dailyCaloricIntake")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ date: new Date().toISOString() });
+
+		expect(response.statusCode).toBe(500);
+		expect(response.body).toHaveProperty("error");
+	});
+});
