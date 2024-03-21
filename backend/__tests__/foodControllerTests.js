@@ -228,8 +228,6 @@ describe("GET /searchFoods", () => {
 	});
 
 	beforeEach(async () => {
-		// Create food items with various attributes to test the search functionality
-
 	});
 
 	afterEach(async () => {

@@ -11,6 +11,7 @@ router.post('/createNewRecipeByUser', userMiddleware, recipeController.createNew
 router.post('/logRecipeFood', userMiddleware, recipeController.logRecipeFood);
 router.post('/duplicateRecipe', userMiddleware, recipeController.duplicateRecipeToUser);
 router.post("/logManualMacro", userMiddleware, foodController.logManualMacro);
+router.post('/addIngredientToDatabase', userMiddleware, foodController.addIngredientToDatabase);
 
 router.get('/getFood', foodController.getFood);
 router.get('/searchFoods', foodController.searchFoods);

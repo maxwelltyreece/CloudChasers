@@ -415,8 +415,32 @@ exports.logManualMacro = async (req, res) => {
 	}
 }
 
+
+exports.addIngredientToDatabase = async (req, res) => {
+	const { name, group, calories, water, protein, carbs, fat, sugar, sodium, fibre } = req.body;
+	const food = new Food({
+		name,
+		group,
+		calories: calories || 0,
+		water: water || 0,
+		protein: protein || 0,
+		carbs: carbs || 0,
+		fat: fat || 0,
+		sugar: sugar || 0,
+		sodium: sodium || 0,
+		fibre: fibre || 0,
+		privacy: "private",
+		addedBy: req.user._id,
+	});
+	try {
+		await food.save();
+		res.status(200).send({ message: "Food added" });
+	} catch (error) {
+		res.status(500).send({ error: error.toString() });
+	}
+};
+
 //TODO: saerch recipes
-//TODO: add ingredients
 //exporting createUserDayMeal
 exports.createUserDayMeal = createUserDayMeal;
 //exporting createUserDay
