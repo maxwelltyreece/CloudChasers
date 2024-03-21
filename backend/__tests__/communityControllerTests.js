@@ -54,11 +54,19 @@ describe("Community Management", () => {
 			password: "securepassword",
 			dateOfBirth: new Date(1990, 0, 1)
 		});
+		user4 = await User.create({
+			forename: "Jill",
+			surname: "Doe",
+			username: "jilldoe",
+			email: "jilldoe@example.com",
+			password: "securepassword",
+			dateOfBirth: new Date(1990, 0, 1)
+		});
 
 		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
 		token2 = jwt.sign({ userId: user2._id }, process.env.SECRET_KEY);
 		token3 = jwt.sign({ userId: user3._id }, process.env.SECRET_KEY);
-		
+		token4 = jwt.sign({ userId: user4._id }, process.env.SECRET_KEY);
 
 	
 	});
@@ -385,6 +393,97 @@ describe("Community Management", () => {
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toHaveProperty("error");
 			expect(response.body.error).toBe("Error: Database error");
+		});
+	});
+	describe("Getting communities", () => {
+		beforeAll(async () => {
+			community2 = await Community.create({
+				name: "Test Community 2",
+				description: "Another test community",
+				recipePrivacy: "public",
+				joinPrivacy: "public",
+				createdBy: user3._id,
+			});
+			communityUser2 = await CommunityUser.create({
+				communityID: community2._id,
+				userID: user3._id,
+				role: 'admin'
+			});
+			
+		});
+		afterAll(async () => {
+			await Community.deleteOne({ _id: community2._id });
+			await CommunityUser.deleteOne({ communityID: community2._id });
+		});
+		describe("Getting all communities", () => {
+
+			it("should retrieve all communities", async () => {
+				const response = await request(app)
+					.get("/community/all")
+					.set("Authorization", `Bearer ${token}`);
+
+				expect(response.statusCode).toBe(200);
+				expect(response.body).toHaveProperty("success", true);
+				expect(response.body.data.length).toBe(2);
+				expect(response.body.data[0]).toHaveProperty("id");
+				expect(response.body.data).toEqual(expect.arrayContaining([
+					expect.objectContaining({ name: "Test Community", description: "A test community"}),
+					expect.objectContaining({ name: "Test Community 2", description: "Another test community" })
+				]));
+				
+			});
+			it("should handle errors during community retrieval", async () => {
+				jest.spyOn(Community, "find").mockImplementationOnce(() => {
+					throw new Error("Database error");
+				});
+
+				const response = await request(app)
+					.get("/community/all")
+					.set("Authorization", `Bearer ${token}`);
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("error");
+				expect(response.body.error).toBe("Error: Database error");
+			});
+		});
+		describe("Getting user communities", () => {
+			it("should retrieve all communities the user is a member of - member of 1", async () => {
+				
+				const response = await request(app)
+					.get("/community/userCommunities")
+					.set("Authorization", `Bearer ${token}`);
+				console.log(response.body);
+				expect(response.statusCode).toBe(200);
+				expect(response.body).toHaveProperty("success", true);
+				expect(response.body.data.length).toBe(1);
+				expect(response.body.data[0]).toHaveProperty("id");
+				expect(response.body.data).toEqual(expect.arrayContaining([
+					expect.objectContaining({ name: "Test Community", description: "A test community"})
+				]));
+			});
+			it("should retrieve all communities the user is a member of - member of 0", async () => {
+				
+				const response = await request(app)
+					.get("/community/userCommunities")
+					.set("Authorization", `Bearer ${token4}`);
+				console.log(response.body);
+				expect(response.statusCode).toBe(200);
+				expect(response.body).toHaveProperty("success", true);
+				expect(response.body.data.length).toBe(0);
+			});
+			it("should handle errors during community retrieval", async () => {
+				jest.spyOn(Community, "find").mockImplementationOnce(() => {
+					throw new Error("Database error");
+				});
+
+				const response = await request(app)
+					.get("/community/userCommunities")
+					.set("Authorization", `Bearer ${token}`);
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("error");
+				expect(response.body.error).toBe("Error: Database error");
+			});
 		});
 	});
 });
