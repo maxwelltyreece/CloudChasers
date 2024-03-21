@@ -73,19 +73,19 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 	},
 	recentLogMealTypeText: {
-		fontSize: 16,
+		fontSize: 17,
 		fontWeight: 'bold',
-		marginBottom: 4,
+		marginBottom: 7,
 		marginLeft: 4,
 	},
-	logItemInfoText : {
-		fontSize: 16,
+	logItemInfoText: {
+		fontSize: 17,
 		fontWeight: '500',
 		marginLeft: 4,
 		marginBottom: 4,
 	},
 	recentLogCaloriesText: {
-		fontSize: 15,
+		fontSize: 16,
 		fontWeight: 'bold',
 		marginLeft: 4,
 	},
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
 });
 
 function RecentLog({ streak, userLogStats }) {
-	
+
 	// const {
 	// 	lastLogDate = 'N/A',
 	// 	lastLogMealType = 'N/A',
@@ -140,14 +140,14 @@ function RecentLog({ streak, userLogStats }) {
 			{userLogStats ? (
 				<View style={styles.innerRecentLogContainer}>
 
-						<Text style={styles.recentLogMealTypeText}>
-							{ (latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)) ?? 'N/A' }
-						</Text>
-						
-			
-					<Text style={styles.logItemInfoText}>
-							{mealItems[0].name ?? 'N/A'}
-						</Text>
+					<Text style={styles.recentLogMealTypeText}>
+						{(latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)) ?? 'N/A'}
+					</Text>
+
+
+					{/* <Text style={styles.logItemInfoText}>
+						{mealItems[0].name ?? 'N/A'}
+					</Text> */}
 
 					<Text style={styles.recentLogCaloriesText}>Calories:{' '}
 						<Text style={styles.logInfoMeasurementText}>

@@ -121,7 +121,7 @@ function CommunityUpdates({ communities }) {
 			setCommunityPostCounts(counts);
 		};
 
-		if (communities.length > 0) {
+		if (hasCommunities) {
 			fetchPostsCounts();
 		}
 	}, [communities]);

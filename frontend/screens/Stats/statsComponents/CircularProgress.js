@@ -82,9 +82,6 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     updateProgressValues();
   }, [currentMacroValues, goals]);
 
-  console.log('Current Macro Values:', currentMacroValues);
-  console.log('Progress Values:', progressValues);
-
   return (
     <View style={styles.container}>
       <CircularProgressBase
