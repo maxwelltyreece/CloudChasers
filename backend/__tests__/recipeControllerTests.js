@@ -6,8 +6,8 @@ const jwt = require('jsonwebtoken');
 
 // const token = jwt.sign({ userID: 'testUserID' }, process.env.SECRET_KEY);
 
-const jest = require('jest');
-import { expect, it, describe, beforeEach, beforeAll, afterAll, afterEach } from 'jest';
+// const jest = require('jest');
+// import { expect, it, describe, beforeEach, beforeAll, afterAll, afterEach } from 'jest';
 
 const request = require('supertest');
 const app = require('../server');

@@ -10,6 +10,7 @@ const mongoose = require('mongoose');
 const request = require('supertest');
 
 exports.createGoal = async (req, res) => {
+    console.log("Create Goal Endpoint Reached");
     try {
         const {goalName, measurement, minTargetMass, maxTargetMass} = req.body;
         const user = req.user;
