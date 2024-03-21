@@ -31,6 +31,7 @@ exports.getPictureURL = async (req, res) => {
 		// Construct the path to the profile picture
 		const validExtensions = ['png', 'jpg', 'jpeg', 'gif'];
 		const validFolders = ['Profile_Pictures', 'Recipe_Pictures', 'Community_Pictures'];
+		console.log(folderName);
 		if (!validFolders.includes(folderName)) {
 			return res.status(400).json({ error: "Invalid folder name " + folderName + "   valid folder names are ['Profile_Pictures', 'Recipe_Pictures', 'Community_Pictures']" });
 		}
