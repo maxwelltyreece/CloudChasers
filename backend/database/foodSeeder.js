@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 const { MongoClient } = require('mongodb');
 const mongoose = require('mongoose');
 const foodTable = require('./nutrients.json'); // won't work becacuse file is not on git (too large)
@@ -22,7 +24,7 @@ async function connect() {
             "fat" : getValue(entry, "Total lipid (fat)"),
             "sugar" : getValue(entry, "Sugars, total"),
             "sodium" : getValue(entry, "Sodium, Na") / 1000,
-            "fibre" : getValue(entry, "Fiber, total dietary"),
+            "fibre" : getValue(entry, "Fibre, total dietary"),
             "water" : getValue(entry, "Water"),
             "privacy" : "public",
             "addedBy" : null

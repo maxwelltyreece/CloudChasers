@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const UserDay = require("../models/userDay");
@@ -78,8 +80,10 @@ const getNutrientIntake = async (req, res, nutrient) => {
 		const user = req.user;
 		const userDay = await UserDay.findOne({ userID: user._id, date: date });
 		if (!userDay) {
-			return res.status(400).send({ message: "No data for this day." });
-		}
+			//return res.status(400).send({ message: "No data for this day." });
+			// // Instead of sending a 400 error, return a response with a total nutrient value of 0
+            return res.status(200).send({ [`total${nutrient}`]: 0 });
+        }
 
 		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
 

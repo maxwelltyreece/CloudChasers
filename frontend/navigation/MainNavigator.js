@@ -1,13 +1,35 @@
 // MainNavigator.js
 import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Feather } from '@expo/vector-icons';
+import { View
+ } from 'react-native';
 import Navbar from '../components/Navbar';
 import SettingsNavigator from './SettingsNavigator';
 import GroupNavigator from './GroupNavigator';
+import UserNavigator from './UserNavigator';
 import { useUser } from '../contexts/UserContext';
 import { useCommunity } from '../contexts/CommunityContext';
+import { FoodEntry, WaterEntry } from '../screens';
 
 const Stack = createStackNavigator();
+
+const commonOptions = {
+	headerShown: true,
+	headerStyle: {
+		backgroundColor: '#F0F0F0',
+	},
+	headerTitleStyle: {
+		fontFamily: 'Montserrat_700Bold',
+		fontSize: 14,
+	},
+	headerBackImage: () => (
+		<View style={{ paddingLeft: 10 }}>
+			<Feather name="chevron-left" size={25} color="#6B6868" />
+		</View>
+	),
+	headerBackTitleVisible: false,
+};
 
 export default function MainNavigator() {
 	const { userDetails, updateUserDetails } = useUser();
@@ -22,7 +44,7 @@ export default function MainNavigator() {
 
 	return (
 		<Stack.Navigator initialRouteName="Navbar">
-			<Stack.Screen
+            <Stack.Screen
 				name="Navbar"
 				component={Navbar}
 				options={{ headerShown: false }}
@@ -35,6 +57,20 @@ export default function MainNavigator() {
 			<Stack.Screen
 				name="Group"
 				component={GroupNavigator}
+				options={{ headerShown: false }}
+			/>
+			<Stack.Screen 
+				name='FoodEntry' 
+				component={FoodEntry} 
+				options={{...commonOptions, 
+				title:'Food'}}/>
+			<Stack.Screen 
+				name='WaterEntry' 
+				component={WaterEntry} 
+				options={{...commonOptions, title:'Water'}} />
+			<Stack.Screen
+				name="User"
+				component={UserNavigator}
 				options={{ headerShown: false }}
 			/>
 		</Stack.Navigator>

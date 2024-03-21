@@ -1,7 +1,7 @@
 // Settings.js
 import React from 'react';
 import {
-	View, Text, StyleSheet, FlatList, Pressable,
+	View, Text, FlatList, Pressable,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
@@ -9,39 +9,8 @@ import { useUser } from '../../contexts/UserContext';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
 import LogoutButton from './settingsComponents/LogoutButton';
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: 'center',
-		paddingTop: 0,
-	},
-	item: {
-		paddingVertical: 24,
-		fontSize: 14,
-	},
-	separator: {
-		height: 1,
-		backgroundColor: '#A9A9A9',
-		width: '100%',
-	},
-	itemContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingHorizontal: 10,
-	},
-	usernameHeader: {
-		fontSize: 12,
-		textAlign: 'center',
-		marginTop: 30,
-	},
-	usernameText: {
-		fontSize: 14,
-		textAlign: 'center',
-		marginTop: 10,
-	},
-});
+import proptypes from 'prop-types'; // Import proptypes
+import { styles } from './styles';
 
 const ICON_SIZE = 25;
 
@@ -60,13 +29,13 @@ function SettingsItem({ item }) {
 	);
 }
 
-function SettingsFooter({ username, navigation }) {
+function SettingsFooter({ userEmail, navigation }) {
 	const { logout } = useUser();
 	return (
 		<View>
 			<View style={styles.separator} />
 			<Text style={[styles.usernameHeader, globalStyles.bold]}>Logged in as</Text>
-			<Text style={[styles.usernameText, globalStyles.medium]}>{username}</Text>
+			<Text style={[styles.usernameText, globalStyles.medium]}>{userEmail}</Text>
 			<LogoutButton onPress={() => logout(navigation)} />
 		</View>
 	);
@@ -99,10 +68,24 @@ function Settings() {
 				renderItem={SettingsItem}
 				keyExtractor={keyExtractor}
 				ItemSeparatorComponent={ItemSeparator}
-				ListFooterComponent={<SettingsFooter username={email} navigation={navigation} />}
+				ListFooterComponent={<SettingsFooter userEmail={email} navigation={navigation} />}
 			/>
 		</View>
 	);
 }
 
 export default Settings;
+
+SettingsItem.propTypes = {
+	item: proptypes.shape({
+		name: proptypes.string,
+		handler: proptypes.func,
+	}).isRequired,
+};
+
+SettingsFooter.propTypes = {
+	userEmail: proptypes.string.isRequired,
+	navigation: proptypes.shape({
+		navigate: proptypes.func,
+	}).isRequired,
+};

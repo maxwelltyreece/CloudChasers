@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
@@ -154,6 +155,7 @@ async function createUserDay(userID, date){
 		throw new Error('Failed to create UserDay: ' + error.toString());
 	}
 	return newUserDay; // Return the newly created UserDay object
+// eslint-disable-next-line no-extra-semi
 };
 
 async function createUserDayMeal(mealType, userDay) {
@@ -182,6 +184,7 @@ async function createUserDayMeal(mealType, userDay) {
 		throw new Error(error.toString());
 	}
 	return newUserDayMeal;
+// eslint-disable-next-line no-extra-semi
 };
 
 exports.logRecipeFood = async (req, res) => {
@@ -329,6 +332,39 @@ exports.duplicateRecipeToUser = async (req, res) => {
 	}
 }
 
+exports.deleteRecipe = async (req, res) => {
+	const { recipeID } = req.body;
+	const session = await mongoose.startSession();
+	session.startTransaction();
+	try {
+		const recipe = await Recipe.findById(recipeID);
+		if (!recipe) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+		const recipeItems = await RecipeItem.find({ recipeID });
+		for (const recipeItem of recipeItems) {
+			await FoodItem.findByIdAndDelete(recipeItem.foodItemID);
+		}
+		await RecipeItem.deleteMany({ recipeID });
+
+		const recipeQuantities = await RecipeQuantity.find({ recipeID });
+		for (const recipeQuantity of recipeQuantities) {
+			await MealItem.findByIdAndDelete(recipeQuantity.mealItemID);
+		}
+		await RecipeQuantity.deleteMany({ recipeID });
+
+		await Recipe.findByIdAndDelete(recipeID);
+
+		await session.commitTransaction();
+		session.endSession();
+		return res.status(200).json({ message: 'Recipe deleted' });
+	}
+	catch (error) {
+		await session.abortTransaction();
+		session.endSession();
+		return res.status(400).json({ error: error.toString() });
+	}
+}
 //TODO: add macro
 
 //TODO: Add pure macro food items to a recipe

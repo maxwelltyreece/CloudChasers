@@ -3,7 +3,8 @@ import React, {
 	createContext, useContext, useMemo, useState, useEffect,
 } from 'react';
 import * as communityService from '../services/CommunityService';
-import { get } from 'mongoose';
+import PropTypes from 'prop-types';
+
 
 const CommunityContext = createContext();
 
@@ -30,7 +31,7 @@ export function CommunityProvider({ children }) {
             return [];
         }
     };
-2
+
 	// eslint-disable-next-line max-len
 	const getCommunityDetails = async (communityId) => communityService.getCommunityDetails(communityId);
 
@@ -91,10 +92,12 @@ export function CommunityProvider({ children }) {
 
     const updateCommunityDesc = async (communityId, description) => {
         const response = await communityService.updateCommunityDesc(communityId, description);
+        return response;
     };
 
     const updateJoinPrivacy = async (communityId, joinPrivacy) => {
         const response = await communityService.updateJoinPrivacy(communityId, joinPrivacy);
+        return response;
     };
 
     const getCommunityImage = async (Id, folderName) => {
@@ -107,11 +110,28 @@ export function CommunityProvider({ children }) {
         }
     }
 
+    const makePost = async (postData) => {
+        const response = await communityService.makePost(postData);
+        return response;
+    };
+    
+    const getCommunityPosts = async (communityId) => {
+        const response = await communityService.getCommunityPosts(communityId);
+        console.log('Community Posts:', response);
+        return response.data;
+    };
+     
+    const removeMember = async (communityId, memberId) => {
+        const response = await communityService.removeMember(communityId, memberId);
+        return response;
+    };
+
 	const value = useMemo(() => ({
         deleteCommunity,
         leaveCommunity,
         updateCommunityDesc,
         updateJoinPrivacy,
+        getCommunityImage,
 		getCommunityDetails,
 		getCommunityMembers,
 		getUserRole,
@@ -123,8 +143,11 @@ export function CommunityProvider({ children }) {
         getAvailableCommunities,
         resetUserCommunities,
         getUserCommunities,
+        makePost,
+        getCommunityPosts,
+        removeMember,
 	// eslint-disable-next-line max-len
-	}), [getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy]);
+	}), [makePost, getCommunityPosts, removeMember, getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy]);
 
 	return (
 		<CommunityContext.Provider value={value}>
@@ -134,3 +157,7 @@ export function CommunityProvider({ children }) {
 }
 
 export const useCommunity = () => useContext(CommunityContext);
+
+CommunityProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+};

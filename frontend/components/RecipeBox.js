@@ -1,28 +1,45 @@
-import React, { useState } from 'react';
-import { View, Text, Image, StyleSheet, Modal, Pressable } from 'react-native';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Modal,
+  Pressable,
+  TouchableOpacity,
+  onClose,
+} from "react-native";
+import proptypes from "prop-types";
+import { LocalIP } from "../screens/IPIndex";
+import axios from 'axios';
 
 const styles = StyleSheet.create({
-    box: {
-        backgroundColor: 'white',
-        borderRadius: 10,
-        justifyContent: 'flex-end',
-        padding: 10,
-        width: '48%', 
-        aspectRatio: 1, 
-        margin: 8,
-      },
-
-  text: {
-    fontSize: 20,
+  box: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    overflow: "hidden",
+    width: "48%",
+    aspectRatio: 1,
+    margin: 8,
   },
   image: {
-    width: '70%',
-    height: '70%',
-    resizeMode: 'cover',
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  titleContainer: {
+    flex: 1,
+    justifyContent: "flex-end",
+    padding: 10,
   },
   title: {
     fontSize: 16,
-    fontFamily: 'Montserrat_700Bold',
+    fontFamily: "Montserrat_700Bold",
+    color: "white",
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
   },
   centeredView: {
     flex: 1,
@@ -44,21 +61,62 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    width: 300, // Set a fixed width
-    height: 400, // Set a fixed height
+    width: 300,
+    height: 400,
   },
-  
+  modalImage: {
+    width: 250,
+    height: 250,
+    resizeMode: "contain",
+  },
+  text: {
+    fontSize: 20,
+    marginBottom: 15,
+    textAlign: "center",
+    fontFamily: "Montserrat_700Bold",
+  },
+  closeText: {
+    fontSize: 24,
+    color: "black",
+    fontWeight: "bold",
+  },
+  closeButton: {
+    position: "absolute",
+    top: 3,
+    right: 2,
+    padding: 10,
+    zIndex: 1,
+  },
 });
 
-function RecipeBox({ title, image }) {
+
+
+
+function RecipeBox({ id, title }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null); 
+  
+  useEffect(() => {
+    const handleImageRetrieval = () => {
+      axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`)
+      .then((response) => {
+        console.log("RESPONSE", response.data.url);
+        setImageUrl(response.data.url); 
+      })
+      .catch((error) => console.error("Failed to fetch image URL", error));
+    };
+
+    handleImageRetrieval();
+  }, [id]); 
+
+  console.log("URL", imageUrl)
 
   return (
-    <View style={styles.box}>
-      <Pressable onPress={() => setModalVisible(true)}>
-        {image && <Image source={{ uri: image }} style={styles.image} />}
+    <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
+      <Image source={{ uri: imageUrl }} style={styles.image} />
+      <View style={styles.titleContainer}>
         <Text style={styles.title}>{title}</Text>
-      </Pressable>
+      </View>
 
       <Modal
         animationType="slide"
@@ -66,19 +124,29 @@ function RecipeBox({ title, image }) {
         visible={modalVisible}
         onRequestClose={() => {
           setModalVisible(!modalVisible);
-        }}>
+        }}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text style={styles.text}>{title}</Text>
-            {image && <Image source={{ uri: image }} style={styles.image} />}
-            <Pressable onPress={() => setModalVisible(false)}>
-              <Text style={styles.text}>Close</Text>
+            <Pressable
+              onPress={() => setModalVisible(false)}
+              style={styles.closeButton}
+            >
+              <Text style={styles.closeText}>X</Text>
             </Pressable>
+
+            <Text style={styles.text}>{title}</Text>
+            <Image source={{ uri: imageUrl }} style={styles.modalImage} />
           </View>
         </View>
       </Modal>
-    </View>
+    </Pressable>
   );
 }
 
 export default RecipeBox;
+
+RecipeBox.propTypes = {
+  title: proptypes.string.isRequired,
+  image: proptypes.string,
+};

@@ -3,6 +3,7 @@ import {
 	View, Text, TextInput, Pressable, StyleSheet,
 } from 'react-native';
 import { useUser } from '../../../contexts/UserContext';
+import proptypes from 'prop-types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -53,7 +54,7 @@ function EditPage({ route }) {
 	const { userDetails, editUserDetails } = useUser();
 
 	// Get the value of the field we're editing
-	const fieldValue = userDetails[realName];
+    const fieldValue = userDetails && userDetails.data ? userDetails.data[realName] : '';
 
 	const [newValue, setNewValue] = useState('');
 
@@ -83,3 +84,12 @@ function EditPage({ route }) {
 }
 
 export default EditPage;
+
+EditPage.propTypes = {
+	route: proptypes.shape({
+		params: proptypes.shape({
+			field: proptypes.string,
+			realName: proptypes.string,
+		}),
+	}).isRequired,
+};

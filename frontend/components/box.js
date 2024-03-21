@@ -2,6 +2,7 @@ import React from 'react';
 import {
     View, Text, Image, StyleSheet,
 } from 'react-native';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
     box: {
@@ -42,3 +43,8 @@ function Box({ title, image }) {
 }
 
 export default Box;
+
+Box.propTypes = {
+    title: PropTypes.string.isRequired,
+    image: PropTypes.string,
+};

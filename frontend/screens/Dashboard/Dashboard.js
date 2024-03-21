@@ -1,101 +1,155 @@
-// React related imports
-import React, { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
-	View, StyleSheet, SafeAreaView,
+	View, SafeAreaView, ActivityIndicator
 } from 'react-native';
 
-// Component imports
 import {
-	WelcomeBar, NotificationBadge, PastWeekLogs, CurrentStreak, RecentLog,
-	LearnMore, CommunityStatus, CurrentGoalProgress,
-} from '../../components/Dashboard';
+	WelcomeBar, RecentLog, CommunityStatus, CurrentGoalProgress, AchievementsFeature,
+} from './Components';
 
-const styles = StyleSheet.create({
-	dashboardHeader: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		width: '100%',
-	},
-	notificationBadgeContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginRight: 20,
-	},
-	dashboardContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		flexWrap: 'wrap',
-		backgroundColor: '#F9D3C8',
-	},
-	middleDashboardContainer: {
-		justifyContent: 'flex-start',
-		alignItems: 'flex-start',
-		flexDirection: 'row',
-		marginVertical: 10,
-		backgroundColor: '#F9D3C8',
-	},
-	leftComponentContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	rightComponentContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	bottomDashboardContainer: {
-		flex: 1,
-		justifyContent: 'center',
-		alignContent: 'center',
-		width: '100%',
-		backgroundColor: '#F12A2A',
-	},
-});
+import { useUser } from '../../contexts/UserContext';
+import { useCommunity } from '../../contexts/CommunityContext';
+import { useStats } from '../../contexts/StatsContext';
+import { useGoals } from '../../contexts/GoalsContext';
+import { useFoodLog } from '../../contexts/FoodLogContext';
+import { useAwards } from '../../contexts/AwardsContext';
 
-// Fake database
-const fakeDB = {
-	recentMeals: [
-		{ id: 1, name: 'Breakfast Burrito', timestamp: new Date().setDate(new Date().getDate() - 1) },
-		{ id: 2, name: 'Chicken Salad', timestamp: new Date().setDate(new Date().getDate() - 2) },
-	],
-	currentStreak: 5, // Example streak
-};
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { styles } from './styles';
+
 
 // Dashboard screen
 function Dashboard() {
-	const [meals] = useState(fakeDB.recentMeals);
-	const [streak] = useState(fakeDB.currentStreak);
+	const navigation = useNavigation();
+	const [loading, setLoading] = useState(false);
+	const { userDetails, updateUserDetails } = useUser();
+	const { userCommunities, getUserCommunities } = useCommunity([]);
+	const { todayStats, streak, updateTodayStats } = useStats();
+	const { goals, fetchGoals } = useGoals();
+	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
+	const { userAwards, awards, fetchUserAwards, fetchAwards, fetchAwardsToBeIssued } = useAwards();
+
+	//console.log({ userDetails });
+	// console.log(userDetails.data.forename);
+	// console.log(userDetails.data.streak);
+	// console.log({ userCommunities });
+	// console.log({ todayStats });
+	// console.log({ latestLoggedFood });
+	// console.log({ goals });
+	// console.log({ userAwards });
+	// console.log({ 'COMMUNITIES': userCommunities });
+
+	// console.log('STREAKS DASHBOARD:', streak);
+
+	const checkUserLogin = async () => {
+		try {
+			const token = await AsyncStorage.getItem('token');
+			if (!token) {
+				console.error("No token found");
+				navigation.navigate('Login');
+				return;
+			}
+			return token;
+		} catch (error) {
+			console.error("Error accessing AsyncStorage:", error);
+			navigation.navigate('Login');
+		}
+	};
+
+	useEffect(() => {
+		setLoading(true);
+		const fetchData = async () => {
+			try {
+				await checkUserLogin();
+
+				await Promise.all([
+					updateUserDetails(),
+					updateTodayStats(),
+					getUserCommunities(),
+					getLatestLoggedFood(),
+					fetchGoals(),
+					fetchUserAwards(),
+					fetchAwards(),
+					// fetchAwardsToBeIssued(),
+				]);
+			} catch (error) {
+				if (latestLoggedFood != undefined) {
+					console.error("Error fetching data for dashboard:", error);
+				}
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		fetchData();
+	}, []);
+
+	const updateDashboardData = async () => {
+		try {
+			await checkUserLogin();
+
+			await Promise.all([
+				updateUserDetails(),
+				updateTodayStats(),
+				getUserCommunities(),
+				getLatestLoggedFood(),
+				fetchGoals(),
+				fetchUserAwards(),
+				fetchAwards(),
+				fetchAwardsToBeIssued()
+			]);
+		} catch (error) {
+			if (latestLoggedFood != undefined) {
+				console.error("Error updating data for dashboard:", error);
+			}
+		}
+	};
+
+	useFocusEffect(
+		useCallback(() => {
+			updateDashboardData();
+		}, [])
+	);
+
+
+	if (loading) {
+		return (
+			<View style={styles.loadingContainer}>
+				<ActivityIndicator testID="loading-indicator" size="large" />
+			</View>
+		);
+	}
 
 	return (
 		<SafeAreaView style={styles.dashboardContainer}>
-			<View style={styles.dashboardHeader}>
-				<WelcomeBar name="Lorenzo" />
-				<View style={styles.notificationBadgeContainer}>
-					<NotificationBadge count={3} />
-				</View>
-			</View>
 
-			<PastWeekLogs meals={meals} />
+			{loading ? (
+				<ActivityIndicator size="large" />
+			) : (
+				<>
+					<View style={styles.semiCircle} />
+					<View style={styles.dashboardHeader}>
+						<WelcomeBar name={userDetails?.forename} />
+					</View>
 
-			<View style={styles.middleDashboardContainer}>
-				<View style={styles.leftComponentContainer}>
-					<CurrentStreak streak={streak} />
-					<LearnMore />
-				</View>
+					<CurrentGoalProgress todayStats={todayStats} goals={goals} />
 
-				<View style={styles.rightComponentContainer}>
-					<RecentLog />
-				</View>
-			</View>
+					<CommunityStatus communities={userCommunities} />
 
-			<CommunityStatus />
+					<View style={styles.bottomDashboardContainer}>
+						<View style={styles.leftComponentContainer}>
+							<AchievementsFeature userAwards={userAwards} allAwards={awards} />
+						</View>
 
-			<CurrentGoalProgress goal={120} current={80} />
+						<View style={styles.rightComponentContainer}>
+							<RecentLog streak={streak} userLogStats={latestLoggedFood} />
+						</View>
+					</View>
+
+				</>
+			)}
 
 		</SafeAreaView>
 	);

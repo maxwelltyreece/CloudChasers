@@ -26,4 +26,5 @@ router.get('/getLatestLoggedFood', userMiddleware, foodController.getLastLoggedF
 router.put('/addItemToRecipe', userMiddleware, recipeController.addItemToRecipe);
 
 router.delete('/deleteItemFromRecipe', userMiddleware, recipeController.deleteIngredientFromRecipe);
+router.delete('/deleteRecipe', userMiddleware, recipeController.deleteRecipe);
 module.exports = router;

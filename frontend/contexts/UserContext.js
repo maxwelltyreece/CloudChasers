@@ -5,6 +5,7 @@ import React, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import userService from '../services/UserService';
 import { useCommunity } from './CommunityContext';
+import PropTypes from 'prop-types';
 
 const UserContext = createContext();
 
@@ -12,14 +13,25 @@ export function UserProvider({ children }) {
 	const [userDetails, setUserDetails] = useState(null);
     const { resetUserCommunities } = useCommunity();
 
+	const getUserDetails = async () => {
+		const token = await AsyncStorage.getItem('token');
+		if (!token) {
+			console.error('Token not available');
+			return;
+		}
+		const details = await userService.fetchUserDetails(token);
+		setUserDetails(details.data);
+		console.log('User details:', details.data);
+	}
+
 	const updateUserDetails = async () => {
 		const token = await AsyncStorage.getItem('token');
 		if (!token) {
 			console.error('Token not available');
 			return;
 		}
-		const details = await userService.getUserDetails(token);
-		setUserDetails(details);
+		const details = await userService.fetchUserDetails(token);
+		setUserDetails(details.data);
 	};
 
 	const editUserDetails = async (field, newValue) => {
@@ -47,8 +59,8 @@ export function UserProvider({ children }) {
 	};
 
 	const value = useMemo(() => ({
-		userDetails, updateUserDetails, editUserDetails, logout,
-	}), [userDetails, updateUserDetails, editUserDetails, logout]);
+		userDetails, getUserDetails, updateUserDetails, editUserDetails, logout,
+	}), [userDetails, getUserDetails, updateUserDetails, editUserDetails, logout]);
 
 	return (
 		<UserContext.Provider value={value}>
@@ -58,3 +70,7 @@ export function UserProvider({ children }) {
 }
 
 export const useUser = () => useContext(UserContext);
+
+UserProvider.propTypes = {
+	children: PropTypes.node.isRequired,
+};
