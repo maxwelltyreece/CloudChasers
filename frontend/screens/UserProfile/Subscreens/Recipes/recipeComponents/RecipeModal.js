@@ -52,6 +52,10 @@ const RecipeModal = ({ isVisible, onClose }) => {
           console.log('Recipe created:', response.data.data._id);
           recipeID = response.data.data._id;
           console.log("Recipe ID = " + recipeID);
+          if (image == null){
+            onClose();
+            return;
+          }
           const formData = new FormData();
           console.log("Recipe ID = " + recipeID);
           formData.append('objectID', recipeID);
