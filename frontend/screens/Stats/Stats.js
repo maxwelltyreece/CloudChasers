@@ -1,77 +1,99 @@
-import React from 'react';
-import { View, SafeAreaView } from 'react-native';
-// import Swiper from 'react-native-swiper';
-// import { StatsContext } from '../../contexts/StatsContext.js';
-// import { fetchStats } from '../../services/StatsService.js';
+import React, { useState, useEffect } from 'react';
+import { View, SafeAreaView, ActivityIndicator } from 'react-native';
 
 // import globalStyles from '../../styles/global';
-// import axios from 'axios';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
-// import { LocalIP } from '../../screens/IPIndex';
 
-// import AnnouncementBar from './statsComponents/AnnouncementBar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
 import WelcomeBar from './statsComponents/WelcomeBar';
-// import ProgressChartComponent from './statsComponents/ProgressChartComponent';
-// import GoalsBarChart from './statsComponents/GoalsBarChart';
-// import CommunityPanel from './statsComponents/CommunityPanel';
 import CircularProgressComponent from './statsComponents/CircularProgress.js';
-import { styles } from './styles.js';
+import NutritionProgress from './statsComponents/NutritionProgress.js';
+
+import { useStats } from '../../contexts/StatsContext';
+import { useGoals } from '../../contexts/GoalsContext';
+
+import { styles } from './styles';
+
 
 const Stats = () => {
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
+  const { todayStats, updateTodayStats } = useStats();
+  const { goals, fetchGoals } = useGoals();
 
-  // const { stats, setStats } = useContext(StatsContext);
+  console.log('Today Stats: STATS', todayStats);
+  // console.log('Goals: STATS', goals);
 
-  // useEffect(() => {
-  //   const getStats = async () => {
-  //     const data = await fetchStats();
-  //     setStats(data);
-  //   };
+  const checkUserLogin = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        console.error("No token found");
+        navigation.navigate('Login'); // Redirect to login if no token
+        return;
+      }
+      return token;
+    } catch (error) {
+      console.error("Error accessing AsyncStorage:", error);
+      navigation.navigate('Login'); // Redirect to login if error
+    }
+  };
 
-  //   getStats();
-  // }, []);
+  useEffect(() => {
+    setLoading(true);
 
-  // Dummy Data 
-  // const weeklyIntake = [
-  //   { day: 'Mon', protein: 20, carbs: 50, calories: 1200 },
-  //   { day: 'Tue', protein: 25, carbs: 45, calories: 1900 },
-  //   { day: 'Wed', protein: 30, carbs: 35, calories: 1000 },
-  //   { day: 'Thu', protein: 22, carbs: 48, calories: 1200 },
-  //   { day: 'Fri', protein: 27, carbs: 40, calories: 3000 },
-  //   { day: 'Sat', protein: 29, carbs: 33, calories: 3000 },
-  //   { day: 'Sun', protein: 18, carbs: 55, calories: 1000 },
-  // ];
+    const fetchData = async () => {
+      try {
+        await checkUserLogin(); // Check if user is logged in
 
-  // Dummy goals for protein, carbs, and calories
-  // const goals = {
-  //   protein: 100, 
-  //   carbs: 60, 
-  //   calories: 1200 
-  // };
-  // const prepareChartData = (nutrient) => {
-  //   return weeklyIntake.map(day => ({
-  //     day: day.day,
-  //     amount: day[nutrient],
-  //   }));
-  // };
+        // Fetch all necessary data in parallel
+        await Promise.all([
+
+          updateTodayStats(),
+          fetchGoals(),
+
+        ]);
+
+      } catch (error) {
+        console.error("Error fetching data for dashboard:", error);
+      } finally {
+        setLoading(false); // Ensure loading is set to false after operations complete
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
 
   return (
     <SafeAreaView style={styles.statsContainer}>
-      
+
       <View style={styles.statsHeader}>
         <WelcomeBar name="Emily" />
       </View>
       
-      {/* <View style={styles.statsHeader}>
-        <AnnouncementBar streak={3} progressData={{data: [0.4, 0.6, 0.8]}} />
-      </View> */}
-      
-      <View style={styles.ringComp}>
-        <CircularProgressComponent value={75} maxValue={100} />
+      <View style={styles.ringCompContainer}>
+        <View style={styles.ringComp}>
+          <CircularProgressComponent todayStats={todayStats} goals={goals} />
+        </View>
       </View>
+
+      <View style={styles.progressBarContainer}>
+        <NutritionProgress todayStats={todayStats} goals={goals} />
+      </View>
+
     </SafeAreaView>
   );
-}; 
-
-
+};
 
 export default Stats; 

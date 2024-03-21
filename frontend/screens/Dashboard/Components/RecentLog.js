@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 // React Imports
 import React from 'react';
@@ -74,37 +75,52 @@ const styles = StyleSheet.create({
 	recentLogDatetimeText: {
 		fontSize: 16,
 		fontWeight: 'bold',
-		marginBottom: 4,
+		marginBottom: 5,
+		marginLeft: 4,
 	},
 	recentLogMealTypeText: {
 		fontSize: 15,
 		fontWeight: 'bold',
+		marginLeft: 4,
 	},
 	logInfoText: {
-		fontSize: 14,
+		fontSize: 17,
 		fontWeight: '500',
+		marginLeft: 4,
 	},
 	logInfoMeasurementText: {
 		// marginTop: 5,
-		fontSize: 14,
+		fontSize: 17,
 		fontWeight: '500',
+		marginLeft: 4,
 	},
 });
 
 function RecentLog({ streak, userLogStats }) {
-	// const { lastLogDate, lastLogMealType, calories, protein, carbs, fat, fiber, water, sugar, sodium } = userLogStats;
+	
+	// const {
+	// 	lastLogDate = 'N/A',
+	// 	lastLogMealType = 'N/A',
+	// 	calories = 0,
+	// 	protein = 0,
+	// 	carbs = 0,
+	// 	fat = 0,
+	// 	fibre = 0,
+	// 	water = 0,
+	// 	sugar = 0,
+	// 	sodium = 0,
+	// } = userLogStats || {};
+
 	const {
-		lastLogDate = 'N/A',
-		lastLogMealType = 'N/A',
-		calories = 0,
-		protein = 0,
-		carbs = 0,
-		fat = 0,
-		fiber = 0,
-		water = 0,
-		sugar = 0,
-		sodium = 0,
+		latestUserDayMeal = {},
+		macros = {},
 	} = userLogStats || {};
+
+	console.log('userLogStats: RECENT LOG', userLogStats);
+
+	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal);
+
+	console.log('MACROS: RECENT LOG', macros);
 
 	return (
 		<View style={styles.recentLogContainer}>
@@ -114,16 +130,18 @@ function RecentLog({ streak, userLogStats }) {
 			</View>
 			{userLogStats ? (
 				<View style={styles.innerRecentLogContainer}>
-					<Text style={styles.recentLogDatetimeText}>{userLogStats.lastLogDate}</Text>
-					{/* Additional details from userLogStats */}
-					<Text style={styles.logInfoText}>Calories:
-						<Text style={styles.logInfoMeasurementText}> {userLogStats.calories} kcal</Text>
+					<Text style={styles.recentLogDatetimeText}>
+						{latestUserDayMeal.name ?? 'N/A'}
 					</Text>
-					{/* Display other details similarly */}
+					<Text style={styles.logInfoText}>Calories:{' '}
+						<Text style={styles.logInfoMeasurementText}>
+							{macros.calories ?? 0} kcal
+						</Text>
+					</Text>
 				</View>
 			) : (
 				<View style={styles.innerRecentLogContainer}>
-					<Text numberOfLines={2} style={{textAlign: 'center'}}>No log details available yet.</Text>
+					<Text numberOfLines={2} style={{ textAlign: 'center' }}>No log details available yet.</Text>
 				</View>
 			)}
 		</View>
@@ -133,7 +151,7 @@ function RecentLog({ streak, userLogStats }) {
 export default RecentLog;
 
 RecentLog.propTypes = {
-	streak: PropTypes.number.isRequired,
+	streak: PropTypes.number,
 	userLogStats: PropTypes.shape({
 		lastLogDate: PropTypes.string,
 		lastLogMealType: PropTypes.string,
@@ -141,9 +159,14 @@ RecentLog.propTypes = {
 		protein: PropTypes.number,
 		carbs: PropTypes.number,
 		fat: PropTypes.number,
-		fiber: PropTypes.number,
+		fibre: PropTypes.number,
 		water: PropTypes.number,
 		sugar: PropTypes.number,
 		sodium: PropTypes.number,
 	}).isRequired,
+};
+
+RecentLog.defaultProps = {
+	streak: 0, // Default streak value if not provided
+	userLogStats: {},
 };
