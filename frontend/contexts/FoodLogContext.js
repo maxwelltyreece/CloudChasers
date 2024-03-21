@@ -25,7 +25,9 @@ export function FoodLogProvider({ children }) {
     }
 
     const logDatabaseFood = async (data) => {
+        console.log('Logging food CONTEXT:', data);
         await foodLogService.logDatabaseFood(data);
+        console.log('Food logged response given');
     }
 
     const createNewRecipeByUser = async (data) => {

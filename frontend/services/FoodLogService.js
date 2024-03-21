@@ -4,6 +4,7 @@ import { LocalIP } from '../screens/IPIndex';
 
 export const logDatabaseFood = async (data) => {
     const token = await AsyncStorage.getItem('token');
+    console.log('Logging food SERVICE:', data);
     return await axios.post(`http://${LocalIP}:3000/food/logDatabaseFood`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
