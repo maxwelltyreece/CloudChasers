@@ -353,7 +353,7 @@ async function getUserDayMealMacros(userDayMealID) {
 		throw new Error("Failed to get meal macros: " + error.toString());
 	}
 }
-
+ 
 exports.logManualMacro = async (req, res) => {
 	const { mealType, calories, protein, carbs, fat } = req.body;
 	let session;
