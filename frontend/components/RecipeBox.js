@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
 
 function RecipeBox({ id, title }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [imageUrl, setImageUrl] = useState('https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg'); // Initial URL
+  const [imageUrl, setImageUrl] = useState(null); 
   
   useEffect(() => {
     const handleImageRetrieval = () => {

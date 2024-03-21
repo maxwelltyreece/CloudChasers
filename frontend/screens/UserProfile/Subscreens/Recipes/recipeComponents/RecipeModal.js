@@ -35,49 +35,51 @@ const RecipeModal = ({ isVisible, onClose }) => {
 
   };
 
-    const handleSubmit = async () => {
-        if (!recipeName.trim()) {
-          Alert.alert('Error', 'Recipe name is required');
-          return;
-        }
-
-        const token = await AsyncStorage.getItem('token');
-        const recipeData = {
-          name: recipeName,
-          description: null,
-          communityThatOwnsRecipe: null
-        }
-        axios.post(`http://${LocalIP}:3000/food/createNewRecipeByUser`, recipeData,{ headers: { Authorization: `Bearer ${token}`}},
-        ).then((response) => {
-          console.log('Recipe created:', response.data.data._id);
-          recipeID = response.data.data._id;
-          console.log("Recipe ID = " + recipeID);
-          if (image == null){
-            onClose();
-            return;
-          }
-          const formData = new FormData();
-          console.log("Recipe ID = " + recipeID);
-          formData.append('objectID', recipeID);
-          formData.append('folderName', 'Recipe_Pictures');
-          formData.append('file', {
-            uri: image,
-            name: getFileName(image),
-            type: 'image',
-          
-          });
-          axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data',
-            },
-          })
-          onClose();
-        
-        }).catch((error) => {
-          console.error('Error creating recipe:', error);
+  const handleSubmit = async () => {
+    if (!recipeName.trim()) {
+      Alert.alert('Error', 'Recipe name is required');
+      return;
+    }
+  
+    const token = await AsyncStorage.getItem('token');
+    const recipeData = {
+      name: recipeName,
+      description: null, 
+      communityThatOwnsRecipe: null,
+    };
+  
+    try {
+      const response = await axios.post(`http://${LocalIP}:3000/food/createNewRecipeByUser`, recipeData, { headers: { Authorization: `Bearer ${token}` } });
+      console.log('Recipe created:', response.data.data._id);
+      recipeID = response.data.data._id;
+  
+      if (image) {
+        const formData = new FormData();
+        formData.append('objectID', recipeID);
+        formData.append('folderName', 'Recipe_Pictures');
+        formData.append('file', {
+          uri: image,
+          name: getFileName(image),
+          type: 'image/jpeg',
         });
-       }
+  
+        await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      }
+  
+      setRecipeName(''); 
+      setImage(null); 
+      onClose();
+    } catch (error) {
+      console.error('Error creating recipe or uploading image:', error);
+      Alert.alert('Error', 'Failed to create recipe');
+    }
+  };
+  
 
 return (
   <Modal
@@ -190,7 +192,7 @@ closeButtonText: {
  },
  inputDescription: {
    height: 100, 
-   textAlignVertical: 'top', // Align text to top in multiline
+   textAlignVertical: 'top', 
  },
  button: {
    borderRadius: 20,
