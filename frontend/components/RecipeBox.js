@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,8 @@ import {
   onClose,
 } from "react-native";
 import proptypes from "prop-types";
+import { LocalIP } from "../screens/IPIndex";
+import axios from 'axios';
 
 const styles = StyleSheet.create({
   box: {
@@ -87,10 +89,27 @@ const styles = StyleSheet.create({
   },
 });
 
-function RecipeBox({ title, image }) {
+
+
+
+function RecipeBox({ id, title }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const imageUrl =
-    "https://firebasestorage.googleapis.com/v0/b/gobl-b4e3d.appspot.com/o/Recipe_Pictures%2F65fc78d19e672bbcbb30ca4b.jpg?alt=media&token=0d6af43d-3343-49b4-bc5f-abd74f5bca4d";
+  const [imageUrl, setImageUrl] = useState('https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg'); // Initial URL
+  
+  useEffect(() => {
+    const handleImageRetrieval = () => {
+      axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`)
+      .then((response) => {
+        console.log("RESPONSE", response.data.url);
+        setImageUrl(response.data.url); 
+      })
+      .catch((error) => console.error("Failed to fetch image URL", error));
+    };
+
+    handleImageRetrieval();
+  }, [id]); 
+
+  console.log("URL", imageUrl)
 
   return (
     <Pressable style={styles.box} onPress={() => setModalVisible(true)}>

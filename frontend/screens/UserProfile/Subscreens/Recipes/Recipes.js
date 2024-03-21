@@ -41,12 +41,13 @@ function Recipes() {
         title: recipe.name,
         image: recipe.image,
       }));
-
+      console.log("RECIPEID" + mappedRecipes[0].id);
       setRecipes(mappedRecipes);
     };
 
     fetchRecipes();
   }, [getAllUserRecipes]);
+
 
   const filteredRecipes = recipes.filter(
     (recipe) =>
@@ -86,6 +87,7 @@ function Recipes() {
           data={filteredRecipes}
           renderItem={({ item }) => (
             <RecipeBox
+              id = {item.id}
               title={item.title}
               image={item.image}
               style={styles.box}
