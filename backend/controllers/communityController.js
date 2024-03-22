@@ -163,6 +163,9 @@ exports.acceptRequest = async (req, res) => {
         if (!isAdmin) {
             return res.status(400).send({ message: 'User is not an admin of the community' });
         }
+        if (request.status !== 'Pending') {
+            return res.status(400).send({ message: 'Request has already been accepted or denied' });
+        }
         // Accept request
         await JoinRequest.updateOne({ _id: requestId }, { status: 'Approved' });
         // Create CommunityUser to join community
