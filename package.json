@@ -8,7 +8,19 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "eslint . --ext .js",
-    "test": "jest --coverage"
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/backend/__tests__/"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-picker|@react-native-community|@react-native-picker/picker|@react-native-async-storage/async-storage)/"
+    ]
   },
   "dependencies": {
     "@expo-google-fonts/montserrat": "^0.2.3",
@@ -35,7 +47,8 @@
     "file-type": "^19.0.0",
     "firebase": "^10.8.0",
     "firebase-admin": "^12.0.0",
-    "jest": "^29.7.0",
+    "jest": "^29.2.1",
+    "jest-expo": "~49.0.0",
     "jsonwebtoken": "^9.0.2",
     "moment": "^2.30.1",
     "mongodb": "^6.3.0",
@@ -77,11 +90,6 @@
     "jest-expo": "~49.0.0",
     "react-native-dotenv": "^3.4.9",
     "react-test-renderer": "^18.2.0"
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.js"
-    ]
   },
   "private": true
 }

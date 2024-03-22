@@ -127,20 +127,29 @@ function RecentLog({ streak, userLogStats }) {
 			{userLogStats ? (
 				<View style={styles.innerRecentLogContainer}>
 
-					<Text style={styles.recentLogMealTypeText}>
-						{(latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)) ?? 'N/A'}
-					</Text>
+				{(latestUserDayMeal && latestUserDayMeal.name) ?
+						(
+							<Text style={styles.recentLogMealTypeText}>
+								{latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)}
+							</Text>
+
+						) : (
+
+							<Text numberOfLines={2} style={{textAlign: 'center', left: '20%'}}>
+								No log details{'\n'}available yet.
+							</Text>
+						)
+					}
 
 
-					{/* <Text style={styles.logItemInfoText}>
-						{mealItems[0].name ?? 'N/A'}
-					</Text> */}
-
-					<Text style={styles.recentLogCaloriesText}>Calories:{' '}
-						<Text style={styles.logInfoMeasurementText}>
-							{macros.calories ?? 0} kcal
+					{(macros && macros.calories) ? (
+						<Text style={styles.recentLogCaloriesText}>Calories:{' '}
+							<Text style={styles.logInfoMeasurementText}>
+								{macros.calories ?? 0} kcal
+							</Text>
 						</Text>
-					</Text>
+					) : null}
+
 				</View>
 			) : (
 				<View style={styles.innerRecentLogContainer}>
