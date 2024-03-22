@@ -33,7 +33,7 @@ import { RemindersProvider } from './frontend/contexts/RemindersContext';
 import { FoodLogProvider } from './frontend/contexts/FoodLogContext';
 import { AwardsProvider } from './frontend/contexts/AwardsContext';
 
-import { getUserCommunities } from './frontend/services/CommunityService';
+// import { getUserCommunities } from './frontend/services/CommunityService';
 import { Platform } from 'react-native';
 
 const Stack = createStackNavigator();
@@ -48,6 +48,7 @@ const Stack = createStackNavigator();
  * @returns {React.Element} The rendered navigation container.
  */
 export default function App() {
+	
 	const [fontsLoaded] = useFonts({
 		Montserrat_100Thin,
 		Montserrat_200ExtraLight,
@@ -80,13 +81,12 @@ export default function App() {
 		};
 
 		checkToken();
-		getUserCommunities();
+		// getUserCommunities();
 	}, []);
 
 	if (!fontsLoaded || !initialRoute) {
 		return null;
 	}
-
 
 
 	return (

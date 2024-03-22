@@ -110,7 +110,7 @@ function RecentLog({ streak, userLogStats }) {
 		mealItems = [{}],
 	} = userLogStats || {};
 
-	console.log('userLogStats: RECENT LOG', userLogStats);
+	// console.log('userLogStats: RECENT LOG', userLogStats);
 
 	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal.name);
 
@@ -125,11 +125,14 @@ function RecentLog({ streak, userLogStats }) {
 				<CurrentStreak streak={streak} />
 			</View>
 			{userLogStats ? (
+				console.log('USER LOG STATS: RECENT LOG', userLogStats),
 				<View style={styles.innerRecentLogContainer}>
 
 					<Text style={styles.recentLogMealTypeText}>
-						{(latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)) ?? 'N/A'}
+						{(latestUserDayMeal && latestUserDayMeal.name) ?
+							(latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)) : 'N/A'}
 					</Text>
+
 
 
 					{/* <Text style={styles.logItemInfoText}>

@@ -39,7 +39,7 @@ function Dashboard() {
 	// console.log({ latestLoggedFood });
 	// console.log({ goals });
 	// console.log({ userAwards });
-	// console.log({ 'COMMUNITIES': userCommunities });
+	console.log({ 'COMMUNITIES': userCommunities });
 
 	// console.log('STREAKS DASHBOARD:', streak);
 
@@ -131,7 +131,7 @@ function Dashboard() {
 				<>
 					<View style={styles.semiCircle} />
 					<View style={styles.dashboardHeader}>
-						<WelcomeBar name={userDetails?.forename} />
+						<WelcomeBar name={userDetails?.forename} testID="welcome-bar" />
 					</View>
 
 					<CurrentGoalProgress todayStats={todayStats} goals={goals} />
