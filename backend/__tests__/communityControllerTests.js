@@ -697,7 +697,7 @@ describe("Community Management", () => {
 					createdBy: user3._id,
 				});
 				newPrivateCommunityUser = await CommunityUser.create({
-					communityID: newPublicCommunity._id,
+					communityID: newPrivateCommunity._id,
 					userID: user3._id,
 					role: 'admin'
 				});
@@ -735,9 +735,11 @@ describe("Community Management", () => {
 			describe("Accepting join requests", () => {
 				beforeEach(async () => {
 					joinRequest = await JoinRequest.create({
+						status: 'Pending',
 						communityID: newPrivateCommunity._id,
 						userID: user._id,
 					});
+					console.log("creating request", joinRequest);
 				});
 				afterEach(async () => {
 					await JoinRequest.deleteOne({ _id: joinRequest._id });
@@ -748,8 +750,6 @@ describe("Community Management", () => {
 						.set("Authorization", `Bearer ${token3}`)
 						.send({ requestId: joinRequest._id.toString() });
 					
-					console.log(response.body);
-
 					expect(response.statusCode).toBe(200);
 					expect(response.body).toHaveProperty("success", true);
 					expect(response.body).toHaveProperty("message", "Request accepted");
