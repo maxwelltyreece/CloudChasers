@@ -199,6 +199,9 @@ exports.denyRequest = async (req, res) => {
         if (!isAdmin) {
             return res.status(400).send({ message: 'User is not an admin of the community' });
         }
+        if (request.status !== 'Pending') {
+            return res.status(400).send({ message: 'Request has already been accepted or denied' });
+        }
         // Deny request
         await JoinRequest.updateOne({ _id: requestId }, { status: 'Rejected' });
         return res.status(200).json({ success: true, message: 'Request denied' });
