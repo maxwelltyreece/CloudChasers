@@ -95,11 +95,10 @@ const Awards = () => {
   );
 
   
-  console.log('userAwards:', userAwards);
-  console.log('awards:', awards);
+  // console.log('userAwards:', userAwards);
+  // console.log('awards:', awards);
 
   const isAwardCompleted = (awardId) => {
-    console.log('awardId:', awardId);
     return userAwards.some(((userAward) => userAward.personalAwardID === awardId));
   };
 

@@ -112,11 +112,11 @@ function RecentLog({ streak, userLogStats }) {
 
 	// console.log('userLogStats: RECENT LOG', userLogStats);
 
-	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal.name);
+	// console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal.name);
 
-	console.log('MACROS: RECENT LOG', macros);
+	// console.log('MACROS: RECENT LOG', macros);
 
-	console.log('MEAL ITEMS: RECENT LOG', mealItems[0].name);
+	// console.log('MEAL ITEMS: RECENT LOG', mealItems[0].name);
 
 	return (
 		<View style={styles.recentLogContainer}>
@@ -128,26 +128,35 @@ function RecentLog({ streak, userLogStats }) {
 				console.log('USER LOG STATS: RECENT LOG', userLogStats),
 				<View style={styles.innerRecentLogContainer}>
 
-					<Text style={styles.recentLogMealTypeText}>
-						{(latestUserDayMeal && latestUserDayMeal.name) ?
-							(latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)) : 'N/A'}
-					</Text>
+					{(latestUserDayMeal && latestUserDayMeal.name) ?
+						(
+							<Text style={styles.recentLogMealTypeText}>
+								{latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)}
+							</Text>
+
+						) : (
+
+							<Text numberOfLines={2} style={{textAlign: 'center', left: '20%'}}>
+								No log details{'\n'}available yet.
+							</Text>
+						)
+					}
 
 
-
-					{/* <Text style={styles.logItemInfoText}>
-						{mealItems[0].name ?? 'N/A'}
-					</Text> */}
-
-					<Text style={styles.recentLogCaloriesText}>Calories:{' '}
-						<Text style={styles.logInfoMeasurementText}>
-							{macros.calories ?? 0} kcal
+					{(macros && macros.calories) ? (
+						<Text style={styles.recentLogCaloriesText}>Calories:{' '}
+							<Text style={styles.logInfoMeasurementText}>
+								{macros.calories ?? 0} kcal
+							</Text>
 						</Text>
-					</Text>
+					) : null}
+
 				</View>
 			) : (
 				<View style={styles.innerRecentLogContainer}>
-					<Text numberOfLines={2} style={{ textAlign: 'center' }}>No log details available yet.</Text>
+					<Text numberOfLines={2} style={{ textAlign: 'center', left: '20%' }}>
+						No log details{'\n'}available yet.
+					</Text>
 				</View>
 			)}
 		</View>

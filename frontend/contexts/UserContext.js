@@ -21,7 +21,7 @@ export function UserProvider({ children }) {
 		}
 		const details = await userService.fetchUserDetails(token);
 		setUserDetails(details.data);
-		console.log('User details:', details.data);
+		// console.log('User details:', details.data);
 	}
 
 	const updateUserDetails = async () => {

@@ -21,10 +21,11 @@ const styles = StyleSheet.create({
     left: '1.5%',
   },
   containerTitle: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
     alignSelf: 'flex-start',
     paddingTop: 14,
+    right: '12%',
   },
   motivationalMessage: {
     fontSize: 14,

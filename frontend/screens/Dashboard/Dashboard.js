@@ -18,6 +18,7 @@ import { useAwards } from '../../contexts/AwardsContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { styles } from './styles';
+import user from '../../../backend/models/user';
 
 
 // Dashboard screen
@@ -31,7 +32,7 @@ function Dashboard() {
 	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
 	const { userAwards, awards, fetchUserAwards, fetchAwards, fetchAwardsToBeIssued } = useAwards();
 
-	//console.log({ userDetails });
+	// console.log({ userDetails });
 	// console.log(userDetails.data.forename);
 	// console.log(userDetails.data.streak);
 	// console.log({ userCommunities });
@@ -39,9 +40,15 @@ function Dashboard() {
 	// console.log({ latestLoggedFood });
 	// console.log({ goals });
 	// console.log({ userAwards });
+	console.log({ 'USERDETAILS': userDetails });
+	console.log({ 'TODAYSTATS': todayStats });
+	console.log('GOALS DASHBOARD:', goals);
 	console.log({ 'COMMUNITIES': userCommunities });
+	console.log({ 'AWARDS': awards });
+	console.log({ 'USERAWARDS': userAwards });
+	console.log('STREAKS DASHBOARD:', streak);
+	console.log('LATEST LOGGED FOOD:', latestLoggedFood);
 
-	// console.log('STREAKS DASHBOARD:', streak);
 
 	const checkUserLogin = async () => {
 		try {
