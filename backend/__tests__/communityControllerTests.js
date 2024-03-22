@@ -18,9 +18,6 @@ const JoinRequest = require('../models/request');
 
 
 // TODO
-// - Test that an admin can retrieve all pending join requests
-// - Test that an admin can accept a join request
-// - Test that an admin can deny a join request
 // - Test that a user can leave a community
 // - Test that an admin can remove a member from a community
 // - Test that a user can make a post in a community
@@ -30,6 +27,9 @@ const JoinRequest = require('../models/request');
 // DONE
 // - Test that a user can join a public community
 // - Test that a user can request to join a private community
+// - Test that an admin can retrieve all pending join requests
+// - Test that an admin can accept a join request
+// - Test that an admin can deny a join request
 
 describe("Community Management", () => {
 	let user, community, token;
@@ -732,51 +732,240 @@ describe("Community Management", () => {
 				expect(response.statusCode).toBe(400);
 				expect(response.body).toHaveProperty("message", "User has already requested to join the community");
 			});
-			describe("Accepting join requests", () => {
+			describe("Handling join requests", () => {
 				beforeEach(async () => {
 					joinRequest = await JoinRequest.create({
 						status: 'Pending',
 						communityID: newPrivateCommunity._id,
 						userID: user._id,
 					});
-					console.log("creating request", joinRequest);
 				});
 				afterEach(async () => {
 					await JoinRequest.deleteOne({ _id: joinRequest._id });
 				});
-				it("should allow an admin to accept a join request", async () => {
-					const response = await request(app)
-						.post("/community/acceptRequest")
-						.set("Authorization", `Bearer ${token3}`)
-						.send({ requestId: joinRequest._id.toString() });
-					
-					expect(response.statusCode).toBe(200);
-					expect(response.body).toHaveProperty("success", true);
-					expect(response.body).toHaveProperty("message", "Request accepted");
+				describe("Accepting join requests", () => {
+					it("should allow an admin to accept a join request", async () => {
+						const response = await request(app)
+							.post("/community/acceptRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: joinRequest._id.toString() });
+						
+						expect(response.statusCode).toBe(200);
+						expect(response.body).toHaveProperty("success", true);
+						expect(response.body).toHaveProperty("message", "Request accepted");
 
-					const communityUser = await CommunityUser.findOne({ communityID: newPrivateCommunity._id, userID: user._id });
-					expect(communityUser).toBeTruthy();
-					expect(communityUser.role).toBe('member');
+						const communityUser = await CommunityUser.findOne({ communityID: newPrivateCommunity._id, userID: user._id });
+						expect(communityUser).toBeTruthy();
+						expect(communityUser.role).toBe('member');
+					});
+					it("should return an error if the request does not exist", async () => {
+						const fakeRequestId = new mongoose.Types.ObjectId();
+
+						const response = await request(app)
+							.post("/community/acceptRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: fakeRequestId.toString() });
+
+						expect(response.statusCode).toBe(404);
+						expect(response.body).toHaveProperty("message", "Request not found");
+					});
+					it("should return an error if the user is not an admin", async () => {
+						const response = await request(app)
+							.post("/community/acceptRequest")
+							.set("Authorization", `Bearer ${token2}`)
+							.send({ requestId: joinRequest._id.toString() });
+
+						expect(response.statusCode).toBe(400);
+						expect(response.body).toHaveProperty("message", "User is not an admin of the community");
+					});
+					it("should handle errors during request acceptance", async () => {
+						// Mock the save function to simulate a failure
+						jest.spyOn(CommunityUser.prototype, "save").mockImplementationOnce(() =>
+							Promise.reject(new Error("Database error"))
+						);
+						const response = await request(app)
+							.post("/community/acceptRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: joinRequest._id.toString() });
+
+						expect(response.statusCode).toBe(400);
+						expect(response.body).toHaveProperty("error");
+						expect(response.body.error).toBe("Error: Database error");
+
+						// Ensure that no new communityUser entry was created
+						const communityUser = await CommunityUser.findOne({ communityID: newPrivateCommunity._id, userID: user._id });
+						expect(communityUser).toBeNull();
+					});
+					it("should return an error if the request has already been accepted or denied", async () => {
+						joinRequest.status = 'Approved';
+						await joinRequest.save();
+
+						const response = await request(app)
+							.post("/community/acceptRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: joinRequest._id.toString() });
+
+						expect(response.statusCode).toBe(400);
+						expect(response.body).toHaveProperty("message", "Request has already been accepted or denied");
+					});
+					it("should return an error if the community does not exist", async () => {
+						const fakeCommunityId = new mongoose.Types.ObjectId();
+						joinRequest.communityID = fakeCommunityId;
+						await joinRequest.save();
+
+						const response = await request(app)
+							.post("/community/acceptRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: joinRequest._id.toString() });
+						
+						expect(response.statusCode).toBe(404);
+						expect(response.body).toHaveProperty("message", "Community not found");
+					});
 				});
-				it("should return an error if the request does not exist", async () => {
-					const fakeRequestId = new mongoose.Types.ObjectId();
+				describe("Denying join requests", () => {
+					it("should allow an admin to deny a join request", async () => {
+						const response = await request(app)
+							.post("/community/denyRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: joinRequest._id.toString() });
+						
+						expect(response.statusCode).toBe(200);
+						expect(response.body).toHaveProperty("success", true);
+						expect(response.body).toHaveProperty("message", "Request denied");
+						const deniedRequest = await JoinRequest.findById(joinRequest._id);
+						expect(deniedRequest.status).toBe('Rejected');
+						const communityUser = await CommunityUser.findOne({ communityID: newPrivateCommunity._id, userID: user._id });
+						expect(communityUser).toBeNull();
 
-					const response = await request(app)
-						.post("/community/acceptRequest")
-						.set("Authorization", `Bearer ${token3}`)
-						.send({ requestId: fakeRequestId.toString() });
 
-					expect(response.statusCode).toBe(404);
-					expect(response.body).toHaveProperty("message", "Request not found");
+						// const communityUser = await CommunityUser.findOne({ communityID: newPrivateCommunity._id, userID: user._id });
+						// expect(communityUser).toBeTruthy();
+						// expect(communityUser.role).toBe('member');
+					});
+					it("should return an error if the request does not exist", async () => {
+						const fakeRequestId = new mongoose.Types.ObjectId();
+
+						const response = await request(app)
+							.post("/community/denyRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: fakeRequestId.toString() });
+
+						expect(response.statusCode).toBe(404);
+						expect(response.body).toHaveProperty("message", "Request not found");
+					});
+					it("should return an error if the user is not an admin", async () => {
+						const response = await request(app)
+							.post("/community/denyRequest")
+							.set("Authorization", `Bearer ${token2}`)
+							.send({ requestId: joinRequest._id.toString() });
+
+						expect(response.statusCode).toBe(400);
+						expect(response.body).toHaveProperty("message", "User is not an admin of the community");
+					});
+					it("should handle errors during request denial", async () => {
+						// Mock the updateOne function to simulate a failure
+						jest.spyOn(JoinRequest, "updateOne").mockImplementationOnce(() =>
+							Promise.reject(new Error("Database error"))
+						);
+						const response = await request(app)
+							.post("/community/denyRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: joinRequest._id.toString() });
+
+						expect(response.statusCode).toBe(400);
+						expect(response.body).toHaveProperty("error");
+						expect(response.body.error).toBe("Error: Database error");
+
+						// Ensure that the request status was not updated
+						jointRequest = await JoinRequest.findById(joinRequest._id);
+						expect(joinRequest.status).toBe('Pending');
+					});
+					it("should return an error if the request has already been accepted or denied", async () => {
+						joinRequest.status = 'Rejected';
+						await joinRequest.save();
+
+						const response = await request(app)
+							.post("/community/denyRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: joinRequest._id.toString() });
+
+						expect(response.statusCode).toBe(400);
+						expect(response.body).toHaveProperty("message", "Request has already been accepted or denied");
+					});
+					it("should return an error if the community does not exist", async () => {
+						const fakeCommunityId = new mongoose.Types.ObjectId();
+						joinRequest.communityID = fakeCommunityId;
+						await joinRequest.save();
+
+						const response = await request(app)
+							.post("/community/denyRequest")
+							.set("Authorization", `Bearer ${token3}`)
+							.send({ requestId: joinRequest._id.toString() });
+						
+						expect(response.statusCode).toBe(404);
+						expect(response.body).toHaveProperty("message", "Community not found");
+					});
 				});
-				it("should return an error if the user is not an admin", async () => {
-					const response = await request(app)
-						.post("/community/acceptRequest")
-						.set("Authorization", `Bearer ${token2}`)
-						.send({ requestId: joinRequest._id.toString() });
+				describe("Getting join requests", () => {
+					beforeEach(async () => {
+						joinRequest2 = await JoinRequest.create({
+							status: 'Pending',
+							communityID: newPrivateCommunity._id,
+							userID: user2._id,
+						});
+					});
+					afterEach(async () => {
+						await JoinRequest.deleteOne({ _id: joinRequest2._id });
+					});
+					it("should retrieve all join requests for a community", async () => {
+						const response = await request(app)
+							.get("/community/requests")
+							.set("Authorization", `Bearer ${token3}`)
+							.query({ communityId: newPrivateCommunity._id.toString() });
+						console.log(response.body);
+						expect(response.statusCode).toBe(200);
+						expect(response.body).toHaveProperty("success", true);
+						expect(response.body.data.length).toBe(2);
+						expect(response.body.data[0]).toHaveProperty("_id");
+						expect(response.body.data).toEqual(expect.arrayContaining([
+							expect.objectContaining({ _id: joinRequest._id.toString(), username: user.username}),
+							expect.objectContaining({ _id: joinRequest2._id.toString(), username: user2.username})
+						]));
+					});
+					it("should return an error if the community does not exist", async () => {
+						const fakeCommunityId = new mongoose.Types.ObjectId();
 
-					expect(response.statusCode).toBe(400);
-					expect(response.body).toHaveProperty("message", "User is not an admin of the community");
+						const response = await request(app)
+							.get("/community/requests")
+							.set("Authorization", `Bearer ${token3}`)
+							.query({ communityId: fakeCommunityId.toString() });
+
+						expect(response.statusCode).toBe(404);
+						expect(response.body).toHaveProperty("message", "Community not found");
+					});
+					it("should return an error if the user is not an admin", async () => {
+						const response = await request(app)
+							.get("/community/requests")
+							.set("Authorization", `Bearer ${token2}`)
+							.query({ communityId: newPrivateCommunity._id.toString() });
+
+						expect(response.statusCode).toBe(400);
+						expect(response.body).toHaveProperty("message", "User is not an admin of the community");
+					});
+					it("should handle errors during request retrieval", async () => {
+						jest.spyOn(JoinRequest, "find").mockImplementationOnce(() => {
+							throw new Error("Database error");
+						});
+
+						const response = await request(app)
+							.get("/community/requests")
+							.set("Authorization", `Bearer ${token3}`)
+							.query({ communityId: newPrivateCommunity._id.toString() });
+
+						expect(response.statusCode).toBe(400);
+						expect(response.body).toHaveProperty("error");
+						expect(response.body.error).toBe("Error: Database error");
+					});
 				});
 			});
 		});
