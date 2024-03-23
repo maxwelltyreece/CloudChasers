@@ -33,8 +33,8 @@ async function createUserDay(userID, date) {
 		throw new Error("Failed to create UserDay: " + error.toString());
 	}
 	return newUserDay;
-// eslint-disable-next-line no-extra-semi
 };
+// eslint-disable-next-line no-extra-semi
 
 async function createUserDayMeal(mealType, userDay) {
 	let newUserDayMeal;
@@ -66,8 +66,8 @@ async function createUserDayMeal(mealType, userDay) {
 		throw new Error("Failed to create UserDayMeal: " + error.toString());
 	}
 	return newUserDayMeal;
-// eslint-disable-next-line no-extra-semi
 };
+// eslint-disable-next-line no-extra-semi
 
 /**
  * Logs a food item to the database for a specific user and meal type.
@@ -85,6 +85,12 @@ exports.logDatabaseFood = async (req, res) => {
 		const user = req.user;
 		console.log("User:", user);
 
+		session = await mongoose.startSession();
+		console.log("Session started");
+
+		session.startTransaction();
+		console.log("Transaction started");
+
 		const food = await Food.findById(foodID);
 		if (!food) {
 			return res.status(404).send({ error: "Food not found" });
@@ -95,11 +101,7 @@ exports.logDatabaseFood = async (req, res) => {
 		today.setHours(0, 0, 0, 0);
 		console.log("Today:", today);
 
-		session = await mongoose.startSession();
-		console.log("Session started");
 
-		session.startTransaction();
-		console.log("Transaction started");
 
 		// Check if user day exists, if not create it
 		const newUserDay = await createUserDay(user._id, today);
@@ -292,29 +294,24 @@ exports.getLastLoggedFoodOrRecipe = async (req, res) => {
 		});
 
 		if (mealItems.length > 0) {
-			let macros = await getUserDayMealMacros(latestUserDayMeal._id);
-			return res
-				.status(200)
-				.send({ latestUserDayMeal, mealItems, macros });
+			let macros = await this.getUserDayMealMacros(latestUserDayMeal._id);
+			return res.status(200).send({ latestUserDayMeal, mealItems, macros });
 		}
-
-		return res
-			.status(404)
-			.send({ message: "No food or recipe logs found" });
+		return res.status(404).send({ message: "No food or recipe logs found" });
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}
 };
 
-async function getUserDayMealMacros(userDayMealID) {
+exports.getUserDayMealMacros = async (userDayMealID) => {;
 	try {
 		const mealItems = await MealItem.find({ userDayMealID });
 		let totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
-
+		
 		for (const mealItem of mealItems) {
 			let macroTotals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
 			let totalWeight = 0;
-
+			
 			if (mealItem.foodItemID) {
 				const foodItem = await FoodItem.findById(mealItem.foodItemID);
 				const food = await Food.findById(foodItem.foodID);
@@ -325,9 +322,9 @@ async function getUserDayMealMacros(userDayMealID) {
 			} else {
 				const recipeQuantity = await RecipeQuantity.findById(
 					mealItem.recipeQuantityID
-				);
-				const allRecipeItems = await RecipeItem.find({
-					recipeID: recipeQuantity.recipeID,
+					);
+					const allRecipeItems = await RecipeItem.find({
+						recipeID: recipeQuantity.recipeID,
 				});
 
 				for (const recipeItem of allRecipeItems) {
@@ -354,13 +351,12 @@ async function getUserDayMealMacros(userDayMealID) {
 		}
 		return totals;
 	} catch (error) {
-		console.error(error);
 		throw new Error("Failed to get meal macros: " + error.toString());
 	}
 }
  
 exports.logManualMacro = async (req, res) => {
-	const { mealType, calories, protein, carbs, fat } = req.body;
+	const { mealType, calories = 0, protein = 0, carbs = 0, fat = 0 } = req.body;
 	let session;
 	try {
 		const user = req.user;
@@ -374,8 +370,11 @@ exports.logManualMacro = async (req, res) => {
 		const newUserDay = await createUserDay(user._id, today);
 		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
 
+		// Generate a temporary foodID for the manual entry
+		const fakeFoodID = new mongoose.Types.ObjectId();
+
 		const newFoodItem = new FoodItem({
-			foodID: null,
+			foodID: fakeFoodID,
 			weight: 100,
 		});
 		await newFoodItem.save();
@@ -418,7 +417,6 @@ exports.logManualMacro = async (req, res) => {
 		return res.status(500).send({ error: error.toString() });
 	}
 }
-
 
 exports.addIngredientToDatabase = async (req, res) => {
 	const { name, group, calories, water, protein, carbs, fat, sugar, sodium, fibre } = req.body;

@@ -367,7 +367,6 @@ exports.deleteRecipe = async (req, res) => {
 }
 //TODO: add macro
 
-//TODO: Add pure macro food items to a recipe
 exports.addMacroToRecipe = async (req, res) => {
 	const { recipeID, protein, carbs, fat, calories } = req.body;
 	try {
