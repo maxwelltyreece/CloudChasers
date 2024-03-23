@@ -29,7 +29,7 @@ beforeEach(() => {
     fetch.resetMocks();
     AsyncStorage.getItem.mockResolvedValue('test-token');
 });
-
+ 
 describe('Community Service', () => {
     const communityData = { name: 'Test Community', description: 'A test community' };
     const communityId = 'test-community-id';
