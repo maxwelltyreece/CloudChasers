@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Empty Dashboard matches the empty dashboard snapshot 1`] = `
+exports[`Landing Screen matches the landin snapshot 1`] = `
 <View
   style={
     {
@@ -150,7 +150,7 @@ exports[`Empty Dashboard matches the empty dashboard snapshot 1`] = `
                     }
                   }
                 >
-                  Dashboard
+                  Landing
                 </Text>
               </View>
               <View
@@ -280,7 +280,7 @@ exports[`Empty Dashboard matches the empty dashboard snapshot 1`] = `
             >
               <View
                 collapsable={false}
-                handlerTag={4}
+                handlerTag={2}
                 handlerType="PanGestureHandler"
                 needsOffscreenAlphaCompositing={false}
                 onGestureHandlerEvent={[Function]}
@@ -334,17 +334,172 @@ exports[`Empty Dashboard matches the empty dashboard snapshot 1`] = `
                       <View
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
                             "flex": 1,
-                            "justifyContent": "center",
+                            "justifyContent": "flex-end",
+                            "marginBottom": 70,
+                            "padding": 20,
                           }
                         }
                       >
-                        <ActivityIndicator
-                          size="large"
-                          testID="loading-indicator"
-                        />
+                        <Text
+                          style={
+                            [
+                              {
+                                "color": "#FF815E",
+                                "fontSize": 32,
+                                "marginBottom": 10,
+                                "textAlign": "center",
+                              },
+                              {
+                                "fontFamily": "Montserrat_700Bold",
+                              },
+                            ]
+                          }
+                        >
+                          Nourish Your Joy, Log Your Goodness
+                        </Text>
+                        <Text
+                          style={
+                            [
+                              {
+                                "fontSize": 16,
+                                "marginBottom": 20,
+                                "textAlign": "center",
+                              },
+                              {
+                                "fontFamily": "Montserrat_500Medium",
+                              },
+                            ]
+                          }
+                        >
+                          Discover wellness through simple logging. Your journey, your goodness, one bite at a time.
+                        </Text>
+                        <View
+                          style={
+                            {
+                              "flexDirection": "row",
+                              "justifyContent": "space-between",
+                            }
+                          }
+                        >
+                          <View
+                            accessibilityState={
+                              {
+                                "busy": undefined,
+                                "checked": undefined,
+                                "disabled": undefined,
+                                "expanded": undefined,
+                                "selected": undefined,
+                              }
+                            }
+                            accessibilityValue={
+                              {
+                                "max": undefined,
+                                "min": undefined,
+                                "now": undefined,
+                                "text": undefined,
+                              }
+                            }
+                            accessible={true}
+                            collapsable={false}
+                            focusable={true}
+                            onClick={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                            style={
+                              {
+                                "alignItems": "center",
+                                "backgroundColor": "#FF815E",
+                                "borderRadius": 25,
+                                "height": 50,
+                                "justifyContent": "center",
+                                "margin": 10,
+                                "opacity": 1,
+                                "paddingHorizontal": 20,
+                                "paddingVertical": 10,
+                                "width": 160,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "color": "#fff",
+                                  },
+                                  {
+                                    "fontFamily": "Montserrat_700Bold",
+                                  },
+                                ]
+                              }
+                            >
+                              Login
+                            </Text>
+                          </View>
+                          <View
+                            accessibilityState={
+                              {
+                                "busy": undefined,
+                                "checked": undefined,
+                                "disabled": undefined,
+                                "expanded": undefined,
+                                "selected": undefined,
+                              }
+                            }
+                            accessibilityValue={
+                              {
+                                "max": undefined,
+                                "min": undefined,
+                                "now": undefined,
+                                "text": undefined,
+                              }
+                            }
+                            accessible={true}
+                            collapsable={false}
+                            focusable={true}
+                            onClick={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                            style={
+                              {
+                                "alignItems": "center",
+                                "backgroundColor": "#A9A9A9",
+                                "borderRadius": 25,
+                                "height": 50,
+                                "justifyContent": "center",
+                                "margin": 10,
+                                "opacity": 1,
+                                "paddingHorizontal": 20,
+                                "paddingVertical": 10,
+                                "width": 160,
+                              }
+                            }
+                          >
+                            <Text
+                              style={
+                                [
+                                  {
+                                    "color": "#fff",
+                                  },
+                                  {
+                                    "fontFamily": "Montserrat_700Bold",
+                                  },
+                                ]
+                              }
+                            >
+                              Register
+                            </Text>
+                          </View>
+                        </View>
                       </View>
                     </View>
                   </View>

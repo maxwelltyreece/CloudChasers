@@ -182,6 +182,7 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
                                     placeholder="Goal"
                                     returnKeyType="done"
                                     onSubmitEditing={Keyboard.dismiss}
+                                    testID='inputFieldTestId'
                                 />
                             </View>
                         </View>

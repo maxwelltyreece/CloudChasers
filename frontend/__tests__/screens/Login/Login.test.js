@@ -55,6 +55,11 @@ describe('Login Screen', () => {
         expect(getByText('or Sign Up Now')).toBeTruthy();
     });
 
+    it('matches the login snapshot', async () => {
+        const tree = renderComponent().toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
     it('allows entering username and password', () => {
         const { getByPlaceholderText } = renderComponent();
         const usernameInput = getByPlaceholderText('Username');

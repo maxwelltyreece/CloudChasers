@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, } from 'react-native';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
 import { useFocusEffect } from '@react-navigation/native';
 import { useAwards } from '../../../../contexts/AwardsContext';
@@ -118,12 +118,12 @@ const Awards = () => {
       <View style={styles.awardsListContainer}>
         {awards.map((award) => (
           <View key={award._id} style={styles.awardItem}>
-            <Text style={styles.awardDescription} numberOfLines={1}>{award.description}</Text>
-            <View style={styles.doneCheckSection}>
+            <Text style={styles.awardDescription} numberOfLines={1}>{award.name}</Text>
+            <View style={styles.doneCheckSection} testID='icon-section'>
               {isAwardCompleted(award._id) ? (
-                <Icon name="check-circle" size={24} color="green" />
+                <Icon name="check-circle" size={24} color="green" testID='completed-icon'/>
               ) : (
-                <Icon name="circle" size={24} color="#FF815E" />
+                <Icon name="circle" size={24} color="#FF815E" testID='not-completed-icon'/>
               )}
             </View>
           </View>
@@ -134,10 +134,10 @@ const Awards = () => {
 };
 
 
-Awards.proptypes = {
-  awards: proptypes.array.isRequired,
-  addAward: proptypes.func.isRequired,
-  removeAward: proptypes.func.isRequired,
+Awards.propTypes = {
+  awards: PropTypes.array.isRequired,
+  addAward: PropTypes.func.isRequired,
+  removeAward: PropTypes.func.isRequired,
 };
 
 export default Awards;

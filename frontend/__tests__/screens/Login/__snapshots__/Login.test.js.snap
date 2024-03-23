@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Empty Dashboard matches the empty dashboard snapshot 1`] = `
+exports[`Login Screen matches the login snapshot 1`] = `
 <View
   style={
     {
@@ -150,7 +150,7 @@ exports[`Empty Dashboard matches the empty dashboard snapshot 1`] = `
                     }
                   }
                 >
-                  Dashboard
+                  Login
                 </Text>
               </View>
               <View
@@ -280,7 +280,7 @@ exports[`Empty Dashboard matches the empty dashboard snapshot 1`] = `
             >
               <View
                 collapsable={false}
-                handlerTag={4}
+                handlerTag={2}
                 handlerType="PanGestureHandler"
                 needsOffscreenAlphaCompositing={false}
                 onGestureHandlerEvent={[Function]}
@@ -334,17 +334,197 @@ exports[`Empty Dashboard matches the empty dashboard snapshot 1`] = `
                       <View
                         style={
                           {
-                            "alignContent": "center",
                             "alignItems": "center",
+                            "backgroundColor": "#FF815E",
                             "flex": 1,
                             "justifyContent": "center",
+                            "minHeight": "100%",
                           }
                         }
                       >
-                        <ActivityIndicator
-                          size="large"
-                          testID="loading-indicator"
-                        />
+                        <View
+                          style={
+                            {
+                              "backgroundColor": "white",
+                              "borderRadius": 50,
+                              "elevation": 5,
+                              "height": "60%",
+                              "paddingHorizontal": 24,
+                              "paddingTop": 48,
+                              "shadowColor": "#000",
+                              "shadowOffset": {
+                                "height": 2,
+                                "width": 0,
+                              },
+                              "shadowOpacity": 0.3,
+                              "shadowRadius": 3,
+                              "width": "90%",
+                              "zIndex": 1,
+                            }
+                          }
+                        >
+                          <Text
+                            style={
+                              {
+                                "color": "#6B6868",
+                                "fontFamily": "Montserrat_700Bold",
+                                "fontSize": 24,
+                                "marginBottom": 4,
+                              }
+                            }
+                          >
+                            Welcome Back!
+                          </Text>
+                          <View
+                            accessibilityState={
+                              {
+                                "busy": undefined,
+                                "checked": undefined,
+                                "disabled": undefined,
+                                "expanded": undefined,
+                                "selected": undefined,
+                              }
+                            }
+                            accessibilityValue={
+                              {
+                                "max": undefined,
+                                "min": undefined,
+                                "now": undefined,
+                                "text": undefined,
+                              }
+                            }
+                            accessible={true}
+                            collapsable={false}
+                            focusable={true}
+                            onBlur={[Function]}
+                            onClick={[Function]}
+                            onFocus={[Function]}
+                            onResponderGrant={[Function]}
+                            onResponderMove={[Function]}
+                            onResponderRelease={[Function]}
+                            onResponderTerminate={[Function]}
+                            onResponderTerminationRequest={[Function]}
+                            onStartShouldSetResponder={[Function]}
+                          >
+                            <Text
+                              style={
+                                {
+                                  "color": "#6B6868",
+                                  "fontFamily": "Montserrat_600SemiBold",
+                                  "fontSize": 16,
+                                  "marginBottom": 36,
+                                }
+                              }
+                            >
+                              or 
+                              <Text
+                                style={
+                                  {
+                                    "color": "#FF815E",
+                                    "fontFamily": "Montserrat_600SemiBold",
+                                  }
+                                }
+                              >
+                                Sign Up Now
+                              </Text>
+                            </Text>
+                          </View>
+                          <TextInput
+                            onChangeText={[Function]}
+                            placeholder="Username"
+                            style={
+                              {
+                                "backgroundColor": "#F7F7F7",
+                                "borderRadius": 20,
+                                "color": "#6B6868",
+                                "fontFamily": "Montserrat_600SemiBold",
+                                "height": 50,
+                                "marginBottom": 16,
+                                "padding": 8,
+                              }
+                            }
+                            value=""
+                          />
+                          <TextInput
+                            onChangeText={[Function]}
+                            placeholder="Password"
+                            secureTextEntry={true}
+                            style={
+                              {
+                                "backgroundColor": "#F7F7F7",
+                                "borderRadius": 20,
+                                "color": "#6B6868",
+                                "fontFamily": "Montserrat_600SemiBold",
+                                "height": 50,
+                                "marginBottom": 16,
+                                "padding": 8,
+                              }
+                            }
+                            value=""
+                          />
+                          <View
+                            style={
+                              {
+                                "alignItems": "center",
+                                "marginTop": 24,
+                                "width": "100%",
+                              }
+                            }
+                          >
+                            <View
+                              accessibilityState={
+                                {
+                                  "busy": undefined,
+                                  "checked": undefined,
+                                  "disabled": undefined,
+                                  "expanded": undefined,
+                                  "selected": undefined,
+                                }
+                              }
+                              accessibilityValue={
+                                {
+                                  "max": undefined,
+                                  "min": undefined,
+                                  "now": undefined,
+                                  "text": undefined,
+                                }
+                              }
+                              accessible={true}
+                              collapsable={false}
+                              focusable={true}
+                              onBlur={[Function]}
+                              onClick={[Function]}
+                              onFocus={[Function]}
+                              onResponderGrant={[Function]}
+                              onResponderMove={[Function]}
+                              onResponderRelease={[Function]}
+                              onResponderTerminate={[Function]}
+                              onResponderTerminationRequest={[Function]}
+                              onStartShouldSetResponder={[Function]}
+                              style={
+                                {
+                                  "alignItems": "center",
+                                  "backgroundColor": "#FF815E",
+                                  "borderRadius": 30,
+                                  "justifyContent": "center",
+                                  "padding": 15,
+                                  "width": "70%",
+                                }
+                              }
+                            >
+                              <Text
+                                style={
+                                  {
+                                    "color": "white",
+                                    "fontFamily": "Montserrat_600SemiBold",
+                                  }
+                                }
+                              >
+                                Log In
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
                       </View>
                     </View>
                   </View>
