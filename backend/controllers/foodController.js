@@ -292,7 +292,7 @@ exports.getLastLoggedFoodOrRecipe = async (req, res) => {
 		});
 
 		if (mealItems.length > 0) {
-			let macros = await getUserDayMealMacros(latestUserDayMeal._id);
+			let macros = await this.getUserDayMealMacros(latestUserDayMeal._id);
 			return res
 				.status(200)
 				.send({ latestUserDayMeal, mealItems, macros });
@@ -306,15 +306,15 @@ exports.getLastLoggedFoodOrRecipe = async (req, res) => {
 	}
 };
 
-async function getUserDayMealMacros(userDayMealID) {
+exports.getUserDayMealMacros = async (userDayMealID) => {;
 	try {
 		const mealItems = await MealItem.find({ userDayMealID });
 		let totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
-
+		
 		for (const mealItem of mealItems) {
 			let macroTotals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
 			let totalWeight = 0;
-
+			
 			if (mealItem.foodItemID) {
 				const foodItem = await FoodItem.findById(mealItem.foodItemID);
 				const food = await Food.findById(foodItem.foodID);
@@ -325,9 +325,9 @@ async function getUserDayMealMacros(userDayMealID) {
 			} else {
 				const recipeQuantity = await RecipeQuantity.findById(
 					mealItem.recipeQuantityID
-				);
-				const allRecipeItems = await RecipeItem.find({
-					recipeID: recipeQuantity.recipeID,
+					);
+					const allRecipeItems = await RecipeItem.find({
+						recipeID: recipeQuantity.recipeID,
 				});
 
 				for (const recipeItem of allRecipeItems) {
@@ -354,13 +354,12 @@ async function getUserDayMealMacros(userDayMealID) {
 		}
 		return totals;
 	} catch (error) {
-		console.error(error);
 		throw new Error("Failed to get meal macros: " + error.toString());
 	}
 }
  
 exports.logManualMacro = async (req, res) => {
-	const { mealType, calories, protein, carbs, fat } = req.body;
+	const { mealType, calories = 0, protein = 0, carbs = 0, fat = 0 } = req.body;
 	let session;
 	try {
 		const user = req.user;
@@ -374,8 +373,11 @@ exports.logManualMacro = async (req, res) => {
 		const newUserDay = await createUserDay(user._id, today);
 		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
 
+		// Generate a temporary foodID for the manual entry
+		const fakeFoodID = new mongoose.Types.ObjectId();
+
 		const newFoodItem = new FoodItem({
-			foodID: null,
+			foodID: fakeFoodID,
 			weight: 100,
 		});
 		await newFoodItem.save();
@@ -418,7 +420,6 @@ exports.logManualMacro = async (req, res) => {
 		return res.status(500).send({ error: error.toString() });
 	}
 }
-
 
 exports.addIngredientToDatabase = async (req, res) => {
 	const { name, group, calories, water, protein, carbs, fat, sugar, sodium, fibre } = req.body;

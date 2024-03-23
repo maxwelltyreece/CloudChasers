@@ -4,7 +4,6 @@ if (process.env.NODE_ENV === "test") {
 
 const jwt = require("jsonwebtoken");
 
-// const token = jwt.sign({ userID: 'testUserID' }, process.env.SECRET_KEY);
 
 const request = require("supertest");
 const app = require("../server");
@@ -220,8 +219,6 @@ describe("Recipe Management", () => {
 					weight: 200,
 				});
 
-				});
-
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toHaveProperty(
 				"message",
@@ -239,7 +236,6 @@ describe("Recipe Management", () => {
 					weight: -200,
 				});
 
-				});
 
 			expect(response.statusCode).toBe(400);
 			expect(response.body).toHaveProperty("error");

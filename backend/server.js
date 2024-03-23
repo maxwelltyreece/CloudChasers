@@ -59,11 +59,11 @@ for (const netInterface in networkInterfaces) {
 	if (serverIP) break;
 }
 
-app.listen(3000, () => {
-	console.log(`Server is running on ${serverIP}`);
+// app.listen(3000, () => {
+// 	console.log(`Server is running on ${serverIP}`);
 
-	// Write the server IP to a file
-	fs.writeFileSync(path.join(__dirname, '../frontend/screens/IPIndex.js'), `export const LocalIP = '${serverIP}';\n`);
-});
+// 	// Write the server IP to a file
+// 	fs.writeFileSync(path.join(__dirname, '../frontend/screens/IPIndex.js'), `export const LocalIP = '${serverIP}';\n`);
+// });
 
 module.exports = app;
