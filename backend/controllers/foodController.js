@@ -33,8 +33,8 @@ async function createUserDay(userID, date) {
 		throw new Error("Failed to create UserDay: " + error.toString());
 	}
 	return newUserDay;
-// eslint-disable-next-line no-extra-semi
 };
+// eslint-disable-next-line no-extra-semi
 
 async function createUserDayMeal(mealType, userDay) {
 	let newUserDayMeal;
@@ -66,8 +66,8 @@ async function createUserDayMeal(mealType, userDay) {
 		throw new Error("Failed to create UserDayMeal: " + error.toString());
 	}
 	return newUserDayMeal;
-// eslint-disable-next-line no-extra-semi
 };
+// eslint-disable-next-line no-extra-semi
 
 /**
  * Logs a food item to the database for a specific user and meal type.
@@ -85,6 +85,12 @@ exports.logDatabaseFood = async (req, res) => {
 		const user = req.user;
 		console.log("User:", user);
 
+		session = await mongoose.startSession();
+		console.log("Session started");
+
+		session.startTransaction();
+		console.log("Transaction started");
+
 		const food = await Food.findById(foodID);
 		if (!food) {
 			return res.status(404).send({ error: "Food not found" });
@@ -95,11 +101,7 @@ exports.logDatabaseFood = async (req, res) => {
 		today.setHours(0, 0, 0, 0);
 		console.log("Today:", today);
 
-		session = await mongoose.startSession();
-		console.log("Session started");
 
-		session.startTransaction();
-		console.log("Transaction started");
 
 		// Check if user day exists, if not create it
 		const newUserDay = await createUserDay(user._id, today);
@@ -293,14 +295,9 @@ exports.getLastLoggedFoodOrRecipe = async (req, res) => {
 
 		if (mealItems.length > 0) {
 			let macros = await this.getUserDayMealMacros(latestUserDayMeal._id);
-			return res
-				.status(200)
-				.send({ latestUserDayMeal, mealItems, macros });
+			return res.status(200).send({ latestUserDayMeal, mealItems, macros });
 		}
-
-		return res
-			.status(404)
-			.send({ message: "No food or recipe logs found" });
+		return res.status(404).send({ message: "No food or recipe logs found" });
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}

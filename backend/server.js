@@ -48,16 +48,7 @@ const { login } = require('./controllers/userController');
 
 const networkInterfaces = os.networkInterfaces();
 
-let serverIP;
-for (const netInterface in networkInterfaces) {
-	for (const networkInterface of networkInterfaces[netInterface]) {
-		if (networkInterface.family === 'IPv4' && !networkInterface.internal) {
-			serverIP = networkInterface.address;
-			break;
-		}
-	}
-	if (serverIP) break;
-}
+
 
 // app.listen(3000, () => {
 // 	console.log(`Server is running on ${serverIP}`);

@@ -24,7 +24,7 @@ router.get('/getCommunityRecipes', recipeController.getCommunityRecipes);
 router.get('/getLatestLoggedFood', userMiddleware, foodController.getLastLoggedFoodOrRecipe);
 
 router.put('/addItemToRecipe', userMiddleware, recipeController.addItemToRecipe);
-
+router.put('/addMacroToRecipe', recipeController.addMacroToRecipe);
 router.delete('/deleteItemFromRecipe', userMiddleware, recipeController.deleteIngredientFromRecipe);
 router.delete('/deleteRecipe', userMiddleware, recipeController.deleteRecipe);
 module.exports = router;

@@ -18,6 +18,7 @@ const RecipeQuantity = require("../models/recipeQuantity");
 const Food = require("../models/food");
 
 const Recipe = require("../models/recipe");
+const userDayMeal = require("../models/userDayMeal");
 
 //todo: delete item from recipe
 
@@ -974,3 +975,237 @@ describe("Recipe Management", () => {
 		});
 	});
 });
+
+describe("DELETE /recipe", () => {
+	let user, recipe, foodItem, recipeItem, mealItem, recipeQuantity, food, userDay, userDayMeal, token;
+
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+	});
+
+	beforeEach(async () => {
+		user = await User.create({
+			forename: "John",
+			surname: "Doe",
+			username: "johndoe",
+			email: "johndoe@example.com",
+			password: "password123",
+			dateOfBirth: new Date(1990, 0, 1),
+		});
+
+		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+
+		food = await Food.create({
+			name: "Carrot",
+			group: "Vegetables",
+			calories: 41,
+			protein: 0.9,
+			carbs: 9.6,
+			fat: 0.2,
+			privacy: "public",
+			createBy: user._id,
+		});
+
+		foodItem = await FoodItem.create({
+			foodID: food._id,
+			weight: 100,
+		});
+
+		recipe = await Recipe.create({
+			name: "Carrot Soup",
+			createdBy: user._id,
+		});
+
+		recipeItem = await RecipeItem.create({
+			recipeID: recipe._id,
+			foodItemID: foodItem._id,
+		});
+
+		userDay = await UserDay.create({
+			userID: user._id,
+			date: new Date(),
+		});
+
+		userDayMeal = await UserDayMeal.create({
+			name: "Dinner",
+			userDayID: userDay._id,
+		});
+
+		mealItem = await MealItem.create({
+			name: "apple",
+			foodItemID: foodItem._id,
+			userDayMealID: userDayMeal._id,
+		});
+
+		recipeQuantity = await RecipeQuantity.create({
+			recipeID: recipe._id,
+			mealItemID: mealItem._id,
+			totalRecipeWeight: 100,
+		});
+	});
+
+	afterEach(async () => {
+		await User.deleteMany({});
+		await Recipe.deleteMany({});
+		await FoodItem.deleteMany({});
+		await RecipeItem.deleteMany({});
+		await MealItem.deleteMany({});
+		await RecipeQuantity.deleteMany({});
+	});
+
+	afterAll(async () => {
+		await mongoose.connection.close();
+	});
+
+	test("should delete a recipe and its related entities", async () => {
+		const response = await request(app)
+			.delete("/food/deleteRecipe")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ recipeID: recipe._id });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.message).toBe("Recipe deleted");
+
+		const deletedRecipe = await Recipe.findById(recipe._id);
+		expect(deletedRecipe).toBeNull();
+
+		const deletedRecipeItem = await RecipeItem.findOne({
+			recipeID: recipe._id,
+		});
+		expect(deletedRecipeItem).toBeNull();
+
+		const deletedFoodItem = await FoodItem.findById(foodItem._id);
+		expect(deletedFoodItem).toBeNull();
+
+		const deletedRecipeQuantity = await RecipeQuantity.findOne({
+			recipeID: recipe._id,
+		});
+		expect(deletedRecipeQuantity).toBeNull();
+
+		const deletedMealItem = await MealItem.findById(mealItem._id);
+		expect(deletedMealItem).toBeNull();
+	});
+
+	test("should return an error if the recipe does not exist", async () => {
+		const fakeRecipeId = new mongoose.Types.ObjectId();
+		const response = await request(app)
+			.delete("/food/deleteRecipe")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ recipeID: fakeRecipeId });
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body.message).toBe("Recipe does not exist");
+	});
+
+	test("should handle errors during recipe deletion", async () => {
+		jest.spyOn(Recipe, "findByIdAndDelete").mockImplementationOnce(() => {
+			throw new Error("Database error");
+		});
+
+		const response = await request(app)
+			.delete("/food/deleteRecipe")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ recipeID: recipe._id });
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body.error).toBe("Error: Database error");
+
+		jest.restoreAllMocks();
+	});
+});
+
+describe("POST /addMacroToRecipe", () => {
+	let recipe;
+
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+	});
+
+	beforeEach(async () => {
+		recipe = await Recipe.create({
+			name: "Test Recipe",
+			createdBy: new mongoose.Types.ObjectId(),
+		});
+	});
+
+	afterEach(async () => {
+		await Recipe.deleteMany({});
+		await Food.deleteMany({});
+		await FoodItem.deleteMany({});
+		await RecipeItem.deleteMany({});
+	});
+
+	afterAll(async () => {
+		await mongoose.connection.close();
+	});
+
+	test("should add macro nutrients to a recipe", async () => {
+		const macroDetails = {
+			recipeID: recipe._id,
+			protein: 10,
+			carbs: 20,
+			fat: 5,
+			calories: 150,
+		};
+
+		const response = await request(app)
+			.put("/food/addMacroToRecipe")
+			.send(macroDetails);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.message).toBe("Macro added to recipe");
+
+		// Verify that the macro nutrients were added as a new Food and linked via FoodItem and RecipeItem
+		const food = await Food.findOne({ name: "Macro", group: "Macro" });
+		expect(food).toBeTruthy();
+		expect(food.protein).toBe(macroDetails.protein);
+		expect(food.carbs).toBe(macroDetails.carbs);
+		expect(food.fat).toBe(macroDetails.fat);
+
+		const foodItem = await FoodItem.findOne({ foodID: food._id });
+		expect(foodItem).toBeTruthy();
+
+		const recipeItem = await RecipeItem.findOne({
+			foodItemID: foodItem._id,
+			recipeID: recipe._id,
+		});
+		expect(recipeItem).toBeTruthy();
+	});
+
+	test("should return an error if the recipe does not exist", async () => {
+		const response = await request(app)
+			.put("/food/addMacroToRecipe")
+			.send({
+				recipeID: new mongoose.Types.ObjectId(), // Non-existent recipe ID
+				protein: 10,
+				carbs: 20,
+				fat: 5,
+				calories: 150,
+			});
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body.message).toBe("Recipe does not exist");
+	});
+
+	test("should handle errors during the macro addition process", async () => {
+		// Simulate an error scenario for Recipe.findById
+		jest.spyOn(Recipe, "findById").mockImplementationOnce(() => {
+			throw new Error("Database error");
+		});
+
+		const response = await request(app).put("/food/addMacroToRecipe").send({
+			recipeID: recipe._id,
+			protein: 10,
+			carbs: 20,
+			fat: 5,
+			calories: 150,
+		});
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body.error).toBe("Error: Database error");
+
+		jest.restoreAllMocks();
+	});
+});
+
+
