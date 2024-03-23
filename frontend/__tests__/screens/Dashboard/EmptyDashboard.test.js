@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { render, waitFor, act } from '@testing-library/react-native';
+import { render, waitFor, act, fireEvent } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Dashboard from '../../../screens/Dashboard/Dashboard';
-
 
 
 // Mock the contexts
@@ -69,7 +69,21 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 // Mock navigation
 const Stack = createStackNavigator();
 
-describe('Dashboard', () => {
+
+// Mock the useNavigation hook
+jest.mock('@react-navigation/native', () => {
+
+    const navigate = jest.fn();
+
+    return {
+        ...jest.requireActual('@react-navigation/native'),
+        useNavigation: () => ({
+            navigate,
+        }),
+    };
+});
+
+describe('Empty Dashboard', () => {
 
     it('renders correctly with empty data', async () => {
 
@@ -102,7 +116,78 @@ describe('Dashboard', () => {
 
     });
 
+    it('shows loading indicator while fetching data', async () => {
+        const { getByTestId } = render(
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Dashboard" component={Dashboard} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
+
+        await act(async () => {
+            await waitFor(() => {
+                expect(getByTestId('loading-indicator')).toBeTruthy();
+            });
+        });
+    });
+
+    it('hides loading indicator after data is fetched', async () => {
+        AsyncStorage.getItem.mockResolvedValue('mocked-token');
+
+        const { queryByTestId } = render(
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Dashboard" component={Dashboard} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
+        await act(async () => {
+            await waitFor(() => {
+                expect(queryByTestId('loading-indicator')).toBeNull();
+            });
+        });
+    });
+
+    it('matches the empty dashboard snapshot', async () => {
+        const Stack = createStackNavigator();
+        const tree = render(
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Dashboard" component={Dashboard} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        ).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
+
+    describe('GoalProgressBar Navigation', () => {
 
 
+        it('navigates to the Reminders page when "Add Reminders" button is pressed', async () => {
+
+
+            const { getByTestId } = render(
+                <NavigationContainer>
+                    <Stack.Navigator>
+                        <Stack.Screen name="Dashboard" component={Dashboard} />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            );
+
+
+            let button;
+            await act(async () => {
+                await waitFor(() => {
+                    button = getByTestId('add-reminders-button')
+                    expect(button).toBeTruthy();
+                });
+                fireEvent.press(button);
+            });
+
+            expect(useNavigation().navigate).toHaveBeenCalledWith('User', { screen: 'Reminders' });
+        });
+
+    });
 
 });

@@ -63,7 +63,11 @@ const AchievementsFeature = ({ userAwards, allAwards }) => {
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => navigation.navigate('User', { screen: 'Awards' })} style={{justifyContent: 'center', alignItems: 'center', alignContent: 'center'}}>
+      <Pressable
+        onPress={() => navigation.navigate('User', { screen: 'Awards' })}
+        style={{ justifyContent: 'center', alignItems: 'center', alignContent: 'center' }}
+        testID='awards-widget'
+      >
         <Text style={styles.containerTitle}>Awards</Text>
         <AnimatedCircularProgress
           size={ringSize}
