@@ -8,7 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "eslint . --ext .js",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "jest": {
     "preset": "jest-expo",
@@ -88,7 +88,9 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest": "^29.7.0",
     "jest-expo": "~49.0.0",
+    "jest-fetch-mock": "^3.0.3",
     "react-native-dotenv": "^3.4.9",
+    "react-native-testing-library": "^6.0.0",
     "react-test-renderer": "^18.2.0"
   },
   "private": true

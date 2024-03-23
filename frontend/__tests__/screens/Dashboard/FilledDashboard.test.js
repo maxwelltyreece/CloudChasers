@@ -3,11 +3,8 @@ import React from 'react';
 import { render, waitFor, act } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Dashboard from '../../../screens/Dashboard/Dashboard';
-
-// const communityModule = require('../../../screens/Dashboard/Components/CommunityStatus');
-
 
 
 // Mock the contexts
@@ -18,20 +15,6 @@ jest.mock('../../../contexts/UserContext', () => ({
     }),
 }));
 
-
-// // Mock the module
-// jest.mock('../../../screens/Dashboard/Components/CommunityStatus');
-
-// // Provide a mock implementation for the function
-// communityModule.getCommunityPosts = jest.fn().mockImplementation(() => {
-//   return Promise.resolve({
-//     data: {
-//       posts: [
-//         {'65f98e13f60af62c083a1d59': 6, '65fb17912c77d18a3748b45d': 10}
-//       ]
-//     }
-//   });
-// });
 
 jest.mock('../../../contexts/CommunityContext', () => ({
     useCommunity: () => ({
@@ -161,10 +144,36 @@ describe('Dashboard', () => {
             await waitFor(() => expect(getByText('Dinner')).toBeTruthy());
             await waitFor(() => expect(getByText('180 kcal')).toBeTruthy());
         });
-
     });
 
+    it('shows loading indicator while fetching data', async () => {
+        const { getByTestId } = render(
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Dashboard" component={Dashboard} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
 
+        await waitFor(() => {
+            expect(getByTestId('loading-indicator')).toBeTruthy();
+        });
+    });
 
+    it('hides loading indicator after data is fetched', async () => {
+        AsyncStorage.getItem.mockResolvedValue('mocked-token');
+    
+        const { queryByTestId } = render(
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name="Dashboard" component={Dashboard} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        );
+
+        await waitFor(() => {
+          expect(queryByTestId('loading-indicator')).toBeNull();
+        });
+      });
 
 });
