@@ -274,7 +274,9 @@ const Goals = () => {
                 }
             };
 
-            fetchData();
+            if (!isGoalsFetched) {
+                fetchData();
+            }
         }, [fetchGoals, goals])
     );
 

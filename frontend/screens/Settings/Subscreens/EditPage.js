@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 	},
 	input: {
 		height: 50,
+		width: '40%',
 		backgroundColor: '#F7F7F7',
 		marginBottom: 16,
 		padding: 8,
@@ -75,6 +76,7 @@ function EditPage({ route }) {
 				value={newValue}
 				onChangeText={(text) => setNewValue(text)}
 				placeholder={`Enter new ${field}`}
+				textAlign='center'
 			/>
 			<Pressable style={styles.button} onPress={handlePress}>
 				<Text style={styles.buttonText}>Change Value</Text>

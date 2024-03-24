@@ -101,36 +101,41 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     updateProgressValues();
   }, [currentMacroValues, goals]);
 
+  console.log('Progress Values:', progressValues);
+  console.log('Current Macro Values:', currentMacroValues);
+  console.log('Nutrient Goals:', nutrientGoals);
+  console.log('Today Stats:', todayStats);
+
   return (
     <View style={styles.container}>
       <CircularProgressBase
         value={isNaN(progressValues.calories) ? 0 : progressValues.calories}
-        radius={160}
+        radius={145}
         activeStrokeColor={colorScheme.calories}
         inActiveStrokeColor={colorScheme.calories}
         inActiveStrokeOpacity={0.2}
-        activeStrokeWidth={28}
-        inActiveStrokeWidth={28}
+        activeStrokeWidth={30}
+        inActiveStrokeWidth={30}
         displayValue={false}
       >
         <CircularProgressBase
           value={isNaN(progressValues.protein) ? 0 : progressValues.protein}
-          radius={130}
+          radius={115}
           activeStrokeColor={colorScheme.protein}
           inActiveStrokeColor={colorScheme.protein}
           inActiveStrokeOpacity={0.2}
-          activeStrokeWidth={28}
-          inActiveStrokeWidth={28}
+          activeStrokeWidth={22}
+          inActiveStrokeWidth={22}
           displayValue={false}
         >
           <CircularProgressBase
             value={isNaN(progressValues.water) ? 0 : progressValues.water}
-            radius={100}
+            radius={85}
             activeStrokeColor={colorScheme.water}
             inActiveStrokeColor={colorScheme.water}
             inActiveStrokeOpacity={0.2}
-            activeStrokeWidth={28}
-            inActiveStrokeWidth={28}
+            activeStrokeWidth={15}
+            inActiveStrokeWidth={15}
             displayValue={false}
           />
         </CircularProgressBase>

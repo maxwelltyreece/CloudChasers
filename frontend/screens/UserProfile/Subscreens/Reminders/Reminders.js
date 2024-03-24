@@ -196,7 +196,8 @@ function Reminders() {
 								placeholder="Description"
 								onChangeText={(text) => setNewReminder({ ...newReminder, description: text })}
 								value={newReminder.description}
-								multiline
+								blurOnSubmit
+								returnKeyType='done'
 							/>
 
 							<Text style={{ fontSize: 16, fontWeight: 'bold' }}>Current Time Selected:</Text>
@@ -250,7 +251,7 @@ function Reminders() {
 								<Pressable style={styles.addButton} onPress={handleAddReminder}>
 									{({ pressed }) => (
 										<Text style={[styles.addButtonText, pressed ? styles.pressedText : {}]}>
-											Done
+											Done HELLo
 										</Text>
 									)}
 								</Pressable>

@@ -257,7 +257,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 		<View style={progressBarStyle}>
 			<View style={styles.labelContainer}>
 				<Text style={labelStyle}>{label}</Text>
-				<Text style={labelStyle}>{`${progress ?? 0} / ${max} ${unit}`}</Text>
+				<Text style={labelStyle}>{`${progress.toFixed(0) ?? 0} / ${max} ${unit}`}</Text>
 			</View>
 			<View style={styles.progressBarContainer} onLayout={measureContainer}>
 				<Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />

@@ -44,6 +44,8 @@ function FoodEntry() {
                 placeholder="Weight..."
                 onChangeText={text => setWeight(text)}
                 keyboardType="numeric" // Ensure the user can only enter numbers
+                blurOnSubmit
+                returnKeyType='done'
             />
 
             <View style={styles.buttonContainer}>

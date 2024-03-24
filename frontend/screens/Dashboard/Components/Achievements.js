@@ -20,6 +20,12 @@ const styles = StyleSheet.create({
     width: '94%',
     left: '1.5%',
   },
+  pressableContainer: {
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    alignContent: 'center',
+    width: '100%',
+  },
   containerTitle: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -29,6 +35,7 @@ const styles = StyleSheet.create({
   motivationalMessage: {
     fontSize: 14,
     fontWeight: '600',
+    marginTop: 4,
     marginBottom: 10,
     textAlign: 'center',
     width: '100%',
@@ -40,7 +47,7 @@ const styles = StyleSheet.create({
 });
 
 const getMotivationalMessage = (percentage) => {
-  if (percentage >= 100) return "Incredible!\nAchieved all awards!";
+  if (percentage >= 100) return "Incredible!";
   else if (percentage >= 85) return "Almost there, keep pushing!";
   else if (percentage >= 65) return "You're doing great!";
   else if (percentage >= 50) return "Halfway, keep it up!";
@@ -56,14 +63,14 @@ const AchievementsFeature = ({ userAwards, allAwards }) => {
   const ringSize = screenWidth * 0.26;
   const strokeWidth = ringSize * 0.14;
 
-  const completedAchievements = userAwards ? userAwards.length : 0;
-  const totalAchievements = allAwards ? allAwards.length : 0;
+  const completedAchievements = (userAwards && userAwards.length > 0) ? userAwards.length : 0;
+  const totalAchievements = (allAwards && allAwards.length > 0) ? allAwards.length : 0;
   const percentage = totalAchievements > 0 ? (completedAchievements / totalAchievements) * 100 : 0;
   const motivationalMessage = getMotivationalMessage(percentage);
 
   return (
     <View style={styles.container}>
-      <Pressable onPress={() => navigation.navigate('User', { screen: 'Awards' })} style={{justifyContent: 'center', alignItems: 'center', alignContent: 'center'}}>
+      <Pressable onPress={() => navigation.navigate('User', { screen: 'Awards' })} style={styles.pressableContainer}>
         <Text style={styles.containerTitle}>Awards</Text>
         <AnimatedCircularProgress
           size={ringSize}

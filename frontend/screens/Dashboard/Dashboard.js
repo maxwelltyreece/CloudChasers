@@ -62,6 +62,7 @@ function Dashboard() {
 					fetchGoals(),
 					fetchUserAwards(),
 					fetchAwards(),
+					// fetchAwardsToBeIssued()
 				]);
 			} catch (error) {
 				if (latestLoggedFood != undefined) {
@@ -88,7 +89,7 @@ function Dashboard() {
 				fetchGoals(),
 				fetchUserAwards(),
 				fetchAwards(),
-				fetchAwardsToBeIssued()
+				// fetchAwardsToBeIssued()
 			]);
 		} catch (error) {
 			if (latestLoggedFood != undefined) {

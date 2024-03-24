@@ -14,16 +14,8 @@ const SettingsOptions = (navigation) => [
 		handler: () => navigation.navigate('Account'),
 	},
 	{
-		name: 'Notifications',
-		handler: () => navigation.navigate('Notifications'),
-	},
-	{
 		name: 'Privacy',
 		handler: () => navigation.navigate('Privacy'),
-	},
-	{
-		name: 'Display & Sound',
-		handler: () => navigation.navigate('DisplayAndSound'),
 	},
 	{
 		name: 'Help & Support',
