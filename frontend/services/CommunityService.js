@@ -204,6 +204,20 @@ export async function removeMember(communityId, memberId) {
     return response.data;
 }
 
+export async function getCommunityMembers(communityId) {
+    const token = await AsyncStorage.getItem('token');
+    const response = await axios.get(`http://${LocalIP}:3000/community/members`, {
+        params: {
+            communityId: communityId
+        },
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    return response.data;
+}
+
 export async function acceptRequest(requestId) {
     const token = await AsyncStorage.getItem('token');
     const response = await axios.post(`http://${LocalIP}:3000/community/acceptRequest`, { requestId }, {
