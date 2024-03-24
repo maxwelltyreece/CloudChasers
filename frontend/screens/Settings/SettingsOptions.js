@@ -25,6 +25,10 @@ const SettingsOptions = (navigation) => [
 		name: 'About',
 		handler: () => navigation.navigate('About'),
 	},
+	{
+		name: 'Learn More',
+		handler: () => navigation.navigate('LearnMore'),
+	},
 ];
 
 export default SettingsOptions;
