@@ -32,4 +32,10 @@ export const styles = StyleSheet.create({
         alignSelf: 'stretch',
         paddingHorizontal: '5%',
     },
+    noRecipesText: {
+        fontSize: 16,
+        color: '#333',
+        textAlign: 'center',
+        marginTop: 20,
+    },
 });

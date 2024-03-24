@@ -247,11 +247,13 @@ exports.logRecipeFood = async (req, res) => {
 
 exports.getCommunityRecipes = async (req, res) => {
     const { communityID } = req.query;
+    console.log('Requested community ID:', communityID); // Log the requested community ID
+
     try {
         let recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });
-        recipes = recipes.filter(recipe => recipe.communityThatOwnsRecipe !== null);
         return res.status(200).json({ message: 'Recipes found', data: recipes });
     } catch (error) {
+        console.error('Error in getCommunityRecipes:', error); // Log any errors
         return res.status(400).json({ error: error.toString() });
     }
 }

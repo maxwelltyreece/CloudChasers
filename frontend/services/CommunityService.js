@@ -261,7 +261,7 @@ export async function getCommunityRecipes(communityId) {
         const token = await AsyncStorage.getItem('token');
         const response = await axios.get(`http://${LocalIP}:3000/food/getCommunityRecipes`, {
             params: {
-                communityId: communityId
+                communityID: communityId
             },
             headers: {
                 Authorization: `Bearer ${token}`,

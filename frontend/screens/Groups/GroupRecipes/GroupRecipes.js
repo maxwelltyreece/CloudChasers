@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Text } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import RecipeBox from '../../../components/RecipeBox';
 import { styles } from './styles';
@@ -7,7 +7,6 @@ import { useCommunity } from '../../../contexts/CommunityContext';
 
 function GroupRecipes({ route }) {
     const { community } = route.params;
-    console.log('id', community.id);
     const { getCommunityRecipes } = useCommunity();
     const [search, setSearch] = useState('');
     const [recipes, setRecipes] = useState([]); 
@@ -19,7 +18,8 @@ function GroupRecipes({ route }) {
     useEffect(() => {
         const fetchRecipes = async () => {
             const fetchedRecipes = await getCommunityRecipes(community.id);
-            console.log('fetchedRecipes:', fetchedRecipes);
+            console.log("ID: ", community.id);
+            console.log('Fetched recipes:', fetchedRecipes);
         
             if (Array.isArray(fetchedRecipes.data)) {
                 const mappedRecipes = fetchedRecipes.data.map(recipe => ({
@@ -63,14 +63,18 @@ function GroupRecipes({ route }) {
                 />
             </View>
 
-            <FlatList
-                data={filteredRecipes}
-                renderItem={({ item }) => <RecipeBox title={item.title} image={item.image} style={styles.box} />}
-                keyExtractor={item => item.id}
-                numColumns={2}
-                columnWrapperStyle={styles.row}
-                style={styles.list}
-            />
+            {filteredRecipes.length > 0 ? (
+                <FlatList
+                    data={filteredRecipes}
+                    renderItem={({ item }) => <RecipeBox title={item.title} image={item.image} style={styles.box} />}
+                    keyExtractor={item => item.id}
+                    numColumns={2}
+                    columnWrapperStyle={styles.row}
+                    style={styles.list}
+                />
+            ) : (
+                <Text style={styles.noRecipesText}>This group currently has no recipes</Text>
+            )}
         </View>
     );
 }
