@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-    View, Text, Pressable, 
+    View, Text, Pressable, ActivityIndicator,
 } from 'react-native';
 
 import { Feather } from '@expo/vector-icons';
-// import { TextInput } from 'react-native';
-// import NewPostPage from './NewPost';
 import { KeyboardAvoidingView, Platform, FlatList, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { useCommunity } from '../../../contexts/CommunityContext';
@@ -50,26 +48,31 @@ const Message = ({ title, text, sender }) => (
 // }
 
 function GroupPage({ route, navigation }) {
-    const { community, isAdmin, posts } = route.params;
-    const { getPendingRequests } = useCommunity();
-    const [messages, setMessages] = useState(posts || []);
+    const { community, isAdmin } = route.params;
+    const { getCommunityPosts, getPendingRequests } = useCommunity();
+    const [messages, setMessages] = useState([]);
     const [requestsCount, setRequestsCount] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     useFocusEffect(
         React.useCallback(() => {
-            const fetchRequests = async () => {
+            const fetchRequestsAndPosts = async () => {
+                setLoading(true);
                 if (isAdmin) {
                     const requests = await getPendingRequests(community.id);
                     setRequestsCount(requests.data.length);
                 }
+                const posts = await getCommunityPosts(community.id);
+                setMessages(posts);
+                setLoading(false);
             };
 
-            fetchRequests();
+            fetchRequestsAndPosts();
 
             return () => {
                 setMessages([]);
             };
-        }, [community.id, getPendingRequests, isAdmin])
+        }, [community.id, getPendingRequests, getCommunityPosts, isAdmin])
     );
 
     useEffect(() => {
@@ -99,6 +102,14 @@ function GroupPage({ route, navigation }) {
             ),
         });
     }, [navigation, community, isAdmin, requestsCount]);
+
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator testID="loading-indicator" size="large" />
+            </View>
+        );
+    }
 
     return (
         <KeyboardAvoidingView

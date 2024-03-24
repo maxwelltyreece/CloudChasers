@@ -35,8 +35,7 @@ function Groups() {
     const handlePress = async (item) => {
         const role = await getUserRole(item.id);
         const isAdmin = role === 'admin';
-        const posts = await getCommunityPosts(item.id);
-        navigation.navigate('Group', { screen: 'GroupPage', params: { community: item, isAdmin, posts } });
+        navigation.navigate('Group', { screen: 'GroupPage', params: { community: item, isAdmin } });
     };
 	return (
         <View style={styles.container}>
