@@ -1,44 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
 import { useCommunity } from '../../../contexts/CommunityContext';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 import { styles } from './styles';
 
+const ICON_SIZE = 20;
+
+function ItemSeparator() {
+    return <View style={styles.separator} />;
+}
+
+function MemberItem({ item }) {
+    return (
+        <View style={styles.memberContainer}>
+            <View style={styles.iconAndName}>
+                <Icon name={item.role === 'admin' ? "crown" : "user"} size={ICON_SIZE} style={styles.memberIcon} />
+                <Text style={styles.member}>{item.username}</Text>
+            </View>
+        </View>
+    );
+}
+
+const keyExtractor = (item) => item.username;
+
 function GroupMembers({ route }) {
-	const { community } = route.params;
-	const { getCommunityMembers } = useCommunity();
-	const [members, setMembers] = useState([]);
-	console.log(community);
+    const { community } = route.params;
+    const { getCommunityMembers } = useCommunity();
+    const [members, setMembers] = useState([]);
 
-	useEffect(() => {
-		const fetchMembers = async () => {
-			console.log(community.id);
-			const membersData = await getCommunityMembers(community.id);
-			setMembers(membersData.data);
-		};
+    useEffect(() => {
+        const fetchMembers = async () => {
+            const membersData = await getCommunityMembers(community.id);
+            setMembers(membersData.data);
+        };
 
-		fetchMembers();
-	}, []);
+        fetchMembers();
+    }, []);
 
-	return (
+    return (
         <View style={styles.container}>
-            {members.map((member, index) => (
-                console.log(member),
-                <View key={index} style={styles.memberContainer}>
-                    <Text style={styles.member}>
-                        {member.username}
-                    </Text>
-                    {member.role === 'admin' && (
-                        <Icon name="crown" size={20} style={styles.memberIcon} />
-                    )}
-                </View>
-            ))}
+            <FlatList
+                data={members}
+                renderItem={({ item }) => <MemberItem item={item} />}
+                keyExtractor={keyExtractor}
+                ItemSeparatorComponent={ItemSeparator}
+            />
         </View>
     );
 }
 
 export default GroupMembers;
+
+MemberItem.propTypes = {
+    item: PropTypes.shape({
+        username: PropTypes.string,
+        role: PropTypes.string,
+    }).isRequired,
+};
 
 GroupMembers.propTypes = {
     route: PropTypes.object.isRequired,

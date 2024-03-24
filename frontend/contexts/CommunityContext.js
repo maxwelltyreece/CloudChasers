@@ -143,6 +143,11 @@ export function CommunityProvider({ children }) {
         return response;
     };
 
+    const getCommunityRecipes = async (communityId) => {
+        const response = await communityService.getCommunityRecipes(communityId);
+        return response;
+    }
+
 	const value = useMemo(() => ({
         deleteCommunity,
         leaveCommunity,
@@ -166,8 +171,9 @@ export function CommunityProvider({ children }) {
         acceptRequest,
         denyRequest,
         getPendingRequests,
+        getCommunityRecipes,
 	// eslint-disable-next-line max-len
-	}), [makePost, getCommunityPosts, removeMember, getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy, getCommunityImage, acceptRequest, denyRequest, getPendingRequests]);
+	}), [getCommunityRecipes, makePost, getCommunityPosts, removeMember, getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy, getCommunityImage, acceptRequest, denyRequest, getPendingRequests]);
 
 	return (
 		<CommunityContext.Provider value={value}>

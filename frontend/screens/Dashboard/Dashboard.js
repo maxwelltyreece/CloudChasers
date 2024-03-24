@@ -97,7 +97,7 @@ function Dashboard() {
 	return (
 		<SafeAreaView style={styles.dashboardContainer}>
 
-			{loading ? (
+			{/* {loading ? (
 				<ActivityIndicator size="large" />
 			) : ( 
 				<>
@@ -121,7 +121,7 @@ function Dashboard() {
 					</View>
 
 				</>
-			)}
+			)} */}
 
 		</SafeAreaView>
 	);

@@ -82,7 +82,7 @@ function GroupPage({ route, navigation }) {
             headerTitleAlign: 'left',
             headerRight: () => (
                 <View style={styles.headerButton}>
-                    <IconButton iconName="book" onPress={() => navigation.navigate('GroupSettings', { community })} />
+                    <IconButton iconName="book" onPress={() => navigation.navigate('GroupRecipes', { community })} />
                     {isAdmin && (
                         <View style={styles.mailButton}>
                             <IconButton iconName="mail" onPress={() => navigation.navigate('PendingRequests', { community })} />
