@@ -119,7 +119,6 @@ export function CommunityProvider({ children }) {
     
     const getCommunityPosts = async (communityId) => {
         const response = await communityService.getCommunityPosts(communityId);
-        console.log('Community Posts:', response);
         return response.data;
     };
      

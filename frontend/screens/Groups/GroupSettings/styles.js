@@ -3,56 +3,28 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20, // Add padding around the entire container
+        padding: 20,
         alignItems: 'center',
-        backgroundColor: '#F5F5F5', // Change the background color to a light gray
-    },
-    title: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        marginBottom: 20, // Add some space below the title
+        backgroundColor: '#F5F5F5',
     },
     roleText: {
-        fontSize: 18, // Increase the font size
-        marginBottom: 20, // Add some space below the text
+        fontFamily: 'Montserrat_600SemiBold',
+        fontSize: 16,
+        marginBottom: 20,
     },
-    deleteButton: {
-        backgroundColor: '#FF815E',
-        padding: 10,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 200, // Increase the width of the button
-    },
-    deleteButtonText: {
-        color: 'white',
-        fontSize: 18, // Increase the font size
-    },
-    leaveButton: {
+    optionButton: {
         backgroundColor: '#FF815E',
         padding: 10,
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
         width: 200,
-        marginTop: 10, // Add some space above the button
+        marginBottom: 20,
     },
-    leaveButtonText: {
+    optionButtonText: {
         color: 'white',
-        fontSize: 18,
-    },
-    updateButton: {
-        backgroundColor: '#FF815E',
-        padding: 10,
-        borderRadius: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 200,
-        marginTop: 10,
-    },
-    updateButtonText: {
-        color: 'white',
-        fontSize: 18,
+        fontFamily: 'Montserrat_600SemiBold',
+        fontSize: 16,
     },
     centeredView: {
         flex: 1,
@@ -89,15 +61,13 @@ export const styles = StyleSheet.create({
         borderRadius: 20,
         textAlignVertical: 'top',
     },
-    button: {
+    buttonClose: {
         borderRadius: 20,
         padding: 10,
         elevation: 2,
-        width: 80,
         backgroundColor: '#FF815E',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
+        width: 100,
+        marginBottom: 10,
     },
     textStyle: {
         color: 'white',
@@ -112,5 +82,49 @@ export const styles = StyleSheet.create({
     closeButtonText: {
         fontSize: 20,
         color: '#000',
+    },
+    deleteCenteredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    deleteModalView: {
+        width: '90%',
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    deleteButtonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginTop: 20,
+    },
+    deleteButtonClose: {
+        backgroundColor: '#FF815E',
+        padding: 10,
+        width: '45%',
+        borderRadius: 20,
+    },
+    deleteTextStyle: {
+        color: 'white',
+        fontFamily: 'Montserrat_600SemiBold',
+        textAlign: 'center',
+    },
+    deleteModalText: {
+        marginBottom: 18,
+        textAlign: 'center',
+        fontFamily: 'Montserrat_700Bold',
     },
 });

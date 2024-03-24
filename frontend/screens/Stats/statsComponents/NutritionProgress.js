@@ -130,9 +130,6 @@ ProgressBar.defaultProps = {
 
 
 const NutritionProgress = ({ todayStats, goals }) => {
-
-    console.log('Today Stats: COMPONMENT', todayStats);
-
     let initialMacroValues = {
         calories: 0,
         water: 0,

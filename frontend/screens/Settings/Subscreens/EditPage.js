@@ -58,9 +58,9 @@ function EditPage({ route }) {
 
 	const [newValue, setNewValue] = useState('');
 
-	const handlePress = () => {
-		editUserDetails(realName, newValue);
-	};
+    const handlePress = () => {
+        editUserDetails({ [realName]: newValue });
+    };
 
 	return (
 		<View style={styles.container}>

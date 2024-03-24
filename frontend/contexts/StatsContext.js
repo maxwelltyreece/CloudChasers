@@ -8,8 +8,6 @@ export function StatsProvider({ children }) {
   const [todayStats, setTodayStats] = useState({});
   const [streak, setStreak] = useState(0);
 
-  console.log('TODAY STATS: CONTEXT ', todayStats);
-
   const updateStat = async (nutrientFunction, nutrient, date) => {
     try {
       const response = await nutrientFunction(date);
@@ -47,9 +45,6 @@ export function StatsProvider({ children }) {
 
   const updateTodayStats = async () => {
     const today = new Date().toISOString().split('T')[0];
-    console.log('TODAY:', today);
-
-    console.log('Updating food stats...');
     await Promise.all([
         getDailyCaloricIntake(today),
         getDailyWaterIntake(today),
