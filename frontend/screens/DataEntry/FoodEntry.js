@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { styles } from './styles';
 import NewFoodModal from '../../components/NewFoodModal';
@@ -53,63 +53,63 @@ function FoodEntry() {
     );
 
     return (
-        <View style={styles.container}>
-            
-            <View style={{flexDirection: 'row',}}>
-                <TextInput
-                    style={styles.searchInput}
-                    placeholder="Search..."
-                    value={searchQuery}
-                    onChangeText={text => setSearchQuery(text)}
-                />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+                <View style={styles.semiCircle} />
+                <View style={{flexDirection: 'row',}}>
+                    <TextInput
+                        style={styles.searchInput}
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChangeText={text => setSearchQuery(text)}
+                    />
 
-                <TouchableOpacity style={{ ...styles.button, marginLeft: 25, alignSelf: 'flex-start', height: 40, paddingVertical: 8, backgroundColor: '#F0F0F0'}} onPress={toggleModal}>
-                    <FontAwesome5 name='plus' color='#c7c7c7' size={20}/>
-                </TouchableOpacity>
-            </View>
-            
-
-
-
-            {searchQuery.length >= 3 && shouldRenderScrollView && ( // Render scroll view only if shouldRenderScrollView is true
-                <View style={styles.dropdownContainer}>
-                    <ScrollView style={styles.dropdown} maxHeight={200}>
-                        {foods.map(renderItem)}
-                    </ScrollView>
+                    <TouchableOpacity style={{ ...styles.button, marginLeft: 25, alignSelf: 'flex-start', height: 40, paddingVertical: 8, backgroundColor: '#F0F0F0'}} onPress={toggleModal}>
+                        <FontAwesome5 name='plus' color='#c7c7c7' size={20}/>
+                    </TouchableOpacity>
                 </View>
-            )}
-
-            <TextInput 
-                style={styles.searchInput}
-                placeholder="Weight..."
-                onChangeText={text => setWeight(text)}
-                keyboardType="numeric"
-            />
-           
-            <View style={styles.buttonContainer}>
                 
 
-                <TouchableOpacity 
-                    style={styles.button} 
-                    onPress={async () => {
-                        if (selectedFood && weight) { // Check if selectedFood and weight are not null
-                            await logDatabaseFood({
-                                mealType: 'lunch',
-                                foodID: selectedFood._id,
-                                weight: parseInt(weight, 10)
-                            });
-                        }
-                    }}
-                >
-                    <Text style={styles.buttonText}>Submit</Text>
-                </TouchableOpacity>
-            </View>
+                {searchQuery.length >= 3 && shouldRenderScrollView && ( // Render scroll view only if shouldRenderScrollView is true
+                    <View style={styles.dropdownContainer}>
+                        <ScrollView style={styles.dropdown} maxHeight={200}>
+                            {foods.map(renderItem)}
+                        </ScrollView>
+                    </View>
+                )}
 
-            <NewFoodModal
-                isVisible={isModalVisible}
-                toggleModal={toggleModal}
-            />
-        </View>
+                <TextInput 
+                    style={{...styles.searchInput, marginTop: 200, width: '100%', marginBottom: 55}}
+                    placeholder="Weight..."
+                    onChangeText={text => setWeight(text)}
+                    keyboardType="numeric"
+                />
+               
+                <View style={styles.buttonContainer}>
+                    
+
+                    <TouchableOpacity 
+                        style={styles.button} 
+                        onPress={async () => {
+                            if (selectedFood && weight) { // Check if selectedFood and weight are not null
+                                await logDatabaseFood({
+                                    mealType: 'lunch',
+                                    foodID: selectedFood._id,
+                                    weight: parseInt(weight, 10)
+                                });
+                            }
+                        }}
+                    >
+                        <Text style={styles.buttonText}>Submit</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <NewFoodModal
+                    isVisible={isModalVisible}
+                    toggleModal={toggleModal}
+                />
+            </View>
+        </TouchableWithoutFeedback>
     );
 }
 

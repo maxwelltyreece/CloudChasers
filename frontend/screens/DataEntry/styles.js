@@ -1,10 +1,13 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
+const { width } = Dimensions.get('window');
+
 
 export const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
         paddingHorizontal: '5%',
-        backgroundColor: '#F0F0F0',
+        backgroundColor: '#FFFFFF',
         paddingVertical: 25,
         paddingTop: 10,
         
@@ -53,14 +56,11 @@ export const styles = StyleSheet.create({
         marginBottom: 20,
         alignSelf: 'center',
     },
-    selectedItem: {
-        backgroundColor: 'pink',
-    },
     dropdownContainer: {
         position: 'absolute',
         top: 60,
         left: '5%',
-        width: '81%',
+        width: '100%',
         zIndex: 1,
         fontFamily: 'Montserrat_600SemiBold',
     },
@@ -72,5 +72,14 @@ export const styles = StyleSheet.create({
     },
     item: {
         padding: 10,
+    },
+    semiCircle: {
+        width: width * 2,
+        height: width * 2,
+        borderRadius: width,
+        position: 'absolute',
+        top: -width,
+        left: -width / 2,
+        backgroundColor: '#F0F0F0',
     },
 });
