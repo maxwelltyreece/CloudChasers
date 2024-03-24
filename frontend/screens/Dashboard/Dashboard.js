@@ -18,7 +18,6 @@ import { useAwards } from '../../contexts/AwardsContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { styles } from './styles';
-import user from '../../../backend/models/user';
 
 
 // Dashboard screen
