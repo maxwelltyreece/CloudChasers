@@ -22,9 +22,6 @@ const Stats = () => {
   const { todayStats, updateTodayStats } = useStats();
   const { goals, fetchGoals } = useGoals();
 
-  console.log('Today Stats: STATS', todayStats);
-  // console.log('Goals: STATS', goals);
-
   const checkUserLogin = async () => {
     try {
       const token = await AsyncStorage.getItem('token');

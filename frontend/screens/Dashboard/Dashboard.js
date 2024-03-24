@@ -18,6 +18,7 @@ import { useAwards } from '../../contexts/AwardsContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { styles } from './styles';
+import user from '../../../backend/models/user';
 
 
 // Dashboard screen
@@ -31,21 +32,10 @@ function Dashboard() {
 	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
 	const { userAwards, awards, fetchUserAwards, fetchAwards, fetchAwardsToBeIssued } = useAwards();
 
-	//console.log({ userDetails });
-	// console.log(userDetails.data.forename);
-	// console.log(userDetails.data.streak);
-	// console.log({ userCommunities });
-	// console.log({ todayStats });
-	// console.log({ latestLoggedFood });
-	// console.log({ goals });
-	// console.log({ userAwards });
-	// console.log({ 'COMMUNITIES': userCommunities });
-
-	// console.log('STREAKS DASHBOARD:', streak);
-
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
+            console.log('Token:', token);
 			if (!token) {
 				console.error("No token found");
 				navigation.navigate('Login');
@@ -72,7 +62,6 @@ function Dashboard() {
 					fetchGoals(),
 					fetchUserAwards(),
 					fetchAwards(),
-					// fetchAwardsToBeIssued(),
 				]);
 			} catch (error) {
 				if (latestLoggedFood != undefined) {
@@ -87,6 +76,7 @@ function Dashboard() {
 	}, []);
 
 	const updateDashboardData = async () => {
+        console.log(userDetails)
 		try {
 			await checkUserLogin();
 

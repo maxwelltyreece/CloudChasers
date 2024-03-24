@@ -110,14 +110,6 @@ function RecentLog({ streak, userLogStats }) {
 		mealItems = [{}],
 	} = userLogStats || {};
 
-//	console.log('userLogStats: RECENT LOG', userLogStats);
-
-//	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal.name);
-
-//	console.log('MACROS: RECENT LOG', macros);
-
-	console.log('MEAL ITEMS: RECENT LOG', mealItems[0].name);
-
 	return (
 		<View style={styles.recentLogContainer}>
 			<View style={styles.recentLogTitleContainer}>
