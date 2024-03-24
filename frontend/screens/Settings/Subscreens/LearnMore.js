@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
 		padding: 20,
 	},
 	learnMoreTitle: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 20,
 		fontWeight: 'bold',
 	},
@@ -23,6 +24,7 @@ const styles = StyleSheet.create({
 		width: '100%',
 	},
 	headerText: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 20,
 		fontWeight: '700',
 		marginTop: 8,
@@ -49,6 +51,7 @@ const styles = StyleSheet.create({
 		shadowRadius: 3.84,
 	},
 	subheaderText: {
+		fontFamily: 'Montserrat_700Bold',
 		fontWeight: 'bold',
 		marginBottom: 6,
 	},
@@ -56,6 +59,7 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 	},
 	closeButtonText: {
+		fontFamily: 'Montserrat_700Bold',
 		color: '#FFFFFF',
 		marginTop: 20,
 		backgroundColor: '#007BFF',

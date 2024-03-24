@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
         marginBottom: 2,
     },
     label: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 14,
         fontWeight: 'bold',
     },

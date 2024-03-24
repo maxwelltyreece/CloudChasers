@@ -27,12 +27,14 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   containerTitle: {
+    fontFamily: 'Montserrat_700Bold',
     fontSize: 16,
     fontWeight: 'bold',
     alignSelf: 'flex-start',
     paddingTop: 14,
   },
   motivationalMessage: {
+    fontFamily: 'Montserrat_600SemiBold',
     fontSize: 14,
     fontWeight: '600',
     marginTop: 4,
@@ -41,7 +43,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   progressText: {
-    fontSize: 19,
+    fontFamily: 'Montserrat_700Bold',
+    fontSize: 18,
     fontWeight: 'bold',
   },
 });
@@ -84,7 +87,7 @@ const AchievementsFeature = ({ userAwards, allAwards }) => {
           {
             () => (
               <Text style={styles.progressText}>
-                {`${completedAchievements}/${totalAchievements}`}
+                {`${completedAchievements} / ${totalAchievements}`}
               </Text>
             )
           }

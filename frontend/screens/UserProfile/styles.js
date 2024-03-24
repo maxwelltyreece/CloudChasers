@@ -48,6 +48,7 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     item: {
+        fontFamily: 'Montserrat_500Medium',
         fontSize: 20,
         padding: '5%',
         textAlign: 'center',

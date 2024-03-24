@@ -251,7 +251,7 @@ function Reminders() {
 								<Pressable style={styles.addButton} onPress={handleAddReminder}>
 									{({ pressed }) => (
 										<Text style={[styles.addButtonText, pressed ? styles.pressedText : {}]}>
-											Done HELLo
+											Done
 										</Text>
 									)}
 								</Pressable>

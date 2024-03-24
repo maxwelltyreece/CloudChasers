@@ -11,15 +11,12 @@ import moment from 'moment';
 
 
 const styles = StyleSheet.create({
-	// -------Goal Progress Bar-------//
 	progressBarComponentContainer: {
 		justifyContent: 'center',
 		marginTop: '1%',
-		// marginBottom: '1%',
 		borderRadius: 15,
 		width: '100%',
 		height: '40%',
-		// backgroundColor: 'red',
 	},
 	progressBarContainer: {
 		flexDirection: 'row',
@@ -55,19 +52,14 @@ const styles = StyleSheet.create({
 		marginBottom: 4,
 	},
 	label: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 16,
 		fontWeight: 'bold',
 	},
-	swiperContainer: {
-		// height: 'auto',
-	},
 	slideContainer: {
-		// flex: 1,
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
 		paddingHorizontal: 20,
-		// paddingBottom: 10,
-		// backgroundColor: 'green',
 	},
 	firstSlideContainer: {
 		justifyContent: 'flex-start',
@@ -77,6 +69,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 	},
 	firstLabel: {
+		fontFamily: 'Montserrat_700Bold',
 		top: 2,
 		fontSize: 16,
 		fontWeight: 'bold',
@@ -112,6 +105,7 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	slideTitle: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 18,
 		fontWeight: 'bold',
 		marginBottom: 10,
@@ -120,8 +114,6 @@ const styles = StyleSheet.create({
 	remindersScrolView: {
 		width: '100%',
 		height: '60%',
-		// height: 'auto',
-		// maxHeight: '62%',
 		marginBottom: 6,
 	},
 	reminderItem: {
@@ -133,7 +125,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		borderRadius: 12,
 		width: '100%',
-		// height: '20%',
 		height: 'auto',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
@@ -148,18 +139,19 @@ const styles = StyleSheet.create({
 		alignContent: 'center',
 		alignItems: 'center',
 		width: '100%',
-		// backgroundColor: 'pink',
 	},
 	reminderDescriptionText: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 16,
 		fontWeight: 'bold',
-		// backgroundColor: 'yellow',
 	},
 	reminderInfoTitle: {
+		fontFamily: 'Montserrat_600SemiBold',
 		fontSize: 12.5,
 		fontWeight: '600',
 	},
 	reminderInfoText: {
+		fontFamily: 'Montserrat_400Regular',
 		fontSize: 12.5,
 		fontWeight: '400',
 		marginRight: 14,
@@ -167,7 +159,7 @@ const styles = StyleSheet.create({
 	seeAllRemindersButton: {
 		width: '100%',
 		height: 35,
-		backgroundColor: '#F0F0F0', // Example color
+		backgroundColor: '#F0F0F0',
 		padding: 10,
 		borderRadius: 15,
 		alignItems: 'center',
@@ -175,6 +167,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	seeAllRemindersButtonText: {
+		fontFamily: 'Montserrat_500Medium',
 		fontSize: 12.5,
 		fontWeight: '500',
 		textTransform: 'uppercase',
@@ -195,12 +188,14 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	emptyRemindersTitle: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 16,
 		fontWeight: 'bold',
 		textAlign: 'center',
 		marginBottom: 10,
 	},
 	emptyRemindersText: {
+		fontFamily: 'Montserrat_400Regular',
 		fontSize: 14,
 		fontWeight: '400',
 		textAlign: 'center',
@@ -378,7 +373,7 @@ function GoalProgressBar({ todayStats, goals }) {
 
 	return (
 		<View style={styles.progressBarComponentContainer}>
-			<Swiper style={styles.swiperContainer} showsButtons={false} loop={false}>
+			<Swiper showsButtons={false} loop={false}>
 
 				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>
