@@ -23,8 +23,8 @@ function FoodEntry() {
     };
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity 
-            style={[styles.item, selectedFood && item.name === selectedFood.name ? styles.selectedItem : {}]} 
+        <TouchableOpacity
+            style={[styles.item, selectedFood && item.name === selectedFood.name ? styles.selectedItem : {}]}
             onPress={() => setSelectedFood(item)}
         >
             <Text style={styles.title}>{item.name}</Text>
@@ -55,15 +55,20 @@ function FoodEntry() {
                     <Text style={styles.buttonText}>Search</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity 
-                    style={styles.button} 
+                <TouchableOpacity
+                    style={styles.button}
                     onPress={async () => {
-                        if (selectedFood && weight) { // Check if selectedFood and weight are not null
-                            await logDatabaseFood({
-                                mealType: 'lunch',
-                                foodID: selectedFood._id,
-                                weight: parseInt(weight, 10)
-                            });
+                        try {
+                            if (selectedFood && weight) {
+                                await logDatabaseFood({
+                                    mealType: 'lunch',
+                                    foodID: selectedFood._id,
+                                    weight: parseInt(weight, 10)
+                                });
+                                console.log('Food logged successfully');
+                            }
+                        } catch (error) {
+                            console.error('Failed to log food:', error);
                         }
                     }}
                 >
@@ -79,6 +84,7 @@ function FoodEntry() {
 
             <NewFoodModal
                 isVisible={isModalVisible}
+                // onBackdropPress={toggleModal}
                 toggleModal={toggleModal}
             />
         </View>

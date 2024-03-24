@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
         marginTop: 5,
         flex: 1,
         paddingHorizontal: 5,
+        
     },
     list: {
         flex: 1,
@@ -17,6 +18,7 @@ export const styles = StyleSheet.create({
         width: '45%',
         aspectRatio: 1,
         margin: 8,
+        
     },
     searchInput: {
         fontFamily: 'Montserrat_600SemiBold',
@@ -29,17 +31,9 @@ export const styles = StyleSheet.create({
     },
 
     titleContainer: {
-        flexDirection: 'row', // Add this line
-        alignItems: 'center', // Add this line
+        flexDirection: 'row', 
+        alignItems: 'center', 
         alignSelf: 'stretch',
         paddingHorizontal: '5%',
-        
     },
-    noRecipesText: {
-        fontFamily: 'Montserrat_600SemiBold',
-        fontSize: 20,
-        textAlign: 'center',
-        marginTop: 20,
-    },
-
 });

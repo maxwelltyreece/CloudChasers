@@ -240,7 +240,11 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 			}
 		};
 
-		const finalWidth = safeDivision(progress, max, containerWidth);
+		let finalWidth = 0;
+
+		{(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ? 
+			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0} // Still load app of error occurs and data is any data is undefined.
+		
 
 		Animated.timing(animatedWidth, {
 			toValue: finalWidth,
@@ -253,7 +257,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 		<View style={progressBarStyle}>
 			<View style={styles.labelContainer}>
 				<Text style={labelStyle}>{label}</Text>
-				<Text style={labelStyle}>{`${progress} / ${max} ${unit}`}</Text>
+				<Text style={labelStyle}>{`${progress ?? 0} / ${max} ${unit}`}</Text>
 			</View>
 			<View style={styles.progressBarContainer} onLayout={measureContainer}>
 				<Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
@@ -267,6 +271,11 @@ ProgressBar.propTypes = {
 	progress: PropTypes.number.isRequired,
 	max: PropTypes.number.isRequired,
 	unit: PropTypes.string,
+};
+
+ProgressBar.defaultProps = {
+	progress: 0,
+	unit: '',
 };
 
 
@@ -319,7 +328,6 @@ function GoalProgressBar({ todayStats, goals }) {
 		fibre: 30,
 	};
 
-	// If the goals object contains goals, populate the nutrientGoals with actual values
 	if (goals && goals.goals) {
 		goals.goals.forEach(goal => {
 			if (goal.measurement in nutrientGoals) {
@@ -331,7 +339,7 @@ function GoalProgressBar({ todayStats, goals }) {
 
 	function getClosestDate(reminder) {
 		let now = moment();
-		let reminderTime = moment(reminder.time, "hh:mm A"); // parse time string with format
+		let reminderTime = moment(reminder.time, "hh:mm A");
 
 		let closestDate = now.clone().hour(reminderTime.hour()).minute(reminderTime.minute());
 
@@ -393,7 +401,7 @@ function GoalProgressBar({ todayStats, goals }) {
 								<Text style={styles.emptyRemindersText}>Go to the reminders page to add some!</Text>
 								<Pressable
 									style={styles.seeAllRemindersButton}
-									onPress={() => navigation.navigate('Reminders')}
+									onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
 								>
 									<Text style={styles.seeAllRemindersButtonText}>Add Reminders</Text>
 								</Pressable>
@@ -403,7 +411,7 @@ function GoalProgressBar({ todayStats, goals }) {
 					{reminders.length > 0 ? (
 						<Pressable
 							style={styles.seeAllRemindersButton}
-							onPress={() => navigation.navigate('Reminders')}
+							onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
 						>
 							<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
 						</Pressable>

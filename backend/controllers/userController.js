@@ -24,7 +24,6 @@ const Food = require('../models/food');
 exports.register = async (req, res) => {
 	const {forename, surname, username, email, password, dateOfBirth, lastLogin, profilePictureLink} = req.body;
 	try {
-		// Check if user exists
 		const user = await User.findOne({ username });
 		if (user) {
 			return res.status(400).send({ message: 'Username already used' });
@@ -33,7 +32,6 @@ exports.register = async (req, res) => {
 		if (emailUser) {
 			return res.status(400).send({ message: 'Email already used' });
 		}
-		// Hash the password
 		const hashedPassword = await bcrypt.hash(password, 10);
 
 		console.log('Creating user');
@@ -68,14 +66,12 @@ exports.register = async (req, res) => {
  */
 exports.login = async (req, res) => {
 	try {
-		// Find user
 		const user = await User.findOne({ username: req.body.username });
 
 		if (!user || !await bcrypt.compare(req.body.password, user.password)) {
 			console.log('Invalid credentials');
 			return res.status(401).json({ message: 'Invalid credentials' });
 		}
-		//TODO: Add last login date
 		// Generate and send token
 		const token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
 		return res.status(200).json({ data: token });
@@ -144,35 +140,6 @@ exports.updateProfile = async (req, res) => {
 		return res.status(500).send({ error: error.toString() });
 	}
 };
-
-// exports.deleteUser = async (req, res) => {
-// 	const { token } = req.body;
-// 	try {
-// 		const decoded = jwt.verify(token, process.env.SECRET_KEY);
-// 		const user = await User.findById(decoded.userId);
-
-// 		if (!user) {
-// 			return res.status(404).send({ message: 'User not found' });
-// 		}
-
-// 		// Delete the user's UserDays
-// 		await UserDay.deleteMany({ userID: user._id });
-
-// 		// Delete the user's Recipes
-// 		await Recipe.deleteMany({ createdBy: user._id });
-
-// 		// TODO
-// 		// Remove the user from all Communities
-// 		await Community.updateMany({}, { $pull: { members: user._id } });
-
-// 		// Delete the user
-// 		await user.deleteOne();
-
-// 		return res.status(200).send({ message: 'User deleted' });
-// 	} catch (error) {
-// 		return res.status(500).send({ error: error.toString() });
-// 	}
-// };
 
 /**
  * Retrieves all days of a user.

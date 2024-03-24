@@ -72,55 +72,51 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		fontWeight: 'bold',
 	},
-	recentLogDatetimeText: {
-		fontSize: 16,
+	recentLogMealTypeText: {
+		fontSize: 17,
 		fontWeight: 'bold',
-		marginBottom: 5,
+		marginBottom: 7,
 		marginLeft: 4,
 	},
-	recentLogMealTypeText: {
-		fontSize: 15,
+	logItemInfoText: {
+		fontSize: 17,
+		fontWeight: '500',
+		marginLeft: 4,
+		marginBottom: 4,
+	},
+	recentLogCaloriesText: {
+		fontSize: 16,
 		fontWeight: 'bold',
 		marginLeft: 4,
 	},
 	logInfoText: {
-		fontSize: 17,
+		fontSize: 1,
 		fontWeight: '500',
 		marginLeft: 4,
 	},
 	logInfoMeasurementText: {
 		// marginTop: 5,
-		fontSize: 17,
+		fontSize: 16,
 		fontWeight: '500',
 		marginLeft: 4,
 	},
 });
 
 function RecentLog({ streak, userLogStats }) {
-	
-	// const {
-	// 	lastLogDate = 'N/A',
-	// 	lastLogMealType = 'N/A',
-	// 	calories = 0,
-	// 	protein = 0,
-	// 	carbs = 0,
-	// 	fat = 0,
-	// 	fibre = 0,
-	// 	water = 0,
-	// 	sugar = 0,
-	// 	sodium = 0,
-	// } = userLogStats || {};
 
 	const {
 		latestUserDayMeal = {},
 		macros = {},
+		mealItems = [{}],
 	} = userLogStats || {};
 
-	console.log('userLogStats: RECENT LOG', userLogStats);
+//	console.log('userLogStats: RECENT LOG', userLogStats);
 
-	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal);
+//	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal.name);
 
-	console.log('MACROS: RECENT LOG', macros);
+//	console.log('MACROS: RECENT LOG', macros);
+
+	console.log('MEAL ITEMS: RECENT LOG', mealItems[0].name);
 
 	return (
 		<View style={styles.recentLogContainer}>
@@ -130,10 +126,17 @@ function RecentLog({ streak, userLogStats }) {
 			</View>
 			{userLogStats ? (
 				<View style={styles.innerRecentLogContainer}>
-					<Text style={styles.recentLogDatetimeText}>
-						{latestUserDayMeal.name ?? 'N/A'}
+
+					<Text style={styles.recentLogMealTypeText}>
+						{(latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)) ?? 'N/A'}
 					</Text>
-					<Text style={styles.logInfoText}>Calories:{' '}
+
+
+					{/* <Text style={styles.logItemInfoText}>
+						{mealItems[0].name ?? 'N/A'}
+					</Text> */}
+
+					<Text style={styles.recentLogCaloriesText}>Calories:{' '}
 						<Text style={styles.logInfoMeasurementText}>
 							{macros.calories ?? 0} kcal
 						</Text>
@@ -153,20 +156,33 @@ export default RecentLog;
 RecentLog.propTypes = {
 	streak: PropTypes.number,
 	userLogStats: PropTypes.shape({
-		lastLogDate: PropTypes.string,
-		lastLogMealType: PropTypes.string,
-		calories: PropTypes.number,
-		protein: PropTypes.number,
-		carbs: PropTypes.number,
-		fat: PropTypes.number,
-		fibre: PropTypes.number,
-		water: PropTypes.number,
-		sugar: PropTypes.number,
-		sodium: PropTypes.number,
-	}).isRequired,
+		latestUserDayMeal: PropTypes.shape({
+			__v: PropTypes.number,
+			_id: PropTypes.string,
+			name: PropTypes.string,
+			order: PropTypes.number,
+			userDayID: PropTypes.string,
+		}),
+		macros: PropTypes.shape({
+			calories: PropTypes.number,
+			carbs: PropTypes.number,
+			fat: PropTypes.number,
+			protein: PropTypes.number,
+		}),
+		mealItems: PropTypes.arrayOf(PropTypes.shape({
+			__v: PropTypes.number,
+			_id: PropTypes.string,
+			foodItemID: PropTypes.string,
+			name: PropTypes.string,
+			userDayMealID: PropTypes.string,
+		})),
+	}),
 };
 
 RecentLog.defaultProps = {
-	streak: 0, // Default streak value if not provided
+	streak: 0,
 	userLogStats: {},
+	latestUserDayMeal: {},
+	macros: {},
+	mealItems: [{}],
 };

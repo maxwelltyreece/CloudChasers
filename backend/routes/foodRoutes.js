@@ -10,6 +10,8 @@ router.post('/logDatabaseFood', userMiddleware, foodController.logDatabaseFood);
 router.post('/createNewRecipeByUser', userMiddleware, recipeController.createNewRecipeByUser);
 router.post('/logRecipeFood', userMiddleware, recipeController.logRecipeFood);
 router.post('/duplicateRecipe', userMiddleware, recipeController.duplicateRecipeToUser);
+router.post("/logManualMacro", userMiddleware, foodController.logManualMacro);
+router.post('/addIngredientToDatabase', userMiddleware, foodController.addIngredientToDatabase);
 
 router.get('/getFood', foodController.getFood);
 router.get('/searchFoods', foodController.searchFoods);
@@ -22,6 +24,7 @@ router.get('/getCommunityRecipes', recipeController.getCommunityRecipes);
 router.get('/getLatestLoggedFood', userMiddleware, foodController.getLastLoggedFoodOrRecipe);
 
 router.put('/addItemToRecipe', userMiddleware, recipeController.addItemToRecipe);
-
+router.put('/addMacroToRecipe', recipeController.addMacroToRecipe);
 router.delete('/deleteItemFromRecipe', userMiddleware, recipeController.deleteIngredientFromRecipe);
+router.delete('/deleteRecipe', userMiddleware, recipeController.deleteRecipe);
 module.exports = router;

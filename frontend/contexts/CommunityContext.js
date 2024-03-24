@@ -122,7 +122,7 @@ export function CommunityProvider({ children }) {
         console.log('Community Posts:', response);
         return response.data;
     };
-    
+     
     const removeMember = async (communityId, memberId) => {
         const response = await communityService.removeMember(communityId, memberId);
         return response;

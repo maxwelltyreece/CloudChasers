@@ -4,6 +4,7 @@ import { LocalIP } from '../screens/IPIndex';
 
 export const logDatabaseFood = async (data) => {
     const token = await AsyncStorage.getItem('token');
+    console.log('Logging food SERVICE:', data);
     return await axios.post(`http://${LocalIP}:3000/food/logDatabaseFood`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
@@ -84,4 +85,12 @@ export const addItemToRecipe = async (data) => {
 export const deleteIngredientFromRecipe = async (data) => {
     const token = await AsyncStorage.getItem('token');
     return await axios.delete(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
+}
+
+export const getPictureURL = async (RecipeId) => {
+    console.log('RecipeID:' + RecipeId);
+    const token = await AsyncStorage.getItem('token');
+    const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${RecipeId}&folderName=Recipe_Pictures`, { headers: { Authorization: `Bearer ${token}` } });
+    const url =  response.data.url;
+    return url;
 }

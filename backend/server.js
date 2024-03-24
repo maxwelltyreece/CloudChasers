@@ -12,6 +12,8 @@ const statsRoutes = require('./routes/statsRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 const goalRoutes = require('./routes/goalRoutes');
 const awardRoutes = require('./routes/awardRoutes');
+
+
 require('dotenv').config();
 
 const app = express();
@@ -46,22 +48,13 @@ const { login } = require('./controllers/userController');
 
 const networkInterfaces = os.networkInterfaces();
 
-let serverIP;
-for (const netInterface in networkInterfaces) {
-	for (const networkInterface of networkInterfaces[netInterface]) {
-		if (networkInterface.family === 'IPv4' && !networkInterface.internal) {
-			serverIP = networkInterface.address;
-			break;
-		}
-	}
-	if (serverIP) break;
-}
 
-app.listen(3000, () => {
-	console.log(`Server is running on ${serverIP}`);
 
-	// Write the server IP to a file
-	fs.writeFileSync(path.join(__dirname, '../frontend/screens/IPIndex.js'), `export const LocalIP = '${serverIP}';\n`);
-});
+// app.listen(3000, () => {
+// 	console.log(`Server is running on ${serverIP}`);
+
+// 	// Write the server IP to a file
+// 	fs.writeFileSync(path.join(__dirname, '../frontend/screens/IPIndex.js'), `export const LocalIP = '${serverIP}';\n`);
+// });
 
 module.exports = app;

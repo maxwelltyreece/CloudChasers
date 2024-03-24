@@ -101,14 +101,11 @@ const deleteGoal = async (goalId) => {
  */
 const updateGoal = async (goalId, updateData) => {
     try {
-        // console.log('updateGoal SERVICE', goalId, updateData);
         const token = await AsyncStorage.getItem('token');
-        // Ensure the goalId is included in the request body along with other update data
         const payload = {
             goalID: goalId,
             ...updateData
         };
-        // console.log('updateGoal SERVICE', payload);
         return await axios.post(`http://${LocalIP}:3000/goals/updateGoal`, payload, {
             headers: { Authorization: `Bearer ${token}` }
         });
@@ -143,7 +140,7 @@ const updateMacroGoals = async (nutrient) => {
         const token = await AsyncStorage.getItem('token');
         const payload = {
             macro: nutrient.nutrient,
-            newMinValue: 0, // Assuming min value is always 0
+            newMinValue: 0, // Min value is always 0
             newMaxValue: nutrient.value
         };
         // console.log('updateMacroGoals SERVICE', payload);

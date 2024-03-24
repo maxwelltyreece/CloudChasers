@@ -1,216 +1,1007 @@
-if (process.env.NODE_ENV === 'test') {
-	require('dotenv').config({ path: '.env.test' });
+if (process.env.NODE_ENV === "test") {
+	require("dotenv").config({ path: ".env.test" });
 }
 
-const jwt = require('jsonwebtoken');
+const request = require("supertest");
+const app = require("../server");
+const mongoose = require("mongoose");
+const User = require("../models/user");
+const UserDay = require("../models/userDay");
+const UserDayMeal = require("../models/userDayMeal");
+const MealItem = require("../models/mealItem");
+const FoodItem = require("../models/foodItem");
+const RecipeItem = require("../models/recipeItem");
+const RecipeQuantity = require("../models/recipeQuantity");
+const Food = require("../models/food");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const Recipe = require("../models/recipe");
+const { array } = require("yargs");
+const foodItem = require("../models/foodItem");
+const { getUserDayMealMacros, createUserDayMeal } = require("../controllers/foodController");
 
-const token = jwt.sign({ userID: 'testUserID' }, process.env.SECRET_KEY);
+async function clearDatabase() {
+	const collections = Object.keys(mongoose.connection.collections);
+	for (const collectionName of collections) {
+		const collection = mongoose.connection.collections[collectionName];
+		await collection.deleteMany();
+	}
+}
 
-const jest = require('jest');
-import { expect, it, describe, beforeEach } from 'jest';
+describe("logDatabaseFood Endpoint", () => {
+	let food, user, token;
 
-const request = require('supertest');
-const app = require('../server');
-const mongoose = require('mongoose');
-const userDay = require('../models/userDay');
-const userDayMeal = require('../models/userDayMeal');
-// const mealItem = require('../models/mealItem');
-// const foodItem = require('../models/foodItem');
-const food = require('../models/food');
-// const createUserDayMeal = require('../controllers/foodController').createUserDayMeal;
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+		await User.deleteMany({});
+		await Recipe.deleteMany({});
+		await Food.deleteMany({});
+		await RecipeItem.deleteMany({});
+		await FoodItem.deleteMany({});
+		await RecipeQuantity.deleteMany({});
+		await UserDay.deleteMany({});
+		await UserDayMeal.deleteMany({});
+		await MealItem.deleteMany({});
 
-jest.mock('../models/user', () => ({ findById: jest.fn() }));
-// Mock UserDay model
-jest.mock('../models/userDay', () => ({ findOne: jest.fn(), save: jest.fn() }));
-jest.mock('../models/userDayMeal', () => ({ findOne: jest.fn() }));
-
-
-jest.mock('../models/food', () => {
-	return {
-		findById: jest.fn(),
-		find: jest.fn().mockImplementation(() => {
-			return {
-				skip: jest.fn().mockReturnThis(), // Ensure chaining by returning 'this'
-				limit: jest.fn().mockResolvedValue([
-					{ _id: 'mockedId1', name: 'apple', calories: 50 },
-					{ _id: 'mockedId2', name: 'banana', calories: 100 },
-				]),
-			};
-		}),
-		countDocuments: jest.fn().mockResolvedValue(2),
-	};
-});
-
-jest.mock(userDay, () => {
-	return jest.fn().mockImplementation(() => {
-		return {
-			findOne: jest.fn().mockResolvedValue(null),
-			save: jest.fn().mockResolvedValue(true),
-		}
-	})
-});
-jest.mock('../models/user', () => ({
-	findById: jest.fn().mockResolvedValue({
-		_id: 'testUserID',
-		save: jest.fn().mockResolvedValue(true),
-	}),
-}));
-
-
-describe('logDatabaseFood Endpoint', () => {
-
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
-	it('should return 200 and log the food for authenticated request', async () => {
-		const foodID = new mongoose.Types.ObjectId();
-		const userDayID = new mongoose.Types.ObjectId();
-		const userDayMealID = new mongoose.Types.ObjectId();
-		userDay.findOne.mockResolvedValue({ _id: userDayID });
-		userDayMeal.findOne.mockResolvedValue({ _id: userDayMealID, name: 'breakfast', userDayID: 'testUserDayID' });
-		// userDay.findOne.mockResolvedValue(null);
-		// userDay.save.mockResolvedValue(true);
-		// userDayMeal.findOne.mockResolvedValue(null);
-		food.findById.mockResolvedValue({ _id: foodID, name: "butter", calories: 100, save: jest.fn().mockResolvedValue(true) });
-
-
-		const response = await request(app)
-			.post('/food/logDatabaseFood')
-			.set('Authorization', `Bearer ${token}`)
-			.send({
-				mealType: 'breakfast',
-				food_id: 'testFoodID',
-				weight: 100
-			})
-
-		expect(response.error).toBe(false);
-		expect(response.body.message).toBe('Food logged');
-		expect(response.statusCode).toBe(200);
-	});
-});
-
-describe('searchFoods Endpoint', () => {
-	beforeEach(() => {
-		jest.clearAllMocks();
-	});
-
-	it('should return 200 and the correct foods for a valid request', async () => {
-
-		const response = await request(app)
-			.get('/food/searchFoods')
-			.query({ page: 1, limit: 2, name: 'a' });
-
-		expect(response.error).toBe(false);
-		expect(response.body.foods).toEqual([
-			{ _id: 'mockedId1', name: 'apple', calories: 50 },
-			{ _id: 'mockedId2', name: 'banana', calories: 100 }
-		]);
-		expect(response.body.totalPages).toBe(1);
-		expect(response.body.page).toBe("1");
-		expect(response.body.limit).toBe("2");
-		expect(response.statusCode).toBe(200);
-	});
-
-
-	it('should return 404 when no foods are found', async () => {
-		// Mock Food.find to return an empty array
-		food.find.mockImplementation(() => {
-			return {
-				skip: jest.fn().mockReturnThis(),
-				limit: jest.fn().mockResolvedValue([])
-			};
+		user = await User.create({
+			forename: "John",
+			surname: "Doe",
+			username: "johndoe",
+			email: "johndoe@example.com",
+			password: "securepassword",
+			dateOfBirth: new Date(1990, 0, 1),
 		});
 
-		food.countDocuments.mockResolvedValue(0);
+		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
 
+		food = await Food.create({
+			name: "Test Food",
+			group: "Test Group",
+			calories: 100,
+			privacy: "public",
+		});
+	});
+
+	beforeEach(async () => {});
+
+	afterEach(async () => {
+		await UserDay.deleteMany({});
+		await UserDayMeal.deleteMany({});
+		jest.restoreAllMocks();
+	});
+
+	afterAll(async () => {
+		await User.deleteMany({});
+		await Recipe.deleteMany({});
+		await Food.deleteMany({});
+		await RecipeItem.deleteMany({});
+		await FoodItem.deleteMany({});
+		await RecipeQuantity.deleteMany({});
+		await UserDay.deleteMany({});
+		await UserDayMeal.deleteMany({});
+		await MealItem.deleteMany({});
+		await mongoose.connection.close();
+	});
+
+	it("should return 200 and log the food for authenticated request", async () => {
 		const response = await request(app)
-			.get('/food/searchFoods')
-			.query({ name: 'nonexistent' });
+			.post("/food/logDatabaseFood")
+			.set("Authorization", `Bearer ${token}`)
+			.send({
+				mealType: "breakfast",
+				foodID: food._id.toString(),
+				weight: 100,
+			});
 
+		expect(response.error).toBe(false);
+		expect(response.statusCode).toBe(200);
+		expect(response.body.message).toBe("Food logged");
+
+		// Verify that the userDay, userDayMeal, and mealItem and foodItem are created in the database
+		const createdUserDay = await UserDay.findOne({ userID: user._id });
+		expect(createdUserDay).toBeTruthy();
+
+		const createdUserDayMeal = await UserDayMeal.findOne({
+			userDayID: createdUserDay._id,
+			name: "breakfast",
+		});
+		expect(createdUserDayMeal).toBeTruthy();
+
+		const createdFoodItem = await FoodItem.findOne({ foodID: food._id });
+		expect(createdFoodItem).toBeTruthy();
+		expect(createdFoodItem.weight).toBe(100);
+
+		const createdMealItem = await MealItem.findOne({
+			userDayMealID: createdUserDayMeal._id,
+			foodItemID: createdFoodItem._id,
+		});
+		expect(createdMealItem).toBeTruthy();
+	});
+
+	
+	it("should return 404 when given a non-existent food", async () => {
+		const response = await request(app)
+		.post("/food/logDatabaseFood")
+		.set("Authorization", `Bearer ${token}`)
+		.send({
+			mealType: "breakfast",
+			foodID: new mongoose.Types.ObjectId().toString(),
+			weight: 100,
+		});
+		
 		expect(response.statusCode).toBe(404);
-		expect(response.body.message).toBe('No foods found');
+		expect(response.body.error).toBe("Food not found");
 	});
 
-	it('should return 400 for invalid query parameters', async () => {
+	it("should return 501 in case of a database error in UserDay", async () => {
+		jest.spyOn(UserDay.prototype, "save").mockImplementationOnce(() => {
+			throw new Error("testError: Database error");
+		});
 		const response = await request(app)
-			.get('/food/searchFoods')
-			.query({ invalidField: 'invalidValue', anotherInvalidField: 'anotherValue' });
+			.post("/food/logDatabaseFood")
+			.set("Authorization", `Bearer ${token}`)
+			.send({
+				mealType: "breakfast",
+				foodID: food._id.toString(),
+				weight: 100,
+			});
 
-		expect(response.statusCode).toBe(400);
-		expect(response.body.error).toBeDefined();
-		expect(response.body.error).toContain('Invalid field(s):');
-		expect(response.body.error).toContain('invalidField');
-		expect(response.body.error).toContain('anotherInvalidField');
+		expect(response.statusCode).toBe(501);
 	});
 
-	it('should handle search with exact match for numeric fields', async () => {
-		// Mocking the Food model's response for an exact match
-		food.find.mockImplementationOnce(() => ({
-			skip: jest.fn().mockReturnThis(),
-			limit: jest.fn().mockResolvedValue([{ _id: 'mockedId1', name: 'apple', calories: 100 }])
-		}));
-		food.countDocuments.mockResolvedValueOnce(1);
+	it("should return 501 in case of a database error in UserDayMeal", async () => {
+		jest.spyOn(UserDayMeal.prototype, "save").mockImplementationOnce(() => {
+			throw new Error("testError: Database error");
+		});
+		const response = await request(app)
+			.post("/food/logDatabaseFood")
+			.set("Authorization", `Bearer ${token}`)
+			.send({
+				mealType: "breakfast",
+				foodID: food._id.toString(),
+				weight: 100,
+			});
+
+		expect(response.statusCode).toBe(501);
+	});
+
+	it("should log food to an existing UserDay", async () => {
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		const existingUserDay = await UserDay.create({
+			date: today,
+			userID: user._id,
+		});
 
 		const response = await request(app)
-			.get('/food/searchFoods')
-			.query({ page: 1, limit: 10, calories: 100 });
+			.post("/food/logDatabaseFood")
+			.set("Authorization", `Bearer ${token}`)
+			.send({
+				mealType: "breakfast",
+				foodID: food._id.toString(),
+				weight: 100,
+			});
 
 		expect(response.statusCode).toBe(200);
-		expect(response.body.foods).toHaveLength(1);
-		expect(response.body.foods[0].calories).toBe(100);
+		expect(response.body.message).toBe("Food logged");
+
+		const userDayMeal = await UserDayMeal.findOne({
+			name: "breakfast",
+			userDayID: existingUserDay._id,
+		});
+		expect(userDayMeal).toBeTruthy();
 	});
 
-	it('should handle search with greater than condition for numeric fields', async () => {
-		// Mocking the Food model's response for a $gte query
-		food.find.mockImplementationOnce(() => ({
-			skip: jest.fn().mockReturnThis(),
-			limit: jest.fn().mockResolvedValue([{ _id: 'mockedId2', name: 'banana', calories: 150 }])
-		}));
-		food.countDocuments.mockResolvedValueOnce(1);
+	it("should log food to an existing UserDayMeal", async () => {
+        const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		const existingUserDay = await UserDay.create({
+			date: today,
+			userID: user._id,
+		});
+
+		const existingUserDayMeal = await UserDayMeal.create({
+			name: "breakfast",
+			userDayID: existingUserDay._id,
+			order: 1,
+		});
+
+		const existingFoodItem = await FoodItem.create({
+			foodID: food._id,
+			weight: 100,
+		});
+
+		const existingMealItem = await MealItem.create({
+			name: "Test Food",
+			userDayMealID: existingUserDayMeal._id,
+			foodItemID: existingFoodItem._id,
+		});
 
 		const response = await request(app)
-			.get('/food/searchFoods')
-			.query({ page: 1, limit: 10, calories: { min: 150 } });
+			.post("/food/logDatabaseFood")
+			.set("Authorization", `Bearer ${token}`)
+			.send({
+				mealType: "breakfast",
+				foodID: food._id.toString(),
+				weight: 100,
+			});
 
 		expect(response.statusCode).toBe(200);
-		expect(response.body.foods).toHaveLength(1);
-		expect(response.body.foods[0].calories).toBeGreaterThanOrEqual(150);
+		expect(response.body.message).toBe("Food logged");
+
+		// Verify that the new MealItem is added to the existing UserDayMeal
+		const mealItems = await MealItem.find({
+			userDayMealID: existingUserDayMeal._id,
+		});
+		expect(mealItems.length).toBe(2);
 	});
-
-	it('should handle search with less than condition for numeric fields', async () => {
-		// Mocking the Food model's response for a $lte query
-		food.find.mockImplementationOnce(() => ({
-			skip: jest.fn().mockReturnThis(),
-			limit: jest.fn().mockResolvedValue([{ _id: 'mockedId3', name: 'orange', calories: 49 }])
-		}));
-		food.countDocuments.mockResolvedValueOnce(1);
+	
+	it("should handle errors during food logging", async () => {
+		// Mock Food.findById to throw an error
+		jest.spyOn(Food, "findById").mockRejectedValueOnce(
+			new Error("Database error")
+		);
 
 		const response = await request(app)
-			.get('/food/searchFoods')
-			.query({ page: 1, limit: 10, calories: { max: 50 } });
+			.post("/food/logDatabaseFood")
+			.set("Authorization", `Bearer ${token}`)
+			.send({
+				mealType: "breakfast",
+				foodID: food._id.toString(),
+				weight: 100,
+			});
 
-		expect(response.statusCode).toBe(200);
-		expect(response.body.foods).toHaveLength(1);
-		expect(response.body.foods[0].calories).toBeLessThanOrEqual(50);
-	});
+		expect(response.statusCode).toBe(501);
+		expect(response.body.error).toContain("testError: Database error");
 
-	it('should handle search with inbetween conditions conditions for numeric fields', async () => {
-		// Mocking the Food model's response for a $gte and $lte query
-		food.find.mockImplementationOnce(() => ({
-			skip: jest.fn().mockReturnThis(),
-			limit: jest.fn().mockResolvedValue([{ _id: 'mockedId4', name: 'pear', calories: 75 }])
-		}));
-		food.countDocuments.mockResolvedValueOnce(1);
+		const userDay = await UserDay.findOne({ userID: user._id });
+		expect(userDay).toBeNull();
 
-		const response = await request(app)
-			.get('/food/searchFoods')
-			.query({ page: 1, limit: 10, calories: { min: 50, max: 100 } });
-
-		expect(response.statusCode).toBe(200);
-		expect(response.body.foods).toHaveLength(1);
-		expect(response.body.foods[0].calories).toBeGreaterThanOrEqual(50);
-		expect(response.body.foods[0].calories).toBeLessThanOrEqual(100);
+		jest.restoreAllMocks();
 	});
 });
 
+describe("GET /getFood", () => {
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+	});
+
+	beforeEach(async () => {
+		await Food.create([
+			{
+				name: "Food 1",
+				group: "Fruits",
+				calories: 50,
+				privacy: "public",
+			},
+			{
+				name: "Food 2",
+				group: "Vegetables",
+				calories: 30,
+				privacy: "public",
+			},
+			{
+				name: "Food 3",
+				group: "Grains",
+				calories: 100,
+				privacy: "public",
+			},
+			{
+				name: "Food 4",
+				group: "Proteins",
+				calories: 200,
+				privacy: "public",
+			},
+		]);
+	});
+
+	afterEach(async () => {
+		await clearDatabase();
+	});
+
+	afterAll(async () => {
+		await mongoose.connection.close();
+	});
+
+	it("should retrieve paginated food items", async () => {
+		const page = 1;
+		const limit = 2;
+
+		const response = await request(app).get(
+			`/food/getFood?page=${page}&limit=${limit}`
+		);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.foods.length).toBe(2);
+		expect(response.body.totalPages).toBe(2);
+		expect(response.body.currentPage).toBe("1");
+
+		// Order doesn't matter
+		expect(response.body.foods[0]).toHaveProperty("name");
+		expect(response.body.foods[1]).toHaveProperty("name");
+	});
+
+	it("should retrieve paginated food items with default values", async () => {
+		// Default values are page=1 and limit=10
+
+		const response = await request(app).get(`/food/getFood`);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.foods.length).toBe(4);
+		expect(response.body.totalPages).toBe(1);
+		expect(response.body.currentPage).toBe(1);
+
+		// Order doesn't matter
+		expect(response.body.foods[0]).toHaveProperty("name");
+		expect(response.body.foods[1]).toHaveProperty("name");
+		expect(response.body.foods[2]).toHaveProperty("name");
+		expect(response.body.foods[3]).toHaveProperty("name");
+	});
+
+	it("should handle errors when retrieving foods", async () => {
+		// Simulate an error scenario for Food.find()
+		jest.spyOn(Food, "find").mockImplementationOnce(() => {
+			throw new Error("Database error");
+		});
+
+		const response = await request(app).get("/food/getFood?page=1&limit=2");
+
+		expect(response.statusCode).toBe(500);
+		expect(response.body).toEqual({ error: "Error: Database error" });
+
+		jest.restoreAllMocks();
+	});
+});
+
+describe("GET /searchFoods", () => {
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+		await Food.create([
+			{
+				name: "Apple",
+				group: "Fruits",
+				calories: 95,
+				protein: 0.5,
+				privacy: "public",
+			},
+			{
+				name: "Banana",
+				group: "Fruits",
+				calories: 105,
+				protein: 1.3,
+				privacy: "public",
+			},
+			{
+				name: "Carrot",
+				group: "Vegetables",
+				calories: 41,
+				protein: 0.9,
+				privacy: "public",
+			},
+		]);
+	});
+
+	afterAll(async () => {
+		await Food.deleteMany({});
+		await mongoose.connection.close();
+	});
+
+	test("should return foods based on text search", async () => {
+		const response = await request(app).get("/food/searchFoods?name=ban");
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.foods.length).toBe(1);
+		expect(response.body.foods[0].name).toBe("Banana");
+	});
+
+	test("should return foods based on numeric range search", async () => {
+		const response = await request(app).get(
+			"/food/searchFoods?calories[min]=50&calories[max]=100"
+		);
+
+		expect(response.statusCode).toBe(200);
+		expect(
+			response.body.foods.some((food) => food.name === "Apple")
+		).toBeTruthy();
+	});
+
+	test("should return foods with calories greater than or equal to a min value", async () => {
+		const response = await request(app).get(
+			"/food/searchFoods?calories[min]=70"
+		);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.foods.length).toBe(2);
+		expect(
+			response.body.foods.some((food) => food.name === "Apple")
+		).toBeTruthy();
+		expect(
+			response.body.foods.some((food) => food.name === "Banana")
+		).toBeTruthy();
+	});
+
+	test("should return foods with calories less than or equal to a max value", async () => {
+		const response = await request(app).get(
+			"/food/searchFoods?calories[max]=70"
+		);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.foods.length).toBe(1);
+		expect(
+			response.body.foods.some((food) => food.name === "Carrot")
+		).toBeTruthy();
+	});
+
+	test("should return foods with calories less than or equal to a max value", async () => {
+		const response = await request(app).get(
+			"/food/searchFoods?calories=95"
+		);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.foods.length).toBe(1);
+		expect(
+			response.body.foods.some((food) => food.name === "Apple")
+		).toBeTruthy();
+	});
+
+	test("should handle invalid search fields", async () => {
+		const response = await request(app).get(
+			"/food/searchFoods?invalidField=value"
+		);
+
+		expect(response.statusCode).toBe(400);
+		expect(response.body.error).toContain("Invalid field(s)");
+	});
+
+	test("should handle no matching foods", async () => {
+		const response = await request(app).get(
+			"/food/searchFoods?name=Zucchini"
+		);
+
+		expect(response.statusCode).toBe(404);
+		expect(response.body.message).toBe("No foods found");
+	});
+
+	test("should handle errors during food search", async () => {
+		// Simulate an error scenario for Food.find()
+		jest.spyOn(Food, "find").mockImplementationOnce(() => {
+			throw new Error("Database error");
+		});
+
+		const response = await request(app).get("/food/searchFoods?name=Apple");
+
+		expect(response.statusCode).toBe(500);
+		expect(response.body.error).toBe("Error: Database error");
+
+		jest.restoreAllMocks();
+	});
+});
+
+describe("GET /getLatestLoggedFood", () => {
+	let user, token;
+
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+		user = await User.create({
+			forename: "John",
+			surname: "Doe",
+			username: "johndoe",
+			email: "johndoe@example.com",
+			password: "securepassword",
+			dateOfBirth: new Date(1990, 0, 1),
+		});
+
+		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+	});
+
+	beforeEach(async () => {});
+
+	afterEach(async () => {
+		await UserDay.deleteMany({});
+		await UserDayMeal.deleteMany({});
+		await MealItem.deleteMany({});
+	});
+
+	afterAll(async () => {
+		await User.deleteMany({});
+		await mongoose.connection.close();
+	});
+
+	test("should return 404 if no day logs are found", async () => {
+		const response = await request(app)
+			.get("/food/getLatestLoggedFood")
+			.set("Authorization", `Bearer ${token}`);
+
+		expect(response.statusCode).toBe(404);
+		expect(response.body.message).toBe("No day logs found");
+	});
+
+	test("should return 404 if no meal logs are found", async () => {
+		// Create a UserDay without a corresponding UserDayMeal
+		await UserDay.create({ date: new Date(), userID: user._id });
+
+		const response = await request(app)
+			.get("/food/getLatestLoggedFood")
+			.set("Authorization", `Bearer ${token}`);
+
+		expect(response.statusCode).toBe(404);
+		expect(response.body.message).toBe("No meal logs found");
+	});
+
+	test("should return the last logged meal and food items", async () => {
+		// Create a sequence of UserDay, UserDayMeal, and MealItem
+		const userDay = await UserDay.create({
+			date: new Date(),
+			userID: user._id,
+		});
+		const userDayMeal = await UserDayMeal.create({
+			name: "Dinner",
+			userDayID: userDay._id,
+			order: 1,
+		});
+
+		const food = await Food.create({
+			name: "Apple",
+			group: "Fruits",
+			calories: 52,
+			protein: 0.3,
+			carbs: 14,
+			fat: 0.2,
+			privacy: "public",
+		});
+
+		const foodItem = await FoodItem.create({
+			foodID: food._id,
+			weight: 100,
+		});
+
+		const mealItem = await MealItem.create({
+			name: "Pizza",
+			userDayMealID: userDayMeal._id,
+			foodItemID: foodItem._id,
+		});
+
+		const response = await request(app)
+			.get("/food/getLatestLoggedFood")
+			.set("Authorization", `Bearer ${token}`);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.latestUserDayMeal).toBeTruthy();
+		expect(response.body.mealItems.length).toBeGreaterThan(0);
+	});
+
+	test("should return 404 if no food or recipe logs are found", async () => {
+		const userDay = await UserDay.create({
+			date: new Date(),
+			userID: user._id,
+		});
+		const userDayMeal = await UserDayMeal.create({
+			name: "Dinner",
+			userDayID: userDay._id,
+			order: 1,
+		});
+
+		const response = await request(app)
+			.get("/food/getLatestLoggedFood")
+			.set("Authorization", `Bearer ${token}`);
+
+		expect(response.statusCode).toBe(404);
+		expect(response.body.message).toBe("No food or recipe logs found");
+	});
+
+	test("should return 500 if database error occured", async () => {
+		const userDay = await UserDay.create({
+			date: new Date(),
+			userID: user._id,
+		});
+		const userDayMeal = await UserDayMeal.create({
+			name: "Dinner",
+			userDayID: userDay._id,
+			order: 1,
+		});
+
+		const food = await Food.create({
+			name: "Apple",
+			group: "Fruits",
+			calories: 52,
+			protein: 0.3,
+			carbs: 14,
+			fat: 0.2,
+			privacy: "public",
+		});
+
+		const foodItem = await FoodItem.create({
+			foodID: food._id,
+			weight: 100,
+		});
+
+		const mealItem = await MealItem.create({
+			name: "Pizza",
+			userDayMealID: userDayMeal._id,
+			foodItemID: foodItem._id,
+		});
+
+		jest.spyOn(Food, "findById").mockImplementationOnce(() => {
+			throw new Error("Database error");
+		});
+
+		const response = await request(app)
+			.get("/food/getLatestLoggedFood")
+			.set("Authorization", `Bearer ${token}`);
+		
+		expect(response.statusCode).toBe(500);
+	});
+
+});
+
+describe("getUserDayMealMacros Function", () => {
+	let user, userDayMeal, food, foodItem, recipe, recipeItem, recipeQuantity, userDay;
+
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+				
+		user = await User.create({
+			forename: "John",
+			surname: "Doe",
+			username: "johndoe",
+			email: "johndoe@example.com",
+			password: "securepassword",
+			dateOfBirth: new Date(1990, 0, 1),
+		});
+
+	});
+
+	beforeEach(async () => {
+
+
+		// Set up food and foodItem for direct food logging
+		food = await Food.create({
+			name: "Apple",
+			group: "Fruits",
+			calories: 52,
+			protein: 0.3,
+			carbs: 14,
+			fat: 0.2,
+			privacy: "public",
+		});
+		foodItem = await FoodItem.create({ foodID: food._id, weight: 100 });
+		
+		userDay = await UserDay.create({ date: new Date(), userID: user._id });
+		
+		userDayMeal = await UserDayMeal.create({ name: "Lunch", userDayID: userDay._id, order: 1 });
+
+		recipe = await Recipe.create({ name: "Fruit Salad", description: "A healthy fruit salad"});
+		recipeItem = await RecipeItem.create({
+			foodItemID: foodItem._id,
+			recipeID: recipe._id,
+		});
+		recipeQuantity = await RecipeQuantity.create({
+			recipeID: recipe._id,
+			mealItemID: userDayMeal._id,
+			totalRecipeWeight: 150,
+		});
+	});
+
+	afterEach(async () => {
+		await UserDayMeal.deleteMany({});
+		await UserDay.deleteMany({});
+		await Food.deleteMany({});
+		await FoodItem.deleteMany({});
+		await Recipe.deleteMany({});
+		await RecipeItem.deleteMany({});
+		await RecipeQuantity.deleteMany({});
+	});
+
+	afterAll(async () => {
+		await User.deleteMany({});
+		await mongoose.connection.close();
+	});
+
+	test("should calculate macros for a meal with direct food logging", async () => {
+		await MealItem.create({
+			name: "Apple",
+			userDayMealID: userDayMeal._id,
+			foodItemID: foodItem._id,
+		});
+
+		const macros = await getUserDayMealMacros(userDayMeal._id);
+
+		expect(macros.calories).toBeCloseTo(52);
+		expect(macros.protein).toBeCloseTo(0.3);
+		expect(macros.carbs).toBeCloseTo(14);
+		expect(macros.fat).toBeCloseTo(0.2);
+	});
+
+	test("should calculate macros for a meal with recipe logging", async () => {
+		await MealItem.create({
+			name: "Apple",
+			userDayMealID: userDayMeal._id,
+			recipeQuantityID: recipeQuantity._id,
+		});
+
+		const macros = await getUserDayMealMacros(userDayMeal._id);
+
+		// Expectations based on the scaled-up recipe quantities
+		expect(macros.calories).toBeCloseTo(78); // 52 * 1.5
+		expect(macros.protein).toBeCloseTo(0.45); // 0.3 * 1.5
+		expect(macros.carbs).toBeCloseTo(21); // 14 * 1.5
+		expect(macros.fat).toBeCloseTo(0.3); // 0.2 * 1.5
+	});
+
+	test("should handle errors during macro calculation", async () => {
+		jest.spyOn(MealItem, "find").mockImplementationOnce(() => {
+			throw new Error("Database error");
+		});
+
+		await expect(getUserDayMealMacros(userDayMeal._id)).rejects.toThrow(
+			"Failed to get meal macros: Error: Database error"
+		);
+
+		jest.restoreAllMocks();
+	});
+});
+
+describe("POST /logManualMacro", () => {
+	let user, token;
+
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+		user = await User.create({
+			forename: "John",
+			surname: "Doe",
+			username: "johndoe",
+			email: "johndoe@example.com",
+			password: "securepassword",
+			dateOfBirth: new Date(1990, 0, 1),
+		});
+	
+		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+	});
+
+	beforeEach(async () => {
+		jest.restoreAllMocks();
+	});
+
+	afterEach(async () => {
+		await Recipe.deleteMany({});
+		await Food.deleteMany({});
+		await RecipeItem.deleteMany({});
+		await FoodItem.deleteMany({});
+		await RecipeQuantity.deleteMany({});
+		await UserDay.deleteMany({});
+		await UserDayMeal.deleteMany({});
+		await MealItem.deleteMany({});
+		jest.restoreAllMocks();
+	});
+
+	afterAll(async () => {
+		await clearDatabase();
+		await mongoose.connection.close();
+	});
+
+	it("should log a manual macro entry", async () => {
+		const mealType = "lunch";
+		const macros = {
+			calories: 250,
+			protein: 10,
+			carbs: 30,
+			fat: 15,
+		};
+
+		const response = await request(app)
+			.post("/food/logManualMacro")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ mealType, ...macros });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.message).toBe("Manual entry logged");
+
+		// Verify that the UserDay, UserDayMeal, FoodItem, MealItem, and Food are created
+		const userDay = await UserDay.findOne({ userID: user._id });
+		expect(userDay).toBeTruthy();
+
+		const userDayMeal = await UserDayMeal.findOne({
+			userDayID: userDay._id,
+			name: mealType,
+		});
+		expect(userDayMeal).toBeTruthy();
+
+		const foodItem = await FoodItem.findOne({ foodID: { $ne: null } });
+		expect(foodItem).toBeTruthy();
+
+		const mealItem = await MealItem.findOne({
+			foodItemID: foodItem._id,
+			userDayMealID: userDayMeal._id,
+		});
+		expect(mealItem).toBeTruthy();
+
+		const manualFood = await Food.findById(foodItem.foodID);
+		expect(manualFood).toBeTruthy();
+		expect(manualFood.calories).toBe(macros.calories);
+		expect(manualFood.protein).toBe(macros.protein);
+		expect(manualFood.carbs).toBe(macros.carbs);
+		expect(manualFood.fat).toBe(macros.fat);
+	});
+
+	it("should log a manual macro entry with the defaults", async () => {
+		const mealType = "lunch";
+		const macros = {
+			calories: 0,
+			protein: 0,
+			carbs: 0,
+			fat: 0,
+		};
+
+		const response = await request(app)
+			.post("/food/logManualMacro")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ mealType, });
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.message).toBe("Manual entry logged");
+
+		// Verify that the UserDay, UserDayMeal, FoodItem, MealItem, and Food are created
+		const userDay = await UserDay.findOne({ userID: user._id });
+		expect(userDay).toBeTruthy();
+
+		const userDayMeal = await UserDayMeal.findOne({
+			userDayID: userDay._id,
+			name: mealType,
+		});
+		expect(userDayMeal).toBeTruthy();
+
+		const foodItem = await FoodItem.findOne({ foodID: { $ne: null } });
+		expect(foodItem).toBeTruthy();
+
+		const mealItem = await MealItem.findOne({
+			foodItemID: foodItem._id,
+			userDayMealID: userDayMeal._id,
+		});
+		expect(mealItem).toBeTruthy();
+
+		const manualFood = await Food.findById(foodItem.foodID);
+		expect(manualFood).toBeTruthy();
+		expect(manualFood.calories).toBe(macros.calories);
+		expect(manualFood.protein).toBe(macros.protein);
+		expect(manualFood.carbs).toBe(macros.carbs);
+		expect(manualFood.fat).toBe(macros.fat);
+	});
+
+	it("should return 500 in case of a database error", async () => {
+		jest.spyOn(Food.prototype, "save").mockImplementationOnce(() =>
+			Promise.reject(new Error("Database error"))
+		);
+		const mealType = "lunch";
+		const macros = {
+			calories: 250,
+			protein: 10,
+			carbs: 30,
+			fat: 15,
+		};
+
+		const response = await request(app)
+			.post("/food/logManualMacro")
+			.set("Authorization", `Bearer ${token}`)
+			.send({ mealType, ...macros });
+
+		expect(response.statusCode).toBe(500);
+	});
+});
+
+describe("POST /addIngredientToDatabase", () => {
+	let user, token;
+
+	beforeAll(async () => {
+		await mongoose.connect(process.env.DATABASE_URL);
+	});
+
+	beforeEach(async () => {
+		user = await User.create({
+			forename: "John",
+			surname: "Doe",
+			username: "johndoe",
+			email: "johndoe@example.com",
+			password: "securepassword",
+			dateOfBirth: new Date(1990, 0, 1),
+		});
+		token = jwt.sign({ userId: user._id }, process.env.SECRET_KEY);
+	});
+
+	afterEach(async () => {
+		await clearDatabase();
+	});
+
+	afterAll(async () => {
+		await mongoose.connection.close();
+	});
+
+	test("should add a new ingredient to the database", async () => {
+		const newIngredient = {
+			name: "Blueberry",
+			group: "Fruits",
+			calories: 57,
+			water: 84,
+			protein: 0.7,
+			carbs: 14.5,
+			fat: 0.3,
+			sugar: 10,
+			sodium: 1,
+			fibre: 2.4,
+		};
+
+		const response = await request(app)
+			.post("/food/addIngredientToDatabase")
+			.set("Authorization", `Bearer ${token}`)
+			.send(newIngredient);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.message).toBe("Food added");
+
+		// Verify the ingredient was saved in the database
+		const ingredient = await Food.findOne({ name: "Blueberry" });
+		expect(ingredient).toBeTruthy();
+		for (const key in newIngredient) {
+			expect(ingredient[key]).toBe(newIngredient[key]);
+		}
+	});
+
+	test("should add a new ingredient to the database with defaults", async () => {
+		const newIngredient = {
+			name: "Blueberry",
+			group: "Fruits",
+		};
+
+		const response = await request(app)
+			.post("/food/addIngredientToDatabase")
+			.set("Authorization", `Bearer ${token}`)
+			.send(newIngredient);
+
+		expect(response.statusCode).toBe(200);
+		expect(response.body.message).toBe("Food added");
+
+		// Verify the ingredient was saved in the database
+		const ingredient = await Food.findOne({ name: "Blueberry" });
+		expect(ingredient).toBeTruthy();
+		expect(ingredient.group).toBe("Fruits");
+		for (const key in newIngredient) {
+			if (key !== "group" && key !== "name")
+			expect(ingredient[key]).toBe(0);
+		}
+	});
+
+	test("should return 500 if there is an error saving the food item", async () => {
+		const newIngredient = {
+			name: "Blueberry",
+			group: "Fruits",
+			calories: 57,
+			water: 84,
+			protein: 0.7,
+			carbs: 14.5,
+			fat: 0.3,
+			sugar: 10,
+			sodium: 1,
+			fibre: 2.4,
+		};
+
+		// Mock the save function to simulate a failure
+		jest.spyOn(Food.prototype, "save").mockImplementationOnce(() =>
+			Promise.reject(new Error("Database error"))
+		);
+
+		const response = await request(app)
+			.post("/food/addIngredientToDatabase")
+			.set("Authorization", `Bearer ${token}`)
+			.send(newIngredient);
+
+		expect(response.statusCode).toBe(500);
+		expect(response.body.error).toContain("Database error");
+
+		// Verify that the food was not saved
+		const ingredient = await Food.findOne({ name: "Blueberry" });
+		expect(ingredient).toBeNull();
+
+		jest.restoreAllMocks();
+	});
+});
