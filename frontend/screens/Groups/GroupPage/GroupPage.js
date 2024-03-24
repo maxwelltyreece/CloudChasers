@@ -49,10 +49,11 @@ const Message = ({ title, text, sender }) => (
 
 function GroupPage({ route, navigation }) {
     const { community, isAdmin } = route.params;
-    const { getCommunityPosts, getPendingRequests } = useCommunity();
+    const { getCommunityPosts, getPendingRequests, getCommunityDetails } = useCommunity();
     const [messages, setMessages] = useState([]);
     const [requestsCount, setRequestsCount] = useState(0);
     const [loading, setLoading] = useState(false);
+    const [newDescription, setNewDescription] = useState('');
 
     useFocusEffect(
         React.useCallback(() => {
@@ -64,6 +65,16 @@ function GroupPage({ route, navigation }) {
                 }
                 const posts = await getCommunityPosts(community.id);
                 setMessages(posts);
+
+                console.log('Community ID:', community.id);
+                try {
+                    const communityDetails = await getCommunityDetails(community.id);
+                    console.log('Community details:', communityDetails.data.community);
+                    setNewDescription(communityDetails.data.community.description);
+                } catch (error) {
+                    console.error('Error fetching community details:', error);
+                }
+
                 setLoading(false);
             };
 
@@ -71,6 +82,7 @@ function GroupPage({ route, navigation }) {
 
             return () => {
                 setMessages([]);
+                setNewDescription(''); // Reset the description when the page is left
             };
         }, [community.id, getPendingRequests, getCommunityPosts, isAdmin])
     );
@@ -117,7 +129,7 @@ function GroupPage({ route, navigation }) {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : -300}
         >
-            <Text style={styles.description}>{community.description}</Text>
+            <Text style={styles.description}>{newDescription}</Text>
             <View style={styles.divider} />
             <View style={styles.feedContainer}>
                 <FlatList
