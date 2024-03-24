@@ -5,7 +5,9 @@ import RecipeBox from '../../../components/RecipeBox';
 import { styles } from './styles';
 import { useCommunity } from '../../../contexts/CommunityContext';
 
-function GroupRecipes({ communityId }) {
+function GroupRecipes({ route }) {
+    const { community } = route.params;
+    console.log('id', community.id);
     const { getCommunityRecipes } = useCommunity();
     const [search, setSearch] = useState('');
     const [recipes, setRecipes] = useState([]); 
@@ -16,7 +18,7 @@ function GroupRecipes({ communityId }) {
 
     useEffect(() => {
         const fetchRecipes = async () => {
-            const fetchedRecipes = await getCommunityRecipes(communityId);
+            const fetchedRecipes = await getCommunityRecipes(community.id);
             console.log('fetchedRecipes:', fetchedRecipes);
         
             if (Array.isArray(fetchedRecipes.data)) {
@@ -33,7 +35,7 @@ function GroupRecipes({ communityId }) {
         };
 
         fetchRecipes();
-    }, [getCommunityRecipes, communityId]);
+    }, [getCommunityRecipes, community.id]);
 
     const filteredRecipes = recipes.filter(recipe =>
         recipe.title && recipe.title.toLowerCase().includes(search.toLowerCase())

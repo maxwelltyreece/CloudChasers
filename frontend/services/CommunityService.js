@@ -257,15 +257,20 @@ export async function getPendingRequests(communityId) {
 }
 
 export async function getCommunityRecipes(communityId) {
-    const token = await AsyncStorage.getItem('token');
-    const response = await axios.get(`http://${LocalIP}:3000/food/getCommunityRecipes`, {
-        params: {
-            communityId: communityId
-        },
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+    try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.get(`http://${LocalIP}:3000/food/getCommunityRecipes`, {
+            params: {
+                communityId: communityId
+            },
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
 
-    return response.data;
+        return response.data;
+    } catch (error) {
+        console.error('Error getting community recipes:', error);
+        throw error;
+    }
 }
