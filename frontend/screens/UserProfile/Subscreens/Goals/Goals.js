@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     },
     currentGoalInfoTitle: {
         fontFamily: 'Montserrat_700Bold',
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
     },
     currentGoalInfoText: {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat_500Medium',
         textAlign: 'center',
         color: 'white',
-        fontSize: 16,
+        fontSize: 15,
         alignSelf: 'center',
     },
 });

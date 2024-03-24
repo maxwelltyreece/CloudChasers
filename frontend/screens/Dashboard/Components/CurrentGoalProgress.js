@@ -2,7 +2,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Animated, Pressable, ScrollView
+	View, Text, StyleSheet, Animated, Pressable, ScrollView, Platform
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useReminders } from '../../../contexts/RemindersContext';
@@ -13,7 +13,7 @@ import moment from 'moment';
 const styles = StyleSheet.create({
 	progressBarComponentContainer: {
 		justifyContent: 'center',
-		marginTop: '1%',
+		marginTop: '0.8%',
 		borderRadius: 15,
 		width: '100%',
 		height: '40%',
@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
 	},
 	remindersScrolView: {
 		width: '100%',
-		height: '60%',
-		marginBottom: 6,
+		height: Platform.OS === 'android' ? '60%' : '61%',
+		marginBottom: 5,
 	},
 	reminderItem: {
 		marginBottom: '2%',

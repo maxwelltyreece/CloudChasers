@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
 		alignContent: 'center',
 		alignItems: 'center',
 		justifyContent: 'center',
-		paddingTop: '14%',
+		paddingTop: '7%',
 
 	},
 	aboutContainer: {

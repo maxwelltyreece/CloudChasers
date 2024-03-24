@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    top: -10,
   },
   keyContainer: {
     flexDirection: 'row',
@@ -109,8 +110,9 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
   return (
     <View style={styles.container}>
       <CircularProgressBase
+        style = {{transform: [{ rotate: '180deg' }]}}
         value={isNaN(progressValues.calories) ? 0 : progressValues.calories}
-        radius={145}
+        radius={135}
         activeStrokeColor={colorScheme.calories}
         inActiveStrokeColor={colorScheme.calories}
         inActiveStrokeOpacity={0.2}
@@ -119,8 +121,9 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
         displayValue={false}
       >
         <CircularProgressBase
+          style = {{transform: [{ rotate: '180deg' }]}}
           value={isNaN(progressValues.protein) ? 0 : progressValues.protein}
-          radius={115}
+          radius={105}
           activeStrokeColor={colorScheme.protein}
           inActiveStrokeColor={colorScheme.protein}
           inActiveStrokeOpacity={0.2}
@@ -129,8 +132,9 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
           displayValue={false}
         >
           <CircularProgressBase
+            style = {{transform: [{ rotate: '180deg' }]}}
             value={isNaN(progressValues.water) ? 0 : progressValues.water}
-            radius={85}
+            radius={75}
             activeStrokeColor={colorScheme.water}
             inActiveStrokeColor={colorScheme.water}
             inActiveStrokeOpacity={0.2}

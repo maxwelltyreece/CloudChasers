@@ -82,9 +82,15 @@ const styles = StyleSheet.create({
 		fontFamily: 'Montserrat_500Medium',
 		fontSize: 16,
 		fontWeight: '500',
-		marginTop: 4,
+		marginTop: 3.2,
 		left: 2,
 		marginLeft: 4,
+	},
+	noLogText: {
+		textAlign: 'center', 
+		left: '18%',
+		fontSize: 14,
+		fontFamily: 'Montserrat_500Medium',
 	},
 });
 
@@ -105,16 +111,34 @@ function RecentLog({ streak, userLogStats }) {
 			{userLogStats ? (
 				<View style={styles.innerRecentLogContainer}>
 
-					<Text style={styles.recentLogMealTypeText}>
-						{(latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)) ?? 'N/A'}
-					</Text>
+					{(latestUserDayMeal && latestUserDayMeal.name) ?
+						(
+							<Text style={styles.recentLogMealTypeText}>
+								{latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)}
+							</Text>
 
-					<Text style={styles.recentLogCaloriesText}>Calories:</Text>
-					<Text style={styles.logInfoMeasurementText}>{macros.calories ?? 0} kcal</Text>
+						) : (
+
+							<Text numberOfLines={2} style={styles.noLogText}>
+								No log details{'\n'}available yet.
+							</Text>
+						)
+					}
+
+
+					{(macros && macros.calories) ? (
+						<View>
+							<Text style={styles.recentLogCaloriesText}>Calories:{' '}</Text>
+							<Text style={styles.logInfoMeasurementText}>{macros.calories.toFixed(0) ?? 0} kcal</Text>
+						</View>
+					) : null}
+
 				</View>
 			) : (
 				<View style={styles.innerRecentLogContainer}>
-					<Text numberOfLines={2} style={{ textAlign: 'center' }}>No log details available yet.</Text>
+					<Text numberOfLines={2} style={styles.noLogText}>
+						No log details{'\n'}available yet.
+					</Text>
 				</View>
 			)}
 		</View>

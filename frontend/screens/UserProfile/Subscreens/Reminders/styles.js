@@ -185,7 +185,7 @@ export const styles = StyleSheet.create({
     cancelButton: {
         marginTop: 20,
         marginHorizontal: 10,
-        width: '32%',
+        width: '34%',
         backgroundColor: 'white',
         paddingVertical: 10,
         paddingHorizontal: 20,
