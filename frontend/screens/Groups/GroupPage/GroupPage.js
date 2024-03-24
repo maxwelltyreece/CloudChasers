@@ -50,24 +50,26 @@ const Message = ({ title, text, sender }) => (
 // }
 
 function GroupPage({ route, navigation }) {
-    const { community } = route.params;
-    const { getCommunityPosts } = useCommunity();
-    const [messages, setMessages] = useState([]);
+    const { community, isAdmin, posts } = route.params;
+    const { getPendingRequests } = useCommunity();
+    const [messages, setMessages] = useState(posts || []);
+    const [requestsCount, setRequestsCount] = useState(0);
 
     useFocusEffect(
         React.useCallback(() => {
-            const fetchPosts = async () => {
-                console.log(community.id)
-                const posts = await getCommunityPosts(community.id);
-                setMessages(posts);
+            const fetchRequests = async () => {
+                if (isAdmin) {
+                    const requests = await getPendingRequests(community.id);
+                    setRequestsCount(requests.data.length);
+                }
             };
 
-            fetchPosts();
-            console.log('Fetching posts for community:', community.id);
-            console.log(messages);
+            fetchRequests();
 
-            return () => setMessages([]); // optional cleanup function
-        }, [community.id, getCommunityPosts])
+            return () => {
+                setMessages([]);
+            };
+        }, [community.id, getPendingRequests, isAdmin])
     );
 
     useEffect(() => {
@@ -80,13 +82,23 @@ function GroupPage({ route, navigation }) {
             headerTitleAlign: 'left',
             headerRight: () => (
                 <View style={styles.headerButton}>
-                    <IconButton iconName="book" onPress={() => navigation.navigate('GroupSettings', { community })} />
+                    <IconButton iconName="book" onPress={() => navigation.navigate('GroupRecipes', { community })} />
+                    {isAdmin && (
+                        <View style={styles.mailButton}>
+                            <IconButton iconName="mail" onPress={() => navigation.navigate('PendingRequests', { community })} />
+                            {requestsCount > 0 && (
+                                <View style={styles.requestsCount}>
+                                    <Text style={styles.requestsCountText}>{requestsCount}</Text>
+                                </View>
+                            )}
+                        </View>
+                    )}
                     <IconButton iconName="settings" onPress={() => navigation.navigate('GroupSettings', { community })} />
                     <IconButton iconName="users" onPress={() => navigation.navigate('GroupMembers', { community })} />
                 </View>
             ),
         });
-    }, [navigation, community]);
+    }, [navigation, community, isAdmin, requestsCount]);
 
     return (
         <KeyboardAvoidingView
@@ -110,7 +122,6 @@ function GroupPage({ route, navigation }) {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        console.log("Passing communityId:", community.id);
                         navigation.navigate('NewPostPage', { communityId: community.id });
                     }}                
                 >
@@ -143,6 +154,8 @@ GroupPage.propTypes = {
                 name: PropTypes.string,
                 description: PropTypes.string,
             }),
+            isAdmin: PropTypes.bool,
+            posts: PropTypes.arrayOf(PropTypes.object),
         }),
     }).isRequired,
     navigation: PropTypes.shape({

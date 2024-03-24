@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	View, Text, FlatList, TextInput, TouchableOpacity, Pressable,
 } from 'react-native';
@@ -11,7 +11,7 @@ import { styles } from './styles';
 function Groups() {
 	const [searchText, setSearchText] = useState('');
 	const navigation = useNavigation();
-	const { userCommunities } = useCommunity();
+	const { userCommunities, getUserRole, getCommunityPosts } = useCommunity();
 
 	function NewGroupButton() {
 		return (
@@ -32,10 +32,12 @@ function Groups() {
 	// eslint-disable-next-line max-len
     const filteredData = (userCommunities || []).filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
 
-	const handlePress = (item) => {
-		navigation.navigate('Group', { screen: 'GroupPage', params: { community: item } });
-	};
-    
+    const handlePress = async (item) => {
+        const role = await getUserRole(item.id);
+        const isAdmin = role === 'admin';
+        const posts = await getCommunityPosts(item.id);
+        navigation.navigate('Group', { screen: 'GroupPage', params: { community: item, isAdmin, posts } });
+    };
 	return (
         <View style={styles.container}>
             <View style={styles.titleContainer}>
