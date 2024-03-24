@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
     container: {
         flexGrow: 1,
-        paddingHorizontal: 20,
+        paddingHorizontal: '5%',
         backgroundColor: '#F0F0F0',
         paddingVertical: 25,
-        paddingTop: 100,
-        justifyContent: 'center',
+        paddingTop: 10,
+        
     },
     label: {
         marginBottom: 5,
@@ -30,11 +30,11 @@ export const styles = StyleSheet.create({
     searchInput: {
         fontFamily: 'Montserrat_600SemiBold',
         height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        paddingLeft: 10,
         marginBottom: 20,
         borderRadius: 10,
+        width: '80%',
+        padding: 10,
+        backgroundColor: '#FFFFFF'
     },
     pickerContainer: {
         marginBottom: 20,
@@ -55,5 +55,22 @@ export const styles = StyleSheet.create({
     },
     selectedItem: {
         backgroundColor: 'pink',
+    },
+    dropdownContainer: {
+        position: 'absolute',
+        top: 60,
+        left: '5%',
+        width: '81%',
+        zIndex: 1,
+        fontFamily: 'Montserrat_600SemiBold',
+    },
+    dropdown: {
+        backgroundColor: 'white',
+        borderRadius: 5,
+        fontFamily: 'Montserrat_600SemiBold',
+        fontSize: 20,
+    },
+    item: {
+        padding: 10,
     },
 });

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import NewFoodModal from '../../components/NewFoodModal';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView} from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { styles } from './styles';
+import NewFoodModal from '../../components/NewFoodModal';
 import { useFoodLog } from '../../contexts/FoodLogContext';
 
 function FoodEntry() {
@@ -9,51 +10,84 @@ function FoodEntry() {
     const [searchQuery, setSearchQuery] = useState('');
     const [foods, setFoods] = useState([]);
     const [selectedFood, setSelectedFood] = useState(null);
-    const [weight, setWeight] = useState(''); // New state for the weight
-    const { searchFoods, getAllUserRecipes, logDatabaseFood } = useFoodLog(); // Add logDatabaseFood to the context
+    const [weight, setWeight] = useState(''); 
+    const [shouldRenderScrollView, setRenderScrollView] = useState(true); // New boolean state
+    const { searchFoods, getAllUserRecipes, logDatabaseFood } = useFoodLog(); 
+
+    useEffect(() => {
+        if (searchQuery.length >= 3) {
+            // Call the function to update the list
+            searchFood();
+        }
+    }, [searchQuery]);
+
+    useEffect(() => {
+        // Check if foods array has only one item
+        if (foods.length === 1) {
+            setRenderScrollView(false);
+        } else {
+            setRenderScrollView(true);
+        }
+    }, [foods]);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
     const searchFood = async () => {
-        setFoods([]);
         const response = await searchFoods({ name: searchQuery });
         setFoods(response.data.foods);
     };
 
-    const renderItem = ({ item }) => (
+    const renderItem = (item) => (
         <TouchableOpacity 
-            style={[styles.item, selectedFood && item.name === selectedFood.name ? styles.selectedItem : {}]} 
-            onPress={() => setSelectedFood(item)}
+            style={styles.item} 
+            onPress={() => {
+                setSelectedFood(item);
+                setSearchQuery(item.name); // Update searchQuery to reflect selected food
+            }}
+            key={item._id}
         >
-            <Text style={styles.title}>{item.name}</Text>
+            <Text>{item.name}</Text>
         </TouchableOpacity>
     );
 
     return (
         <View style={styles.container}>
-            <TextInput
-                style={styles.searchInput}
-                placeholder="Search..."
-                onChangeText={text => setSearchQuery(text)}
-            />
+            
+            <View style={{flexDirection: 'row',}}>
+                <TextInput
+                    style={styles.searchInput}
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChangeText={text => setSearchQuery(text)}
+                />
 
-            <TextInput // New TextInput for the weight entry
+                <TouchableOpacity style={{ ...styles.button, marginLeft: 25, alignSelf: 'flex-start', height: 40, paddingVertical: 8, backgroundColor: '#F0F0F0'}} onPress={toggleModal}>
+                    <FontAwesome5 name='plus' color='#c7c7c7' size={20}/>
+                </TouchableOpacity>
+            </View>
+            
+
+
+
+            {searchQuery.length >= 3 && shouldRenderScrollView && ( // Render scroll view only if shouldRenderScrollView is true
+                <View style={styles.dropdownContainer}>
+                    <ScrollView style={styles.dropdown} maxHeight={200}>
+                        {foods.map(renderItem)}
+                    </ScrollView>
+                </View>
+            )}
+
+            <TextInput 
                 style={styles.searchInput}
                 placeholder="Weight..."
                 onChangeText={text => setWeight(text)}
-                keyboardType="numeric" // Ensure the user can only enter numbers
+                keyboardType="numeric"
             />
-
+           
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={toggleModal}>
-                    <Text style={styles.buttonText}>New Food</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.button} onPress={searchFood}>
-                    <Text style={styles.buttonText}>Search</Text>
-                </TouchableOpacity>
+                
 
                 <TouchableOpacity 
                     style={styles.button} 
@@ -70,12 +104,6 @@ function FoodEntry() {
                     <Text style={styles.buttonText}>Submit</Text>
                 </TouchableOpacity>
             </View>
-
-            <FlatList
-                data={foods}
-                renderItem={renderItem}
-                keyExtractor={item => item._id}
-            />
 
             <NewFoodModal
                 isVisible={isModalVisible}
