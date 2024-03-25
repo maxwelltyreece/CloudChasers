@@ -60,7 +60,6 @@ export const styles = StyleSheet.create({
         width: 200,
         height: 200,
         borderRadius: 100,
-        backgroundColor: 'cyan',
         borderColor: '#F0F0F0',
         borderWidth: 10,
     },
@@ -73,7 +72,5 @@ export const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         borderColor: '#F0F0F0',
         borderWidth: 10,
-        
-        
     },
 });
