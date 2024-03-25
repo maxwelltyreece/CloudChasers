@@ -328,7 +328,7 @@ const addItemsToRecipe = async (recipeID, token) => {
                 )}
               />
             ) : (
-              <Text style={{fontFamily: 'Montserrat_400Regular'}}>No foods added.</Text>
+              <Text style={{paddingVertical: 10, fontFamily: 'Montserrat_400Regular'}}>No foods added</Text>
             )}
           </View>
         </KeyboardAvoidingView>

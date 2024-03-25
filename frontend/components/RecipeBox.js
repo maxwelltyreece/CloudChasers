@@ -7,7 +7,10 @@ import {
   Modal,
   Pressable,
   TouchableOpacity,
+  ScrollView,
   onClose,
+  Alert,
+  TouchableWithoutFeedback,
 } from "react-native";
 import proptypes from "prop-types";
 import { LocalIP } from "../screens/IPIndex";
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding: 10,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -65,8 +68,8 @@ const styles = StyleSheet.create({
     height: 400,
   },
   modalImage: {
-    width: 250,
-    height: 250,
+    width: 200,
+    height: 200,
     resizeMode: "contain",
   },
   text: {
@@ -77,9 +80,8 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 14,
-    fontFamily: "Montserrat_300",
+    fontFamily: "Montserrat_300Light",
     color: "black",
-   
   },
   closeText: {
     fontSize: 24,
@@ -95,9 +97,39 @@ const styles = StyleSheet.create({
   },
 });
 
-function RecipeBox({ id, title, description }) {
+function RecipeBox({ id, title, description, onDelete }) {
   const [modalVisible, setModalVisible] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
+
+  const deleteRecipe = () => {
+    Alert.alert(
+      "Delete Recipe",
+      "Are you sure you want to delete this recipe?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "OK",
+          onPress: () => {
+            axios
+              .delete(`http://${LocalIP}:3000/food/deleteRecipe`, {
+                data: { recipeID: id },
+              })
+              .then((response) => {
+                console.log("DELETE RESPOSNE: " + response.data);
+                onDelete(id);
+                setModalVisible(false);
+              })
+              .catch((error) =>
+                console.error("Failed to delete recipe", error)
+              );
+          },
+        },
+      ]
+    );
+  };
 
   useEffect(() => {
     const handleImageRetrieval = () => {
@@ -106,7 +138,6 @@ function RecipeBox({ id, title, description }) {
           `http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`
         )
         .then((response) => {
-          console.log("RESPONSE", response.data.url);
           setImageUrl(response.data.url);
         })
         .catch((error) => console.error("Failed to fetch image URL", error));
@@ -114,8 +145,6 @@ function RecipeBox({ id, title, description }) {
 
     handleImageRetrieval();
   }, [id]);
-
-  console.log("URL", imageUrl);
 
   return (
     <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
@@ -132,20 +161,26 @@ function RecipeBox({ id, title, description }) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Pressable
-              onPress={() => setModalVisible(false)}
-              style={styles.closeButton}
-            >
-              <Text style={styles.closeText}>X</Text>
-            </Pressable>
-
-            <Text style={styles.text}>{title}</Text>
-            <Text style={styles.description}>{description}</Text>
-            <Image source={{ uri: imageUrl }} style={styles.modalImage} />
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View style={styles.centeredView}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <View style={styles.modalView}>
+                <Image source={{ uri: imageUrl }} style={styles.modalImage} />
+                <Text style={styles.text}>{title}</Text>
+                <Text style={styles.description}>{description}</Text>
+                <Text style={styles.ingredientsTitle}>Ingredients</Text>
+                {/* Planning on having ingredients here...
+                <ScrollView style={styles.text}>
+                   {ingredients.map((ingredient, index) => (
+                    <Text key={index} style={styles.ingredient}>
+                      {ingredient.name}: {ingredient.weight}
+                    </Text>
+                  ))} }
+                   </ScrollView> */}
+              </View>
+            </TouchableWithoutFeedback>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </Pressable>
   );

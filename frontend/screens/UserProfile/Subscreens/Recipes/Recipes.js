@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect  } from "react";
 import { View, FlatList, Text, Pressable } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
@@ -24,14 +24,13 @@ function NewRecipeButton({ onPress }) {
 function Recipes() {
   const { getAllUserRecipes } = useFoodLog();
   const [search, setSearch] = useState("");
-  const { getPictureURL } = useFoodLog();
   const [recipes, setRecipes] = useState([]);
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigation = useNavigation();
 
   const updateSearch = (search) => {
     setSearch(search);
   };
+
 
   useEffect(() => {
     const fetchRecipes = async () => {
