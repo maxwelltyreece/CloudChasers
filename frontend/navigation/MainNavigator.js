@@ -59,11 +59,6 @@ export default function MainNavigator() {
 				component={GroupNavigator}
 				options={{ headerShown: false }}
 			/>
-			  <Stack.Screen
-                name="Recipes"
-                component={RecipeNavigator}
-                options={{ headerShown: false }}
-            />
 			<Stack.Screen 
 				name='FoodEntry' 
 				component={FoodEntry} 
