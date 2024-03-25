@@ -239,17 +239,16 @@ exports.logRecipeFood = async (req, res) => {
 };
 
 exports.getCommunityRecipes = async (req, res) => {
-	const { communityID } = req.query;
-	try {
-		const recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });
-		if (recipes.length === 0) {
-			return res.status(400).send({ message: 'No recipes found' });
-		}
-		return res.status(200).json({ message: 'Recipes found', data: recipes });
-	}
-	catch (error) {
-		return res.status(400).json({ error: error.toString() });
-	}
+    const { communityID } = req.query;
+    console.log('Requested community ID:', communityID); // Log the requested community ID
+
+    try {
+        let recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });
+        return res.status(200).json({ message: 'Recipes found', data: recipes });
+    } catch (error) {
+        console.error('Error in getCommunityRecipes:', error); // Log any errors
+        return res.status(400).json({ error: error.toString() });
+    }
 }
 
 exports.getRecipeWeight = async (req, res) => {

@@ -44,7 +44,6 @@ export const styles = StyleSheet.create({
       padding: 10,
       // marginBottom: '5%',
     },
-  
     slide: {
       justifyContent: 'center',
       alignItems: 'center',

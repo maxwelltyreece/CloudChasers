@@ -15,17 +15,20 @@ export const styles = StyleSheet.create({
         width: '100%',
     },
     remindersDescription: {
+        fontFamily: 'Montserrat_600SemiBold',
         fontSize: 18,
         fontWeight: '600',
         marginBottom: 8,
         maxWidth: '92%',
     },
     reminderInfoTitle: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 14,
         fontWeight: 'bold',
         color: '#FF815E',
     },
     reminderInfoText: {
+        fontFamily: 'Montserrat_400Regular',
         fontSize: 14,
         marginRight: 10,
         marginBottom: 2,
@@ -48,11 +51,13 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
     },
     addReminderButtonText: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 18,
         fontWeight: 'bold',
         color: '#FFFFFF',
     },
     addReminderButton: {
+        fontFamily: 'Montserrat_700Bold',
         color: '#FFFFFF',
         backgroundColor: '#FF815E',
         margin: 30,
@@ -96,6 +101,7 @@ export const styles = StyleSheet.create({
         borderTopEndRadius: 28,
     },
     descriptionInput: {
+        fontFamily: 'Montserrat_500Medium',
         width: '100%',
         margin: 20,
         marginBottom: 35,
@@ -108,6 +114,7 @@ export const styles = StyleSheet.create({
         fontWeight: '500',
     },
     selectFreqTitle: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 18,
         fontWeight: 'bold',
         alignSelf: 'flex-start',
@@ -136,11 +143,13 @@ export const styles = StyleSheet.create({
         color: 'white',
     },
     selectTimeTitle: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 20,
         fontWeight: 'bold',
         alignSelf: 'center',
     },
     currentTimeSelectedText: {
+        fontFamily: 'Montserrat_600SemiBold',
         fontSize: 22,
         fontWeight: '600',
         marginVertical: 10,
@@ -164,11 +173,11 @@ export const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     timePickerButtonText: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 18,
         fontWeight: 'bold',
     },
     actionButtonsSection: {
-        // flexDirection: 'row',
         justifyContent: 'space-evenly',
         width: '100%',
         margin: 25,
@@ -176,12 +185,11 @@ export const styles = StyleSheet.create({
     cancelButton: {
         marginTop: 20,
         marginHorizontal: 10,
-        width: '32%',
+        width: '34%',
         backgroundColor: 'white',
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 20,
-        // overflow: 'hidden',
         alignSelf: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -201,7 +209,6 @@ export const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 20,
-        // overflow: 'hidden',
         alignSelf: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -214,15 +221,16 @@ export const styles = StyleSheet.create({
         opacity: 0.9,
     },
     cancelButtonText: {
+        fontFamily: 'Montserrat_500Medium',
         fontSize: 15,
         color: 'red',
         alignSelf: 'center',
     },
     addButtonText: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 18,
         fontWeight: 'bold',
         alignSelf: 'center',
-        // color: 'white',
     },
     reminderActionButtonsSection: {
         flexDirection: 'row',
@@ -262,11 +270,13 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     backButtonText: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 14,
         fontWeight: 'bold',
         textAlign: 'center',
     },
     actionButtonText: {
+        fontFamily: 'Montserrat_700Bold',
         color: 'white',
         fontSize: 14,
         fontWeight: 'bold',
@@ -279,6 +289,7 @@ export const styles = StyleSheet.create({
         marginLeft: 20,
     },
     threeDotsText: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 21,
         fontWeight: '900',
     },

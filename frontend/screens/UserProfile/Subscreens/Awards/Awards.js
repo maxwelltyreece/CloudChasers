@@ -1,13 +1,12 @@
 import React, { useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, } from 'react-native';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
 import { useFocusEffect } from '@react-navigation/native';
 import { useAwards } from '../../../../contexts/AwardsContext';
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
     height: '100%',
@@ -20,6 +19,7 @@ const styles = StyleSheet.create({
     height: '10%',
   },
   title: {
+    fontFamily: 'Montserrat_700Bold',
     fontSize: 28,
     fontWeight: 'bold',
     alignSelf: 'flex-start',
@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   legendText: {
+    fontFamily: 'Montserrat_500Medium',
     fontSize: 14,
   },
   awardsListContainer: {
@@ -56,7 +57,8 @@ const styles = StyleSheet.create({
     marginBottom: '8%',
 
   },
-  awardDescription: {
+  awardName: {
+    fontFamily: 'Montserrat_700Bold',
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -74,6 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'orange',
   },
   iconText: {
+    fontFamily: 'Montserrat_700Bold',
     color: 'white',
     fontWeight: 'bold',
   },
@@ -105,10 +108,6 @@ const Awards = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      {/* <View style={styles.header}>
-        <Text style={styles.title}>Available Awards:</Text>
-      </View> */}
-      {/* Legend Section */}
       <View style={styles.legendContainer}>
         <Icon name="check-circle" size={24} color="green" style={styles.legendIcon} />
         <Text style={styles.legendText}>Completed</Text>
@@ -118,12 +117,12 @@ const Awards = () => {
       <View style={styles.awardsListContainer}>
         {awards.map((award) => (
           <View key={award._id} style={styles.awardItem}>
-            <Text style={styles.awardDescription} numberOfLines={1}>{award.description}</Text>
-            <View style={styles.doneCheckSection}>
+            <Text style={styles.awardName} numberOfLines={1}>{award.name}</Text>
+            <View style={styles.doneCheckSection}  testID='icon-section'>
               {isAwardCompleted(award._id) ? (
-                <Icon name="check-circle" size={24} color="green" />
+                <Icon name="check-circle" size={24} color="green" testID='completed-icon'/>
               ) : (
-                <Icon name="circle" size={24} color="#FF815E" />
+                <Icon name="circle" size={24} color="#FF815E" testID='not-completed-icon'/>
               )}
             </View>
           </View>
@@ -134,10 +133,10 @@ const Awards = () => {
 };
 
 
-Awards.proptypes = {
-  awards: proptypes.array.isRequired,
-  addAward: proptypes.func.isRequired,
-  removeAward: proptypes.func.isRequired,
+Awards.propTypes = {
+  awards: PropTypes.array.isRequired,
+  addAward: PropTypes.func.isRequired,
+  removeAward: PropTypes.func.isRequired,
 };
 
 export default Awards;
