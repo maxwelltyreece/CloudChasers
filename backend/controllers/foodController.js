@@ -158,7 +158,7 @@ exports.logDatabaseWater = async (req, res) => {
 		console.log("Transaction started");
 
 		const food = await Food.find({ name: "Water" });
-		if (!food) {
+		if (food.length === 0) {
 			return res.status(404).send({ error: "Water not found" });
 		}
 		console.log("Food:", food);
