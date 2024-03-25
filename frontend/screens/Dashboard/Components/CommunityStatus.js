@@ -130,6 +130,7 @@ function CommunityUpdates({ communities }) {
 							key={index}
 							onPress={() => handlePress(community)}
 							style={styles.updateContainer}
+							testID='community-widget'
 						>
 
 							<View style={styles.communityItemHeader}>
