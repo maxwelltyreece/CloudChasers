@@ -100,8 +100,6 @@ exports.logDatabaseFood = async (req, res) => {
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 
-
-
 		// Check if user day exists, if not create it
 		const newUserDay = await createUserDay(user._id, today);
 		console.log("User Day:", newUserDay);
@@ -133,6 +131,72 @@ exports.logDatabaseFood = async (req, res) => {
 		console.log("Session ended");
 
 		return res.status(200).send({ message: "Food logged" });
+	} catch (error) {
+		console.log("Error:", error);
+		if (session) {
+			session.abortTransaction();
+			console.log("Transaction aborted");
+
+			session.endSession();
+			console.log("Session ended");
+		}
+		return res.status(501).send({ error: "test" + error.toString() });
+	}
+};
+
+exports.logDatabaseWater = async (req, res) => {
+	const { mealType = "Water", weight } = req.body;
+	let session;
+	try {
+		const user = req.user;
+		console.log("User:", user);
+
+		session = await mongoose.startSession();
+		console.log("Session started");
+
+		session.startTransaction();
+		console.log("Transaction started");
+
+		const food = await Food.find({ name: "Water" });
+		if (!food) {
+			return res.status(404).send({ error: "Water not found" });
+		}
+		console.log("Food:", food);
+
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		// Check if user day exists, if not create it
+		const newUserDay = await createUserDay(user._id, today);
+		console.log("User Day:", newUserDay);
+
+		// Check if user day meal exists, if not create it
+		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
+		console.log("User Day Meal:", newUserDayMeal);
+
+		const newFoodItem = new FoodItem({
+			foodID: food._id,
+			weight,
+		});
+		await newFoodItem.save();
+		console.log("New Water Item saved");
+
+		const mealItem = new MealItem({
+			name: food.name,
+			foodItemID: newFoodItem._id,
+			receipeID: null,
+			userDayMealID: newUserDayMeal._id,
+		});
+		await mealItem.save();
+		console.log("Meal Item saved");
+
+		await session.commitTransaction();
+		console.log("Transaction committed");
+
+		session.endSession();
+		console.log("Session ended");
+
+		return res.status(200).send({ message: "Water logged" });
 	} catch (error) {
 		console.log("Error:", error);
 		if (session) {
