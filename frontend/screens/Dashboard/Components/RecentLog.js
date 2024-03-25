@@ -115,7 +115,7 @@ function RecentLog({ streak, userLogStats }) {
 
 					{(latestUserDayMeal && latestUserDayMeal.name) ?
 						(
-							<Text style={styles.recentLogMealTypeText}>
+							<Text style={styles.recentLogMealTypeText} numberOfLines={1}>
 								{latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)}
 							</Text>
 

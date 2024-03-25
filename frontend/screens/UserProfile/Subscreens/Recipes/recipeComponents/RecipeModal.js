@@ -101,6 +101,7 @@ return (
               <TextInput
                 style={styles.input}
                 placeholder="Name of Recipe"
+                placeholderTextColor={'gray'}
                 onChangeText={(text) => setRecipeName(text)}
                 value={recipeName}
                 returnKeyType="done"
@@ -110,6 +111,7 @@ return (
               <TextInput
                 style={[styles.input, styles.inputDescription]}
                 placeholder="Description"
+                placeholderTextColor={'gray'}
                 multiline={true}
                 returnKeyType="done"
                 blurOnSubmit={true}
