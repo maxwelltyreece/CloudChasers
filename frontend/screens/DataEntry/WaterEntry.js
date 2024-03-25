@@ -1,13 +1,41 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import { Alert, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import globalStyles from '../../styles/global';
 import { styles } from './styles';
+import { useFoodLog } from '../../contexts/FoodLogContext';
+import { useNavigation } from '@react-navigation/native';
 
 function WaterEntry() {
     const [waterAmount, setWaterAmount] = useState('');
-
+    const { logWater } = useFoodLog();
+    const navigation = useNavigation();
     const handleWaterEntry = () => {
-        console.log('Water amount entered:', waterAmount);
+        if (!waterAmount) {
+            Alert.alert('Error', 'Please fill all fields');
+            return;
+        }
+        console.log('Logging water:', waterAmount);
+        logWater({ weight: waterAmount });
+        console.log('Water logged');
+        Alert.alert(
+            'Water Logged',
+            'Want to log more water?',
+            [
+                {
+                    text: 'Yes',
+                    onPress: () => {
+                        setWaterAmount('');
+                    }
+                },
+                {
+                    text: 'No',
+                    onPress: () => {
+                        navigation.goBack();
+                    }
+                },
+            ],
+            { cancelable: false },
+        );
     };
 
     return (

@@ -87,6 +87,12 @@ export const deleteIngredientFromRecipe = async (data) => {
     return await axios.delete(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
+export const logWater = async (data) => {
+    const token = await AsyncStorage.getItem('token');
+    console.log('Logging water SERVICE:', data);
+    return await axios.post(`http://${LocalIP}:3000/food/logWater`, data, { headers: { Authorization: `Bearer ${token}` } });
+}
+
 export const getPictureURL = async (RecipeId) => {
     console.log('RecipeID:' + RecipeId);
     const token = await AsyncStorage.getItem('token');
