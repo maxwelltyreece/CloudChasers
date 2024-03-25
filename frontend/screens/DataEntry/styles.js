@@ -74,12 +74,12 @@ export const styles = StyleSheet.create({
         padding: 10,
     },
     semiCircle: {
-        width: width * 2,
-        height: width * 2,
+        width: width * 2.25,
+        height: width * 2.25,
         borderRadius: width,
         position: 'absolute',
         top: -width,
-        left: -width / 2,
+        left: -(width * 2.25 - width) / 2,
         backgroundColor: '#F0F0F0',
     },
 });
