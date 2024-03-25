@@ -33,7 +33,10 @@ function RegisterDetails({ navigation, route }) {
         .then((response) => {
             if(response.data.data) {
                 AsyncStorage.setItem('token', response.data.data);
-                navigation.navigate('Main');
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Main' }],
+                });
             } else {
                 console.error('Login failed');
             }
