@@ -62,6 +62,7 @@ export const styles = StyleSheet.create({
         borderRadius: 100,
         borderColor: '#F0F0F0',
         borderWidth: 10,
+        backgroundColor: '#FFFFFF',
     },
     semiCircle: {
         width: width * 2.25,
