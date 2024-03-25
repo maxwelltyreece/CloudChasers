@@ -8,8 +8,9 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "eslint . --ext .js",
-    "test": "jest --coverage --runInBand",
-    "test sequence": "jest --coverage "
+    "test": "jest --coverage --verbose",
+    "test sequence": "jest --coverage ",
+    "test:env": "NODE_ENV=test jest"
   },
   "jest": {
     "preset": "jest-expo",
