@@ -16,9 +16,6 @@
     "setupFilesAfterEnv": [
       "<rootDir>/jest.setup.js"
     ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/backend/__tests__/"
-    ],
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-picker|@react-native-community|@react-native-picker/picker|@react-native-async-storage/async-storage)/"
     ]
@@ -64,6 +61,7 @@
     "react-native-dropdown-autocomplete": "^1.0.18",
     "react-native-elements": "^3.4.3",
     "react-native-feather": "^1.1.2",
+    "react-native-gesture-handler": "~2.12.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.12.1",

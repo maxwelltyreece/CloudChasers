@@ -27,13 +27,15 @@ function UserProfile() {
 	}, []);
     
     useEffect(() => {
-        const fetchImageLink = async () => {
-            const link = await getImageLink();
-            setImageLink(link);
-        };
-
-        fetchImageLink();
-    }, [userDetails]);
+		if (userDetails && userDetails._id) {
+			const fetchImageLink = async () => {
+				const link = await getImageLink();
+				setImageLink(link);
+			};
+	
+			fetchImageLink();
+		}
+	}, [userDetails]);
 
 	const renderItem = ({ item }) => (
 		<TouchableOpacity activeOpacity={0.3} onPress={item.handler}>
@@ -78,6 +80,11 @@ function UserProfile() {
 		},
 	];
 
+	let currentUsername = '';
+	if (userDetails && userDetails.username) {
+		currentUsername = userDetails.username;
+	}
+
 	return (
 		<View style={styles.container}>
             <View style={styles.semiCircle}/>
@@ -90,7 +97,7 @@ function UserProfile() {
             ) : (
                 <ActivityIndicator size="large" color="#0000ff" />
             )}
-            {isLoggedIn && userDetails && <Text style={styles.username}>{userDetails.username}</Text>}			
+            {isLoggedIn && userDetails && <Text style={styles.username}>{currentUsername}</Text>}			
             <FlatList
 				style={styles.subPageList}
 				data={UserProfileOptions}
