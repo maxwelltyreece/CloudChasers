@@ -13,9 +13,10 @@ export const styles = StyleSheet.create({
         
     },
     label: {
-        marginBottom: 5,
-        fontFamily: 'Montserrat_700Bold',
-        fontSize: 14,
+        marginVertical: 5,
+        fontSize: 15,
+        alignSelf: 'center',
+
     },
     button: {
         backgroundColor: '#FF815E',
@@ -46,9 +47,8 @@ export const styles = StyleSheet.create({
     picker: {
         height: 200,
         marginBottom: 10,
-        borderColor: '#c7c7c7',
-        borderWidth: 5,
         borderRadius: 30,
+        backgroundColor: '#FFFFFF'
     },
     buttonContainer: {
         justifyContent: 'space-evenly',

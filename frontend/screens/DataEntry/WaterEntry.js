@@ -13,8 +13,9 @@ function WaterEntry() {
 
   return (
     <View style={styles.container}>
-      <Text style={[globalStyles.medium, styles.label]}>Enter Amount of Water Drank (in cups):</Text>
-      <View style={styles.pickerContainer}>
+        <View style={styles.semiCircle} />
+        <Text style={[globalStyles.medium, styles.label]}>How many cups have you drank?</Text>
+        <View style={styles.pickerContainer}>
         <Picker
           style={styles.picker}
           selectedValue={waterAmount}
@@ -24,8 +25,8 @@ function WaterEntry() {
             <Picker.Item key={index} label={`${index} `} value={index.toString()} />
           ))}
         </Picker>
-      </View>
-      <TouchableOpacity style={styles.button} onPress={handleWaterEntry}>
+        </View>
+        <TouchableOpacity style={styles.button} onPress={handleWaterEntry}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </View>
