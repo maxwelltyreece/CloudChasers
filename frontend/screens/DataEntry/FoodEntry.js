@@ -62,6 +62,8 @@ function FoodEntry() {
                         placeholder="Search..."
                         value={searchQuery}
                         onChangeText={text => setSearchQuery(text)}
+                        blurOnSubmit
+                        returnKeyType='search'
                     />
 
                     <TouchableOpacity style={{ ...styles.button, marginLeft: 5, alignSelf: 'flex-start', height: 40, paddingVertical: 8, backgroundColor: '#F0F0F0'}} onPress={toggleModal}>

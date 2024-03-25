@@ -24,9 +24,10 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		fontFamily: 'Montserrat_700Bold',
-		fontSize: 22,
+		fontSize: 20,
 		fontWeight: 'bold',
-		marginBottom: 12,
+		marginTop: 2.5,
+		marginBottom: 10,
 	},
 	updateContainer: {
 		backgroundColor: '#FFFFFF',
