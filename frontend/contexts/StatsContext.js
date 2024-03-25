@@ -26,7 +26,11 @@ export function StatsProvider({ children }) {
     try {
       const response = await statsService.getStreaks(date);
       if (response.streak !== undefined) {
-        setStreak(response.streak);
+        if (response.streak === 0) {
+          setStreak(1);
+        } else {
+          setStreak(response.streak);
+        }
       }
     } catch (error) {
       console.error('Error fetching streak CONTEXT:', error);

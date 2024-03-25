@@ -76,7 +76,6 @@ function Dashboard() {
 	}, []);
 
 	const updateDashboardData = async () => {
-        console.log(userDetails)
 		try {
 			await checkUserLogin();
 

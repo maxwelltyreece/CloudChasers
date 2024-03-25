@@ -83,6 +83,7 @@ async function seed() {
 	const newUserDayMeal = new User_Day_Meals({
 		name: 'Breakfast',
 		userDayID: await newUserDay._id,
+		order: 1,
 	});
 	await newUserDayMeal.save();
 	console.log('User_Day_Meals Seeded');

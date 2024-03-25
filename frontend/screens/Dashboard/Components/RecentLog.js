@@ -87,14 +87,16 @@ const styles = StyleSheet.create({
 		marginLeft: 4,
 	},
 	noLogText: {
-		textAlign: 'center', 
-		left: '18%',
+		textAlign: 'center',
+		alignSelf: 'center', 
 		fontSize: 14,
 		fontFamily: 'Montserrat_500Medium',
 	},
 });
 
 function RecentLog({ streak, userLogStats }) {
+
+	console.log('userLogStats:', userLogStats);
 
 	const {
 		latestUserDayMeal = {},

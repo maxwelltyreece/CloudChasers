@@ -8,19 +8,17 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "eslint . --ext .js",
-    "test": "jest --coverage --runInBand",
-    "test sequence": "jest --coverage "
+    "test": "jest --coverage --verbose",
+    "test sequence": "jest --coverage ",
+    "test:env": "NODE_ENV=test jest"
   },
   "jest": {
     "preset": "jest-expo",
     "setupFilesAfterEnv": [
       "<rootDir>/jest.setup.js"
     ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/backend/__tests__/"
-    ],
     "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-picker|@react-native-community|@react-native-picker/picker|@react-native-async-storage/async-storage)/"
+        "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-community|@react-native-async-storage/async-storage)/"
     ]
   },
   "dependencies": {
@@ -28,7 +26,6 @@
     "@expo/vector-icons": "^13.0.0",
     "@react-native-async-storage/async-storage": "1.18.2",
     "@react-native-community/datetimepicker": "7.2.0",
-    "@react-native-picker/picker": "2.4.10",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.16",
     "@react-navigation/native-stack": "^6.9.17",
@@ -64,10 +61,10 @@
     "react-native-dropdown-autocomplete": "^1.0.18",
     "react-native-elements": "^3.4.3",
     "react-native-feather": "^1.1.2",
+    "react-native-gesture-handler": "~2.12.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.12.1",
-    "react-native-picker": "^4.3.7",
     "react-native-reanimated": "~3.3.0",
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",

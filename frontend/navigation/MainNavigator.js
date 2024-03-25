@@ -67,7 +67,7 @@ export default function MainNavigator() {
 			<Stack.Screen 
 				name='WaterEntry' 
 				component={WaterEntry} 
-				options={{...commonOptions, title:'Water'}} />
+				options={{...commonOptions, title:''}} />
 			<Stack.Screen
 				name="User"
 				component={UserNavigator}

@@ -58,29 +58,6 @@ const styles = StyleSheet.create({
 	contentText: {
 		fontSize: 15,
 	},
-	closeButtonText: {
-		fontFamily: 'Montserrat_700Bold',
-		color: '#FFFFFF',
-		marginTop: 20,
-		backgroundColor: '#007BFF',
-		paddingVertical: 10,
-		paddingHorizontal: 20,
-		borderRadius: 20,
-		overflow: 'hidden',
-		alignSelf: 'center',
-		textTransform: 'uppercase',
-		fontWeight: 'bold',
-		letterSpacing: 1,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5,
-		opacity: 0.9,
-	},
 });
 
 function LearnMore() {

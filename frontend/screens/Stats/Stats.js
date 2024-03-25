@@ -14,6 +14,7 @@ import { useStats } from '../../contexts/StatsContext';
 import { useGoals } from '../../contexts/GoalsContext';
 
 import { styles } from './styles';
+import SettingsButton from '../../components/SettingsButton.js';
 
 
 const Stats = () => {
@@ -107,6 +108,7 @@ const Stats = () => {
       <View style={styles.progressBarContainer}>
         <NutritionProgress todayStats={todayStats} goals={goals} />
       </View>
+
 
     </SafeAreaView>
   );

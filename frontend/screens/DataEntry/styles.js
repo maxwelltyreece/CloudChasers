@@ -13,9 +13,11 @@ export const styles = StyleSheet.create({
         
     },
     label: {
-        marginVertical: 5,
-        fontSize: 15,
+        marginVertical: 20,
+        fontSize: 18,
         alignSelf: 'center',
+        fontFamily: 'Montserrat_600SemiBold',
+        paddingBottom: 20,
 
     },
     button: {
@@ -81,5 +83,19 @@ export const styles = StyleSheet.create({
         top: -width,
         left: -(width * 2.25 - width) / 2,
         backgroundColor: '#F0F0F0',
+    },
+    inputContainer: {
+        width: '60%',
+        marginBottom: 30,
+        borderRadius: 10,
+        backgroundColor: '#FFFFFF',
+        alignSelf: 'center',
+    },
+    input: {
+        textAlign: 'center',
+        height: 80,
+        fontSize: 24,
+        paddingHorizontal: 10,
+        fontFamily: 'Montserrat_600SemiBold',
     },
 });

@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
 
 NewFoodModal.propTypes = {
   isVisible: proptypes.bool.isRequired,
-  onBackdropPress: proptypes.func.isRequired,
+  onBackdropPress: proptypes.func,
   toggleModal: proptypes.func.isRequired,
 };
 

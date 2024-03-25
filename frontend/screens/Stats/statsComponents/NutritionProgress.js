@@ -152,10 +152,8 @@ const NutritionProgress = ({ todayStats, goals }) => {
 		}
 	});
 
-	console.log('CURRENT MACRO VALUES:', currentMacroValues);
-
 	Object.keys(currentMacroValues).forEach(key => {
-		currentMacroValues[key] = currentMacroValues[key].toFixed(0);
+		currentMacroValues[key] = parseInt(currentMacroValues[key].toFixed(0));
 	});
 
     // Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
