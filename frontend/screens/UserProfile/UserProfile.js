@@ -49,7 +49,7 @@ function UserProfile() {
             const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
                 params: {
                     folderName: 'Profile_Pictures',
-                    id: userDetails._id,
+                    id: userDetails ? userDetails._id : null,
                 },
             });
             return response.data.url;
@@ -89,8 +89,8 @@ function UserProfile() {
             ) : (
                 <ActivityIndicator size="large" color="#0000ff" />
             )}
-			{isLoggedIn && <Text style={styles.username}>{userDetails.username}</Text>}
-			<FlatList
+            {isLoggedIn && userDetails && <Text style={styles.username}>{userDetails.username}</Text>}			
+            <FlatList
 				style={styles.subPageList}
 				data={UserProfileOptions}
 				renderItem={renderItem}
