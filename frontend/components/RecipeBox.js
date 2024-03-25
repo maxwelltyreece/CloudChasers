@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import proptypes from "prop-types";
 import { LocalIP } from "../screens/IPIndex";
-import axios from 'axios';
+import axios from "axios";
 
 const styles = StyleSheet.create({
   box: {
@@ -75,6 +75,12 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Montserrat_700Bold",
   },
+  description: {
+    fontSize: 14,
+    fontFamily: "Montserrat_300",
+    color: "black",
+   
+  },
   closeText: {
     fontSize: 24,
     color: "black",
@@ -89,27 +95,27 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
-
-function RecipeBox({ id, title }) {
+function RecipeBox({ id, title, description }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null); 
-  
+  const [imageUrl, setImageUrl] = useState(null);
+
   useEffect(() => {
     const handleImageRetrieval = () => {
-      axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`)
-      .then((response) => {
-        console.log("RESPONSE", response.data.url);
-        setImageUrl(response.data.url); 
-      })
-      .catch((error) => console.error("Failed to fetch image URL", error));
+      axios
+        .get(
+          `http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`
+        )
+        .then((response) => {
+          console.log("RESPONSE", response.data.url);
+          setImageUrl(response.data.url);
+        })
+        .catch((error) => console.error("Failed to fetch image URL", error));
     };
 
     handleImageRetrieval();
-  }, [id]); 
+  }, [id]);
 
-  console.log("URL", imageUrl)
+  console.log("URL", imageUrl);
 
   return (
     <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
@@ -136,6 +142,7 @@ function RecipeBox({ id, title }) {
             </Pressable>
 
             <Text style={styles.text}>{title}</Text>
+            <Text style={styles.description}>{description}</Text>
             <Image source={{ uri: imageUrl }} style={styles.modalImage} />
           </View>
         </View>
@@ -148,5 +155,6 @@ export default RecipeBox;
 
 RecipeBox.propTypes = {
   title: proptypes.string.isRequired,
+  description: proptypes.string,
   image: proptypes.string,
 };

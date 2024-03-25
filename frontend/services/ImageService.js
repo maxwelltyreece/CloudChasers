@@ -20,7 +20,7 @@ export const pickImage = async () => {
         quality: 0.3,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
         return result.uri;
     }
 };

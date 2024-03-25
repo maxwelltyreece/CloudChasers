@@ -5,7 +5,6 @@ import { Feather } from "@expo/vector-icons";
 import RecipeBox from "../../../../components/RecipeBox";
 import { styles } from "./styles";
 import { useFoodLog } from "../../../../contexts/FoodLogContext";
-import RecipeModal from "./recipeComponents/RecipeModal";
 import NewRecipe from "./NewRecipe/NewRecipe";
 import { useNavigation } from '@react-navigation/native';
 
@@ -36,12 +35,14 @@ function Recipes() {
 
   useEffect(() => {
     const fetchRecipes = async () => {
+
       const fetchedRecipes = await getAllUserRecipes();
       console.log("fetchedRecipes:", fetchedRecipes);
 
       const mappedRecipes = fetchedRecipes.map((recipe) => ({
         id: recipe._id,
         title: recipe.name,
+        description: recipe.description,
         image: recipe.image,
       }));
       setRecipes(mappedRecipes);
@@ -56,9 +57,7 @@ function Recipes() {
       recipe.title && recipe.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  const toggleRecipeModal = () => {
-    setIsModalVisible(!isModalVisible);
-  };
+ 
 
   return (
     <View style={styles.container}>
@@ -92,6 +91,7 @@ function Recipes() {
             <RecipeBox
               id = {item.id}
               title={item.title}
+              description={item.description}
               image={item.image}
               style={styles.box}
             />
@@ -104,7 +104,7 @@ function Recipes() {
       ) : (
         <Text style={styles.noRecipesText}>No recipes currently</Text>
       )}
-      <RecipeModal isVisible={isModalVisible} onClose={toggleRecipeModal} />
+      
     </View>
   );
 }
