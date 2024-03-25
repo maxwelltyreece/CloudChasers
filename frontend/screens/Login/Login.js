@@ -22,11 +22,12 @@ function Login({ navigation }) {
 			password,
 		})
 			.then((response) => {
-			// handle success
 				if(response.data.data) {
 					AsyncStorage.setItem('token', response.data.data);
-					// Navigate to Dashboard
-					navigation.navigate('Main');
+					navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Main' }],
+                    });
 				} else {
                     Alert.alert('Login failed', 'Please try again');
 				}
