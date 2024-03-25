@@ -18,8 +18,6 @@ const JoinRequest = require('../models/request');
 
 
 // TODO
-// - Test that a user can leave a community
-// - Test that an admin can remove a member from a community
 // - Test that a user can make a post in a community
 // - Test that a user can retrieve all posts in a community
 //
@@ -30,6 +28,8 @@ const JoinRequest = require('../models/request');
 // - Test that an admin can retrieve all pending join requests
 // - Test that an admin can accept a join request
 // - Test that an admin can deny a join request
+// - Test that a user can leave a community
+// - Test that an admin can remove a member from a community
 
 describe("Community Management", () => {
 	let user, community, token;
@@ -970,6 +970,127 @@ describe("Community Management", () => {
 			});
 		});
 
+	});
+
+	describe("Leaving communities", () => {
+		describe("User leaving a community", () => {
+			it("should allow a user to leave a community", async () => {
+				const response = await request(app)
+					.put("/community/leave")
+					.set("Authorization", `Bearer ${token2}`)
+					.send({ communityId: community._id.toString() });
+
+				expect(response.statusCode).toBe(200);
+				expect(response.body).toHaveProperty("message", "Community left");
+
+				const communityUser = await CommunityUser.findOne({ communityID: community._id, userID: user2._id });
+				expect(communityUser).toBeNull();
+			});
+			it("should return an error if the user is not a member of the community", async () => {
+				const response = await request(app)
+					.put("/community/leave")
+					.set("Authorization", `Bearer ${token3}`)
+					.send({ communityId: community._id.toString() });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("message", "User is not a member of the community");
+			});
+			it("should return an error if the community does not exist", async () => {
+				const fakeCommunityId = new mongoose.Types.ObjectId();
+
+				const response = await request(app)
+					.put("/community/leave")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: fakeCommunityId.toString() });
+
+				expect(response.statusCode).toBe(404);
+				expect(response.body).toHaveProperty("message", "Community not found");
+			});
+			it("should prevent an admin from leaving the community", async () => {
+				const response = await request(app)
+					.put("/community/leave")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: community._id.toString() });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("message", "User is an admin of the community");
+			});
+
+			it("should handle errors during community leave", async () => {
+				// Mock the deleteOne function to throw an error
+				jest.spyOn(CommunityUser, "deleteOne").mockImplementationOnce(() => {
+					throw new Error("Database error");
+				});
+
+				const response = await request(app)
+					.put("/community/leave")
+					.set("Authorization", `Bearer ${token2}`)
+					.send({ communityId: community._id.toString() });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("error");
+				expect(response.body.error).toBe("Error: Database error");
+			});
+		});
+		describe("Admin removing a member from a community", () => {
+			it("should allow an admin to remove a member from the community", async () => {
+				const response = await request(app)
+					.put("/community/removeMember")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: community._id.toString(), userId: user2._id.toString() });
+
+				expect(response.statusCode).toBe(200);
+				expect(response.body).toHaveProperty("success", true);
+				expect(response.body).toHaveProperty("message", "Member removed");
+
+				const communityUser = await CommunityUser.findOne({ communityID: community._id, userID: user2._id });
+				expect(communityUser).toBeNull();
+			});
+			it("should return an error if the user is not a member of the community", async () => {
+				const response = await request(app)
+					.put("/community/removeMember")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: community._id.toString(), userId: user3._id.toString() });
+
+				expect(response.statusCode).toBe(404);
+				expect(response.body).toHaveProperty("message", "Member not found");
+			});
+			it("should return an error if the user is not an admin", async () => {
+				const response = await request(app)
+					.put("/community/removeMember")
+					.set("Authorization", `Bearer ${token2}`)
+					.send({ communityId: community._id.toString(), userId: user2._id.toString() });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("message", "User is not an admin of the community");
+			});
+			it("should return an error if the community does not exist", async () => {
+				const fakeCommunityId = new mongoose.Types.ObjectId();
+
+				const response = await request(app)
+					.put("/community/removeMember")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: fakeCommunityId.toString(), userId: user2._id.toString() });
+
+				expect(response.statusCode).toBe(404);
+				expect(response.body).toHaveProperty("message", "Community not found");
+			});
+			it("should handle errors during member removal", async () => {
+				// Mock the deleteOne function to throw an error
+				jest.spyOn(CommunityUser, "deleteOne").mockImplementationOnce(() => {
+					throw new Error("Database error");
+				});
+
+				const response = await request(app)
+					.put("/community/removeMember")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: community._id.toString(), userId: user2._id.toString() });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("error");
+				expect(response.body.error).toBe("Error: Database error");
+			});
+		});
 	});
 
 
