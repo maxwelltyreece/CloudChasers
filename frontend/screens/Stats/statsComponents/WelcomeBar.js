@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   welcomeText: {
+    fontFamily: 'Montserrat_700Bold',
     fontSize: 35,
     fontWeight: 'bold',
     color: '#333',

@@ -209,7 +209,7 @@ exports.denyRequest = async (req, res) => {
 };
 // Should this be restricted to community members?
 exports.getCommunityDetails = async (req, res) => {
-    const { communityId } = req.body;
+    const { communityId } = req.query;
     try {
         const user = req.user;
         // Get community

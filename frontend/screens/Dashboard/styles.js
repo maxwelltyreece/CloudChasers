@@ -4,13 +4,11 @@ const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
     dashboardHeader: {
-        // flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
         height: '10%',
-        // backgroundColor: 'blue',
     },
     notificationBadgeContainer: {
         flex: 1,
@@ -22,10 +20,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        // flexWrap: 'nowrap',
-        // backgroundColor: '#F0F0F0',
         top: '4%',
-        // backgroundColor: 'purple',
         zIndex: 1,
     },
     loadingContainer: {
@@ -39,7 +34,6 @@ export const styles = StyleSheet.create({
         alignItems: 'flex-start',
         flexDirection: 'row',
         marginVertical: 10,
-        // backgroundColor: '#F0F0F0',
         width: '95%',
         height: '30%',
         marginBottom: '14%',
@@ -53,7 +47,6 @@ export const styles = StyleSheet.create({
         height: '100%',
     },
     rightComponentContainer: {
-        // flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: '1%',
@@ -66,12 +59,9 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row',
-        // marginVertical: 10,
-        // backgroundColor: '#F0F0F0',
         width: '100%',
         height: '25%',
         bottom: '5%',
-        // marginBottom: '15%',
     },
     semiCircle: {
         width: width * 2,

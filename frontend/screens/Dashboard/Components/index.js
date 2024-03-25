@@ -5,7 +5,6 @@
 export { default as WelcomeBar } from './WelcomeBar';
 export { default as CurrentStreak } from './CurrentStreak';
 export { default as RecentLog } from './RecentLog';
-export { default as LearnMore } from './LearnMore';
 export { default as CommunityStatus } from './CommunityStatus';
 export { default as CurrentGoalProgress } from './CurrentGoalProgress';
 export { default as AchievementsFeature } from './Achievements';

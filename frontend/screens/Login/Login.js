@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
-import { View, TextInput, Text, Pressable } from 'react-native';
+import { Alert, View, TextInput, Text, Pressable } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../IPIndex';
@@ -12,6 +12,11 @@ function Login({ navigation }) {
 	const [password, setPassword] = useState('');
 
 	const handleLogin = () => {
+        if (!username || !password) {
+            Alert.alert('Error', 'Please fill out all fields');
+            return;
+        }
+        
 		axios.post(`http://${LocalIP}:3000/login`, {
 			username,
 			password,
@@ -23,13 +28,16 @@ function Login({ navigation }) {
 					// Navigate to Dashboard
 					navigation.navigate('Main');
 				} else {
-				// Handle login failure
-					console.error('Login failed');
+                    Alert.alert('Login failed', 'Please try again');
 				}
 			})
 			.catch((error) => {
-				console.error('Error:', error);
-			});
+                if (error.response && error.response.data.message) {
+                    Alert.alert(error.response.data.message);
+                } else {
+                    console.error('Error:', error.message);
+                }
+            });
 	};
 
 	return (

@@ -6,6 +6,7 @@ import { View } from 'react-native'; // import View
 import Landing from '../screens/Landing/Landing';
 import Login from '../screens/Login/Login';
 import Register from '../screens/Register/Register';
+import SecondaryReg from '../screens/SecondaryReg/SecondaryReg';
 
 
 const Stack = createStackNavigator();
@@ -22,10 +23,10 @@ export default function AuthNavigator() {
                 name="Login"
                 component={Login}
                 options={{
-                    headerTitle: '', // hide the title
-                    headerBackTitleVisible: false, // hide the back button title
-                    headerTransparent: true, // make the header transparent
-                    headerBackImage: () => ( // custom back button image
+                    headerTitle: '',
+                    headerBackTitleVisible: false,
+                    headerTransparent: true,
+                    headerBackImage: () => (
                         <View style={{ paddingLeft: 10 }}>
                             <Feather name="chevron-left" size={40} color="white" />
                         </View>
@@ -36,10 +37,24 @@ export default function AuthNavigator() {
                 name="Register"
                 component={Register}
                 options={{
-                    headerTitle: '', // hide the title
-                    headerBackTitleVisible: false, // hide the back button title
-                    headerTransparent: true, // make the header transparent
-                    headerBackImage: () => ( // custom back button image
+                    headerTitle: '',
+                    headerBackTitleVisible: false,
+                    headerTransparent: true,
+                    headerBackImage: () => (
+                        <View style={{ paddingLeft: 10 }}>
+                            <Feather name="chevron-left" size={25} color="#6B6868" />
+                        </View>
+                    ),
+                }}
+            />
+            <Stack.Screen
+                name="SecondaryReg"
+                component={SecondaryReg}
+                options={{
+                    headerTitle: '',
+                    headerBackTitleVisible: false,
+                    headerTransparent: true,
+                    headerBackImage: () => (
                         <View style={{ paddingLeft: 10 }}>
                             <Feather name="chevron-left" size={25} color="#6B6868" />
                         </View>

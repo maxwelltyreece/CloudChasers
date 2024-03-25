@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
+    top: -10,
   },
   keyContainer: {
     flexDirection: 'row',
@@ -116,36 +117,44 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
   }, [todayStats, goals]);
 
 
+  console.log('Progress Values:', progressValues);
+  console.log('Current Macro Values:', currentMacroValues);
+  console.log('Nutrient Goals:', nutrientGoals);
+  console.log('Today Stats:', todayStats);
+
   return (
     <View style={styles.container}>
       <CircularProgressBase
+        style = {{transform: [{ rotate: '180deg' }]}}
         value={isNaN(progressValues.calories) ? 0 : progressValues.calories}
-        radius={160}
+        radius={135}
         activeStrokeColor={colorScheme.calories}
         inActiveStrokeColor={colorScheme.calories}
         inActiveStrokeOpacity={0.2}
-        activeStrokeWidth={28}
-        inActiveStrokeWidth={28}
+        activeStrokeWidth={30}
+        inActiveStrokeWidth={30}
         displayValue={false}
       >
         <CircularProgressBase
+          style = {{transform: [{ rotate: '180deg' }]}}
           value={isNaN(progressValues.protein) ? 0 : progressValues.protein}
-          radius={130}
+          radius={105}
           activeStrokeColor={colorScheme.protein}
           inActiveStrokeColor={colorScheme.protein}
           inActiveStrokeOpacity={0.2}
-          activeStrokeWidth={28}
-          inActiveStrokeWidth={28}
+          activeStrokeWidth={22}
+          inActiveStrokeWidth={22}
           displayValue={false}
         >
           <CircularProgressBase
+            style = {{transform: [{ rotate: '180deg' }]}}
             value={isNaN(progressValues.water) ? 0 : progressValues.water}
-            radius={100}
+            radius={75}
             activeStrokeColor={colorScheme.water}
             inActiveStrokeColor={colorScheme.water}
             inActiveStrokeOpacity={0.2}
-            activeStrokeWidth={28}
-            inActiveStrokeWidth={28}
+            activeStrokeWidth={15}
+            inActiveStrokeWidth={15}
             displayValue={false}
           />
         </CircularProgressBase>
