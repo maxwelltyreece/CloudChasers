@@ -8,10 +8,13 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "eslint . --ext .js",
-    "test": "jest --coverage --runInBand",
-    "test sequence": "jest --coverage "
+    "test": "jest --coverage --verbose",
+    "test sequence": "jest --coverage ",
+    "test:env": "NODE_ENV=test jest",
+    "test:update": "jest --updateSnapshot"
   },
   "jest": {
+    "testEnvironment": "node",
     "preset": "jest-expo",
     "setupFilesAfterEnv": [
       "<rootDir>/jest.setup.js"
@@ -21,6 +24,20 @@
     ],
     "transformIgnorePatterns": [
       "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-picker|@react-native-community|@react-native-picker/picker|@react-native-async-storage/async-storage)/"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "**/frontend/**",
+      "!**/node_modules/**",
+      "!**/backend/**",
+      "!**/jest.setup.js",
+      "!**/AppEntry.js",
+      "!**/jest.config.js",
+      "!**/babel.config.js",
+      "!**/coverage/**",
+      "!**/__snapshots__/**",
+      "!**/eslintrc.js",
+      "!**/logger.js"
     ]
   },
   "dependencies": {
@@ -32,7 +49,7 @@
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.16",
     "@react-navigation/native-stack": "^6.9.17",
-    "@react-navigation/stack": "^6.3.28",
+    "@react-navigation/stack": "^6.3.29",
     "axios": "^1.6.7",
     "bcrypt": "^5.1.1",
     "busboy": "^1.6.0",
@@ -64,6 +81,7 @@
     "react-native-dropdown-autocomplete": "^1.0.18",
     "react-native-elements": "^3.4.3",
     "react-native-feather": "^1.1.2",
+    "react-native-gesture-handler": "~2.12.0",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.12.1",
@@ -89,6 +107,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "jest-expo": "~49.0.0",
     "jest-fetch-mock": "^3.0.3",
     "react-native-dotenv": "^3.4.9",

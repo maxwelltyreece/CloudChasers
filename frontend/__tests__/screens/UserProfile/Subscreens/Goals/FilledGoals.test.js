@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { render, fireEvent, act, waitFor } from '@testing-library/react-native';
+import { render, act, waitFor } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Goals from '../../../../../screens/UserProfile/Subscreens/Goals/Goals';

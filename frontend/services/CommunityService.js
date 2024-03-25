@@ -104,15 +104,24 @@ export async function getUserCommunities() {
 }
 
 export async function deleteCommunity(communityId) {
-    const token = await AsyncStorage.getItem('token');
-    const response = await axios.put(`http://${LocalIP}:3000/community/delete`, { communityId }, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-    });
-
-    return response.data;
+    try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.put(`http://${LocalIP}:3000/community/delete`, { communityId }, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.status === 403) {
+            console.error('Forbidden - Not allowed to delete the community.');
+            return { success: false, message: 'Forbidden' };
+        } else {
+            console.error('An unexpected error occurred: ', error.message);
+            return { success: false, message: 'An error occurred' };
+        }
+    }
 }
 
 export async function leaveCommunity(communityId) {

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import userService from '../../services/UserService';
+import * as userService from '../../services/UserService';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../../screens/IPIndex';
@@ -46,54 +46,55 @@ describe('userService', () => {
         // Additional tests for error cases can be added here
     });
 
-    describe('editUserDetails', () => {
+    describe('userService › editUserDetails', () => {
         it('should edit user details successfully', async () => {
-            const field = 'name';
-            const newValue = 'Jane Doe';
-            AsyncStorage.getItem.mockResolvedValue(token);
             axios.put.mockResolvedValue({});
+            AsyncStorage.getItem.mockResolvedValue('test-token');
 
-            await userService.editUserDetails(field, newValue);
+            const newValues = { forename: "Jane" };
 
-            expect(axios.put).toHaveBeenCalledWith(`http://${LocalIP}:3000/updateProfile`, {
-                [field]: newValue,
-            }, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            await userService.editUserDetails(newValues);
+
+            expect(axios.put).toHaveBeenCalledWith(`http://${LocalIP}:3000/updateProfile`,
+                newValues,
+                {
+                    headers: {
+                        Authorization: `Bearer test-token`,
+                    },
+                }
+            );
         });
-
     });
+
 
     describe('fetchUserDetails Error Handling', () => {
         it('handles server error response', async () => {
-          axios.get.mockRejectedValue({ response: { status: 404, data: { message: 'User not found' } } });
-          AsyncStorage.getItem.mockResolvedValue(token);
-      
-          const result = await userService.fetchUserDetails(token);
-      
-          expect(result).toBeNull();
+            axios.get.mockRejectedValue({ response: { status: 404, data: { message: 'User not found' } } });
+            AsyncStorage.getItem.mockResolvedValue(token);
+
+            const result = await userService.fetchUserDetails(token);
+
+            expect(result).toBeNull();
         });
-      
+
         it('handles no server response', async () => {
-          axios.get.mockRejectedValue({ request: {} });
-          AsyncStorage.getItem.mockResolvedValue(token);
-      
-          const result = await userService.fetchUserDetails(token);
-      
-          expect(result).toBeNull();
+            axios.get.mockRejectedValue({ request: {} });
+            AsyncStorage.getItem.mockResolvedValue(token);
+
+            const result = await userService.fetchUserDetails(token);
+
+            expect(result).toBeNull();
         });
-      
+
         it('handles request setup errors', async () => {
-          axios.get.mockRejectedValue(new Error('Network error'));
-          AsyncStorage.getItem.mockResolvedValue(token);
-      
-          const result = await userService.fetchUserDetails(token);
-      
-          expect(result).toBeNull();
+            axios.get.mockRejectedValue(new Error('Network error'));
+            AsyncStorage.getItem.mockResolvedValue(token);
+
+            const result = await userService.fetchUserDetails(token);
+
+            expect(result).toBeNull();
         });
-      });
-      
+    });
+
 
 });

@@ -12,21 +12,21 @@ const styles = StyleSheet.create({
 		borderRadius: 100,
 		marginTop: 30,
 		padding: 16,
-		backgroundColor: '#FF815E', // Change this to your preferred color
+		backgroundColor: '#FF815E',
 		alignItems: 'center',
-		alignSelf: 'center', // Add this to center the button horizontally
+		alignSelf: 'center',
 		width: '90%',
 		shadowColor: '#000',
 		shadowOffset: {
 			width: 0,
-			height: 3, // Increase the vertical offset
+			height: 3,
 		},
-		shadowOpacity: 0.2, // Decrease the opacity
-		shadowRadius: 0, // Decrease the radius
-		elevation: 1, // Decrease the elevation
+		shadowOpacity: 0.2,
+		shadowRadius: 0,
+		elevation: 1,
 	},
 	logoutButtonText: {
-		color: '#FFFFFF', // Change this to your preferred color
+		color: '#FFFFFF',
 		fontSize: 18,
 	},
 });
@@ -55,13 +55,13 @@ function LogoutButton({ onPress }) {
 			{
 				translateY: buttonY.interpolate({
 					inputRange: [0, 1],
-					outputRange: [0, 3], // Adjust this to control the amount of vertical movement
+					outputRange: [0, 3],
 				}),
 			},
 		],
 		shadowOpacity: buttonY.interpolate({
 			inputRange: [0, 1],
-			outputRange: [0.2, 0], // Adjust this to control the shadow opacity
+			outputRange: [0.2, 0],
 		}),
 	};
 
