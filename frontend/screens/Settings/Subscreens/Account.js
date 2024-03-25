@@ -34,10 +34,10 @@ function Account({ navigation }) {
 	const { userDetails } = useUser();
 
 	const data = [
-		{ field: 'Username', value: userDetails.data.username, realName: 'username' },
-		{ field: 'First Name', value: userDetails.data.forename, realName: 'forename' },
-		{ field: 'Last Name', value: userDetails.data.surname, realName: 'surname' },
-		{ field: 'Email', value: userDetails.data.email, realName: 'email' },
+		{ field: 'Username', value: userDetails.username, realName: 'username' },
+		{ field: 'First Name', value: userDetails.forename, realName: 'forename' },
+		{ field: 'Last Name', value: userDetails.surname, realName: 'surname' },
+		{ field: 'Email', value: userDetails.email, realName: 'email' },
 	];
 
 	return (

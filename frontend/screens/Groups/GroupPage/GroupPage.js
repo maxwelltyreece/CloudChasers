@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-    View, Text, Pressable, 
+    View, Text, Pressable, ActivityIndicator,
 } from 'react-native';
 
 import { Feather } from '@expo/vector-icons';
-// import { TextInput } from 'react-native';
-// import NewPostPage from './NewPost';
 import { KeyboardAvoidingView, Platform, FlatList, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { useCommunity } from '../../../contexts/CommunityContext';
@@ -50,24 +48,43 @@ const Message = ({ title, text, sender }) => (
 // }
 
 function GroupPage({ route, navigation }) {
-    const { community } = route.params;
-    const { getCommunityPosts } = useCommunity();
+    const { community, isAdmin } = route.params;
+    const { getCommunityPosts, getPendingRequests, getCommunityDetails } = useCommunity();
     const [messages, setMessages] = useState([]);
+    const [requestsCount, setRequestsCount] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [newDescription, setNewDescription] = useState('');
 
     useFocusEffect(
         React.useCallback(() => {
-            const fetchPosts = async () => {
-                console.log(community.id)
+            const fetchRequestsAndPosts = async () => {
+                setLoading(true);
+                if (isAdmin) {
+                    const requests = await getPendingRequests(community.id);
+                    setRequestsCount(requests.data.length);
+                }
                 const posts = await getCommunityPosts(community.id);
                 setMessages(posts);
+
+                console.log('Community ID:', community.id);
+                try {
+                    const communityDetails = await getCommunityDetails(community.id);
+                    console.log('Community details:', communityDetails.data.community);
+                    setNewDescription(communityDetails.data.community.description);
+                } catch (error) {
+                    console.error('Error fetching community details:', error);
+                }
+
+                setLoading(false);
             };
 
-            fetchPosts();
-            console.log('Fetching posts for community:', community.id);
-            console.log(messages);
+            fetchRequestsAndPosts();
 
-            return () => setMessages([]); // optional cleanup function
-        }, [community.id, getCommunityPosts])
+            return () => {
+                setMessages([]);
+                setNewDescription(''); // Reset the description when the page is left
+            };
+        }, [community.id, getPendingRequests, getCommunityPosts, isAdmin])
     );
 
     useEffect(() => {
@@ -80,13 +97,31 @@ function GroupPage({ route, navigation }) {
             headerTitleAlign: 'left',
             headerRight: () => (
                 <View style={styles.headerButton}>
-                    <IconButton iconName="book" onPress={() => navigation.navigate('GroupSettings', { community })} />
+                    <IconButton iconName="book" onPress={() => navigation.navigate('GroupRecipes', { community })} />
+                    {isAdmin && (
+                        <View style={styles.mailButton}>
+                            <IconButton iconName="mail" onPress={() => navigation.navigate('PendingRequests', { community })} />
+                            {requestsCount > 0 && (
+                                <View style={styles.requestsCount}>
+                                    <Text style={styles.requestsCountText}>{requestsCount}</Text>
+                                </View>
+                            )}
+                        </View>
+                    )}
                     <IconButton iconName="settings" onPress={() => navigation.navigate('GroupSettings', { community })} />
                     <IconButton iconName="users" onPress={() => navigation.navigate('GroupMembers', { community })} />
                 </View>
             ),
         });
-    }, [navigation, community]);
+    }, [navigation, community, isAdmin, requestsCount]);
+
+    if (loading) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator testID="loading-indicator" size="large" />
+            </View>
+        );
+    }
 
     return (
         <KeyboardAvoidingView
@@ -94,7 +129,7 @@ function GroupPage({ route, navigation }) {
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : -300}
         >
-            <Text style={styles.description}>{community.description}</Text>
+            <Text style={styles.description}>{newDescription}</Text>
             <View style={styles.divider} />
             <View style={styles.feedContainer}>
                 <FlatList
@@ -110,7 +145,6 @@ function GroupPage({ route, navigation }) {
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        console.log("Passing communityId:", community.id);
                         navigation.navigate('NewPostPage', { communityId: community.id });
                     }}                
                 >
@@ -143,6 +177,8 @@ GroupPage.propTypes = {
                 name: PropTypes.string,
                 description: PropTypes.string,
             }),
+            isAdmin: PropTypes.bool,
+            posts: PropTypes.arrayOf(PropTypes.object),
         }),
     }).isRequired,
     navigation: PropTypes.shape({

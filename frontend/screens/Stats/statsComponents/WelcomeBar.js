@@ -4,7 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 const WelcomeBar = () => (
     <View style={styles.welcomeContainer}>
-      <Text style={styles.title}>Today's Statistics</Text>
+      <Text style={styles.title}>Today&apos;s Statistics</Text>
     </View>
 );
 
@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   welcomeText: {
+    fontFamily: 'Montserrat_700Bold',
     fontSize: 35,
     fontWeight: 'bold',
     color: '#333',

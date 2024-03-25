@@ -1,93 +1,152 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
-import NewFoodModal from '../../components/NewFoodModal';
+import React, { useState, useEffect } from 'react';
+import { Alert, View, Text, TextInput, TouchableOpacity, ScrollView, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { styles } from './styles';
+import NewFoodModal from '../../components/NewFoodModal';
 import { useFoodLog } from '../../contexts/FoodLogContext';
+import { useNavigation } from '@react-navigation/native';
 
 function FoodEntry() {
     const [isModalVisible, setModalVisible] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [foods, setFoods] = useState([]);
     const [selectedFood, setSelectedFood] = useState(null);
-    const [weight, setWeight] = useState(''); // New state for the weight
-    const { searchFoods, getAllUserRecipes, logDatabaseFood } = useFoodLog(); // Add logDatabaseFood to the context
+    const [weight, setWeight] = useState(''); 
+    const [shouldRenderScrollView, setRenderScrollView] = useState(true);
+    const { searchFoods, getAllUserRecipes, logDatabaseFood } = useFoodLog();
+    const [mealName, setMealName] = useState('');
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        if (searchQuery.length >= 3) {
+            searchFood();
+        }
+    }, [searchQuery]);
+
+    useEffect(() => {
+        if (foods.length === 1) {
+            setRenderScrollView(false);
+        } else {
+            setRenderScrollView(true);
+        }
+    }, [foods]);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
     const searchFood = async () => {
-        setFoods([]);
         const response = await searchFoods({ name: searchQuery });
         setFoods(response.data.foods);
     };
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity
-            style={[styles.item, selectedFood && item.name === selectedFood.name ? styles.selectedItem : {}]}
-            onPress={() => setSelectedFood(item)}
+    const renderItem = (item) => (
+        <TouchableOpacity 
+            style={styles.item} 
+            onPress={() => {
+                setSelectedFood(item);
+                setSearchQuery(item.name);
+            }}
+            key={item._id}
         >
-            <Text style={styles.title}>{item.name}</Text>
+            <Text>{item.name}</Text>
         </TouchableOpacity>
     );
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                style={styles.searchInput}
-                placeholder="Search..."
-                onChangeText={text => setSearchQuery(text)}
-            />
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.container}>
+                <View style={styles.semiCircle} />
+                <View style={{flexDirection: 'row',}}>
+                    <TextInput
+                        style={styles.searchInput}
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChangeText={text => setSearchQuery(text)}
+                        blurOnSubmit
+                        returnKeyType='search'
+                    />
 
-            <TextInput // New TextInput for the weight entry
-                style={styles.searchInput}
-                placeholder="Weight..."
-                onChangeText={text => setWeight(text)}
-                keyboardType="numeric" // Ensure the user can only enter numbers
-            />
+                    <TouchableOpacity style={{ ...styles.button, marginLeft: 5, alignSelf: 'flex-start', height: 40, paddingVertical: 8, backgroundColor: '#F0F0F0'}} onPress={toggleModal}>
+                        <FontAwesome5 name='plus' color='#c7c7c7' size={20}/>
+                    </TouchableOpacity>
 
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={toggleModal}>
-                    <Text style={styles.buttonText}>New Food</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity style={{ ...styles.button, marginLeft: 5, alignSelf: 'flex-start', height: 40, paddingVertical: 8, backgroundColor: '#F0F0F0'}}>
+                        <FontAwesome5 name='utensils' color='#c7c7c7' size={20}/>
+                    </TouchableOpacity>
+                </View>
+                {searchQuery.length >= 3 && shouldRenderScrollView && (
+                    <View style={styles.dropdownContainer}>
+                        <ScrollView style={styles.dropdown} maxHeight={200}>
+                            {foods.map(renderItem)}
+                        </ScrollView>
+                    </View>
+                )}
+                <TextInput 
+                    style={{...styles.searchInput, marginTop: 150, width: '100%'}}
+                    placeholder="Meal Name..."
+                    onChangeText={text => setMealName(text)}
+                />
+                <TextInput 
+                    style={{...styles.searchInput, marginTop: 10, width: '100%', marginBottom: 20}}
+                    placeholder="Weight in grams..."
+                    onChangeText={text => setWeight(text)}
+                    keyboardType="numeric"
+                    value={weight}
+                    returnKeyType='done'
+                />
+               
+                <View style={styles.buttonContainer}>
+                    
 
-                <TouchableOpacity style={styles.button} onPress={searchFood}>
-                    <Text style={styles.buttonText}>Search</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                    style={styles.button}
+                <TouchableOpacity 
+                    style={styles.button} 
                     onPress={async () => {
-                        try {
-                            if (selectedFood && weight) {
-                                await logDatabaseFood({
-                                    mealType: 'lunch',
-                                    foodID: selectedFood._id,
-                                    weight: parseInt(weight, 10)
-                                });
-                                console.log('Food logged successfully');
-                            }
-                        } catch (error) {
-                            console.error('Failed to log food:', error);
+                        if (!selectedFood || !weight || !mealName) { 
+                            Alert.alert('Error', 'Please fill in all fields');
+                            return;
                         }
+                        await logDatabaseFood({
+                            mealType: mealName,
+                            foodID: selectedFood._id,
+                            weight: parseInt(weight, 10)
+                        });
+                        Alert.alert(
+                            'Food Logged',
+                            'Want to add more?',
+                            [
+                                {
+                                    text: 'Yes', 
+                                    onPress: () => {
+                                        setSelectedFood(null);
+                                        setWeight('');
+                                        setSearchQuery('');
+                                    }
+                                },
+                                {
+                                    text: 'No', 
+                                    onPress: () => {
+                                        setSelectedFood(null);
+                                        setWeight('');
+                                        setSearchQuery('');
+                                        navigation.goBack();
+                                    }
+                                },
+                            ],
+                            {cancelable: false},
+                        );
                     }}
                 >
-                    <Text style={styles.buttonText}>Submit</Text>
-                </TouchableOpacity>
+                        <Text style={styles.buttonText}>Submit</Text>
+                    </TouchableOpacity>
+                </View>
+
+                <NewFoodModal
+                    isVisible={isModalVisible}
+                    toggleModal={toggleModal}
+                />
             </View>
-
-            <FlatList
-                data={foods}
-                renderItem={renderItem}
-                keyExtractor={item => item._id}
-            />
-
-            <NewFoodModal
-                isVisible={isModalVisible}
-                // onBackdropPress={toggleModal}
-                toggleModal={toggleModal}
-            />
-        </View>
+        </TouchableWithoutFeedback>
     );
 }
 

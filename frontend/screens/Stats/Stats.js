@@ -14,6 +14,7 @@ import { useStats } from '../../contexts/StatsContext';
 import { useGoals } from '../../contexts/GoalsContext';
 
 import { styles } from './styles';
+import SettingsButton from '../../components/SettingsButton.js';
 
 
 const Stats = () => {
@@ -21,9 +22,6 @@ const Stats = () => {
   const [loading, setLoading] = useState(false);
   const { todayStats, updateTodayStats } = useStats();
   const { goals, fetchGoals } = useGoals();
-
-  console.log('Today Stats: STATS', todayStats);
-  // console.log('Goals: STATS', goals);
 
   const checkUserLogin = async () => {
     try {
@@ -88,7 +86,7 @@ const Stats = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator testID='loading-indicator' size="large" />
       </View>
     );
   }
@@ -110,6 +108,7 @@ const Stats = () => {
       <View style={styles.progressBarContainer}>
         <NutritionProgress todayStats={todayStats} goals={goals} />
       </View>
+
 
     </SafeAreaView>
   );

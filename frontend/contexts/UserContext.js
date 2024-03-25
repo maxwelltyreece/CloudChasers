@@ -3,7 +3,7 @@ import React, {
 	createContext, useState, useContext, useMemo,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import userService from '../services/UserService';
+import * as userService from '../services/UserService';
 import { useCommunity } from './CommunityContext';
 import PropTypes from 'prop-types';
 
@@ -27,21 +27,22 @@ export function UserProvider({ children }) {
 	const updateUserDetails = async () => {
 		const token = await AsyncStorage.getItem('token');
 		if (!token) {
-			console.error('Token not available');
 			return;
 		}
 		const details = await userService.fetchUserDetails(token);
 		setUserDetails(details.data);
 	};
 
-	const editUserDetails = async (field, newValue) => {
-		try {
-			await userService.editUserDetails(field, newValue);
-			updateUserDetails();
-		} catch (error) {
-			console.error(error);
-		}
-	};
+    const editUserDetails = async (newValues) => {
+        console.log("New Values", newValues)
+        console.log("STARTING")
+        try {
+            await userService.editUserDetails(newValues);
+            updateUserDetails();
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
 	const logout = async (navigation) => {
         try {

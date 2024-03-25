@@ -197,7 +197,6 @@ closeButtonText: {
  button: {
    borderRadius: 20,
    padding: 10,
-   elevation: 2,
  },
  buttonClose: {
    backgroundColor: "#FF815E",
