@@ -80,6 +80,7 @@ function UserProfile() {
 
 	return (
 		<View style={styles.container}>
+            <View style={styles.semiCircle}/>
 			{imageLink ? (
                 <Image
                     source={{ uri: imageLink }}

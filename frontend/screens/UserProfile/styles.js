@@ -1,4 +1,5 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
+
 
 // import globalStyles from '../../styles/global';
 /**
@@ -8,14 +9,16 @@ import { StyleSheet } from 'react-native';
  *
  * @returns {React.Element} The rendered UserProfile screen.
  */
+
+const { width } = Dimensions.get('window');
+
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#FF815E',
         alignItems: 'center',
         justifyContent: 'center',
         paddingTop: '30%',
-        marginHorizontal: '5%',
     },
     profilePic: {
         width: 120,
@@ -26,7 +29,7 @@ export const styles = StyleSheet.create({
         fontSize: 30,
         color: '#6B6868',
         fontFamily: 'Montserrat_400Regular',
-        paddingTop: '8%',
+        paddingTop: '2%',
     },
     bio: {
         fontSize: 12,
@@ -42,10 +45,10 @@ export const styles = StyleSheet.create({
     itemButton: {
         width: '70%',
         height: 'auto',
-        backgroundColor: '#FF815E',
-        marginVertical: '2.8%',
-        borderRadius: 14,
+        marginVertical: '2%',
         alignSelf: 'center',
+        backgroundColor: '#F0F0F0',
+        borderRadius: 15,
     },
     item: {
         fontFamily: 'Montserrat_500Medium',
@@ -58,5 +61,19 @@ export const styles = StyleSheet.create({
         height: 200,
         borderRadius: 100,
         backgroundColor: 'cyan',
+        borderColor: '#F0F0F0',
+        borderWidth: 10,
+    },
+    semiCircle: {
+        width: width * 2.25,
+        height: width * 2.25,
+        borderRadius: width,
+        position: 'absolute',
+        top: 225,
+        backgroundColor: '#FFFFFF',
+        borderColor: '#F0F0F0',
+        borderWidth: 10,
+        
+        
     },
 });
