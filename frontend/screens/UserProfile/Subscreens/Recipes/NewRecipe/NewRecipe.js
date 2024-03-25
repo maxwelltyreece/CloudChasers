@@ -127,6 +127,25 @@ const NewRecipe = ({}) => {
     setSelectedFoods(selectedFoods.filter((item) => item._id !== id));
   };
 
+const addItemsToRecipe = async (recipeID, token) => {
+    for (const food of selectedFoods) {
+        const payload = {
+            recipeID: recipeID,
+            foodID: food._id,
+            weight: food.weight,
+        };
+        console.log("Payload:", payload)
+
+        try {
+            await axios.put(`http://${LocalIP}:3000/food/addItemToRecipe`, payload, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+        } catch (error) {
+            console.error("Error adding item to recipe:", error);
+        }
+    }
+};
+
   useEffect(() => {
     if (searchQuery.length >= 3) {
       searchFood();
@@ -156,6 +175,8 @@ const NewRecipe = ({}) => {
       console.log("Recipe created:", response.data.data._id);
       console.log("ALL DATA:", recipeData);
       const recipeID = response.data.data._id;
+
+        await addItemsToRecipe(recipeID, token);
 
       if (image) {
         const formData = new FormData();
