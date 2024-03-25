@@ -175,14 +175,14 @@ exports.logDatabaseWater = async (req, res) => {
 		console.log("User Day Meal:", newUserDayMeal);
 
 		const newFoodItem = new FoodItem({
-			foodID: food._id,
+			foodID: food[0]._id,
 			weight,
 		});
 		await newFoodItem.save();
 		console.log("New Water Item saved");
 
 		const mealItem = new MealItem({
-			name: food.name,
+			name: food[0].name,
 			foodItemID: newFoodItem._id,
 			receipeID: null,
 			userDayMealID: newUserDayMeal._id,
@@ -383,29 +383,21 @@ exports.getUserDayMealMacros = async (userDayMealID) => {;
 				}
 				totalWeight = foodItem.weight;
 			} else {
-				const recipeQuantity = await RecipeQuantity.findById(
-					mealItem.recipeQuantityID
-					);
-					const allRecipeItems = await RecipeItem.find({
-						recipeID: recipeQuantity.recipeID,
-				});
+				const recipeQuantity = await RecipeQuantity.findById(mealItem.recipeQuantityID);
+				const allRecipeItems = await RecipeItem.find({recipeID: recipeQuantity.recipeID,});
 
 				for (const recipeItem of allRecipeItems) {
-					const foodItem = await FoodItem.findById(
-						recipeItem.foodItemID
-					);
+					const foodItem = await FoodItem.findById(recipeItem.foodItemID);
 					const food = await Food.findById(foodItem.foodID);
 
 					for (const macro in macroTotals) {
-						macroTotals[macro] +=
-							food[macro] * (foodItem.weight / 100);
+						macroTotals[macro] += food[macro] * (foodItem.weight / 100);
 					}
 					totalWeight += foodItem.weight;
 				}
 
 				for (const macro in macroTotals) {
-					macroTotals[macro] *=
-						recipeQuantity.totalRecipeWeight / totalWeight;
+					macroTotals[macro] *= recipeQuantity.totalRecipeWeight / totalWeight;
 				}
 			}
 			for (const macro in totals) {
