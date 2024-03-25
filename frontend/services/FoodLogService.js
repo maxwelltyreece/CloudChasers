@@ -100,3 +100,14 @@ export const getPictureURL = async (RecipeId) => {
     const url =  response.data.url;
     return url;
 }
+
+export const logManualMacro = async (data) => {
+    try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.post(`http://${LocalIP}:3000/food/logManualMacro`, data, { headers: { Authorization: `Bearer ${token}` } });
+        return response;
+    } catch (error) {
+        console.error('Error logging manual macro:', error);
+        throw error; // re-throw the error so it can be handled by the calling function
+    }
+}
