@@ -33,7 +33,7 @@ async function createUserDay(userID, date) {
 		throw new Error("Failed to create UserDay: " + error.toString());
 	}
 	return newUserDay;
-};
+}
 // eslint-disable-next-line no-extra-semi
 
 async function createUserDayMeal(mealType, userDay) {
@@ -66,7 +66,7 @@ async function createUserDayMeal(mealType, userDay) {
 		throw new Error("Failed to create UserDayMeal: " + error.toString());
 	}
 	return newUserDayMeal;
-};
+}
 // eslint-disable-next-line no-extra-semi
 
 /**
@@ -326,7 +326,6 @@ exports.searchFoods = async (req, res) => {
 			page,
 			limit,
 		});
-
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}
@@ -358,23 +357,27 @@ exports.getLastLoggedFoodOrRecipe = async (req, res) => {
 
 		if (mealItems.length > 0) {
 			let macros = await this.getUserDayMealMacros(latestUserDayMeal._id);
-			return res.status(200).send({ latestUserDayMeal, mealItems, macros });
+			return res
+				.status(200)
+				.send({ latestUserDayMeal, mealItems, macros });
 		}
-		return res.status(404).send({ message: "No food or recipe logs found" });
+		return res
+			.status(404)
+			.send({ message: "No food or recipe logs found" });
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}
 };
 
-exports.getUserDayMealMacros = async (userDayMealID) => {;
+exports.getUserDayMealMacros = async (userDayMealID) => {
 	try {
 		const mealItems = await MealItem.find({ userDayMealID });
 		let totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
-		
+
 		for (const mealItem of mealItems) {
 			let macroTotals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
 			let totalWeight = 0;
-			
+
 			if (mealItem.foodItemID) {
 				const foodItem = await FoodItem.findById(mealItem.foodItemID);
 				const food = await Food.findById(foodItem.foodID);
@@ -404,12 +407,17 @@ exports.getUserDayMealMacros = async (userDayMealID) => {;
 				totals[macro] += macroTotals[macro];
 			}
 		}
-		return Math.round(totals*10) / 10;
+
+		const roundedTotals = {};
+		for (const macro in totals) {
+			roundedTotals[macro] = Math.round(totals[macro] * 10) / 10;
+		}
+		return roundedTotals;
 	} catch (error) {
 		throw new Error("Failed to get meal macros: " + error.toString());
 	}
 }
- 
+
 exports.logManualMacro = async (req, res) => {
 	const { mealType, calories = 0, protein = 0, carbs = 0, fat = 0 } = req.body;
 	let session;
@@ -471,7 +479,7 @@ exports.logManualMacro = async (req, res) => {
 		}
 		return res.status(500).send({ error: error.toString() });
 	}
-}
+};
 
 exports.addIngredientToDatabase = async (req, res) => {
 	const { name, group, calories, water, protein, carbs, fat, sugar, sodium, fibre } = req.body;
