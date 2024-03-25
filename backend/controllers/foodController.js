@@ -457,6 +457,7 @@ exports.logManualMacro = async (req, res) => {
 			protein,
 			carbs,
 			fat,
+			water: 0,
 			sugar: 0,
 			sodium: 0,
 			fibre: 0,
