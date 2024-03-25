@@ -111,7 +111,7 @@ const getNutrientIntake = async (req, res, nutrient) => {
 						recipeNutrient += food[nutrient] * (foodItem.weight / 100);
 						totalRecipeWeight += foodItem.weight;
 					}
-					totalNutrient += recipeNutrient * (recipeQuantity.quantity / totalRecipeWeight);
+					totalNutrient += recipeNutrient * (recipeQuantity.totalRecipeWeight / totalRecipeWeight);
 
 				}
 			}
