@@ -473,7 +473,7 @@ exports.makePost = async (req, res) => {
             userID: user._id,
             recipeID,
             text,
-            data: Date.now(),
+            date: Date.now(),
             title,
         });
         await newPost.save();
