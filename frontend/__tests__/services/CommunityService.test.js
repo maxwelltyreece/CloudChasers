@@ -18,7 +18,6 @@ import {
     getCommunityRecipes,
     removeMember,
 } from '../../services/CommunityService';
-import { LocalIP } from '../../screens/IPIndex';
 
 
 jest.mock('axios');

@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import Register from '../../../screens/Register/Register';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -137,10 +137,6 @@ describe('Register Screen', () => {
             const { getByText } = renderRegisterScreen();
             fireEvent.press(getByText('Create account'));
 
-            // await waitFor(() => {
-            //     expect(console.error).toHaveBeenCalledWith('Response data:', responseError.response.data);
-            //     expect(console.error).toHaveBeenCalledWith('Response status:', responseError.response.status);
-            // });
         });
 
     });

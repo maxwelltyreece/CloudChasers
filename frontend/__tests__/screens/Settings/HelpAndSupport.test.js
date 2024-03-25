@@ -3,8 +3,7 @@ import React from 'react';
 import { render, act, waitFor } from '@testing-library/react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import About from '../../../../screens/Settings/Subscreens/About';
-
+import HelpAndSupport from '../../../screens/Settings/Subscreens/HelpAndSupport';
 
 // Mock navigation
 const Stack = createStackNavigator();
@@ -33,27 +32,15 @@ describe('About Subscreen', () => {
         const { getByText } = render(
             <NavigationContainer>
                 <Stack.Navigator>
-                    <Stack.Screen name="About" component={About} />
+                    <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
                 </Stack.Navigator>
             </NavigationContainer>
         );
 
-
         await act(async () => {
-            await waitFor(() => { expect(getByText('Welcome to Gobl!')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText("You're officially a Gobler, Congrats!")).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('Gobl is a Food Logger app with the freedom to make it what you want.')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('Want to simply visualize your daily nutrient stats? ')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('Perfect! The Stats Page is for you.')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('Want to track your recipes and ingredients?')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('Great! The Recipes Page is for you.')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('Want to explore different types of foodie communities?')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText(' Fantastic! The Groups Page is for you.')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('Want to do all of the above?')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText(' Amazing! Gobl is for you.')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('We hope you enjoy using it as much as we enjoyed making it.')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('Happy Gobling!')).toBeTruthy(); });
-            await waitFor(() => { expect(getByText('- Sincerely, The Gobl Team')).toBeTruthy(); });
+            await waitFor(() => { expect(getByText('Q: How do I change my notification settings?')).toBeDefined(); });
+            await waitFor(() => { expect(getByText('A: You can change your notification settings from the \'Notifications\' section in the settings menu.')).toBeDefined(); });
+
         });
     });
 
@@ -62,7 +49,7 @@ describe('About Subscreen', () => {
         const tree = render(
             <NavigationContainer>
                 <Stack.Navigator>
-                    <Stack.Screen name="About" component={About} />
+                    <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
                 </Stack.Navigator>
             </NavigationContainer>
         ).toJSON();

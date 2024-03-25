@@ -17,36 +17,6 @@ const createGoal = async (goalData) => {
         throw error;
     }
 };
-// const createGoal = async (goalData) => {
-//     try {
-//         const token = await AsyncStorage.getItem('token');
-//         const response = await fetch(`http://${LocalIP}:3000/goals/createGoal`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 Authorization: `Bearer ${token}`,
-//             },
-//             body: JSON.stringify(goalData),
-//         });
-
-//         if (!response.ok) {
-//             console.error(`HTTP error! status: ${response.status}`);
-//             return false; // Or throw new Error(`HTTP error! status: ${response.status}`); if you prefer
-//         }
-
-//         const jsonResponse = await response.json();
-//         if (jsonResponse.success) {
-//             // console.log(jsonResponse.message);
-//             return jsonResponse; // Assuming 'success' and 'message' are part of your response schema
-//         } else {
-//             console.error(jsonResponse.message); // Handle error message from the server
-//             return false;
-//         }
-//     } catch (error) {
-//         console.error('Error creating goal:', error);
-//         return false; // Or throw error; if you prefer
-//     }
-// };
 
 
 /**
