@@ -110,7 +110,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
         <View style={styles.progressBarItem}>
             <View style={styles.labelContainer}>
                 <Text style={styles.label}>{label}</Text>
-                <Text style={styles.label}>{`${progress.toFixed(0) ?? 0} / ${max} ${unit}`}</Text>
+                <Text style={styles.label}>{`${progress ?? 0} / ${max} ${unit}`}</Text>
             </View>
             <View style={styles.progressBarContainer} onLayout={measureContainer}>
                 <Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
@@ -144,7 +144,19 @@ const NutritionProgress = ({ todayStats, goals }) => {
         fibre: 0,
     };
 
-    let currentMacroValues = { ...initialMacroValues, ...todayStats }
+    let currentMacroValues = { ...initialMacroValues };
+
+	Object.keys(todayStats).forEach(key => {
+		if (todayStats[key] !== null && todayStats[key] !== undefined) {
+			currentMacroValues[key] = todayStats[key];
+		}
+	});
+
+	console.log('CURRENT MACRO VALUES:', currentMacroValues);
+
+	Object.keys(currentMacroValues).forEach(key => {
+		currentMacroValues[key] = currentMacroValues[key].toFixed(0);
+	});
 
     // Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
     let nutrientGoals = {

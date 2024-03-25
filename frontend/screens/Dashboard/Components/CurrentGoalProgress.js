@@ -237,9 +237,11 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 
 		let finalWidth = 0;
 
-		{(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ? 
-			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0} // Still load app of error occurs and data is any data is undefined.
-		
+		{
+			(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ?
+			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0
+		} // Still load app of error occurs and data is any data is undefined.
+
 
 		Animated.timing(animatedWidth, {
 			toValue: finalWidth,
@@ -252,7 +254,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 		<View style={progressBarStyle}>
 			<View style={styles.labelContainer}>
 				<Text style={labelStyle}>{label}</Text>
-				<Text style={labelStyle}>{`${progress.toFixed(0) ?? 0} / ${max} ${unit}`}</Text>
+				<Text style={labelStyle}>{`${progress ?? 0} / ${max} ${unit}`}</Text>
 			</View>
 			<View style={styles.progressBarContainer} onLayout={measureContainer}>
 				<Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
@@ -299,17 +301,29 @@ function GoalProgressBar({ todayStats, goals }) {
 	const navigation = useNavigation();
 
 	let initialMacroValues = {
-        calories: 0,
-        water: 0,
-        fat: 0,
-        sodium: 0,
-        carbs: 0,
-        protein: 0,
-        sugar: 0,
-        fibre: 0,
-    };
+		calories: 0,
+		water: 0,
+		fat: 0,
+		sodium: 0,
+		carbs: 0,
+		protein: 0,
+		sugar: 0,
+		fibre: 0,
+	};
 
-    let currentMacroValues = { ...initialMacroValues, ...todayStats }
+	let currentMacroValues = { ...initialMacroValues };
+
+	Object.keys(todayStats).forEach(key => {
+		if (todayStats[key] !== null && todayStats[key] !== undefined) {
+			currentMacroValues[key] = todayStats[key];
+		}
+	});
+
+	console.log('CURRENT MACRO VALUES:', currentMacroValues);
+
+	Object.keys(currentMacroValues).forEach(key => {
+		currentMacroValues[key] = currentMacroValues[key].toFixed(0);
+	});
 
 	// Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
 	let nutrientGoals = {
