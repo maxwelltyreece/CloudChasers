@@ -85,7 +85,7 @@ const Stats = () => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator testID='loading-indicator' size="large" />
       </View>
     );
   }

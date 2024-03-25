@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUser } from '../../contexts/UserContext';
 import SettingsButton from '../../components/SettingsButton';
 import { styles } from './styles';
+
 function UserProfile() {
 	const navigation = useNavigation();
 	const { userDetails, updateUserDetails } = useUser();

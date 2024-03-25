@@ -397,6 +397,7 @@ function GoalProgressBar({ todayStats, goals }) {
 								<Pressable
 									style={styles.seeAllRemindersButton}
 									onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
+									testID='add-reminders-button'
 								>
 									<Text style={styles.seeAllRemindersButtonText}>Add Reminders</Text>
 								</Pressable>
@@ -407,6 +408,7 @@ function GoalProgressBar({ todayStats, goals }) {
 						<Pressable
 							style={styles.seeAllRemindersButton}
 							onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
+							testID='see-all-reminders-button'
 						>
 							<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
 						</Pressable>
