@@ -91,7 +91,7 @@ exports.joinCommunity = async (req, res) => {
             await joinRequest.save();
             return res.status(200).json({ success: true, message: 'Request to join sent' });
         }
-        else if (community.joinPrivacy === 'public') {
+        else {
             console.log('Joining community');
             // Create CommunityUser to join community
             const newCommunityUser = new CommunityUser({
