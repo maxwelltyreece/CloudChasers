@@ -30,7 +30,7 @@ export const getFood = async () => {
         return response;
     } catch (error) {
         console.error('Error fetching food:', error);
-        throw error; // re-throw the error if you want to handle it further up the call stack
+        throw error;
     }
 }
 

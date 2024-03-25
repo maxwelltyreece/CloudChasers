@@ -8,45 +8,45 @@ import { LocalIP } from '../screens/IPIndex';
  * @param {Object} goalData The data for the new goal.
  * @returns {Promise} Axios Response Promise with the created goal.
  */
-// const createGoal = async (goalData) => {
-//     try {
-//         const token = await AsyncStorage.getItem('token');
-//         return await axios.post(`http://${LocalIP}:3000/createGoal`, goalData, { headers: { Authorization: `Bearer ${token}` } });
-//     } catch (error) {
-//         console.error('Error creating goal LOL:', error);
-//         throw error;
-//     }
-// };
 const createGoal = async (goalData) => {
     try {
         const token = await AsyncStorage.getItem('token');
-        const response = await fetch(`http://${LocalIP}:3000/goals/createGoal`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(goalData),
-        });
-
-        if (!response.ok) {
-            console.error(`HTTP error! status: ${response.status}`);
-            return false; // Or throw new Error(`HTTP error! status: ${response.status}`); if you prefer
-        }
-
-        const jsonResponse = await response.json();
-        if (jsonResponse.success) {
-            // console.log(jsonResponse.message);
-            return jsonResponse; // Assuming 'success' and 'message' are part of your response schema
-        } else {
-            console.error(jsonResponse.message); // Handle error message from the server
-            return false;
-        }
+        return await axios.post(`http://${LocalIP}:3000/goals/createGoal`, goalData, { headers: { Authorization: `Bearer ${token}` } });
     } catch (error) {
         console.error('Error creating goal:', error);
-        return false; // Or throw error; if you prefer
+        throw error;
     }
 };
+// const createGoal = async (goalData) => {
+//     try {
+//         const token = await AsyncStorage.getItem('token');
+//         const response = await fetch(`http://${LocalIP}:3000/goals/createGoal`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 Authorization: `Bearer ${token}`,
+//             },
+//             body: JSON.stringify(goalData),
+//         });
+
+//         if (!response.ok) {
+//             console.error(`HTTP error! status: ${response.status}`);
+//             return false; // Or throw new Error(`HTTP error! status: ${response.status}`); if you prefer
+//         }
+
+//         const jsonResponse = await response.json();
+//         if (jsonResponse.success) {
+//             // console.log(jsonResponse.message);
+//             return jsonResponse; // Assuming 'success' and 'message' are part of your response schema
+//         } else {
+//             console.error(jsonResponse.message); // Handle error message from the server
+//             return false;
+//         }
+//     } catch (error) {
+//         console.error('Error creating goal:', error);
+//         return false; // Or throw error; if you prefer
+//     }
+// };
 
 
 /**

@@ -24,9 +24,10 @@ const styles = StyleSheet.create({
 	},
 	header: {
 		fontFamily: 'Montserrat_700Bold',
-		fontSize: 22,
+		fontSize: 20,
 		fontWeight: 'bold',
-		marginBottom: 12,
+		marginTop: 2.5,
+		marginBottom: 10,
 	},
 	updateContainer: {
 		backgroundColor: '#FFFFFF',
@@ -129,6 +130,7 @@ function CommunityUpdates({ communities }) {
 							key={index}
 							onPress={() => handlePress(community)}
 							style={styles.updateContainer}
+							testID='community-widget'
 						>
 
 							<View style={styles.communityItemHeader}>
