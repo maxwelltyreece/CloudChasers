@@ -33,7 +33,7 @@ async function createUserDay(userID, date) {
 		throw new Error("Failed to create UserDay: " + error.toString());
 	}
 	return newUserDay;
-};
+}
 // eslint-disable-next-line no-extra-semi
 
 async function createUserDayMeal(mealType, userDay) {
@@ -66,7 +66,7 @@ async function createUserDayMeal(mealType, userDay) {
 		throw new Error("Failed to create UserDayMeal: " + error.toString());
 	}
 	return newUserDayMeal;
-};
+}
 // eslint-disable-next-line no-extra-semi
 
 /**
@@ -100,8 +100,6 @@ exports.logDatabaseFood = async (req, res) => {
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 
-
-
 		// Check if user day exists, if not create it
 		const newUserDay = await createUserDay(user._id, today);
 		console.log("User Day:", newUserDay);
@@ -133,6 +131,72 @@ exports.logDatabaseFood = async (req, res) => {
 		console.log("Session ended");
 
 		return res.status(200).send({ message: "Food logged" });
+	} catch (error) {
+		console.log("Error:", error);
+		if (session) {
+			session.abortTransaction();
+			console.log("Transaction aborted");
+
+			session.endSession();
+			console.log("Session ended");
+		}
+		return res.status(501).send({ error: "test" + error.toString() });
+	}
+};
+
+exports.logDatabaseWater = async (req, res) => {
+	const { mealType = "Water", weight } = req.body;
+	let session;
+	try {
+		const user = req.user;
+		console.log("User:", user);
+
+		session = await mongoose.startSession();
+		console.log("Session started");
+
+		session.startTransaction();
+		console.log("Transaction started");
+
+		const food = await Food.find({ name: "Water" });
+		if (food.length === 0) {
+			return res.status(404).send({ error: "Water not found" });
+		}
+		console.log("Food:", food);
+
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		// Check if user day exists, if not create it
+		const newUserDay = await createUserDay(user._id, today);
+		console.log("User Day:", newUserDay);
+
+		// Check if user day meal exists, if not create it
+		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
+		console.log("User Day Meal:", newUserDayMeal);
+
+		const newFoodItem = new FoodItem({
+			foodID: food[0]._id,
+			weight,
+		});
+		await newFoodItem.save();
+		console.log("New Water Item saved");
+
+		const mealItem = new MealItem({
+			name: food[0].name,
+			foodItemID: newFoodItem._id,
+			receipeID: null,
+			userDayMealID: newUserDayMeal._id,
+		});
+		await mealItem.save();
+		console.log("Meal Item saved");
+
+		await session.commitTransaction();
+		console.log("Transaction committed");
+
+		session.endSession();
+		console.log("Session ended");
+
+		return res.status(200).send({ message: "Water logged" });
 	} catch (error) {
 		console.log("Error:", error);
 		if (session) {
@@ -262,7 +326,6 @@ exports.searchFoods = async (req, res) => {
 			page,
 			limit,
 		});
-
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}
@@ -294,23 +357,27 @@ exports.getLastLoggedFoodOrRecipe = async (req, res) => {
 
 		if (mealItems.length > 0) {
 			let macros = await this.getUserDayMealMacros(latestUserDayMeal._id);
-			return res.status(200).send({ latestUserDayMeal, mealItems, macros });
+			return res
+				.status(200)
+				.send({ latestUserDayMeal, mealItems, macros });
 		}
-		return res.status(404).send({ message: "No food or recipe logs found" });
+		return res
+			.status(404)
+			.send({ message: "No food or recipe logs found" });
 	} catch (error) {
 		res.status(500).send({ error: error.toString() });
 	}
 };
 
-exports.getUserDayMealMacros = async (userDayMealID) => {;
+exports.getUserDayMealMacros = async (userDayMealID) => {
 	try {
 		const mealItems = await MealItem.find({ userDayMealID });
 		let totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
-		
+
 		for (const mealItem of mealItems) {
 			let macroTotals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
 			let totalWeight = 0;
-			
+
 			if (mealItem.foodItemID) {
 				const foodItem = await FoodItem.findById(mealItem.foodItemID);
 				const food = await Food.findById(foodItem.foodID);
@@ -319,41 +386,38 @@ exports.getUserDayMealMacros = async (userDayMealID) => {;
 				}
 				totalWeight = foodItem.weight;
 			} else {
-				const recipeQuantity = await RecipeQuantity.findById(
-					mealItem.recipeQuantityID
-					);
-					const allRecipeItems = await RecipeItem.find({
-						recipeID: recipeQuantity.recipeID,
-				});
+				const recipeQuantity = await RecipeQuantity.findById(mealItem.recipeQuantityID);
+				const allRecipeItems = await RecipeItem.find({recipeID: recipeQuantity.recipeID,});
 
 				for (const recipeItem of allRecipeItems) {
-					const foodItem = await FoodItem.findById(
-						recipeItem.foodItemID
-					);
+					const foodItem = await FoodItem.findById(recipeItem.foodItemID);
 					const food = await Food.findById(foodItem.foodID);
 
 					for (const macro in macroTotals) {
-						macroTotals[macro] +=
-							food[macro] * (foodItem.weight / 100);
+						macroTotals[macro] += food[macro] * (foodItem.weight / 100);
 					}
 					totalWeight += foodItem.weight;
 				}
 
 				for (const macro in macroTotals) {
-					macroTotals[macro] *=
-						recipeQuantity.totalRecipeWeight / totalWeight;
+					macroTotals[macro] *= recipeQuantity.totalRecipeWeight / totalWeight;
 				}
 			}
 			for (const macro in totals) {
 				totals[macro] += macroTotals[macro];
 			}
 		}
-		return Math.round(totals*10) / 10;
+
+		const roundedTotals = {};
+		for (const macro in totals) {
+			roundedTotals[macro] = Math.round(totals[macro] * 10) / 10;
+		}
+		return roundedTotals;
 	} catch (error) {
 		throw new Error("Failed to get meal macros: " + error.toString());
 	}
 }
- 
+
 exports.logManualMacro = async (req, res) => {
 	const { mealType, calories = 0, protein = 0, carbs = 0, fat = 0 } = req.body;
 	let session;
@@ -415,7 +479,7 @@ exports.logManualMacro = async (req, res) => {
 		}
 		return res.status(500).send({ error: error.toString() });
 	}
-}
+};
 
 exports.addIngredientToDatabase = async (req, res) => {
 	const { name, group, calories, water, protein, carbs, fat, sugar, sodium, fibre } = req.body;

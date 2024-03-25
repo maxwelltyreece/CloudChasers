@@ -26,18 +26,6 @@ const styles = StyleSheet.create({
 
 const CircularProgressComponent = ({ todayStats, goals }) => {
 
-  // Initial macro values moved into state
-  // const [currentMacroValues, setCurrentMacroValues] = useState({
-  //   calories: 0,
-  //   water: 0,
-  //   fat: 0,
-  //   sodium: 0,
-  //   carbs: 0,
-  //   protein: 0,
-  //   sugar: 0,
-  //   fibre: 0,
-  // });
-
   let initialMacroValues = {
 
     calories: 0,
@@ -84,13 +72,6 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     water: '#5edcff',
   };
 
-  // useEffect(() => {
-  //   const newCurrentMacroValues = { ...currentMacroValues, ...todayStats };
-  //   console.log('New Current Macro Values:', newCurrentMacroValues);
-  //   setCurrentMacroValues(newCurrentMacroValues);
-  // }, [todayStats]);
-
-  // Safe divide function to avoid dividing by zero or if filled to 100%
   const safeDivide = (numerator, denominator) => {
     const ratio = denominator === 0 ? 0 : numerator / denominator;
     return ratio >= 1 ? 100 : ratio * 100;
@@ -116,12 +97,6 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     updateProgressValues();
   }, [todayStats, goals]);
 
-
-  console.log('Progress Values:', progressValues);
-  console.log('Current Macro Values:', currentMacroValues);
-  console.log('Nutrient Goals:', nutrientGoals);
-  console.log('Today Stats:', todayStats);
-
   return (
     <View style={styles.container}>
       <CircularProgressBase
@@ -131,8 +106,8 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
         activeStrokeColor={colorScheme.calories}
         inActiveStrokeColor={colorScheme.calories}
         inActiveStrokeOpacity={0.2}
-        activeStrokeWidth={30}
-        inActiveStrokeWidth={30}
+        activeStrokeWidth={28}
+        inActiveStrokeWidth={28}
         displayValue={false}
       >
         <CircularProgressBase
@@ -142,8 +117,8 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
           activeStrokeColor={colorScheme.protein}
           inActiveStrokeColor={colorScheme.protein}
           inActiveStrokeOpacity={0.2}
-          activeStrokeWidth={22}
-          inActiveStrokeWidth={22}
+          activeStrokeWidth={28}
+          inActiveStrokeWidth={28}
           displayValue={false}
         >
           <CircularProgressBase
@@ -153,8 +128,8 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
             activeStrokeColor={colorScheme.water}
             inActiveStrokeColor={colorScheme.water}
             inActiveStrokeOpacity={0.2}
-            activeStrokeWidth={15}
-            inActiveStrokeWidth={15}
+            activeStrokeWidth={28}
+            inActiveStrokeWidth={28}
             displayValue={false}
           />
         </CircularProgressBase>
