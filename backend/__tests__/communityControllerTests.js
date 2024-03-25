@@ -1093,6 +1093,136 @@ describe("Community Management", () => {
 		});
 	});
 
+	describe("Community posts", () => {
+		describe("Creating a post", () => {
+			it("should allow a user to create a post", async () => {
+				const response = await request(app)
+					.post("/community/makePost")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: community._id.toString(), title: "Test Post", text: "This is a test post" });
+
+				expect(response.statusCode).toBe(200);
+				expect(response.body).toHaveProperty("success", true);
+				expect(response.body).toHaveProperty("message", "Post created");
+				expect(response.body.data).toEqual(
+					expect.objectContaining({ title: "Test Post", text: "This is a test post" })
+				);
+
+				const post = await CommunityPost.findOne({ communityID: community._id, title: "Test Post" });
+				expect(post).toBeTruthy();
+				expect(post.text).toBe("This is a test post");
+			});
+			it("should return an error if the community does not exist", async () => {
+				const fakeCommunityId = new mongoose.Types.ObjectId();
+
+				const response = await request(app)
+					.post("/community/makePost")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: fakeCommunityId.toString(), title: "Test Post", content: "This is a test post" });
+
+				expect(response.statusCode).toBe(404);
+				expect(response.body).toHaveProperty("message", "Community not found");
+			});
+			it("should return an error if the user is not a member of the community", async () => {
+				const response = await request(app)
+					.post("/community/makePost")
+					.set("Authorization", `Bearer ${token3}`)
+					.send({ communityId: community._id.toString(), title: "Test Post", content: "This is a test post" });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("message", "User is not a member of the community");
+			});
+			it("should handle errors during post creation", async () => {
+				// Mock the save function to simulate a failure
+				jest.spyOn(CommunityPost.prototype, "save").mockImplementationOnce(() =>
+					Promise.reject(new Error("Database error"))
+				);
+
+				const response = await request(app)
+					.post("/community/makePost")
+					.set("Authorization", `Bearer ${token}`)
+					.send({ communityId: community._id.toString(), title: "Test Post", content: "This is a test post" });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("error");
+				expect(response.body.error).toBe("Error: Database error");
+
+				// Ensure that no new post entry was created
+				const post = await CommunityPost.findOne({ communityID: community._id, title: "Test Post" });
+				expect(post).toBeNull();
+			});
+		});
+		describe("Getting community posts", () => {
+			beforeEach(async () => {
+				post = await CommunityPost.create({
+					communityID: community._id,
+					userID: user._id,
+					title: "Test Post",
+					text: "This is a test post",
+					date: Date.now()
+				});
+			});
+			afterEach(async () => {
+				await CommunityPost.deleteOne({ _id: post._id });
+			});
+			it("should retrieve all posts for a community", async () => {
+				post2 = await CommunityPost.create({
+					communityID: community._id,
+					userID: user._id,
+					title: "Test Post 2",
+					text: "This is another test post",
+					date: Date.now()
+				});
+				const response = await request(app)
+					.get("/community/posts")
+					.set("Authorization", `Bearer ${token}`)
+					.query({ communityId: community._id.toString() });
+
+				expect(response.statusCode).toBe(200);
+				expect(response.body).toHaveProperty("success", true);
+				expect(response.body.data.length).toBe(2);
+				expect(response.body.data[0]).toHaveProperty("_id");
+				expect(response.body.data).toEqual(expect.arrayContaining([
+					expect.objectContaining({ title: "Test Post", text: "This is a test post"}),
+					expect.objectContaining({ title: "Test Post 2", text: "This is another test post" })
+				]));
+			});
+			it("should return an error if the community does not exist", async () => {
+				const fakeCommunityId = new mongoose.Types.ObjectId();
+
+				const response = await request(app)
+					.get("/community/posts")
+					.set("Authorization", `Bearer ${token}`)
+					.query({ communityId: fakeCommunityId.toString() });
+
+				expect(response.statusCode).toBe(404);
+				expect(response.body).toHaveProperty("message", "Community not found");
+			});
+			it("should return an error if the user is not a member of the community", async () => {
+				const response = await request(app)
+					.get("/community/posts")
+					.set("Authorization", `Bearer ${token3}`)
+					.query({ communityId: community._id.toString() });
+				
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("message", "User is not a member of the community");
+			});
+			it("should handle errors during post retrieval", async () => {
+				jest.spyOn(CommunityPost, "find").mockImplementationOnce(() => {
+					throw new Error("Database error");
+				});
+
+				const response = await request(app)
+					.get("/community/posts")
+					.set("Authorization", `Bearer ${token}`)
+					.query({ communityId: community._id.toString() });
+
+				expect(response.statusCode).toBe(400);
+				expect(response.body).toHaveProperty("error");
+				expect(response.body.error).toBe("Error: Database error");
+			});
+		});
+	});
 
 
 
