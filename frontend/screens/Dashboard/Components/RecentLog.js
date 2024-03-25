@@ -147,7 +147,7 @@ function RecentLog({ streak, userLogStats }) {
 	);
 }
 
-export default RecentLog;
+export default React.memo(RecentLog);
 
 RecentLog.propTypes = {
 	streak: PropTypes.number,

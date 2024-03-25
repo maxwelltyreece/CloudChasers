@@ -8,19 +8,21 @@ export function StatsProvider({ children }) {
   const [todayStats, setTodayStats] = useState({});
   const [streak, setStreak] = useState(0);
 
-  const updateStat = async (nutrientFunction, nutrient, date) => {
+const updateStat = async (nutrientFunction, nutrient, date) => {
     try {
-      const response = await nutrientFunction(date);
-      if (response.data) {
-        setTodayStats(prevStats => ({
-          ...prevStats,
-          [nutrient]: response.data[`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`], // Capitalising first letter of nutrient
-        }));
-      }
+        const response = await nutrientFunction(date);
+        if (response.data) {
+            const updatedStats = {
+                ...todayStats,
+                [nutrient]: response.data[`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`], // Capitalising first letter of nutrient
+            };
+            setTodayStats(updatedStats);
+            return updatedStats[nutrient];
+        }
     } catch (error) {
-      console.error(`Error fetching daily ${nutrient} intake CONTEXT:`, error);
+        console.error(`Error fetching daily ${nutrient} intake CONTEXT:`, error);
     }
-  };
+};
   
   const updateStreak = async (date) => {
     try {
@@ -47,19 +49,42 @@ export function StatsProvider({ children }) {
   const getDailySodiumIntake = (date) => updateStat(statsService.getDailySodiumIntake, 'sodium', date);
   const getDailyFibreIntake = (date) => updateStat(statsService.getDailyFibreIntake, 'fibre', date);
 
-  const updateTodayStats = async () => {
+const updateTodayStats = async () => {
     const today = new Date().toISOString().split('T')[0];
-    await Promise.all([
-        getDailyCaloricIntake(today),
-        getDailyWaterIntake(today),
-        getDailyProteinIntake(today),
-        getDailyCarbIntake(today),
-        getDailyFatIntake(today),
-        getDailySugarIntake(today),
-        getDailySodiumIntake(today),
-        getDailyFibreIntake(today),
-        updateStreak(today),
-    ]);
+    const nutrientFunctions = [
+        getDailyCaloricIntake,
+        getDailyWaterIntake,
+        getDailyProteinIntake,
+        getDailyCarbIntake,
+        getDailyFatIntake,
+        getDailySugarIntake,
+        getDailySodiumIntake,
+        getDailyFibreIntake,
+    ];
+
+    const nutrientNames = [
+        'calories',
+        'water',
+        'protein',
+        'carbs',
+        'fat',
+        'sugar',
+        'sodium',
+        'fibre',
+    ];
+
+    try {
+        const nutrientData = await Promise.all(nutrientFunctions.map(func => func(today)));
+        const newStats = nutrientData.reduce((acc, curr, index) => {
+            acc[nutrientNames[index]] = curr;
+            return acc;
+        }, {});
+
+        setTodayStats(newStats);
+        await updateStreak(today);
+    } catch (error) {
+        console.error('Error updating today stats:', error);
+    }
 };
 
   const value = useMemo(() => ({

@@ -97,8 +97,9 @@ function Dashboard() {
 	};
 
 	useFocusEffect(
-		useCallback(() => {
-			updateDashboardData();
+        useCallback(() => {
+            console.log('DASHBOARD FOCUSED');
+            updateDashboardData();
 		}, [])
 	);
 
