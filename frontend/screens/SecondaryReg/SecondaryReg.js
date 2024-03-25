@@ -46,58 +46,12 @@ function RegisterDetails({ navigation, route }) {
         });
     };
 
-    const handleRegisterDetails = async () => {
-        if (!firstName || !lastName) {
-            Alert.alert('Error', 'Please fill out all fields');
-            return;
-        }
-        // let imageUrl = profilePicture;
-
-        // if (profilePicture) {
-        //     const token = await AsyncStorage.getItem('token');
-        //     const formData = new FormData();
-        //     let filename = profilePicture.split('/').pop();
-        //     let match = /\.(\w+)$/.exec(filename);
-        //     let type = match ? `image/${match[1]}` : `image`;
-
-        //     formData.append('image', { uri: profilePicture, name: filename, type });
-        //     formData.append('folder', 'profilePictures');
-
-        //     const response = await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data',
-        //             Authorization: `Bearer ${token}`,
-        //         },
-        //     });
-
-        //     imageUrl = response.data;
-        // }
-        axios.post(`http://${LocalIP}:3000/register`, {
-            username,
-            email,
-            password,
-            forename: firstName,
-            surname: lastName,
-            // profilePicture: imageUrl,
-        }).then(() => {
-            console.log('User registered');
-            handleLogin();
-        })
-        .catch((error) => {
-            if (error.response && error.response.data.error) {
-                Alert.alert('Error', 'Invalid Email');
-            } else {
-                Alert.alert('Error:', error.message);
-            }
-        })
-    };
-
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
             aspect: [4, 3],
-            quality: 1,
+            quality: 0.3,
         });
 
         console.log(result);
@@ -105,6 +59,66 @@ function RegisterDetails({ navigation, route }) {
         if (!result.cancelled) {
             setProfilePicture(result.uri);
         }
+    };
+
+    const registerUser = async () => {
+        try {
+            const response = await axios.post(`http://${LocalIP}:3000/register`, {
+                username,
+                email,
+                password,
+                forename: firstName,
+                surname: lastName,
+            });
+            console.log('User registered');
+            return response;
+        } catch (error) {
+            if (error.response && error.response.data.error) {
+                Alert.alert('Error', 'Invalid Email');
+            } else {
+                Alert.alert('Error:', error.message);
+            }
+        }
+    };
+
+    const uploadImage = async (userId) => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const formData = new FormData();
+            let filename = profilePicture.split('/').pop();
+            let match = /\.(\w+)$/.exec(filename);
+            let type = 'image/jpeg';
+            formData.append('objectID', userId);
+            formData.append('folderName', 'Profile_Pictures');
+            formData.append('image', { uri: profilePicture, name: filename, type });
+
+            const response = await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log('Image uploaded');
+            return response;
+        } catch (error) {
+            console.error('Error:', error.message);
+        }
+    };
+
+    const handleRegisterDetails = async () => {
+        if (!firstName || !lastName) {
+            Alert.alert('Error', 'Please fill out all fields');
+            return;
+        }
+
+        const registerResponse = await registerUser();
+        const userId = registerResponse.data.data._id;
+
+        if (profilePicture) {
+            await uploadImage(userId);
+        }
+
+        handleLogin();
     };
 
     return (
