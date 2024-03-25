@@ -8,24 +8,7 @@ import PropTypes from 'prop-types'; // Import PropTypes
 
 
 const styles = StyleSheet.create({
-	// -------Recent Meal Log-------//
 	recentLogContainer: {
-		// // backgroundColor: '#EC6641',
-		// backgroundColor: '#FF815E',
-		// justifyContent: 'flex-start',
-		// alignContent: 'center',
-		// borderRadius: 15,
-		// // marginLeft: 5,
-		// // marginRight: 10,
-		// left: '1%',
-		// padding: 8,
-		// width: '98%',
-		// height: '100%',
-		// shadowColor: '#000',
-		// shadowOffset: { width: 0, height: 1 },
-		// shadowOpacity: 0.22,
-		// shadowRadius: 2.22,
-		// elevation: 3,
 		alignItems: 'flex-start',
 		justifyContent: 'center',
 		padding: 5,
@@ -36,14 +19,11 @@ const styles = StyleSheet.create({
 		shadowOpacity: 0.22,
 		shadowRadius: 2.22,
 		elevation: 3,
-		// top: '5%',
 		height: '95%',
 		width: '94%',
 		right: '1.5%',
 	},
 	recentLogTitleContainer: {
-		// backgroundColor: '#EC6641',
-		// backgroundColor: '#FF815E',
 		justifyContent: 'space-between',
 		alignItems: 'flex-end',
 		flexDirection: 'row',
@@ -53,7 +33,6 @@ const styles = StyleSheet.create({
 		height: '40%',
 	},
 	innerRecentLogContainer: {
-		// backgroundColor: '#F0F0F0',
 		justifyContent: 'center',
 		alignItems: 'flex-start',
 		backgroundColor: '#F5F5F5',
@@ -69,58 +48,59 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	recentLogTitle: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 20,
 		fontWeight: 'bold',
 	},
-	recentLogDatetimeText: {
-		fontSize: 16,
+	recentLogMealTypeText: {
+		fontFamily: 'Montserrat_700Bold',
+		fontSize: 17,
 		fontWeight: 'bold',
-		marginBottom: 5,
+		marginBottom: 7,
 		marginLeft: 4,
 	},
-	recentLogMealTypeText: {
-		fontSize: 15,
+	logItemInfoText: {
+		fontFamily: 'Montserrat_500Medium',
+		fontSize: 17,
+		fontWeight: '500',
+		marginLeft: 4,
+		marginBottom: 4,
+	},
+	recentLogCaloriesText: {
+		fontFamily: 'Montserrat_700Bold',
+		fontSize: 16,
 		fontWeight: 'bold',
 		marginLeft: 4,
 	},
 	logInfoText: {
-		fontSize: 17,
+		fontSize: 1,
+		fontFamily: 'Montserrat_500Medium',
 		fontWeight: '500',
 		marginLeft: 4,
 	},
 	logInfoMeasurementText: {
-		// marginTop: 5,
-		fontSize: 17,
+		fontFamily: 'Montserrat_500Medium',
+		fontSize: 16,
 		fontWeight: '500',
+		marginTop: 3.2,
+		left: 2,
 		marginLeft: 4,
+	},
+	noLogText: {
+		textAlign: 'center', 
+		left: '18%',
+		fontSize: 14,
+		fontFamily: 'Montserrat_500Medium',
 	},
 });
 
 function RecentLog({ streak, userLogStats }) {
-	
-	// const {
-	// 	lastLogDate = 'N/A',
-	// 	lastLogMealType = 'N/A',
-	// 	calories = 0,
-	// 	protein = 0,
-	// 	carbs = 0,
-	// 	fat = 0,
-	// 	fibre = 0,
-	// 	water = 0,
-	// 	sugar = 0,
-	// 	sodium = 0,
-	// } = userLogStats || {};
 
 	const {
 		latestUserDayMeal = {},
 		macros = {},
+		mealItems = [{}],
 	} = userLogStats || {};
-
-	console.log('userLogStats: RECENT LOG', userLogStats);
-
-	console.log('LATEST USER DAY MEAL: RECENT LOG', latestUserDayMeal);
-
-	console.log('MACROS: RECENT LOG', macros);
 
 	return (
 		<View style={styles.recentLogContainer}>
@@ -130,18 +110,35 @@ function RecentLog({ streak, userLogStats }) {
 			</View>
 			{userLogStats ? (
 				<View style={styles.innerRecentLogContainer}>
-					<Text style={styles.recentLogDatetimeText}>
-						{latestUserDayMeal.name ?? 'N/A'}
-					</Text>
-					<Text style={styles.logInfoText}>Calories:{' '}
-						<Text style={styles.logInfoMeasurementText}>
-							{macros.calories ?? 0} kcal
-						</Text>
-					</Text>
+
+					{(latestUserDayMeal && latestUserDayMeal.name) ?
+						(
+							<Text style={styles.recentLogMealTypeText}>
+								{latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)}
+							</Text>
+
+						) : (
+
+							<Text numberOfLines={2} style={styles.noLogText}>
+								No log details{'\n'}available yet.
+							</Text>
+						)
+					}
+
+
+					{(macros && macros.calories) ? (
+						<View>
+							<Text style={styles.recentLogCaloriesText}>Calories:{' '}</Text>
+							<Text style={styles.logInfoMeasurementText}>{macros.calories.toFixed(0) ?? 0} kcal</Text>
+						</View>
+					) : null}
+
 				</View>
 			) : (
 				<View style={styles.innerRecentLogContainer}>
-					<Text numberOfLines={2} style={{ textAlign: 'center' }}>No log details available yet.</Text>
+					<Text numberOfLines={2} style={styles.noLogText}>
+						No log details{'\n'}available yet.
+					</Text>
 				</View>
 			)}
 		</View>
@@ -153,20 +150,33 @@ export default RecentLog;
 RecentLog.propTypes = {
 	streak: PropTypes.number,
 	userLogStats: PropTypes.shape({
-		lastLogDate: PropTypes.string,
-		lastLogMealType: PropTypes.string,
-		calories: PropTypes.number,
-		protein: PropTypes.number,
-		carbs: PropTypes.number,
-		fat: PropTypes.number,
-		fibre: PropTypes.number,
-		water: PropTypes.number,
-		sugar: PropTypes.number,
-		sodium: PropTypes.number,
-	}).isRequired,
+		latestUserDayMeal: PropTypes.shape({
+			__v: PropTypes.number,
+			_id: PropTypes.string,
+			name: PropTypes.string,
+			order: PropTypes.number,
+			userDayID: PropTypes.string,
+		}),
+		macros: PropTypes.shape({
+			calories: PropTypes.number,
+			carbs: PropTypes.number,
+			fat: PropTypes.number,
+			protein: PropTypes.number,
+		}),
+		mealItems: PropTypes.arrayOf(PropTypes.shape({
+			__v: PropTypes.number,
+			_id: PropTypes.string,
+			foodItemID: PropTypes.string,
+			name: PropTypes.string,
+			userDayMealID: PropTypes.string,
+		})),
+	}),
 };
 
 RecentLog.defaultProps = {
-	streak: 0, // Default streak value if not provided
+	streak: 0,
 	userLogStats: {},
+	latestUserDayMeal: {},
+	macros: {},
+	mealItems: [{}],
 };

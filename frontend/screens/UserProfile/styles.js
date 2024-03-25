@@ -37,19 +37,20 @@ export const styles = StyleSheet.create({
     subPageList: {
         width: '100%',
         height: '50%',
-        marginTop: '5%',
+        marginTop: '8%',
     },
     itemButton: {
         width: '70%',
         height: 'auto',
         backgroundColor: '#FF815E',
-        marginVertical: '2%',
+        marginVertical: '2.8%',
         borderRadius: 14,
         alignSelf: 'center',
     },
     item: {
+        fontFamily: 'Montserrat_500Medium',
         fontSize: 20,
-        padding: '6%',
+        padding: '5%',
         textAlign: 'center',
     },
 });

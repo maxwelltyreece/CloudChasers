@@ -31,6 +31,7 @@ exports.getPictureURL = async (req, res) => {
 		// Construct the path to the profile picture
 		const validExtensions = ['png', 'jpg', 'jpeg', 'gif'];
 		const validFolders = ['Profile_Pictures', 'Recipe_Pictures', 'Community_Pictures'];
+		console.log(folderName);
 		if (!validFolders.includes(folderName)) {
 			return res.status(400).json({ error: "Invalid folder name " + folderName + "   valid folder names are ['Profile_Pictures', 'Recipe_Pictures', 'Community_Pictures']" });
 		}
@@ -93,20 +94,28 @@ exports.uploadPicture = async (req, res) => {
 
 	});
 	bb.on('file', async (fieldname, file, fileMeta) => {
+		console.log("File received.");
 		currentPhoto = await findPreviousPhoto(objectID, folderName);
-		var previousNameOfPhoto = (await currentPhoto['file'].getMetadata())[0]["name"];
-		// console.log(metaData.constructor.name);
-		extension = getFileExtension(fileMeta);
-		pathToFile = folderName + '/' + objectID + '.' + extension;
-		newFileLocationReference = bucket.file(pathToFile);
+		if (currentPhoto === false) {
+			pathToFile = folderName + "/" + objectID + "." + getFileExtension(fileMeta);
+			newFileLocationReference = bucket.file(pathToFile);
+		} else {
+			var previousNameOfPhoto = (await currentPhoto['file'].getMetadata())[0]["name"];
+			extension = getFileExtension(fileMeta);
+			pathToFile = folderName + '/' + objectID + + '.' + extension;
+			newFileLocationReference = bucket.file(pathToFile);
+		}
 		const fileStream = newFileLocationReference.createWriteStream();
 		if (objectID === "") {
+			console.log("No OB ID provided 1.");
 			return res.status(400).json({ error: "No object ID provided (At least before the file was received). Make sure the obejct ID is passed in the form before the file" });
 		}
 		if (folderName === "") {
+			console.log("No folderName provided.");
 			return res.status(400).json({ error: "No folderName provided (At least before the file was received). Make sure the folderName is passed in the form before the file" });
 		}
 		file.on('data', (data) => {
+
 			fileStream.write(data);
 		});
 		file.on('end', async () => {
@@ -119,11 +128,14 @@ exports.uploadPicture = async (req, res) => {
 	});
 	bb.on('close', () => {
 		if (fileUploaded) {
+			console.log("File uploaded successfully.");
 			return res.status(200).json({ message: "File uploaded successfully." });
 		} else if (pathToFile === "") {
+			console.log("No file uploaded.");
 			return res.status(400).json({ error: "No file uploaded." });
 		} else if (pathToFile === "/" + objectID + "." + extension) {
-			return res.status(400).json({ error: "No object ID provided" });
+			console.log("No OB ID provided.");
+			return res.status(400).json({ error: "No object ID provided 2" });
 		}
 	});
 	req.pipe(bb);
@@ -151,6 +163,9 @@ async function findPreviousPhoto (objectID, folderName) {
 			extensionFound = true;
 			break;
 		}
+	}
+	if (!extensionFound) {
+		return false;
 	}
 	return {"file" : file, "exists" : exists[0]};
 }

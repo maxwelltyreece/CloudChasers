@@ -29,7 +29,17 @@ export const styles = StyleSheet.create({
     },
 
     titleContainer: {
+        flexDirection: 'row', // Add this line
+        alignItems: 'center', // Add this line
         alignSelf: 'stretch',
         paddingHorizontal: '5%',
+        
     },
+    noRecipesText: {
+        fontFamily: 'Montserrat_600SemiBold',
+        fontSize: 20,
+        textAlign: 'center',
+        marginTop: 20,
+    },
+
 });

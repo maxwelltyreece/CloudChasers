@@ -12,13 +12,6 @@ const Recipe = require('../models/recipe');
 const RecipeItem = require('../models/recipeItem');
 const RecipeQuantity = require('../models/recipeQuantity');
 
-
-/**
- *     name : { type: String, required: true },
-	description : { type: String, required: true },
-	createdBy : { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: false },	
-	communityThatOwnsRecipe
- */
 exports.createNewRecipeByUser = async (req, res) => {
 	const user = req.user;
 	const { name, description, communityThatOwnsRecipe } = req.body;
@@ -107,7 +100,7 @@ exports.getRecipeIngredients = async (req, res) => {
 		for (const recipeItem of recipeItems) {
 			const foodItem = await FoodItem.findById(recipeItem.foodItemID);
 			const food = await Food.findById(foodItem.foodID);
-			recipeIngredients.push({ food, weight: foodItem.weight, recipeItem }); // Add recipeItem here
+			recipeIngredients.push({ food, weight: foodItem.weight, recipeItem });
 		}
 
 		//removes any fields from the food other than name and id and weight
@@ -246,17 +239,16 @@ exports.logRecipeFood = async (req, res) => {
 };
 
 exports.getCommunityRecipes = async (req, res) => {
-	const { communityID } = req.query;
-	try {
-		const recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });
-		if (recipes.length === 0) {
-			return res.status(400).send({ message: 'No recipes found' });
-		}
-		return res.status(200).json({ message: 'Recipes found', data: recipes });
-	}
-	catch (error) {
-		return res.status(400).json({ error: error.toString() });
-	}
+    const { communityID } = req.query;
+    console.log('Requested community ID:', communityID); // Log the requested community ID
+
+    try {
+        let recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });
+        return res.status(200).json({ message: 'Recipes found', data: recipes });
+    } catch (error) {
+        console.error('Error in getCommunityRecipes:', error); // Log any errors
+        return res.status(400).json({ error: error.toString() });
+    }
 }
 
 exports.getRecipeWeight = async (req, res) => {
@@ -339,4 +331,71 @@ exports.duplicateRecipeToUser = async (req, res) => {
 	}
 }
 
+exports.deleteRecipe = async (req, res) => {
+	const { recipeID } = req.body;
+	const session = await mongoose.startSession();
+	session.startTransaction();
+	try {
+		const recipe = await Recipe.findById(recipeID);
+		if (!recipe) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+		const recipeItems = await RecipeItem.find({ recipeID });
+		for (const recipeItem of recipeItems) {
+			await FoodItem.findByIdAndDelete(recipeItem.foodItemID);
+		}
+		await RecipeItem.deleteMany({ recipeID });
+
+		const recipeQuantities = await RecipeQuantity.find({ recipeID });
+		for (const recipeQuantity of recipeQuantities) {
+			await MealItem.findByIdAndDelete(recipeQuantity.mealItemID);
+		}
+		await RecipeQuantity.deleteMany({ recipeID });
+
+		await Recipe.findByIdAndDelete(recipeID);
+
+		await session.commitTransaction();
+		session.endSession();
+		return res.status(200).json({ message: 'Recipe deleted' });
+	}
+	catch (error) {
+		await session.abortTransaction();
+		session.endSession();
+		return res.status(400).json({ error: error.toString() });
+	}
+}
 //TODO: add macro
+
+exports.addMacroToRecipe = async (req, res) => {
+	const { recipeID, protein, carbs, fat, calories } = req.body;
+	try {
+		const recipe = await Recipe.findById(recipeID);
+		if (!recipe) {
+			return res.status(400).send({ message: 'Recipe does not exist' });
+		}
+		const newFood = new Food({
+			name: 'Macro',
+			group: 'Macro',
+			calories,
+			protein,
+			carbs,
+			fat,
+			privacy: 'private'
+		});
+		await newFood.save();
+		const newFoodItem = new FoodItem({
+			foodID: newFood._id,
+			weight: 100
+	});
+		await newFoodItem.save();
+		const newRecipeItem = new RecipeItem({
+			foodItemID: newFoodItem._id,
+			recipeID
+		});
+		await newRecipeItem.save();
+		return res.status(200).json({ message: 'Macro added to recipe', data: newRecipeItem });
+	}
+	catch (error) {
+		return res.status(400).json({ error: error.toString() });
+	}
+}

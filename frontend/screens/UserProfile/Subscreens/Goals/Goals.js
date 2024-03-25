@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Pressable, StyleSheet, TextInput, KeyboardAvoidingView, Platform, Keyboard, } from 'react-native';
 import proptypes from 'prop-types';
+import { useFocusEffect } from '@react-navigation/native';
 import { useGoals } from '../../../../contexts/GoalsContext';
 
 const styles = StyleSheet.create({
     container: {
-        // flex: 1,
-        // paddingTop: 50,
         backgroundColor: '#F0F0F0',
-        // justifyContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'lightgreen',
     },
     goalsContainer: {
         width: '100%',
         height: '100%',
-        // backgroundColor: 'green',
         paddingTop: '11%',
         paddingBottom: '7%',
         justifyContent: 'center',
@@ -23,8 +19,6 @@ const styles = StyleSheet.create({
     },
     goalsListContainer: {
         width: '100%',
-        // height: '100%',
-        // backgroundColor: 'green',
         paddingTop: 20,
         marginBottom: 20,
     },
@@ -44,7 +38,6 @@ const styles = StyleSheet.create({
     infoSection: {
         justifyContent: 'center',
         alignContent: 'center',
-        // backgroundColor: 'red',
         width: '60%',
         height: '100%',
         padding: 10,
@@ -55,31 +48,27 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '40%',
         height: '100%',
-        // backgroundColor: 'blue',
     },
     currentGoalInfoSection: {
-        // marginBottom: 20,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignContent: 'center',
         alignItems: 'center',
-        // backgroundColor: 'yellow',
-
     },
     currentGoalInfoTitle: {
-        fontSize: 20,
+        fontFamily: 'Montserrat_700Bold',
+        fontSize: 18,
         fontWeight: 'bold',
-        // marginBottom: 10,
     },
     currentGoalInfoText: {
+        fontFamily: 'Montserrat_400Regular',
         fontSize: 18,
-        // backgroundColor: 'blue',
         justifyContent: 'center',
         alignItems: 'center',
     },
     text: {
+        fontFamily: 'Montserrat_400Regular',
         fontSize: 18,
-        // backgroundColor: 'blue',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -89,22 +78,20 @@ const styles = StyleSheet.create({
         alignContent: 'center',
     },
     input: {
+        fontFamily: 'Montserrat_400Regular',
         height: '82%',
         width: '50%',
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 8,
         padding: 10,
-        // marginTop: 8,
         paddingHorizontal: 10,
         fontSize: 18,
-        // backgroundColor: 'blue',
         alignSelf: 'center',
     },
     button: {
         height: '85%',
         width: 'auto',
-        // marginTop: 10,
         backgroundColor: '#FF815E',
         paddingHorizontal: 20,
         paddingVertical: 10,
@@ -115,30 +102,31 @@ const styles = StyleSheet.create({
     intialiseButton: {
         backgroundColor: '#FF815E',
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingVertical: 15,
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 60,
         marginBottom: 20,
-        // Comment out or adjust the following line if it's causing positioning issues
-        // top: '40%',
     },
     initialiseButtonText: {
+        fontFamily: 'Montserrat_600SemiBold',
         textAlign: 'center',
         color: 'white',
         fontSize: 22,
         alignSelf: 'center',
     },
     initialiseInfoText: {
+        fontFamily: 'Montserrat_500Medium',
         textAlign: 'center',
         fontSize: 15,
         alignSelf: 'center',
     },
     buttonText: {
+        fontFamily: 'Montserrat_500Medium',
         textAlign: 'center',
         color: 'white',
-        fontSize: 16,
+        fontSize: 15,
         alignSelf: 'center',
     },
 });
@@ -148,7 +136,6 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
     const [goalValue, setGoalValue] = useState('');
     const [isEditing, setIsEditing] = useState(false);
 
-    // Update the goalValue state when the currentGoal changes
     useEffect(() => {
         setGoalValue(currentGoal.value.toString());
     }, [currentGoal]);
@@ -249,12 +236,12 @@ const Goals = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await fetchGoals(); // Assuming this updates the goals in your context
+            await fetchGoals();
             if (goals && goals.goals && goals.goals.length > 0) {
-                setFetchedGoals(goals.goals); // Set the fetched goals from the context
-                setIsGoalsFetched(true); // Indicate that goals have been fetched
+                setFetchedGoals(goals.goals);
+                setIsGoalsFetched(true);
             } else {
-                setIsGoalsFetched(true); // No goals found, but fetch attempt was made
+                setIsGoalsFetched(true);
             }
         };
 
@@ -264,11 +251,26 @@ const Goals = () => {
 
     }, [fetchGoals, isGoalsFetched, goals.goals]);
 
+    useFocusEffect(
+        useCallback(() => {
+            const fetchData = async () => {
+                await fetchGoals();
+                if (goals && goals.length > 0) {
+                    setFetchedGoals(goals);
+                }
+            };
+
+            if (!isGoalsFetched) {
+                fetchData();
+            }
+        }, [fetchGoals, goals])
+    );
+
 
     const handleUpdateGoal = async (nutrient, newMaxValue) => {
 
-        // Find the goal ID for the nutrient being updated
         const goalToUpdate = fetchedGoals.find(goal => goal.measurement === nutrient);
+
         if (!goalToUpdate) {
             console.error('Goal not found for nutrient:', nutrient);
             return;
@@ -279,10 +281,9 @@ const Goals = () => {
                 maxTargetMass: newMaxValue,
             });
 
-            // Find the index of the goal to update in the local state
             const goalIndex = fetchedGoals.findIndex(goal => goal._id === goalToUpdate._id);
+            
             if (goalIndex !== -1) {
-                // Create a new array with updated goal
                 const newFetchedGoals = [...fetchedGoals];
                 newFetchedGoals[goalIndex] = { ...newFetchedGoals[goalIndex], maxTargetMass: newMaxValue };
 
@@ -297,13 +298,11 @@ const Goals = () => {
 
 
     const handleInitializeGoals = () => {
-        // Iterate over the defaultMacroGoals and create each one
         Object.entries(defaultMacroGoals).forEach(([nutrient, goal]) => {
-            // console.log(nutrient, goal, `Daily ${nutrient}`, goal.value);
             createGoal({
                 goalName: `Daily ${nutrient}`,
                 measurement: nutrient,
-                minTargetMass: 0, // 0 as the min target mass always
+                minTargetMass: 0,
                 maxTargetMass: goal.value,
             });
         });

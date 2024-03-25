@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { View, SafeAreaView, ActivityIndicator } from 'react-native';
 
 // import globalStyles from '../../styles/global';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import WelcomeBar from './statsComponents/WelcomeBar';
 import CircularProgressComponent from './statsComponents/CircularProgress.js';
@@ -21,9 +21,6 @@ const Stats = () => {
   const [loading, setLoading] = useState(false);
   const { todayStats, updateTodayStats } = useStats();
   const { goals, fetchGoals } = useGoals();
-
-  console.log('Today Stats: STATS', todayStats);
-  // console.log('Goals: STATS', goals);
 
   const checkUserLogin = async () => {
     try {
@@ -45,9 +42,8 @@ const Stats = () => {
 
     const fetchData = async () => {
       try {
-        await checkUserLogin(); // Check if user is logged in
+        await checkUserLogin();
 
-        // Fetch all necessary data in parallel
         await Promise.all([
 
           updateTodayStats(),
@@ -56,14 +52,34 @@ const Stats = () => {
         ]);
 
       } catch (error) {
-        console.error("Error fetching data for dashboard:", error);
+        console.error("Error fetching data for stat page:", error);
       } finally {
-        setLoading(false); // Ensure loading is set to false after operations complete
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
+
+
+	const updateStatPageData = async () => {
+        try {
+            await checkUserLogin();
+
+            await Promise.all([
+                updateTodayStats(),
+                fetchGoals(),
+            ]);
+        } catch (error) {
+            console.error("Error fetching data for state page:", error);
+        }
+    };
+	
+	useFocusEffect(
+        useCallback(() => {
+          updateStatPageData();
+        }, [])
+    ); 
 
 
   if (loading) {
@@ -79,7 +95,7 @@ const Stats = () => {
     <SafeAreaView style={styles.statsContainer}>
 
       <View style={styles.statsHeader}>
-        <WelcomeBar name="Emily" />
+        <WelcomeBar />
       </View>
       
       <View style={styles.ringCompContainer}>

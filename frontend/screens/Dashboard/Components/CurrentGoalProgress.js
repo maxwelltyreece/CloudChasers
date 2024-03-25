@@ -2,7 +2,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
-	View, Text, StyleSheet, Animated, Pressable, ScrollView
+	View, Text, StyleSheet, Animated, Pressable, ScrollView, Platform
 } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useReminders } from '../../../contexts/RemindersContext';
@@ -11,15 +11,12 @@ import moment from 'moment';
 
 
 const styles = StyleSheet.create({
-	// -------Goal Progress Bar-------//
 	progressBarComponentContainer: {
 		justifyContent: 'center',
-		marginTop: '1%',
-		// marginBottom: '1%',
+		marginTop: '0.8%',
 		borderRadius: 15,
 		width: '100%',
 		height: '40%',
-		// backgroundColor: 'red',
 	},
 	progressBarContainer: {
 		flexDirection: 'row',
@@ -55,19 +52,14 @@ const styles = StyleSheet.create({
 		marginBottom: 4,
 	},
 	label: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 16,
 		fontWeight: 'bold',
 	},
-	swiperContainer: {
-		// height: 'auto',
-	},
 	slideContainer: {
-		// flex: 1,
 		justifyContent: 'flex-start',
 		alignItems: 'flex-start',
 		paddingHorizontal: 20,
-		// paddingBottom: 10,
-		// backgroundColor: 'green',
 	},
 	firstSlideContainer: {
 		justifyContent: 'flex-start',
@@ -77,6 +69,7 @@ const styles = StyleSheet.create({
 		paddingBottom: 10,
 	},
 	firstLabel: {
+		fontFamily: 'Montserrat_700Bold',
 		top: 2,
 		fontSize: 16,
 		fontWeight: 'bold',
@@ -112,6 +105,7 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	slideTitle: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 18,
 		fontWeight: 'bold',
 		marginBottom: 10,
@@ -119,10 +113,8 @@ const styles = StyleSheet.create({
 	},
 	remindersScrolView: {
 		width: '100%',
-		height: '60%',
-		// height: 'auto',
-		// maxHeight: '62%',
-		marginBottom: 6,
+		height: Platform.OS === 'android' ? '60%' : '61%',
+		marginBottom: 5,
 	},
 	reminderItem: {
 		marginBottom: '2%',
@@ -133,7 +125,6 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		borderRadius: 12,
 		width: '100%',
-		// height: '20%',
 		height: 'auto',
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
@@ -148,18 +139,19 @@ const styles = StyleSheet.create({
 		alignContent: 'center',
 		alignItems: 'center',
 		width: '100%',
-		// backgroundColor: 'pink',
 	},
 	reminderDescriptionText: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 16,
 		fontWeight: 'bold',
-		// backgroundColor: 'yellow',
 	},
 	reminderInfoTitle: {
+		fontFamily: 'Montserrat_600SemiBold',
 		fontSize: 12.5,
 		fontWeight: '600',
 	},
 	reminderInfoText: {
+		fontFamily: 'Montserrat_400Regular',
 		fontSize: 12.5,
 		fontWeight: '400',
 		marginRight: 14,
@@ -167,7 +159,7 @@ const styles = StyleSheet.create({
 	seeAllRemindersButton: {
 		width: '100%',
 		height: 35,
-		backgroundColor: '#F0F0F0', // Example color
+		backgroundColor: '#F0F0F0',
 		padding: 10,
 		borderRadius: 15,
 		alignItems: 'center',
@@ -175,6 +167,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 	},
 	seeAllRemindersButtonText: {
+		fontFamily: 'Montserrat_500Medium',
 		fontSize: 12.5,
 		fontWeight: '500',
 		textTransform: 'uppercase',
@@ -195,12 +188,14 @@ const styles = StyleSheet.create({
 		elevation: 3,
 	},
 	emptyRemindersTitle: {
+		fontFamily: 'Montserrat_700Bold',
 		fontSize: 16,
 		fontWeight: 'bold',
 		textAlign: 'center',
 		marginBottom: 10,
 	},
 	emptyRemindersText: {
+		fontFamily: 'Montserrat_400Regular',
 		fontSize: 14,
 		fontWeight: '400',
 		textAlign: 'center',
@@ -240,7 +235,11 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 			}
 		};
 
-		const finalWidth = safeDivision(progress, max, containerWidth);
+		let finalWidth = 0;
+
+		{(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ? 
+			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0} // Still load app of error occurs and data is any data is undefined.
+		
 
 		Animated.timing(animatedWidth, {
 			toValue: finalWidth,
@@ -253,7 +252,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 		<View style={progressBarStyle}>
 			<View style={styles.labelContainer}>
 				<Text style={labelStyle}>{label}</Text>
-				<Text style={labelStyle}>{`${progress} / ${max} ${unit}`}</Text>
+				<Text style={labelStyle}>{`${progress.toFixed(0) ?? 0} / ${max} ${unit}`}</Text>
 			</View>
 			<View style={styles.progressBarContainer} onLayout={measureContainer}>
 				<Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
@@ -267,6 +266,11 @@ ProgressBar.propTypes = {
 	progress: PropTypes.number.isRequired,
 	max: PropTypes.number.isRequired,
 	unit: PropTypes.string,
+};
+
+ProgressBar.defaultProps = {
+	progress: 0,
+	unit: '',
 };
 
 
@@ -319,7 +323,6 @@ function GoalProgressBar({ todayStats, goals }) {
 		fibre: 30,
 	};
 
-	// If the goals object contains goals, populate the nutrientGoals with actual values
 	if (goals && goals.goals) {
 		goals.goals.forEach(goal => {
 			if (goal.measurement in nutrientGoals) {
@@ -331,7 +334,7 @@ function GoalProgressBar({ todayStats, goals }) {
 
 	function getClosestDate(reminder) {
 		let now = moment();
-		let reminderTime = moment(reminder.time, "hh:mm A"); // parse time string with format
+		let reminderTime = moment(reminder.time, "hh:mm A");
 
 		let closestDate = now.clone().hour(reminderTime.hour()).minute(reminderTime.minute());
 
@@ -370,7 +373,7 @@ function GoalProgressBar({ todayStats, goals }) {
 
 	return (
 		<View style={styles.progressBarComponentContainer}>
-			<Swiper style={styles.swiperContainer} showsButtons={false} loop={false}>
+			<Swiper showsButtons={false} loop={false}>
 
 				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>
@@ -393,7 +396,7 @@ function GoalProgressBar({ todayStats, goals }) {
 								<Text style={styles.emptyRemindersText}>Go to the reminders page to add some!</Text>
 								<Pressable
 									style={styles.seeAllRemindersButton}
-									onPress={() => navigation.navigate('Reminders')}
+									onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
 								>
 									<Text style={styles.seeAllRemindersButtonText}>Add Reminders</Text>
 								</Pressable>
@@ -403,7 +406,7 @@ function GoalProgressBar({ todayStats, goals }) {
 					{reminders.length > 0 ? (
 						<Pressable
 							style={styles.seeAllRemindersButton}
-							onPress={() => navigation.navigate('Reminders')}
+							onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
 						>
 							<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
 						</Pressable>

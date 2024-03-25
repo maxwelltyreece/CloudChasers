@@ -7,12 +7,12 @@ function validateEmail(email) {
 }
 
 const userSchema = new mongoose.Schema({
-	forename: { type: String, required: true },
-	surname: { type: String, required: true },
+	forename: { type: String, required: false },
+	surname: { type: String, required: false },
 	username : { type: String, required: true, unique: true },
 	email: { type: String, required: true, unique: true, validate :  [validateEmail, "{VALUE} is not a valid email"]},
 	password: { type: String, required: true },
-	dateOfBirth: { type: Date, required: true },
+	dateOfBirth: { type: Date, required: false },
 	lastLogin: { type: Date, required: false },
 	profilePictureLink : { type: String, required: false, default: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/1200px-Default_pfp.svg.png"},
 	streak : { type: Number, required: false, default: 0},

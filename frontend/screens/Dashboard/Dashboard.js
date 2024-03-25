@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
 	View, SafeAreaView, ActivityIndicator
 } from 'react-native';
@@ -16,7 +16,7 @@ import { useAwards } from '../../contexts/AwardsContext';
 
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { styles } from './styles';
 
 
@@ -29,23 +29,12 @@ function Dashboard() {
 	const { todayStats, streak, updateTodayStats } = useStats();
 	const { goals, fetchGoals } = useGoals();
 	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
-	const { userAwards, awards, fetchUserAwards, fetchAwards } = useAwards();
-
-	//console.log({ userDetails });
-	// console.log(userDetails.data.forename);
-	// console.log(userDetails.data.streak);
-	// console.log({ userCommunities });
-	// console.log({ todayStats });
-	// console.log({ latestLoggedFood });
-	// console.log({ goals });
-	// console.log({ userAwards });
-	// console.log({ 'COMMUNITIES': userCommunities });
-
-	// console.log('STREAKS DASHBOARD:', streak);
+	const { userAwards, awards, fetchUserAwards, fetchAwards, fetchAwardsToBeIssued } = useAwards();
 
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
+            console.log('Token:', token);
 			if (!token) {
 				console.error("No token found");
 				navigation.navigate('Login');
@@ -54,17 +43,16 @@ function Dashboard() {
 			return token;
 		} catch (error) {
 			console.error("Error accessing AsyncStorage:", error);
-			navigation.navigate('Login'); // Redirect to login if error
+			navigation.navigate('Login');
 		}
 	};
- 
+
 	useEffect(() => {
 		setLoading(true);
 		const fetchData = async () => {
 			try {
-				await checkUserLogin(); // Check if user is logged in
+				await checkUserLogin();
 
-				// Fetch all necessary data in parallel
 				await Promise.all([
 					updateUserDetails(),
 					updateTodayStats(),
@@ -72,24 +60,54 @@ function Dashboard() {
 					getLatestLoggedFood(),
 					fetchGoals(),
 					fetchUserAwards(),
-					fetchAwards()
+					fetchAwards(),
+					// fetchAwardsToBeIssued()
 				]);
 			} catch (error) {
-				console.error("Error fetching data for dashboard:", error);
-				// Handle error appropriately
+				if (latestLoggedFood != undefined) {
+					console.error("Error fetching data for dashboard:", error);
+				}
 			} finally {
-				setLoading(false); // Ensure loading is set to false after operations complete
+				setLoading(false);
 			}
 		};
 
 		fetchData();
-	}, []); 
+	}, []);
+
+	const updateDashboardData = async () => {
+        console.log(userDetails)
+		try {
+			await checkUserLogin();
+
+			await Promise.all([
+				updateUserDetails(),
+				updateTodayStats(),
+				getUserCommunities(),
+				getLatestLoggedFood(),
+				fetchGoals(),
+				fetchUserAwards(),
+				fetchAwards(),
+				// fetchAwardsToBeIssued()
+			]);
+		} catch (error) {
+			if (latestLoggedFood != undefined) {
+				console.error("Error updating data for dashboard:", error);
+			}
+		}
+	};
+
+	useFocusEffect(
+		useCallback(() => {
+			updateDashboardData();
+		}, [])
+	);
 
 
 	if (loading) {
 		return (
 			<View style={styles.loadingContainer}>
-				<ActivityIndicator size="large" />
+				<ActivityIndicator testID="loading-indicator" size="large" />
 			</View>
 		);
 	}
@@ -99,7 +117,7 @@ function Dashboard() {
 
 			{loading ? (
 				<ActivityIndicator size="large" />
-			) : ( 
+			) : (
 				<>
 					<View style={styles.semiCircle} />
 					<View style={styles.dashboardHeader}>

@@ -2,16 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, StyleSheet, Animated, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 
-const nutrientUnits = {
-    calories: 'kcal',
-    protein: 'g',
-    carbs: 'g',
-    fat: 'g',
-    fibre: 'g',
-    sugar: 'g',
-    sodium: 'mg',
-    water: 'ml',
-};
 
 const styles = StyleSheet.create({
     // -------Goal Progress Bar-------//
@@ -19,7 +9,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center',
         marginTop: '7%',
-        marginBottom: Platform.OS === 'android' ? '8%' : 0,
+        marginBottom: Platform.OS === 'android' ? '5%' : '2%',
         borderRadius: 15,
         width: '100%',
         height: '100%',
@@ -39,12 +29,12 @@ const styles = StyleSheet.create({
         borderRadius: 32,
     },
     progressBarItem: {
-        marginBottom: Platform.OS === 'android' ? 10 : 5,
+        marginBottom: Platform.OS === 'android' ? 12 : 8,
         paddingHorizontal: 20,
         paddingVertical: 8,
         backgroundColor: 'white',
         borderRadius: 12,
-        width: '98%',
+        width: '96%',
         height: '20%',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
@@ -59,11 +49,24 @@ const styles = StyleSheet.create({
         marginBottom: 2,
     },
     label: {
+        fontFamily: 'Montserrat_700Bold',
         fontSize: 14,
         fontWeight: 'bold',
     },
 
 });
+
+const nutrientUnits = {
+    calories: 'kcal',
+    protein: 'g',
+    carbs: 'g',
+    fat: 'g',
+    fibre: 'g',
+    sugar: 'g',
+    sodium: 'mg',
+    water: 'ml',
+};
+
 
 // ProgressBar component
 const ProgressBar = ({ label, progress, max, unit }) => {
@@ -89,7 +92,11 @@ const ProgressBar = ({ label, progress, max, unit }) => {
             }
         };
 
-        const finalWidth = safeDivision(progress, max, containerWidth);
+        let finalWidth = 0;
+
+		{(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ? 
+			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0} // Still load app of error occurs and data is any data is undefined.
+		
 
         Animated.timing(animatedWidth, {
             toValue: finalWidth,
@@ -103,8 +110,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
         <View style={styles.progressBarItem}>
             <View style={styles.labelContainer}>
                 <Text style={styles.label}>{label}</Text>
-                {/* Use the unit prop to display the unit next to the max value */}
-                <Text style={styles.label}>{`${progress} / ${max} ${unit}`}</Text>
+                <Text style={styles.label}>{`${progress.toFixed(0) ?? 0} / ${max} ${unit}`}</Text>
             </View>
             <View style={styles.progressBarContainer} onLayout={measureContainer}>
                 <Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
@@ -120,12 +126,13 @@ ProgressBar.propTypes = {
     unit: PropTypes.string,
 };
 
+ProgressBar.defaultProps = {
+    progress: 0,
+    unit: '',
+};
 
 
 const NutritionProgress = ({ todayStats, goals }) => {
-
-    console.log('Today Stats: COMPONMENT', todayStats);
-
     let initialMacroValues = {
         calories: 0,
         water: 0,
@@ -173,7 +180,7 @@ const NutritionProgress = ({ todayStats, goals }) => {
                         label={nutrient.charAt(0).toUpperCase() + nutrient.slice(1)} // Capitalize the first letter for display
                         progress={currentMacroValues[nutrient]}
                         max={nutrientGoals[nutrient]}
-                        unit={nutrientUnits[nutrient]} // Assuming grams as a default unit, adjust if necessary
+                        unit={nutrientUnits[nutrient]}
                     />
                 );
             })}

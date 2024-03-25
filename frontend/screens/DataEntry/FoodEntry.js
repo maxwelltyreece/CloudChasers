@@ -44,7 +44,7 @@ function FoodEntry() {
             style={styles.item} 
             onPress={() => {
                 setSelectedFood(item);
-                setSearchQuery(item.name); // Update searchQuery to reflect selected food
+                setSearchQuery(item.name);
             }}
             key={item._id}
         >
@@ -74,7 +74,7 @@ function FoodEntry() {
                 </View>
                 
 
-                {searchQuery.length >= 3 && shouldRenderScrollView && ( // Render scroll view only if shouldRenderScrollView is true
+                {searchQuery.length >= 3 && shouldRenderScrollView && (
                     <View style={styles.dropdownContainer}>
                         <ScrollView style={styles.dropdown} maxHeight={200}>
                             {foods.map(renderItem)}
@@ -95,7 +95,7 @@ function FoodEntry() {
                     <TouchableOpacity 
                         style={styles.button} 
                         onPress={async () => {
-                            if (selectedFood && weight) { // Check if selectedFood and weight are not null
+                            if (selectedFood && weight) { 
                                 await logDatabaseFood({
                                     mealType: 'lunch',
                                     foodID: selectedFood._id,
