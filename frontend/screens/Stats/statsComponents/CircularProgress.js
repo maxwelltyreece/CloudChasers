@@ -39,6 +39,7 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
   // });
 
   let initialMacroValues = {
+
     calories: 0,
     water: 0,
     fat: 0,
@@ -51,7 +52,6 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
 
   let currentMacroValues = { ...initialMacroValues, ...todayStats }
 
-  // Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
   let nutrientGoals = {
     calories: 2000,
     fat: 70,

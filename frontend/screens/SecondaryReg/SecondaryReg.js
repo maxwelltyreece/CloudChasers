@@ -3,9 +3,9 @@ import { Alert, View, TextInput, TouchableOpacity, Text, Image, Button } from 'r
 import axios from 'axios';
 import { LocalIP } from '../IPIndex';
 import { styles } from './styles';
-import * as ImagePicker from 'expo-image-picker';
 import { useUser } from '../../contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { requestImagePermissions, pickImage, uploadImage } from '../../services/ImageService';
 
 function RegisterDetails({ navigation, route }) {
     const { username, email, password } = route.params;
@@ -15,14 +15,7 @@ function RegisterDetails({ navigation, route }) {
     const { editUserDetails } = useUser();
 
     useEffect(() => {
-        (async () => {
-            if (Platform.OS !== 'web') {
-                const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-                if (status !== 'granted') {
-                    alert('Sorry, we need camera roll permissions to make this work!');
-                }
-            }
-        })();
+        requestImagePermissions();
     }, []);
 
     const handleLogin = () => {
@@ -46,21 +39,6 @@ function RegisterDetails({ navigation, route }) {
         });
     };
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 0.3,
-        });
-
-        console.log(result);
-
-        if (!result.cancelled) {
-            setProfilePicture(result.uri);
-        }
-    };
-
     const registerUser = async () => {
         try {
             const response = await axios.post(`http://${LocalIP}:3000/register`, {
@@ -81,30 +59,6 @@ function RegisterDetails({ navigation, route }) {
         }
     };
 
-    const uploadImage = async (userId) => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-            const formData = new FormData();
-            let filename = profilePicture.split('/').pop();
-            let match = /\.(\w+)$/.exec(filename);
-            let type = 'image/jpeg';
-            formData.append('objectID', userId);
-            formData.append('folderName', 'Profile_Pictures');
-            formData.append('image', { uri: profilePicture, name: filename, type });
-
-            const response = await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            console.log('Image uploaded');
-            return response;
-        } catch (error) {
-            console.error('Error:', error.message);
-        }
-    };
-
     const handleRegisterDetails = async () => {
         if (!firstName || !lastName) {
             Alert.alert('Error', 'Please fill out all fields');
@@ -115,10 +69,17 @@ function RegisterDetails({ navigation, route }) {
         const userId = registerResponse.data.data._id;
 
         if (profilePicture) {
-            await uploadImage(userId);
+            await uploadImage(userId, profilePicture, 'Profile_Pictures');
         }
 
         handleLogin();
+    };
+
+    const handlePickImage = async () => {
+        const imageUri = await pickImage();
+        if (imageUri) {
+            setProfilePicture(imageUri);
+        }
     };
 
     return (
@@ -141,7 +102,7 @@ function RegisterDetails({ navigation, route }) {
                     underlineColorAndroid="transparent"
                     autoCapitalize="none"
                 />
-                <Button title="Pick Profile Picture" onPress={pickImage} />
+                <Button title="Pick Profile Picture" onPress={handlePickImage} />
                 {profilePicture ? <Image source={{ uri: profilePicture }} style={styles.profilePicture} /> : null}
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={handleRegisterDetails}>
