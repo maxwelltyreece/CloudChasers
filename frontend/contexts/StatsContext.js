@@ -75,12 +75,13 @@ const updateTodayStats = async () => {
 
     try {
         const nutrientData = await Promise.all(nutrientFunctions.map(func => func(today)));
-        const newStats = nutrientData.reduce((acc, curr, index) => {
-            acc[nutrientNames[index]] = curr;
-            return acc;
-        }, {});
-
-        setTodayStats(newStats);
+        setTodayStats(prevStats => {
+            const newStats = { ...prevStats };
+            nutrientData.forEach((value, index) => {
+                newStats[nutrientNames[index]] = value;
+            });
+            return newStats;
+        });
         await updateStreak(today);
     } catch (error) {
         console.error('Error updating today stats:', error);
