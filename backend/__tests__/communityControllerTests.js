@@ -18,8 +18,6 @@ const JoinRequest = require('../models/request');
 
 
 // TODO
-// - Test that a user can make a post in a community
-// - Test that a user can retrieve all posts in a community
 //
 //
 // DONE
@@ -30,6 +28,8 @@ const JoinRequest = require('../models/request');
 // - Test that an admin can deny a join request
 // - Test that a user can leave a community
 // - Test that an admin can remove a member from a community
+// - Test that a user can make a post in a community
+// - Test that a user can retrieve all posts in a community
 
 describe("Community Management", () => {
 	let user, community, token;
@@ -1168,7 +1168,7 @@ describe("Community Management", () => {
 			it("should retrieve all posts for a community", async () => {
 				post2 = await CommunityPost.create({
 					communityID: community._id,
-					userID: user._id,
+					userID: user2._id,
 					title: "Test Post 2",
 					text: "This is another test post",
 					date: Date.now()
@@ -1183,8 +1183,22 @@ describe("Community Management", () => {
 				expect(response.body.data.length).toBe(2);
 				expect(response.body.data[0]).toHaveProperty("_id");
 				expect(response.body.data).toEqual(expect.arrayContaining([
-					expect.objectContaining({ title: "Test Post", text: "This is a test post"}),
-					expect.objectContaining({ title: "Test Post 2", text: "This is another test post" })
+					expect.objectContaining({
+						_id: post._id.toString(),
+						title: "Test Post",
+						text: "This is a test post",
+						username: user.username,
+						user_profile_pic: user.profilePictureLink,
+						date: post.date.toISOString()
+					}),
+					expect.objectContaining({
+						_id: post2._id.toString(),
+						title: "Test Post 2",
+						text: "This is another test post",
+						username: user2.username,
+						user_profile_pic: user2.profilePictureLink,
+						date: post2.date.toISOString()
+					})
 				]));
 			});
 			it("should return an error if the community does not exist", async () => {
