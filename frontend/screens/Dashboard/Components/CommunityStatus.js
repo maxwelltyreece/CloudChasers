@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable no-mixed-spaces-and-tabs */
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
 	View, Text, ScrollView, StyleSheet, Pressable
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useCommunity } from '../../../contexts/CommunityContext';
 import PropTypes from 'prop-types';
 
@@ -58,9 +58,10 @@ const styles = StyleSheet.create({
 	},
 	postCountSection: {
 		flexDirection: 'row',
-		alignContent: 'flex-end',
-		alignItems: 'flex-end',
-		width: '40%',
+		justifyContent: 'center',
+		alignContent: 'center',
+		alignItems: 'center',
+		width: '35%',
 		backgroundColor: '#F0F0F0',
 		borderRadius: 10,
 		paddingHorizontal: 5,
@@ -79,7 +80,7 @@ const styles = StyleSheet.create({
 		fontFamily: 'Montserrat_600SemiBold',
 		fontSize: 11.5,
 		fontWeight: '600',
-		
+
 	},
 	detailText: {
 		fontFamily: 'Montserrat_400Regular',
@@ -101,20 +102,23 @@ function CommunityUpdates({ communities }) {
 	const [communityPostCounts, setCommunityPostCounts] = useState({});
 	const hasCommunities = communities && communities.length > 0;
 
-	useEffect(() => {
-		const fetchPostsCounts = async () => {
-			const counts = {};
-			for (const community of communities) {
-				const postsData = await getCommunityPosts(community.id);
-				counts[community.id] = postsData.length;
-			}
-			setCommunityPostCounts(counts);
-		};
-
-		if (hasCommunities) {
-			fetchPostsCounts();
+	const fetchPostsCounts = async () => {
+		const counts = {};
+		for (const community of communities) {
+			const postsData = await getCommunityPosts(community.id);
+			counts[community.id] = postsData.length;
 		}
-	}, [communities]);
+		setCommunityPostCounts(counts);
+	};
+
+
+	useFocusEffect(
+		useCallback(() => {
+			if (hasCommunities) {
+				fetchPostsCounts();
+			}
+		}, [communities])
+	);
 
 	const handlePress = (community) => {
 		navigation.navigate('Group', { screen: 'GroupPage', params: { community: community } });

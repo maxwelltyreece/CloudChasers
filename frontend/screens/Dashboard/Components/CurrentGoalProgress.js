@@ -236,7 +236,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 
 		{
 			(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ?
-			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0
+				finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0
 		}
 
 
@@ -386,7 +386,12 @@ function GoalProgressBar({ todayStats, goals }) {
 
 	return (
 		<View style={styles.progressBarComponentContainer}>
-			<Swiper showsButtons={false} loop={false}>
+			<Swiper
+				showsButtons={false}
+				loop={false}
+				// dotColor="white"
+				activeDotColor="white" 
+			>
 
 				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>
