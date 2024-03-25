@@ -118,7 +118,7 @@ const getNutrientIntake = async (req, res, nutrient) => {
 		}
 		console.log(totalNutrient)
 		console.log(res.constructor.toString())	
-		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: totalNutrient });
+		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: Math.round(totalNutrient * 10) / 10 });
 	}
 	catch (error) {
 		return res.status(500).send({ error: error.toString() });

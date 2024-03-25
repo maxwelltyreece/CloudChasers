@@ -348,7 +348,7 @@ exports.getUserDayMealMacros = async (userDayMealID) => {;
 				totals[macro] += macroTotals[macro];
 			}
 		}
-		return totals;
+		return Math.round(totals*10) / 10;
 	} catch (error) {
 		throw new Error("Failed to get meal macros: " + error.toString());
 	}
