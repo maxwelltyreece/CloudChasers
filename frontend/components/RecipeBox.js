@@ -95,11 +95,20 @@ const styles = StyleSheet.create({
     padding: 10,
     zIndex: 1,
   },
+  text: {
+    padding: 10,
+  },
+  ingredient: {
+    fontSize: 16,
+    color: '#000',
+    marginBottom: 10,
+  },
 });
 
 function RecipeBox({ id, title, description, onDelete }) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [ingredients, setIngredients] = useState([]);
+    const [imageUrl, setImageUrl] = useState(null);
 
   const deleteRecipe = () => {
     Alert.alert(
@@ -118,7 +127,6 @@ function RecipeBox({ id, title, description, onDelete }) {
                 data: { recipeID: id },
               })
               .then((response) => {
-                console.log("DELETE RESPOSNE: " + response.data);
                 onDelete(id);
                 setModalVisible(false);
               })
@@ -144,8 +152,22 @@ function RecipeBox({ id, title, description, onDelete }) {
     };
 
     handleImageRetrieval();
-  }, [id]);
 
+    const getIngredients = async () => {
+        try {
+            const response = await axios.get(`http://${LocalIP}:3000/food/getRecipeIngredients?recipeID=${id}`);
+            if (Array.isArray(response.data.data)) {
+                setIngredients(response.data.data);
+            } else {
+                setIngredients([]);
+            }
+        } catch (error) {
+            console.error("Failed to fetch ingredients", error);
+        }
+    };
+
+    getIngredients();
+  }, [id]);
   return (
     <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
       <Image source={{ uri: imageUrl }} style={styles.image} />
@@ -169,6 +191,19 @@ function RecipeBox({ id, title, description, onDelete }) {
                 <Text style={styles.text}>{title}</Text>
                 <Text style={styles.description}>{description}</Text>
                 <Text style={styles.ingredientsTitle}>Ingredients</Text>
+                <ScrollView style={styles.text}>
+                    {ingredients.map((ingredient, index) => {
+                        if (ingredient.name && ingredient.weight) {
+                            return (
+                                <Text key={`${ingredient.name}:${ingredient.weight}`} style={styles.ingredient}>
+                                    {ingredient.weight}g of {ingredient.name}
+                                </Text>
+                            );
+                        } else {
+                            return null;
+                        }
+                    })}
+                </ScrollView>
                 {/* Planning on having ingredients here...
                 <ScrollView style={styles.text}>
                    {ingredients.map((ingredient, index) => (
