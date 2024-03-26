@@ -3,22 +3,21 @@ import { StyleSheet, Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-    container: {
-    flexGrow: 1,
-    paddingHorizontal: '5%',
-    backgroundColor: '#FFFFFF',
-    paddingVertical: 25,
-    paddingTop: 10,
-    zIndex: 1,
-   
+  container: {
+  flexGrow: 1,
+  paddingHorizontal: '5%',
+  backgroundColor: '#FFFFFF',
+  paddingVertical: 25,
+  paddingTop: 10,
+  zIndex: 1,
   },
   imagePreview: {
-    width: 150, // or any other dimensions you want
-    height: 150,
-    resizeMode: 'contain', // or 'cover' depending on what you want
-    position: 'absolute', // Add this line
-    bottom: 80, // Adjust this value as needed
-    alignSelf: 'center', // Add this line
+  width: 150,
+  height: 150,
+  resizeMode: 'contain',
+  position: 'absolute',
+  bottom: 80,
+  alignSelf: 'center',
     borderRadius: 10,
   },
   formContainer: {
@@ -136,10 +135,10 @@ export const styles = StyleSheet.create({
       elevation: 2,
     },
     buttonClose: {
-      backgroundColor: "#2196F3",
+      backgroundColor: "#FF815E",
     },
     textStyle: {
-      color: "black",
+      color: "white",
       fontWeight: "bold",
       textAlign: "center",
     },

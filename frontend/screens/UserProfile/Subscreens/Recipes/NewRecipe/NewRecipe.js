@@ -89,11 +89,16 @@ const NewRecipe = ({}) => {
   };
 
   const addItem = () => {
+    if (!selectedItem) {
+      Alert.alert("Error", "You must select a food");
+      return;
+    }
+  
     if (!inputWeight.trim()) {
       Alert.alert("Error", "Weight is required");
       return;
     }
-
+  
     if (!selectedFoods.some((food) => food._id === selectedItem._id)) {
       setSelectedFoods([
         ...selectedFoods,
@@ -101,8 +106,8 @@ const NewRecipe = ({}) => {
       ]);
       setInputWeight("");
       setModalVisible(false);
-      setSelectedItem(null); // Clear selected item
-      setSearchQuery(""); // Clear search query
+      setSelectedItem(null); 
+      setSearchQuery("");
     } else {
       Alert.alert("Item already added");
     }
@@ -113,7 +118,7 @@ const NewRecipe = ({}) => {
       style={[
         styles.item,
         {
-          backgroundColor: item._id === selectedItem?._id ? "orange" : "white",
+          backgroundColor: item._id === selectedItem?._id ? "#FF815E" : "white",
         },
       ]}
       onPress={() => setSelectedItem(item)}
@@ -298,6 +303,7 @@ const NewRecipe = ({}) => {
                         value={inputWeight}
                         onChangeText={setInputWeight}
                         blurOnSubmit
+                        returnKeyType="done" // Add this line
                       />
                       <Pressable
                         style={[styles.button, styles.buttonClose]}
@@ -326,7 +332,7 @@ const NewRecipe = ({}) => {
                         justifyContent: "space-between",
                         alignItems: "center",
                         marginBottom: 5,
-                        paddingHorizontal: 10, // Add some padding around items
+                        paddingHorizontal: 10, 
                       }}
                     >
                       <View style={{ flex: 0.8 }}>
@@ -339,7 +345,7 @@ const NewRecipe = ({}) => {
                       </Pressable>
                     </View>
                   )}
-                  contentContainerStyle={{ paddingBottom: 20 }} // Ensures padding at the bottom
+                  contentContainerStyle={{ paddingBottom: 20 }} 
                 />
               </ScrollView>
             ) : (
