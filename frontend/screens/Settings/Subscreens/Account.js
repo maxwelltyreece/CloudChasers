@@ -30,47 +30,47 @@ const styles = StyleSheet.create({
 		backgroundColor: '#A9A9A9',
 		width: '100%',
 	},
-    profilePictureContainer: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: 20,
-    },
-    profilePicture: {
-        width: 150,
-        height: 150,
-        borderRadius: 75,
-        backgroundColor: '#DDDDDD',
-    },
-    cameraIcon: {
-        position: 'absolute',
-        right: 0,
-        bottom: 0,
-        color: 'rgba(0, 0, 0, 0.7)',
-        borderRadius: 15,
-    },
+	profilePictureContainer: {
+		alignItems: 'center',
+		justifyContent: 'center',
+		margin: 20,
+	},
+	profilePicture: {
+		width: 150,
+		height: 150,
+		borderRadius: 75,
+		backgroundColor: '#DDDDDD',
+	},
+	cameraIcon: {
+		position: 'absolute',
+		right: 0,
+		bottom: 0,
+		color: 'rgba(0, 0, 0, 0.7)',
+		borderRadius: 15,
+	},
 });
 
 function Account({ navigation }) {
-    const { userDetails } = useUser();
-    const [profilePicture, setProfilePicture] = useState(null);
+	const { userDetails } = useUser();
+	const [profilePicture, setProfilePicture] = useState(null);
 
-    useFocusEffect(
-        React.useCallback(() => {
-            if (userDetails && userDetails._id) {
-                getImageLink('Profile_Pictures', userDetails._id).then(setProfilePicture);
-            }
-        }, [userDetails])
-    );
+	useFocusEffect(
+		React.useCallback(() => {
+			if (userDetails && userDetails._id) {
+				getImageLink('Profile_Pictures', userDetails._id).then(setProfilePicture);
+			}
+		}, [userDetails])
+	);
 
-    const handlePickImage = async () => {
-        const imageUri = await pickImage();
-        if (imageUri) {
-            console.log('userDetails._id:', userDetails._id);
-            console.log('imageUri:', imageUri);
-            setProfilePicture(imageUri);
-            await uploadImage(userDetails._id, imageUri, 'Profile_Pictures');
-        }
-    };
+	const handlePickImage = async () => {
+		const imageUri = await pickImage();
+		if (imageUri) {
+			console.log('userDetails._id:', userDetails._id);
+			console.log('imageUri:', imageUri);
+			setProfilePicture(imageUri);
+			await uploadImage(userDetails._id, imageUri, 'Profile_Pictures');
+		}
+	};
 
 	const data = [
 		{ field: 'Username', value: userDetails.username, realName: 'username' },
@@ -81,16 +81,16 @@ function Account({ navigation }) {
 
 	return (
 		<View style={styles.container}>
-            <TouchableOpacity onPress={handlePickImage} style={styles.profilePictureContainer}>
-                <View>
-                    <Image
-                        key={profilePicture}
-                        source={profilePicture ? { uri: profilePicture } : { uri: 'https://your-website.com/path-to-default-image.png' }}
-                        style={styles.profilePicture}
-                    />
-                    <Icon name="camera" size={35} color="#000" style={styles.cameraIcon} />
-                </View>
-            </TouchableOpacity>
+			<TouchableOpacity onPress={handlePickImage} style={styles.profilePictureContainer}>
+				<View>
+					<Image
+						key={profilePicture}
+						source={profilePicture ? { uri: profilePicture } : { uri: 'https://your-website.com/path-to-default-image.png' }}
+						style={styles.profilePicture}
+					/>
+					<Icon name="camera" size={35} color="#000" style={styles.cameraIcon} />
+				</View>
+			</TouchableOpacity>
 			<FlatList
 				data={data}
 				keyExtractor={(item) => item.field}

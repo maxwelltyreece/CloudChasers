@@ -17,7 +17,7 @@ export const fetchUserDetails = async (token) => {
 		return response.data;
 	} catch (error) {
 		if (error.response) {
-            console.error(error.response.data);
+			console.error(error.response.data);
 		} else if (error.request) {
 			console.error(error.request);
 		} else {
@@ -34,16 +34,16 @@ export const fetchUserDetails = async (token) => {
  * @returns {Promise<Object>} Promise that resolves to the updated user's details.
  */
 export const editUserDetails = async (newValues) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, newValues, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, newValues, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 };

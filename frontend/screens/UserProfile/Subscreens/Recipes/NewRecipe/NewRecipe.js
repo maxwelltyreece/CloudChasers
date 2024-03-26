@@ -53,7 +53,7 @@ const NewRecipe = ({}) => {
 			</View>
 		);
 	}
- /**
+	/**
    * @description Button component for adding an image to the recipe.
    * @param {Function} onPress - Function to execute on button press.
    * @returns {JSX.Element} A stylized pressable component for adding an image.
@@ -70,7 +70,7 @@ const NewRecipe = ({}) => {
 			</View>
 		);
 	}
-/**
+	/**
    * @description Extracts and returns the file name from a given file path or URL.
    * @param {string} image - The path or URL of the image.
    * @returns {string} The file name extracted from the path or URL.
@@ -80,7 +80,7 @@ const NewRecipe = ({}) => {
 		console.log(fileName);
 		return fileName;
 	}
- /**
+	/**
    * @description Launches the image picker library to allow the user to select an image.
    */
 	const pickImage = async () => {

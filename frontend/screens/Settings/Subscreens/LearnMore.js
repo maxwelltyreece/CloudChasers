@@ -73,15 +73,15 @@ function LearnMore() {
 					{/* Calories */}
 					<Text style={styles.subheaderText}>Calories (kcal):</Text>
 					<Text style={styles.contentText}>
-				<View style={styles.textContainer}>
-					{/* Calories */}
-					<Text style={styles.subheaderText}>Calories (kcal):</Text>
-					<Text style={styles.contentText}>
+						<View style={styles.textContainer}>
+							{/* Calories */}
+							<Text style={styles.subheaderText}>Calories (kcal):</Text>
+							<Text style={styles.contentText}>
 					Calories are units of energy that measure how much energy food provides
 					to the body. They are essential for daily activities and bodily
 					functions.
-					</Text>
-				</View>
+							</Text>
+						</View>
 					</Text>
 				</View>
 
@@ -89,14 +89,14 @@ function LearnMore() {
 					{/* Carbohydrates */}
 					<Text style={styles.subheaderText}>Carbohydrates (g):</Text>
 					<Text style={styles.contentText}>
-				<View style={styles.textContainer}>
-					{/* Carbohydrates */}
-					<Text style={styles.subheaderText}>Carbohydrates (g):</Text>
-					<Text style={styles.contentText}>
+						<View style={styles.textContainer}>
+							{/* Carbohydrates */}
+							<Text style={styles.subheaderText}>Carbohydrates (g):</Text>
+							<Text style={styles.contentText}>
 					The body&apos;s main source of energy, broken down into glucose.
 					Found in fruits, vegetables, breads, and cereals.
-					</Text>
-				</View>
+							</Text>
+						</View>
 					</Text>
 				</View>
 

@@ -79,39 +79,39 @@ const nutrientUnits = {
  * @param {string} [props.unit=''] - Unit for the progress
  */
 const ProgressBar = ({ label, progress = 0, max, unit = '' }) => {
-    const progressAnim = useRef(new Animated.Value(0)).current;
+	const progressAnim = useRef(new Animated.Value(0)).current;
 
-    useEffect(() => {
-        Animated.timing(progressAnim, {
-            toValue: (progress / max) * 100,
-            duration: 500,
-            useNativeDriver: false,
-        }).start();
-    }, [progress]);
+	useEffect(() => {
+		Animated.timing(progressAnim, {
+			toValue: (progress / max) * 100,
+			duration: 500,
+			useNativeDriver: false,
+		}).start();
+	}, [progress]);
 
-    const widthInterpolated = progressAnim.interpolate({
-        inputRange: [0, 100],
-        outputRange: ['0%', '100%'],
-    });
+	const widthInterpolated = progressAnim.interpolate({
+		inputRange: [0, 100],
+		outputRange: ['0%', '100%'],
+	});
 
-    return (
-        <View style={styles.progressBarItem}>
-            <View style={styles.labelContainer}>
-                <Text style={styles.label}>{label}</Text>
-                <Text style={styles.label}>{`${progress} / ${max} ${unit}`}</Text>
-            </View>
-            <View style={styles.progressBarContainer}>
-                <Animated.View style={[styles.filledProgressBar, { width: widthInterpolated }]} />
-            </View>
-        </View>
-    );
+	return (
+		<View style={styles.progressBarItem}>
+			<View style={styles.labelContainer}>
+				<Text style={styles.label}>{label}</Text>
+				<Text style={styles.label}>{`${progress} / ${max} ${unit}`}</Text>
+			</View>
+			<View style={styles.progressBarContainer}>
+				<Animated.View style={[styles.filledProgressBar, { width: widthInterpolated }]} />
+			</View>
+		</View>
+	);
 };
 
 ProgressBar.propTypes = {
-    label: PropTypes.string.isRequired,
-    progress: PropTypes.number,
-    max: PropTypes.number.isRequired,
-    unit: PropTypes.string,
+	label: PropTypes.string.isRequired,
+	progress: PropTypes.number,
+	max: PropTypes.number.isRequired,
+	unit: PropTypes.string,
 };
 
 /**
@@ -121,56 +121,56 @@ ProgressBar.propTypes = {
  * @param {Object} props.goals - Goals
  */
 const NutritionProgress = ({ todayStats, goals }) => {
-    const initialMacroValues = {
-        calories: 0,
-        water: 0,
-        fat: 0,
-        sodium: 0,
-        carbs: 0,
-        protein: 0,
-        sugar: 0,
-        fibre: 0,
-    };
+	const initialMacroValues = {
+		calories: 0,
+		water: 0,
+		fat: 0,
+		sodium: 0,
+		carbs: 0,
+		protein: 0,
+		sugar: 0,
+		fibre: 0,
+	};
 
-    const currentMacroValues = Object.keys(initialMacroValues).reduce((acc, key) => {
-        acc[key] = todayStats[key] ? parseInt(todayStats[key].toFixed(0)) : 0;
-        return acc;
-    }, {});
+	const currentMacroValues = Object.keys(initialMacroValues).reduce((acc, key) => {
+		acc[key] = todayStats[key] ? parseInt(todayStats[key].toFixed(0)) : 0;
+		return acc;
+	}, {});
 
-    const nutrientGoals = {
-        calories: 2000,
-        fat: 70,
-        sodium: 2300,
-        carbs: 300,
-        water: 3700,
-        protein: 50,
-        sugar: 25,
-        fibre: 30,
-    };
+	const nutrientGoals = {
+		calories: 2000,
+		fat: 70,
+		sodium: 2300,
+		carbs: 300,
+		water: 3700,
+		protein: 50,
+		sugar: 25,
+		fibre: 30,
+	};
 
-    if (goals && goals.goals) {
-        goals.goals.forEach(goal => {
-            if (goal.measurement in nutrientGoals) {
-                nutrientGoals[goal.measurement] = goal.maxTargetMass;
-            }
-        });
-    }
+	if (goals && goals.goals) {
+		goals.goals.forEach(goal => {
+			if (goal.measurement in nutrientGoals) {
+				nutrientGoals[goal.measurement] = goal.maxTargetMass;
+			}
+		});
+	}
 
-    const nutrientsOfInterest = ['carbs', 'fat', 'sodium', 'sugar', 'fibre'];
+	const nutrientsOfInterest = ['carbs', 'fat', 'sodium', 'sugar', 'fibre'];
 
-    return (
-        <View style={styles.progressBarComponentContainer}>
-            {nutrientsOfInterest.map((nutrient) => (
-                <ProgressBar
-                    key={nutrient}
-                    label={nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}
-                    progress={currentMacroValues[nutrient]}
-                    max={nutrientGoals[nutrient]}
-                    unit={nutrientUnits[nutrient]}
-                />
-            ))}
-        </View>
-    );
+	return (
+		<View style={styles.progressBarComponentContainer}>
+			{nutrientsOfInterest.map((nutrient) => (
+				<ProgressBar
+					key={nutrient}
+					label={nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}
+					progress={currentMacroValues[nutrient]}
+					max={nutrientGoals[nutrient]}
+					unit={nutrientUnits[nutrient]}
+				/>
+			))}
+		</View>
+	);
 };
 
 NutritionProgress.propTypes = {

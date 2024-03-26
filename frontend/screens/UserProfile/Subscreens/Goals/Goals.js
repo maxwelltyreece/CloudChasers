@@ -6,25 +6,25 @@ import { useGoals } from '../../../../contexts/GoalsContext';
 import { styles } from './styles';
 
 const defaultMacroGoals = {
-    calories: { value: 2000, unit: 'kcal' },
-    protein: { value: 50, unit: 'g' },
-    carbs: { value: 300, unit: 'g' },
-    fat: { value: 70, unit: 'g' },
-    fibre: { value: 30, unit: 'g' },
-    sugar: { value: 25, unit: 'g' },
-    sodium: { value: 2300, unit: 'mg' },
-    water: { value: 3700, unit: 'ml' },
+	calories: { value: 2000, unit: 'kcal' },
+	protein: { value: 50, unit: 'g' },
+	carbs: { value: 300, unit: 'g' },
+	fat: { value: 70, unit: 'g' },
+	fibre: { value: 30, unit: 'g' },
+	sugar: { value: 25, unit: 'g' },
+	sodium: { value: 2300, unit: 'mg' },
+	water: { value: 3700, unit: 'ml' },
 };
 
 const nutrientUnits = {
-    calories: 'kcal',
-    protein: 'g',
-    carbs: 'g',
-    fat: 'g',
-    fibre: 'g',
-    sugar: 'g',
-    sodium: 'mg',
-    water: 'ml',
+	calories: 'kcal',
+	protein: 'g',
+	carbs: 'g',
+	fat: 'g',
+	fibre: 'g',
+	sugar: 'g',
+	sodium: 'mg',
+	water: 'ml',
 };
 
 /**
@@ -116,7 +116,7 @@ const Goals = () => {
 	const [isGoalsFetched, setIsGoalsFetched] = useState(false);
 	const [fetchedGoals, setFetchedGoals] = useState([]);
 
-  /**
+	/**
    * Fetches goals from the server
    */
 	useEffect(() => {
@@ -136,7 +136,7 @@ const Goals = () => {
 
 	}, [fetchGoals, isGoalsFetched, goals.goals]);
 
-    /**
+	/**
      * Fetches goals from the server when the component is focused
      */
 	useFocusEffect(
@@ -154,7 +154,7 @@ const Goals = () => {
 		}, [fetchGoals, goals])
 	);
 
-    /**
+	/**
      * Updates a goal
      * @param {string} nutrient - The nutrient for the goal
      * @param {string} newMaxValue - The new maximum value for the goal
@@ -188,7 +188,7 @@ const Goals = () => {
 		}
 	};
 
-    /**
+	/**
      * Initializes the goals
      */
 	const handleInitializeGoals = () => {

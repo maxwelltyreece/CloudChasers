@@ -87,16 +87,16 @@ export async function getCommunityDetails(communityId) {
  * @returns {Promise} Axios Response Promise with the user's role.
  */
 export async function getUserRole(communityId) {
-    const token = await AsyncStorage.getItem('token');
-    const response = await axios.get(`http://${LocalIP}:3000/community/role`, {
-        params: {
-            communityId: communityId
-        },
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-    return response.data;
+	const token = await AsyncStorage.getItem('token');
+	const response = await axios.get(`http://${LocalIP}:3000/community/role`, {
+		params: {
+			communityId: communityId
+		},
+		headers: {
+			Authorization: `Bearer ${token}`,
+		},
+	});
+	return response.data;
 }
 
 /**

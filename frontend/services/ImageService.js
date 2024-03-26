@@ -42,31 +42,31 @@ export const pickImage = async () => {
  * @returns {Promise} Axios Response Promise with the upload operation result.
  */
 export const uploadImage = async (userId, profilePicture, folderName) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        const resizedImage = await ImageManipulator.manipulateAsync(
-            profilePicture,
-            [{ resize: { width: 300, height: 300 } }],
-            { compress: 0.3, format: ImageManipulator.SaveFormat.JPEG }
-        );
-        const formData = new FormData();
-        let filename = resizedImage.uri.split('/').pop();
-        let match = /\.(\w+)$/.exec(filename);
-        let type = match ? `image/${match[1]}` : `image`;
-        formData.append('objectID', userId);
-        formData.append('folderName', folderName);
-        formData.append('image', { uri: resizedImage.uri, name: filename, type });
+	try {
+		const token = await AsyncStorage.getItem('token');
+		const resizedImage = await ImageManipulator.manipulateAsync(
+			profilePicture,
+			[{ resize: { width: 300, height: 300 } }],
+			{ compress: 0.3, format: ImageManipulator.SaveFormat.JPEG }
+		);
+		const formData = new FormData();
+		let filename = resizedImage.uri.split('/').pop();
+		let match = /\.(\w+)$/.exec(filename);
+		let type = match ? `image/${match[1]}` : `image`;
+		formData.append('objectID', userId);
+		formData.append('folderName', folderName);
+		formData.append('image', { uri: resizedImage.uri, name: filename, type });
 
-        const response = await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return response;
-    } catch (error) {
-        console.error('Error:', error.message);
-    }
+		const response = await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+			headers: {
+				'Content-Type': 'multipart/form-data',
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response;
+	} catch (error) {
+		console.error('Error:', error.message);
+	}
 };
 
 /**
@@ -76,16 +76,16 @@ export const uploadImage = async (userId, profilePicture, folderName) => {
  * @returns {Promise<string>} Promise that resolves to the URL of the image.
  */
 export const getImageLink = async (folderName, id) => {
-    try {
-        const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
-            params: {
-                folderName: folderName,
-                id: id,
-            },
-        });
-        return response.data.url;
-    } catch (error) {
-        console.error('Error:', error.message);
-        return null;
-    }
+	try {
+		const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
+			params: {
+				folderName: folderName,
+				id: id,
+			},
+		});
+		return response.data.url;
+	} catch (error) {
+		console.error('Error:', error.message);
+		return null;
+	}
 };

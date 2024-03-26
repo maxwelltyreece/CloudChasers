@@ -14,13 +14,13 @@ import { useNavigation } from '@react-navigation/native';
  * @returns {JSX.Element} The rendered button
  */
 function NewRecipeButton({ onPress }) {
-  return (
-    <View style={{ padding: 10, borderRadius: 50 }}>
-      <Pressable onPress={onPress} style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}>
-        <Feather name="plus" size={24} color="black" />
-      </Pressable>
-    </View>
-  );
+	return (
+		<View style={{ padding: 10, borderRadius: 50 }}>
+			<Pressable onPress={onPress} style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}>
+				<Feather name="plus" size={24} color="black" />
+			</Pressable>
+		</View>
+	);
 }
 
 /**
@@ -28,89 +28,89 @@ function NewRecipeButton({ onPress }) {
  * @returns {JSX.Element} The rendered screen
  */
 function Recipes() {
-  const { getAllUserRecipes } = useFoodLog();
-  const [search, setSearch] = useState("");
-  const [recipes, setRecipes] = useState([]);
-  const navigation = useNavigation();
+	const { getAllUserRecipes } = useFoodLog();
+	const [search, setSearch] = useState("");
+	const [recipes, setRecipes] = useState([]);
+	const navigation = useNavigation();
 
-  /**
+	/**
    * Updates the search state
    * @param {string} search - The new search string
    */
-  const updateSearch = (search) => {
-    setSearch(search);
-  };
+	const updateSearch = (search) => {
+		setSearch(search);
+	};
 
-  // Fetch recipes when the component mounts
-  useEffect(() => {
-    const fetchRecipes = async () => {
-      const fetchedRecipes = await getAllUserRecipes();
+	// Fetch recipes when the component mounts
+	useEffect(() => {
+		const fetchRecipes = async () => {
+			const fetchedRecipes = await getAllUserRecipes();
 
-      const mappedRecipes = fetchedRecipes.map((recipe) => ({
-        id: recipe._id,
-        title: recipe.name,
-        description: recipe.description,
-        image: recipe.image,
-      }));
+			const mappedRecipes = fetchedRecipes.map((recipe) => ({
+				id: recipe._id,
+				title: recipe.name,
+				description: recipe.description,
+				image: recipe.image,
+			}));
 
-      setRecipes(mappedRecipes);
-    };
+			setRecipes(mappedRecipes);
+		};
 
-    fetchRecipes();
-  }, [getAllUserRecipes]);
+		fetchRecipes();
+	}, [getAllUserRecipes]);
 
-  // Filter recipes based on the search string
-  const filteredRecipes = recipes.filter(
-    (recipe) =>
-      recipe.title && recipe.title.toLowerCase().includes(search.toLowerCase())
-  );
+	// Filter recipes based on the search string
+	const filteredRecipes = recipes.filter(
+		(recipe) =>
+			recipe.title && recipe.title.toLowerCase().includes(search.toLowerCase())
+	);
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}>
-        <SearchBar
-          placeholder="Search..."
-          onChangeText={updateSearch}
-          value={search}
-          inputStyle={styles.searchInput}
-          inputContainerStyle={{
-            backgroundColor: "transparent",
-            borderBottomWidth: 0,
-            borderTopWidth: 0,
-          }}
-          containerStyle={{
-            flex: 1,
-            backgroundColor: "transparent",
-            borderBottomWidth: 0,
-            borderTopWidth: 0,
-            shadowColor: "transparent",
-          }}
-        />
-       <NewRecipeButton onPress={() => navigation.navigate('NewRecipe')} />
-      </View>
+	return (
+		<View style={styles.container}>
+			<View style={styles.titleContainer}>
+				<SearchBar
+					placeholder="Search..."
+					onChangeText={updateSearch}
+					value={search}
+					inputStyle={styles.searchInput}
+					inputContainerStyle={{
+						backgroundColor: "transparent",
+						borderBottomWidth: 0,
+						borderTopWidth: 0,
+					}}
+					containerStyle={{
+						flex: 1,
+						backgroundColor: "transparent",
+						borderBottomWidth: 0,
+						borderTopWidth: 0,
+						shadowColor: "transparent",
+					}}
+				/>
+				<NewRecipeButton onPress={() => navigation.navigate('NewRecipe')} />
+			</View>
 
-      {filteredRecipes.length > 0 ? (
-        <FlatList
-          data={filteredRecipes}
-          renderItem={({ item }) => (
-            <RecipeBox
-              id = {item.id}
-              title={item.title}
-              description={item.description}
-              image={item.image}
-              style={styles.box}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-          numColumns={2}
-          columnWrapperStyle={styles.row}
-          style={styles.list}
-        />
-      ) : (
-        <Text style={styles.noRecipesText}>No recipes currently</Text>
-      )}
+			{filteredRecipes.length > 0 ? (
+				<FlatList
+					data={filteredRecipes}
+					renderItem={({ item }) => (
+						<RecipeBox
+							id = {item.id}
+							title={item.title}
+							description={item.description}
+							image={item.image}
+							style={styles.box}
+						/>
+					)}
+					keyExtractor={(item) => item.id}
+					numColumns={2}
+					columnWrapperStyle={styles.row}
+					style={styles.list}
+				/>
+			) : (
+				<Text style={styles.noRecipesText}>No recipes currently</Text>
+			)}
       
-    </View>
-  );
+		</View>
+	);
 }
 export default Recipes;

@@ -83,45 +83,45 @@ function RegisterDetails({ navigation, route }) {
 		}
 	};
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.loginContainer}>
-                <Text style={styles.header}>Complete Your Profile!</Text>
-                <TouchableOpacity onPress={handlePickImage}>
-                    <View style={styles.profilePictureContainer}>
-                        <ImageBackground
-                            source={profilePicture ? { uri: profilePicture } : { uri: 'https://your-website.com/path-to-default-image.png' }}
-                            style={styles.profilePicture}
-                            imageStyle={{ borderRadius: 70 }}
-                        >
-                        </ImageBackground>
-                        <Icon name="camera" size={30} color="#000" style={styles.cameraIcon} />
-                    </View>
-                </TouchableOpacity>
-                <TextInput
-                    style={styles.input}
-                    placeholder="First Name"
-                    value={firstName}
-                    onChangeText={setFirstName}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Last Name"
-                    value={lastName}
-                    onChangeText={setLastName}
-                    underlineColorAndroid="transparent"
-                    autoCapitalize="none"
-                />
-                <View style={styles.buttonContainer}>
-                    <TouchableOpacity style={styles.button} onPress={handleRegisterDetails}>
-                        <Text style={styles.buttonText}>Submit</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </View>
-    );
+	return (
+		<View style={styles.container}>
+			<View style={styles.loginContainer}>
+				<Text style={styles.header}>Complete Your Profile!</Text>
+				<TouchableOpacity onPress={handlePickImage}>
+					<View style={styles.profilePictureContainer}>
+						<ImageBackground
+							source={profilePicture ? { uri: profilePicture } : { uri: 'https://your-website.com/path-to-default-image.png' }}
+							style={styles.profilePicture}
+							imageStyle={{ borderRadius: 70 }}
+						>
+						</ImageBackground>
+						<Icon name="camera" size={30} color="#000" style={styles.cameraIcon} />
+					</View>
+				</TouchableOpacity>
+				<TextInput
+					style={styles.input}
+					placeholder="First Name"
+					value={firstName}
+					onChangeText={setFirstName}
+					underlineColorAndroid="transparent"
+					autoCapitalize="none"
+				/>
+				<TextInput
+					style={styles.input}
+					placeholder="Last Name"
+					value={lastName}
+					onChangeText={setLastName}
+					underlineColorAndroid="transparent"
+					autoCapitalize="none"
+				/>
+				<View style={styles.buttonContainer}>
+					<TouchableOpacity style={styles.button} onPress={handleRegisterDetails}>
+						<Text style={styles.buttonText}>Submit</Text>
+					</TouchableOpacity>
+				</View>
+			</View>
+		</View>
+	);
 }
 
 export default RegisterDetails;
