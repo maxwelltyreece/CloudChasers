@@ -21,7 +21,7 @@
       "<rootDir>/jest.setup.js"
     ],
     "transformIgnorePatterns": [
-        "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-community|@react-native-async-storage/async-storage)/"
+      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-community|@react-native-async-storage/async-storage)/"
     ],
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
