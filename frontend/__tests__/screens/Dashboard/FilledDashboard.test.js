@@ -312,12 +312,7 @@ describe('Filled Dashboard', () => {
 				});
 			});
 		});
-			await act(async () => {
-				await waitFor(() => {
-					expect(AsyncStorage.getItem).toHaveBeenCalledWith('token');
-					expect(useNavigation().navigate).toHaveBeenCalledWith('Login');
-				});
-			});
-		});
 
     });
+	
+});

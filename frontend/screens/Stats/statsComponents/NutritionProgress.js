@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 
 const styles = StyleSheet.create({
-	// -------Goal Progress Bar-------//
 	progressBarComponentContainer: {
 		justifyContent: 'center',
 		alignContent: 'center',
@@ -175,7 +174,16 @@ const NutritionProgress = ({ todayStats, goals }) => {
 
 NutritionProgress.propTypes = {
 	todayStats: PropTypes.object.isRequired,
-	goals: PropTypes.object,
+	goals: PropTypes.arrayOf(
+		PropTypes.shape({
+			__v: PropTypes.number,
+			_id: PropTypes.string.isRequired,
+			maxTargetMass: PropTypes.number.isRequired,
+			measurement: PropTypes.string.isRequired,
+			minTargetMass: PropTypes.number.isRequired,
+			name: PropTypes.string.isRequired,
+		})
+	).isRequired,
 };
 
 export default NutritionProgress;
