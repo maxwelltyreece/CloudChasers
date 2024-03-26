@@ -40,7 +40,7 @@ export default function TabBarIcon({ name, color, size, animation, onPress, navi
 			</Animated.View>
 		);
 	}
-	return <FontAwesome5 name={name} color={color} size={size} solid />;
+	return <FontAwesome5 name={name} color={color} size={size} solid testID="fontawesome-icon"/>;
 }
 
 /**

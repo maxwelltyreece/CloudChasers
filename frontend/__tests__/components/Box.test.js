@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
-import Box from '../../../components/box';
+import Box from '../../components/box';
 
 describe('Box component', () => {
 	test('renders correctly with title', () => {

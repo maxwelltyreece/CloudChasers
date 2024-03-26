@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import AddModal from '../../../components/AddModal';
+import AddModal from '../../components/AddModal';
 
 describe('AddModal', () => {
 	const mockNavigator = { navigate: jest.fn() };

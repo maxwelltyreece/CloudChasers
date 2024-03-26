@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, fireEvent} from '@testing-library/react-native';
-import CustomIcon from '../../../components/AddButton';
+import CustomIcon from '../../components/AddButton';
 import { TouchableWithoutFeedback } from 'react-native';
-import AddModal from '../../../components/AddModal';
+import AddModal from '../../components/AddModal';
 
 // Mocking the react-navigation module
 jest.mock('@react-navigation/native', () => ({

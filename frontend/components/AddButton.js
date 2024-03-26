@@ -3,7 +3,7 @@ import { View, TouchableWithoutFeedback,} from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
-import AddModal from './AddModal'; // Import the AddModal component
+import AddModal from './AddModal';
 
 const CustomIcon = ({ width = 80, height = 82 }) => {
 	const [isModalVisible, setModalVisible] = useState(false);
