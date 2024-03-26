@@ -1,6 +1,7 @@
 module.exports = {
-	globalSetup: "./jest.global-setup.js",
-	globalTeardown: "./jest.global-setup.js:teardown",
+	globalSetup: '<rootDir>/jest.global-setup.js',
+	// globalTeardown: '<rootDir>/jest.global-teardown.js',
 	testEnvironment: "node",
 	testMatch: ["**/__tests__/**/*.js?(x)", "**/?(*.)+(spec|test).js?(x)"],
+	setupFilesAfterEnv: ["../../jest.setup.js"]
 };

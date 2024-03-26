@@ -3,15 +3,9 @@ let serverProcess;
 
 module.exports = async () => {
 	// Start the server before all tests
-	serverProcess = spawn("node", ["path/to/your/server.js"], {
+	serverProcess = spawn("node", ["backend/server.js"], {
 		stdio: "inherit",
 	});
 
-
 	await new Promise((resolve) => setTimeout(resolve, 5000));
-};
-
-module.exports.teardown = () => {
-
-	serverProcess.kill();
 };
