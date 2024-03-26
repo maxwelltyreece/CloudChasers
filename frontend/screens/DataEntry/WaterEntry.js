@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import { Alert, View, Text, TouchableOpacity, TextInput } from 'react-native';
-import globalStyles from '../../styles/global';
 import { styles } from './styles';
 import { useFoodLog } from '../../contexts/FoodLogContext';
 import { useNavigation } from '@react-navigation/native';
 
+/**
+ * Component for logging water consumption.
+ * @returns {JSX.Element} WaterEntry component.
+ */
 function WaterEntry() {
 	const [waterAmount, setWaterAmount] = useState('');
 	const { logWater } = useFoodLog();
 	const navigation = useNavigation();
+
+	/**
+     * Handles logging of water consumption.
+     */
 	const handleWaterEntry = () => {
 		if (!waterAmount) {
 			Alert.alert('Error', 'Please fill all fields');
 			return;
 		}
-		// console.log('Logging water:', waterAmount);
 		logWater({ weight: waterAmount });
-		// console.log('Water logged');
 		Alert.alert(
 			'Water Logged',
 			'Want to log more water?',
