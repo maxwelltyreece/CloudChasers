@@ -69,7 +69,7 @@ export const styles = StyleSheet.create({
   text: {
     textAlign: "left",
     fontFamily: 'Montserrat_700Bold',
-    fontSize: 20,
+    fontSize: 18,
   },
   image: {
     width: '100%',
@@ -115,14 +115,21 @@ export const styles = StyleSheet.create({
       elevation: 5,
     },
     modalText: {
-      marginBottom: 15,
+      marginBottom: 5,
       textAlign: "center",
       fontFamily: 'Montserrat_700Bold',
     },
     dropdownContainer: {
       paddingBottom: 10,
+    },
 
-
+    dropdown:{
+      width: 250,
+      height: 40,
+      marginBottom: 20,
+      backgroundColor: '#F0F0F0',
+      borderRadius: 20,
+      padding: 10,
     },
     modalInput: {
       height: 40,

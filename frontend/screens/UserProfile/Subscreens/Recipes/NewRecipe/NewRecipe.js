@@ -106,14 +106,6 @@ const NewRecipe = ({}) => {
     return fileName;
   }
 
-  //   const handleAddRecipe = async () => {
-  // 	const communityID = await AsyncStorage.getItem("communityID");
-  // 	const recipeID = await AsyncStorage.getItem("recipeID");
-  // 	const response = await addRecipeToCommunity(recipeID, communityID);
-  // 	console.log(response)
-
-  // 	};
-
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -151,7 +143,6 @@ const NewRecipe = ({}) => {
 
   const handleAddCommunityPress = async () => {
     await fetchUserCommunities();
-    console.log("Available communities: ", userCommunities.map(community => community.name));
     setSelectedCommunity(null); // Reset selected community ID
     setSelectedCommunityName(""); // Reset selected community name
     setCommunityModalVisible(true);
@@ -201,7 +192,8 @@ const NewRecipe = ({}) => {
 			style={[
 				styles.item,
 				{
-					backgroundColor: item._id === selectedItem?._id ? "#FF815E" : "white",
+					backgroundColor: item._id === selectedItem?._id ? "#FF815E" : "#F0F0F0", 
+				
 				},
 			]}
 			onPress={() => setSelectedItem(item)}
@@ -223,21 +215,6 @@ const NewRecipe = ({}) => {
   const removeItem = (id) => {
     setSelectedFoods(selectedFoods.filter((item) => item._id !== id));
   };
-
-  //   const getAvailableCommunities = async () => {
-  //     const response = await getAllCommunities();
-  //     if (response.success) {
-  //         const availableCommunities = response.data.filter(
-  //             (community) => !userCommunities.some((userCommunity) => userCommunity.id === community.id)
-  //         );
-  //         console.log('Available communities:', availableCommunities);
-  //         console.log('ALL communities:', JSON.stringify(response.data, null, 2));
-  //         return availableCommunities;
-  //     } else {
-  //         console.error('Failed to get communities:', response);
-  //         return [];
-  //     }
-  // };
 
 	/**
 	 * Adds selected foods to a recipe.
@@ -402,15 +379,15 @@ const NewRecipe = ({}) => {
                     <View style={styles.modalView}>
                       <Text style={styles.modalText}>Add a New Food Item</Text>
 
-											<TextInput
-												style={styles.modalInput}
-												placeholder="Search Food..."
-												placeholderTextColor="darkgray"
-												value={searchQuery}
-												onChangeText={(text) => setSearchQuery(text)}
-												blurOnSubmit
-												returnKeyType="search"
-											/>
+                      <TextInput
+                        style={styles.modalInput}
+                        placeholder="Search Food..."
+                        placeholderTextColor="darkgray"
+                        value={searchQuery}
+                        onChangeText={(text) => setSearchQuery(text)}
+                        blurOnSubmit
+                        returnKeyType="search"
+                      />
 
                       {searchQuery.length >= 3 && shouldRenderScrollView && (
                         <View style={styles.dropdownContainer}>
@@ -451,10 +428,16 @@ const NewRecipe = ({}) => {
                 onPress={() => setCommunityModalVisible(false)}
               >
                 <View style={styles.centeredView}>
-				<View style={[styles.modalView, {height: 200}]}>
-
+                  <View style={[styles.modalView, { height: 250 }]}>
                     <Text style={styles.modalText}>Select a Community</Text>
                     <FlatList
+                      style={{
+                        backgroundColor: "#F0F0F0",
+                        borderRadius: 20,
+                        padding: 10,
+                        margin: 10,
+                        width: 250,
+                      }}
                       data={userCommunities}
                       keyExtractor={(item) => item.id.toString()}
                       renderItem={({ item }) => (
@@ -466,6 +449,7 @@ const NewRecipe = ({}) => {
                               item.id === selectedCommunity
                                 ? "#FF815E"
                                 : "transparent",
+                            borderRadius: 20,
                           }}
                         >
                           <Text style={styles.communityItem}>{item.name}</Text>
@@ -476,12 +460,11 @@ const NewRecipe = ({}) => {
                       <TouchableOpacity
                         onPress={() => {
                           setRecipeCommunity(selectedCommunity);
-                          console.log("Selected community:", selectedCommunity);
                           setCommunityModalVisible(false);
                         }}
                         style={[styles.button, styles.buttonClose]}
                       >
-                        <Text>Confirm Community</Text>
+                        <Text style={styles.textStyle}>Add to Community</Text>
                       </TouchableOpacity>
                     )}
                   </View>
@@ -491,15 +474,20 @@ const NewRecipe = ({}) => {
           </View>
           <View style={{ marginVertical: 20 }}>
             <Text style={styles.text}>Selected Community: </Text>
-            <Text style={{
-                  fontFamily: "Montserrat_400Regular",
-                }}>
-				{selectedCommunityName || 'No community selected'}</Text>
+            <Text
+              style={{
+                fontFamily: "Montserrat_400Regular",
+              }}
+            >
+              {selectedCommunityName || "No community selected"}
+            </Text>
           </View>
-          <View style={{ height: 150 }}>
+          <View style={{ height: 100 }}>
             <Text style={styles.text}>Selected Foods:</Text>
             {selectedFoods.length > 0 ? (
-              <ScrollView>
+              <ScrollView
+                style={{ backgroundColor: "#F0F0F0", borderRadius: 20 }}
+              >
                 <FlatList
                   data={selectedFoods}
                   keyExtractor={(item) => item._id.toString()}
@@ -529,7 +517,6 @@ const NewRecipe = ({}) => {
             ) : (
               <Text
                 style={{
-                  
                   fontFamily: "Montserrat_400Regular",
                 }}
               >
@@ -540,15 +527,12 @@ const NewRecipe = ({}) => {
         </KeyboardAvoidingView>
 
         {image && <Image source={{ uri: image }} style={styles.imagePreview} />}
-	
-		<TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-        <Text style={styles.submitButtonText}>Submit Recipe</Text>
-      </TouchableOpacity>
-      </View>
-	  
-    </TouchableWithoutFeedback>
 
-	
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Submit Recipe</Text>
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

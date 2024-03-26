@@ -175,40 +175,46 @@ function RecipeBox({ id, title, description, }) {
 			</View>
 
       <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          setModalVisible(!modalVisible);
-        }}
-      >
-        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-          <View style={styles.centeredView}>
-            <TouchableWithoutFeedback onPress={() => {}}>
-              <View style={styles.modalView}>
-                <Image source={{ uri: imageUrl }} style={styles.modalImage} />
-                <Text style={styles.text}>{title}</Text>
-                <Text style={styles.description}>{description}</Text>
-                <Text style={styles.ingredientsTitle}>Ingredients</Text>
-                <ScrollView style={styles.background} maxHeight={190}>
-                  {ingredients.length > 0 ? (
-                    ingredients.map((ingredient) => (
-                      <Text
-                        key={`${ingredient.name}:${ingredient.weight}`}
-                        style={styles.ingredient}
-                      >
-                        {ingredient.weight}g of {ingredient.name}
-                      </Text>
-                    ))
-                  ) : (
-                    <Text style={styles.ingredient}>No ingredients added</Text>
-                  )}
-                </ScrollView>
-              </View>
-            </TouchableWithoutFeedback>
+  animationType="slide"
+  transparent={true}
+  visible={modalVisible}
+  onRequestClose={() => {
+    setModalVisible(!modalVisible);
+  }}
+>
+  <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+    <View style={styles.centeredView}>
+      <TouchableWithoutFeedback onPress={() => {}}>
+        <View style={styles.modalView}>
+          <Image source={{ uri: imageUrl }} style={styles.modalImage} />
+          <Text style={styles.text}>{title}</Text>
+          <Text style={styles.description}>{description}</Text>
+          <Text style={styles.ingredientsTitle}>Ingredients</Text>
+          
+          {/* Container View to control the ScrollView size */}
+          <View style={[styles.background, { maxHeight: 190 }]}>
+            <ScrollView>
+              {ingredients.length > 0 ? (
+                ingredients.map((ingredient, index) => (
+                  <Text
+                    key={index}
+                    style={styles.ingredient}
+                  >
+                    {ingredient.weight}g of {ingredient.name}
+                  </Text>
+                ))
+              ) : (
+                <Text style={styles.ingredient}>No ingredients added</Text>
+              )}
+            </ScrollView>
           </View>
-        </TouchableWithoutFeedback>
-      </Modal>
+
+        </View>
+      </TouchableWithoutFeedback>
+    </View>
+  </TouchableWithoutFeedback>
+</Modal>
+
     </Pressable>
   );
 }
