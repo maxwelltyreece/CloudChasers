@@ -25,6 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useFoodLog } from "../../../../../contexts/FoodLogContext";
 import { useCommunity } from "../../../../../contexts/CommunityContext";
 import { getUserCommunities } from "../../../../../services/CommunityService";
+import { uploadImage, pickImage } from "../../../../../services/ImageService";
 
 /**
  * @description Renders the NewRecipe component allowing users to create a new recipe by adding details and selected foods.
@@ -100,32 +101,18 @@ const NewRecipe = ({}) => {
     );
   }
 
-  function getFileName(image) {
-    const fileName = image.split("/").pop();
-    console.log(fileName);
-    return fileName;
-  }
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled && result.assets) {
-      setImage(result.assets[0].uri);
-      getFileName(result.assets[0].uri);
-    }
-  };
+    const handleImagePick = async () => {
+        const result = await pickImage();
+        if (result) {
+            setImage(result);
+        }
+    };
 
   const fetchUserCommunities = async () => {
     try {
       const communities = await getUserCommunities();
       setUserCommunities(communities.data);
 
-      // Log only the names of the communities
       const communityNames = communities.data.map(
         (community) => community.name
       );
@@ -152,8 +139,6 @@ const NewRecipe = ({}) => {
     setSelectedCommunity(community.id);
     setSelectedCommunityName(community.name); // Store the name for display
     console.log("Selected community:", community.name); // Optionally log the name
-    // You may not want to immediately close the modal upon selection depending on your UX
-    // setCommunityModalVisible(false);
   };
 
   const addItem = () => {
@@ -258,49 +243,27 @@ const NewRecipe = ({}) => {
     }
     const token = await AsyncStorage.getItem("token");
     const recipeData = {
-      name: recipeName,
-      description: recipeDescription,
-      foods: selectedFoods,
-      community: recipeCommunity,
+        name: recipeName,
+        description: recipeDescription,
+        communityThatOwnsRecipe: recipeCommunity,
     };
 
     try {
-      const response = await axios.post(
-        `http://${LocalIP}:3000/food/createNewRecipeByUser`,
-        recipeData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await axios.post(
+            `http://${LocalIP}:3000/food/createNewRecipeByUser`,
+            recipeData,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+        console.log("Recipe created:", response.data.data._id);
+        console.log("ALL DATA:", recipeData);
+        const recipeID = response.data.data._id;
+        await addItemsToRecipe(recipeID, token);
+
+        if (image) {
+            await uploadImage(recipeID, image, "Recipe_Pictures");
         }
-      );
-      console.log("Recipe created:", response.data.data._id);
-      console.log("ALL DATA:", recipeData);
-      console.log("ALL communities" + getUserCommunities());
-      const recipeID = response.data.data._id;
-
-			await addItemsToRecipe(recipeID, token);
-
-      if (image) {
-        const formData = new FormData();
-        formData.append("objectID", recipeID);
-        formData.append("folderName", "Recipe_Pictures");
-        formData.append("communityID", recipeCommunity);
-        formData.append("file", {
-          uri: image,
-          name: getFileName(image),
-          type: "image/jpeg",
-        });
-
-				await axios.post(
-					`http://${LocalIP}:3000/image/uploadPicture`,
-					formData,
-					{
-						headers: {
-							Authorization: `Bearer ${token}`,
-							"Content-Type": "multipart/form-data",
-						},
-					}
-				);
-			}
 
       Alert.alert("Success", "Recipe created successfully");
       setRecipeName("");
@@ -346,7 +309,7 @@ const NewRecipe = ({}) => {
                 </Text>
               </View>
               <View style={{ alignItems: "center" }}>
-                <AddImageButton onPress={pickImage} />
+                <AddImageButton onPress={handleImagePick} />
                 <Text style={{ fontFamily: "Montserrat_700Bold" }}>
                   Add Image
                 </Text>

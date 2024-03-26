@@ -191,7 +191,6 @@ function RecipeBox({ id, title, description, }) {
           <Text style={styles.description}>{description}</Text>
           <Text style={styles.ingredientsTitle}>Ingredients</Text>
           
-          {/* Container View to control the ScrollView size */}
           <View style={[styles.background, { maxHeight: 190 }]}>
             <ScrollView>
               {ingredients.length > 0 ? (
