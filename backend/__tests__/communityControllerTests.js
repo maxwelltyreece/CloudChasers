@@ -255,9 +255,9 @@ describe("Community Management", () => {
 		// get community
 		it("should retrieve a community and its details", async () => {
 			const response = await request(app)
-			.get("/community/details")
-			.set("Authorization", `Bearer ${token}`)
-			.send({ communityId: community._id.toString() });
+				.get("/community/details")
+				.set("Authorization", `Bearer ${token}`)
+				.send({ communityId: community._id.toString() });
 			
 			expect(response.statusCode).toBe(200);
 			expect(response.body).toHaveProperty("success", true);

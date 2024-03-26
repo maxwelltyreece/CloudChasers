@@ -56,13 +56,20 @@ export const styles = StyleSheet.create({
         padding: '5%',
         textAlign: 'center',
     },
-    profilePic: {
+    profilePicContainer: {
         width: 200,
         height: 200,
         borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'hidden',
         borderColor: '#F0F0F0',
         borderWidth: 10,
         backgroundColor: '#FFFFFF',
+    },
+    profilePic: {
+        width: '100%',
+        height: '100%',
     },
     semiCircle: {
         width: width * 2.25,

@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  Modal,
-  Pressable,
-  TouchableOpacity,
-  ScrollView,
-  onClose,
-  Alert,
-  TouchableWithoutFeedback,
+	View,
+	Text,
+	Image,
+	StyleSheet,
+	Modal,
+	Pressable,
+	TouchableOpacity,
+	ScrollView,
+	onClose,
+	Alert,
+	TouchableWithoutFeedback,
 } from "react-native";
-import proptypes from "prop-types";
+import PropTypes from 'prop-types';
 import { LocalIP } from "../screens/IPIndex";
 import axios from "axios";
 
@@ -130,49 +130,49 @@ const styles = StyleSheet.create({
 });
 
 
-function RecipeBox({ id, title, description, onDelete }) {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [ingredients, setIngredients] = useState([]);
-  const [imageUrl, setImageUrl] = useState(null);
+function RecipeBox({ id, title, description, }) {
+	const [modalVisible, setModalVisible] = useState(false);
+	const [ingredients, setIngredients] = useState([]);
+	const [imageUrl, setImageUrl] = useState(null);
 
-  useEffect(() => {
-    const handleImageRetrieval = () => {
-      axios
-        .get(
-          `http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`
-        )
-        .then((response) => {
-          setImageUrl(response.data.url);
-        })
-        .catch((error) => console.error("Failed to fetch image URL", error));
-    };
+	useEffect(() => {
+		const handleImageRetrieval = () => {
+			axios
+				.get(
+					`http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`
+				)
+				.then((response) => {
+					setImageUrl(response.data.url);
+				})
+				.catch((error) => console.error("Failed to fetch image URL", error));
+		};
 
-    handleImageRetrieval();
+		handleImageRetrieval();
 
-    const getIngredients = async () => {
-      try {
-        const response = await axios.get(
-          `http://${LocalIP}:3000/food/getRecipeIngredients?recipeID=${id}`
-        );
-        if (Array.isArray(response.data.data)) {
-          setIngredients(response.data.data);
-        } else {
-          setIngredients([]);
-        }
-      } catch (error) {
-        console.error("Failed to fetch ingredients", error);
-      }
-    };
+		const getIngredients = async () => {
+			try {
+				const response = await axios.get(
+					`http://${LocalIP}:3000/food/getRecipeIngredients?recipeID=${id}`
+				);
+				if (Array.isArray(response.data.data)) {
+					setIngredients(response.data.data);
+				} else {
+					setIngredients([]);
+				}
+			} catch (error) {
+				console.error("Failed to fetch ingredients", error);
+			}
+		};
 
-    getIngredients();
-  }, [id]);
+		getIngredients();
+	}, [id]);
 
-  return (
-    <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
-      <Image source={{ uri: imageUrl }} style={styles.image} />
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{title}</Text>
-      </View>
+	return (
+		<Pressable style={styles.box} onPress={() => setModalVisible(true)}>
+			<Image source={{ uri: imageUrl }} style={styles.image} />
+			<View style={styles.titleContainer}>
+				<Text style={styles.title}>{title}</Text>
+			</View>
 
       <Modal
         animationType="slide"
@@ -215,8 +215,8 @@ function RecipeBox({ id, title, description, onDelete }) {
 
 export default RecipeBox;
 
-RecipeBox.propTypes = {
-  title: proptypes.string.isRequired,
-  description: proptypes.string,
-  image: proptypes.string,
+RecipeBox.PropTypes = {
+	title: PropTypes.string.isRequired,
+	description: PropTypes.string,
+	image: PropTypes.string,
 };

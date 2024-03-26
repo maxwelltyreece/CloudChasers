@@ -26,6 +26,10 @@ import { useFoodLog } from "../../../../../contexts/FoodLogContext";
 import { useCommunity } from "../../../../../contexts/CommunityContext";
 import { getUserCommunities } from "../../../../../services/CommunityService";
 
+/**
+ * @description Renders the NewRecipe component allowing users to create a new recipe by adding details and selected foods.
+ * @returns {JSX.Element} The NewRecipe component.
+ */
 const NewRecipe = ({}) => {
   const navigation = useNavigation();
   const [image, setImage] = useState(null);
@@ -186,25 +190,35 @@ const NewRecipe = ({}) => {
     }
   };
 
-  const renderItem = (item) => (
-    <TouchableOpacity
-      style={[
-        styles.item,
-        {
-          backgroundColor: item._id === selectedItem?._id ? "#FF815E" : "white",
-        },
-      ]}
-      onPress={() => setSelectedItem(item)}
-      key={item._id}
-    >
-      <Text>{item.name}</Text>
-    </TouchableOpacity>
-  );
+	/**
+	 * Renders an item in the list.
+	 *
+	 * @param {Object} item - The item to render.
+	 * @returns {JSX.Element} The rendered item.
+	 */
+	const renderItem = (item) => (
+		<TouchableOpacity
+			style={[
+				styles.item,
+				{
+					backgroundColor: item._id === selectedItem?._id ? "#FF815E" : "white",
+				},
+			]}
+			onPress={() => setSelectedItem(item)}
+			key={item._id}
+		>
+			<Text>{item.name}</Text>
+		</TouchableOpacity>
+	);
 
-  const searchFood = async () => {
-    const response = await searchFoods({ name: searchQuery });
-    setFoods(response.data.foods);
-  };
+	/**
+	 * Searches for foods based on the provided search query.
+	 * @returns {Promise<void>} A promise that resolves when the search is complete.
+	 */
+	const searchFood = async () => {
+		const response = await searchFoods({ name: searchQuery });
+		setFoods(response.data.foods);
+	};
 
   const removeItem = (id) => {
     setSelectedFoods(selectedFoods.filter((item) => item._id !== id));
@@ -225,34 +239,40 @@ const NewRecipe = ({}) => {
   //     }
   // };
 
-  const addItemsToRecipe = async (recipeID, token) => {
-    for (const food of selectedFoods) {
-      const payload = {
-        recipeID: recipeID,
-        foodID: food._id,
-        weight: food.weight,
-      };
-      console.log("Payload:", payload);
+	/**
+	 * Adds selected foods to a recipe.
+	 * @param {string} recipeID - The ID of the recipe.
+	 * @param {string} token - The authentication token.
+	 * @returns {Promise<void>} - A promise that resolves when all items have been added to the recipe.
+	 */
+	const addItemsToRecipe = async (recipeID, token) => {
+		for (const food of selectedFoods) {
+			const payload = {
+				recipeID: recipeID,
+				foodID: food._id,
+				weight: food.weight,
+			};
+			console.log("Payload:", payload);
 
-      try {
-        await axios.put(
-          `http://${LocalIP}:3000/food/addItemToRecipe`,
-          payload,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-      } catch (error) {
-        console.error("Error adding item to recipe:", error);
-      }
-    }
-  };
+			try {
+				await axios.put(
+					`http://${LocalIP}:3000/food/addItemToRecipe`,
+					payload,
+					{
+						headers: { Authorization: `Bearer ${token}` },
+					}
+				);
+			} catch (error) {
+				console.error("Error adding item to recipe:", error);
+			}
+		}
+	};
 
-  useEffect(() => {
-    if (searchQuery.length >= 3) {
-      searchFood();
-    }
-  }, [searchQuery]);
+	useEffect(() => {
+		if (searchQuery.length >= 3) {
+			searchFood();
+		}
+	}, [searchQuery]);
 
   const handleSubmit = async () => {
     if (!recipeName.trim()) {
@@ -280,7 +300,7 @@ const NewRecipe = ({}) => {
       console.log("ALL communities" + getUserCommunities());
       const recipeID = response.data.data._id;
 
-      await addItemsToRecipe(recipeID, token);
+			await addItemsToRecipe(recipeID, token);
 
       if (image) {
         const formData = new FormData();
@@ -293,17 +313,17 @@ const NewRecipe = ({}) => {
           type: "image/jpeg",
         });
 
-        await axios.post(
-          `http://${LocalIP}:3000/image/uploadPicture`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-      }
+				await axios.post(
+					`http://${LocalIP}:3000/image/uploadPicture`,
+					formData,
+					{
+						headers: {
+							Authorization: `Bearer ${token}`,
+							"Content-Type": "multipart/form-data",
+						},
+					}
+				);
+			}
 
       Alert.alert("Success", "Recipe created successfully");
       setRecipeName("");
@@ -382,15 +402,15 @@ const NewRecipe = ({}) => {
                     <View style={styles.modalView}>
                       <Text style={styles.modalText}>Add a New Food Item</Text>
 
-                      <TextInput
-                        style={styles.modalInput}
-                        placeholder="Search Food..."
-                        placeholderTextColor="darkgray"
-                        value={searchQuery}
-                        onChangeText={(text) => setSearchQuery(text)}
-                        blurOnSubmit
-                        returnKeyType="search"
-                      />
+											<TextInput
+												style={styles.modalInput}
+												placeholder="Search Food..."
+												placeholderTextColor="darkgray"
+												value={searchQuery}
+												onChangeText={(text) => setSearchQuery(text)}
+												blurOnSubmit
+												returnKeyType="search"
+											/>
 
                       {searchQuery.length >= 3 && shouldRenderScrollView && (
                         <View style={styles.dropdownContainer}>

@@ -3,27 +3,27 @@ import { StyleSheet, Dimensions } from 'react-native';
 const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({
-  container: {
-  flexGrow: 1,
+	container: {
+		flexGrow: 1,
     justifyContent: 'space-between',
-  paddingHorizontal: '5%',
-  backgroundColor: '#FFFFFF',
-  paddingVertical: 25,
-  paddingTop: 10,
-  zIndex: 1,
-  },
-  imagePreview: {
-  width: 150,
-  height: 150,
-  resizeMode: 'contain',
-  position: 'absolute',
-  bottom: 80,
-  alignSelf: 'center',
-    borderRadius: 10,
-  },
-  formContainer: {
-    alignItems: 'center',
-    marginTop: 20,
+		paddingHorizontal: '5%',
+		backgroundColor: '#FFFFFF',
+		paddingVertical: 25,
+		paddingTop: 10,
+		zIndex: 1,
+	},
+	imagePreview: {
+		width: 150,
+		height: 150,
+		resizeMode: 'contain',
+		position: 'absolute',
+		bottom: 80,
+		alignSelf: 'center',
+		borderRadius: 10,
+	},
+	formContainer: {
+		alignItems: 'center',
+		marginTop: 20,
   
   },
   backButton: {
@@ -77,19 +77,19 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-    semiCircle: {
-      width: width * 2.25,
-      height: width * 1.75,
-      borderRadius: width,
-      position: 'absolute',
-      top: -width,
-      left: -(width * 2.25 - width) / 2,
-      backgroundColor: '#F0F0F0',
-      zIndex: -1, 
-    },
+	semiCircle: {
+		width: width * 2.25,
+		height: width * 1.75,
+		borderRadius: width,
+		position: 'absolute',
+		top: -width,
+		left: -(width * 2.25 - width) / 2,
+		backgroundColor: '#F0F0F0',
+		zIndex: -1, 
+	},
 
 
-    //Modal Styles
+	//Modal Styles
 
     centeredView: {
       flex: 1,

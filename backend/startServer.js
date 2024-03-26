@@ -17,9 +17,9 @@ for (const netInterface in networkInterfaces) {
 	if (serverIP) break;
 }
 app.listen(PORT, () => {
-    console.log(`Server is running on ${serverIP} on port ${PORT}`);
+	console.log(`Server is running on ${serverIP} on port ${PORT}`);
     
-    fs.writeFileSync(
+	fs.writeFileSync(
 		path.join(__dirname, "../frontend/screens/IPIndex.js"),
 		`export const LocalIP = '${serverIP}';\n`
 	);
