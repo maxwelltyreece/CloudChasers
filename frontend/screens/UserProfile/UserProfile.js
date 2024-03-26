@@ -14,8 +14,8 @@ function UserProfile() {
 	const navigation = useNavigation();
 	const { userDetails, updateUserDetails } = useUser();
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [imageLink, setImageLink] = useState('');
-    const [imageLoaded, setImageLoaded] = useState(false);
+	const [imageLink, setImageLink] = useState('');
+	const [imageLoaded, setImageLoaded] = useState(false);
 
 	useEffect(() => {
 		const verifyLoginStatus = async () => {
@@ -26,7 +26,7 @@ function UserProfile() {
 		verifyLoginStatus();
 	}, []);
     
-    useEffect(() => {
+	useEffect(() => {
 		if (userDetails && userDetails._id) {
 			const fetchImageLink = async () => {
 				const link = await getImageLink();
@@ -46,20 +46,20 @@ function UserProfile() {
 	);
 
 
-    const getImageLink = async () => {
-        try {
-            const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
-                params: {
-                    folderName: 'Profile_Pictures',
-                    id: userDetails ? userDetails._id : null,
-                },
-            });
-            return response.data.url;
-        } catch (error) {
-            console.error('Error:', error.message);
-            return null;
-        }
-    };
+	const getImageLink = async () => {
+		try {
+			const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
+				params: {
+					folderName: 'Profile_Pictures',
+					id: userDetails ? userDetails._id : null,
+				},
+			});
+			return response.data.url;
+		} catch (error) {
+			console.error('Error:', error.message);
+			return null;
+		}
+	};
 
 	const UserProfileOptions = [
 		{
@@ -87,18 +87,18 @@ function UserProfile() {
 
 	return (
 		<View style={styles.container}>
-            <View style={styles.semiCircle}/>
+			<View style={styles.semiCircle}/>
 			{imageLink ? (
-                <Image
-                    source={{ uri: imageLink }}
-                    style={styles.profilePic}
-                    onLoad={() => setImageLoaded(true)}
-                />
-            ) : (
-                <ActivityIndicator size="large" color="#0000ff" />
-            )}
-            {isLoggedIn && userDetails && <Text style={styles.username}>{currentUsername}</Text>}			
-            <FlatList
+				<Image
+					source={{ uri: imageLink }}
+					style={styles.profilePic}
+					onLoad={() => setImageLoaded(true)}
+				/>
+			) : (
+				<ActivityIndicator size="large" color="#0000ff" />
+			)}
+			{isLoggedIn && userDetails && <Text style={styles.username}>{currentUsername}</Text>}			
+			<FlatList
 				style={styles.subPageList}
 				data={UserProfileOptions}
 				renderItem={renderItem}

@@ -32,134 +32,134 @@ function NewGroup() {
 	const [areRecipesPrivate, setAreRecipesPrivate] = useState(false);
 
 	const { createCommunity, getUserCommunities } = useCommunity();
-    const navigation = useNavigation();
+	const navigation = useNavigation();
 
-    const handleButtonPress = async () => {
-        const communityData = {
-            name: communityName,
-            description: communityDescription,
-            joinPrivacy: isPrivateCommunity ? 'private' : 'public',
-            recipePrivacy: areRecipesPrivate ? 'private' : 'public',
-        };
-        createCommunity(communityData)
-            .then(async (response) => {
-                if (response && response.success) {
-                    const communityID = response.data._id;
-                    console.log('Community created:', communityID);
+	const handleButtonPress = async () => {
+		const communityData = {
+			name: communityName,
+			description: communityDescription,
+			joinPrivacy: isPrivateCommunity ? 'private' : 'public',
+			recipePrivacy: areRecipesPrivate ? 'private' : 'public',
+		};
+		createCommunity(communityData)
+			.then(async (response) => {
+				if (response && response.success) {
+					const communityID = response.data._id;
+					console.log('Community created:', communityID);
 
-                    if (image) {
-                        const formData = new FormData();
-                        formData.append('objectID', communityID);
-                        formData.append('folderName', 'Community_Pictures');
-                        formData.append('file', {
-                          uri: image,
-                          name: getFileName(image),
-                          type: 'image/jpeg',
-                        });
+					if (image) {
+						const formData = new FormData();
+						formData.append('objectID', communityID);
+						formData.append('folderName', 'Community_Pictures');
+						formData.append('file', {
+							uri: image,
+							name: getFileName(image),
+							type: 'image/jpeg',
+						});
                   
-                        const token = await AsyncStorage.getItem('token');
-                        await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
-                          headers: {
-                            Authorization: `Bearer ${token}`,
-                            'Content-Type': 'multipart/form-data',
-                          },
-                        }).catch(error => {
-                            console.error('Error uploading image:', error);
-                        });
-                      }
+						const token = await AsyncStorage.getItem('token');
+						await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+							headers: {
+								Authorization: `Bearer ${token}`,
+								'Content-Type': 'multipart/form-data',
+							},
+						}).catch(error => {
+							console.error('Error uploading image:', error);
+						});
+					}
                   
-                      setRecipeName(''); 
-                      setImage(null); 
+					setRecipeName(''); 
+					setImage(null); 
 
-                    getUserCommunities();
-                    navigation.navigate('Groups');
-                } else {
-                    console.error('Failed to create community:', response);
-                }
-            })
-            .catch(error => {
-                console.error("Error creating community: ", error);
-            });
-    };
+					getUserCommunities();
+					navigation.navigate('Groups');
+				} else {
+					console.error('Failed to create community:', response);
+				}
+			})
+			.catch(error => {
+				console.error("Error creating community: ", error);
+			});
+	};
 
-    const [image, setImage] = useState(null);
-    const [recipeName, setRecipeName] = useState('');
-    var recipeID = '';
+	const [image, setImage] = useState(null);
+	const [recipeName, setRecipeName] = useState('');
+	var recipeID = '';
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
+	const pickImage = async () => {
+		let result = await ImagePicker.launchImageLibraryAsync({
+			mediaTypes: ImagePicker.MediaTypeOptions.Images,
+			allowsEditing: true,
+			aspect: [4, 3],
+			quality: 1,
+		});
     
     
     
-        if (!result.canceled) {
-          setImage(result.assets[0].uri);
-        }
+		if (!result.canceled) {
+			setImage(result.assets[0].uri);
+		}
     
-        getFileName(result.assets[0].uri);
+		getFileName(result.assets[0].uri);
     
-      };
+	};
 
-      function getFileName(image){
-        // console.log("RHIS ONGGets to here");
-        const fileName = image.split('/').pop();
-        // console.log(fileName);
-        return fileName;
-      }
+	function getFileName(image){
+		// console.log("RHIS ONGGets to here");
+		const fileName = image.split('/').pop();
+		// console.log(fileName);
+		return fileName;
+	}
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Create New Community</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Community Name"
-                value={communityName}
-                onChangeText={setCommunityName}
-            />
-            <TextInput
-                style={styles.input}
-                placeholder="Community Description"
-                value={communityDescription}
-                onChangeText={setCommunityDescription}
-            />
-            <View style={{alignItems: 'flex-start', width: '80%'}}>
-                <CustomCheckbox
-                    label="Private Community"
-                    isChecked={isPrivateCommunity}
-                    onCheck={() => setIsPrivateCommunity(!isPrivateCommunity)}
-                />
-                <CustomCheckbox
-                    label="Make Recipes Private"
-                    isChecked={areRecipesPrivate}
-                    onCheck={() => setAreRecipesPrivate(!areRecipesPrivate)}
-                />
-            </View>
+	return (
+		<View style={styles.container}>
+			<Text style={styles.title}>Create New Community</Text>
+			<TextInput
+				style={styles.input}
+				placeholder="Community Name"
+				value={communityName}
+				onChangeText={setCommunityName}
+			/>
+			<TextInput
+				style={styles.input}
+				placeholder="Community Description"
+				value={communityDescription}
+				onChangeText={setCommunityDescription}
+			/>
+			<View style={{alignItems: 'flex-start', width: '80%'}}>
+				<CustomCheckbox
+					label="Private Community"
+					isChecked={isPrivateCommunity}
+					onCheck={() => setIsPrivateCommunity(!isPrivateCommunity)}
+				/>
+				<CustomCheckbox
+					label="Make Recipes Private"
+					isChecked={areRecipesPrivate}
+					onCheck={() => setAreRecipesPrivate(!areRecipesPrivate)}
+				/>
+			</View>
 
-            <View style={[styles.button]}>
-                <Button title="Pick Recipe Image" onPress={pickImage} />
-                {image && (
-                  <Image
-                    source={{ uri: image }}
-                    style={{ width: 200, height: 200 }}
-                  />
-                )}
-            </View>
+			<View style={[styles.button]}>
+				<Button title="Pick Recipe Image" onPress={pickImage} />
+				{image && (
+					<Image
+						source={{ uri: image }}
+						style={{ width: 200, height: 200 }}
+					/>
+				)}
+			</View>
 
-            <Pressable style={styles.buttonContainer} onPress={handleButtonPress}>
-                <Text style={styles.buttonText}>Create Group</Text>
-            </Pressable>
-        </View>
-    );
+			<Pressable style={styles.buttonContainer} onPress={handleButtonPress}>
+				<Text style={styles.buttonText}>Create Group</Text>
+			</Pressable>
+		</View>
+	);
 }
 
 export default NewGroup;
 
 CustomCheckbox.propTypes = {
-    label: PropTypes.string.isRequired,
-    isChecked: PropTypes.bool.isRequired,
-    onCheck: PropTypes.func.isRequired,
+	label: PropTypes.string.isRequired,
+	isChecked: PropTypes.bool.isRequired,
+	onCheck: PropTypes.func.isRequired,
 };

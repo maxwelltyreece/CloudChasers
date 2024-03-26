@@ -22,16 +22,16 @@ export const fetchUserDetails = async (token) => {
 };
 
 export const editUserDetails = async (newValues) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, newValues, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-        return response.data;
-    } catch (error) {
-        console.error(error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, newValues, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+		return response.data;
+	} catch (error) {
+		console.error(error);
+		throw error;
+	}
 };
