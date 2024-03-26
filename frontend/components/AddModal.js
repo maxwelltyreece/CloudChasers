@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import { View, Pressable, StyleSheet, Animated, Text } from 'react-native';
 import Modal from 'react-native-modal';
 import TabBarIcon from './TabBarIcon';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
+
 
 const AddModal = ({ isVisible, onBackdropPress, navigator, pageNames, toggleModal}) => {
 	const [highlightedButton, setHighlightedButton] = useState(null);
@@ -130,11 +131,11 @@ const styles = StyleSheet.create({
 });
 
 AddModal.propTypes = {
-	isVisible: proptypes.bool.isRequired,
-	onBackdropPress: proptypes.func.isRequired,
-	navigator: proptypes.object.isRequired,
-	pageNames: proptypes.object.isRequired,
-	toggleModal: proptypes.func.isRequired,
+	isVisible: PropTypes.bool.isRequired,
+	onBackdropPress: PropTypes.func.isRequired,
+	navigator: PropTypes.object.isRequired,
+	pageNames: PropTypes.object.isRequired,
+	toggleModal: PropTypes.func.isRequired,
 };
 
 export default AddModal;

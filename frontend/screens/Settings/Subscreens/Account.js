@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import { useUser } from '../../../contexts/UserContext';
 import globalStyles from '../../../styles/global';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -62,6 +62,6 @@ function Account({ navigation }) {
 
 export default Account;
 
-Account.propTypes = {
-	navigation: proptypes.object.isRequired,
+Account.PropTypes = {
+	navigation: PropTypes.object.isRequired,
 };

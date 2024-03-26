@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const RemindersContext = createContext();
 
@@ -26,6 +26,6 @@ export const RemindersProvider = ({ children }) => {
 	);
 };
 
-RemindersProvider.propTypes = {
-	children: proptypes.node.isRequired,
+RemindersProvider.PropTypes = {
+	children: PropTypes.node.isRequired,
 };

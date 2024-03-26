@@ -12,7 +12,7 @@ import {
 	Alert,
 	TouchableWithoutFeedback,
 } from "react-native";
-import proptypes from "prop-types";
+import PropTypes from 'prop-types';
 import { LocalIP } from "../screens/IPIndex";
 import axios from "axios";
 
@@ -205,8 +205,8 @@ function RecipeBox({ id, title, description, onDelete }) {
 
 export default RecipeBox;
 
-RecipeBox.propTypes = {
-	title: proptypes.string.isRequired,
-	description: proptypes.string,
-	image: proptypes.string,
+RecipeBox.PropTypes = {
+	title: PropTypes.string.isRequired,
+	description: PropTypes.string,
+	image: PropTypes.string,
 };

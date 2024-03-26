@@ -105,9 +105,9 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 };
 
 NewFoodModal.propTypes = {
-	isVisible: proptypes.bool.isRequired,
-	onBackdropPress: proptypes.func,
-	toggleModal: proptypes.func.isRequired,
+	isVisible: PropTypes.bool.isRequired,
+	onBackdropPress: PropTypes.func,
+	toggleModal: PropTypes.func.isRequired,
 };
 
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TouchableWithoutFeedback,} from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
 import AddModal from './AddModal'; // Import the AddModal component
 
@@ -44,8 +44,8 @@ const CustomIcon = ({ width = 80, height = 82 }) => {
 
 export default CustomIcon;
 
-CustomIcon.propTypes = {
-	width: proptypes.number,
-	height: proptypes.number,
-	startAnimation: proptypes.func.isRequired, 
+CustomIcon.PropTypes = {
+	width: PropTypes.number,
+	height: PropTypes.number,
+	startAnimation: PropTypes.func.isRequired, 
 };
