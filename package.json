@@ -9,8 +9,8 @@
     "web": "expo start --web",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
-    "test:backend": "jest --config ./backend/__tests__/jest.config.js",
-    "test:frontend": "jest --config ./frontend/__tests__/jest.config.js",
+    "test:backend": "jest --config ./backend/__tests__/jest.config.js --runInBand",
+    "test:frontend": "jest --config ./frontend/__tests__/jest.config.js --runInBand",
     "test": "npm run test:backend && npm run test:frontend",
     "test:update": "jest --updateSnapshot"
   },

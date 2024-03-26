@@ -38,4 +38,5 @@ module.exports = {
 	  '!**/jest.setup.js',
 	],
   };
-  
+
+console.log('FRONTEND - jest.config.js loaded');

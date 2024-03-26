@@ -5,3 +5,5 @@ module.exports = {
 	testMatch: ["**/__tests__/**/*.js?(x)", "**/?(*.)+(spec|test).js?(x)"],
 	setupFilesAfterEnv: ["../../jest.setup.js"]
 };
+
+console.log('BACKEND jest.config.js loaded');
