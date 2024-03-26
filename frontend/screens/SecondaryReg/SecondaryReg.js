@@ -9,79 +9,79 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { requestImagePermissions, pickImage, uploadImage } from '../../services/ImageService';
 
 function RegisterDetails({ navigation, route }) {
-    const { username, email, password } = route.params;
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [profilePicture, setProfilePicture] = useState('');
-    const { editUserDetails } = useUser();
+	const { username, email, password } = route.params;
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
+	const [profilePicture, setProfilePicture] = useState('');
+	const { editUserDetails } = useUser();
 
-    useEffect(() => {
-        requestImagePermissions();
-    }, []);
+	useEffect(() => {
+		requestImagePermissions();
+	}, []);
 
-    const handleLogin = () => {
-        axios.post(`http://${LocalIP}:3000/login`, {
-            username,
-            password,
-        })
-        .then((response) => {
-            if(response.data.data) {
-                AsyncStorage.setItem('token', response.data.data);
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'Main' }],
-                });
-            } else {
-                console.error('Login failed');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    };
+	const handleLogin = () => {
+		axios.post(`http://${LocalIP}:3000/login`, {
+			username,
+			password,
+		})
+			.then((response) => {
+				if(response.data.data) {
+					AsyncStorage.setItem('token', response.data.data);
+					navigation.reset({
+						index: 0,
+						routes: [{ name: 'Main' }],
+					});
+				} else {
+					console.error('Login failed');
+				}
+			})
+			.catch((error) => {
+				console.error('Error:', error);
+			});
+	};
 
-    const registerUser = async () => {
-        try {
-            const response = await axios.post(`http://${LocalIP}:3000/register`, {
-                username,
-                email,
-                password,
-                forename: firstName,
-                surname: lastName,
-            });
-            // console.log('User registered');
-            return response;
-        } catch (error) {
-            if (error.response && error.response.data.error) {
-                Alert.alert('Error', 'Invalid Email');
-            } else {
-                Alert.alert('Error:', error.message);
-            }
-        }
-    };
+	const registerUser = async () => {
+		try {
+			const response = await axios.post(`http://${LocalIP}:3000/register`, {
+				username,
+				email,
+				password,
+				forename: firstName,
+				surname: lastName,
+			});
+			// console.log('User registered');
+			return response;
+		} catch (error) {
+			if (error.response && error.response.data.error) {
+				Alert.alert('Error', 'Invalid Email');
+			} else {
+				Alert.alert('Error:', error.message);
+			}
+		}
+	};
 
-    const handleRegisterDetails = async () => {
-        if (!firstName || !lastName) {
-            Alert.alert('Error', 'Please fill out all fields');
-            return;
-        }
+	const handleRegisterDetails = async () => {
+		if (!firstName || !lastName) {
+			Alert.alert('Error', 'Please fill out all fields');
+			return;
+		}
 
-        const registerResponse = await registerUser();
-        const userId = registerResponse.data.data._id;
+		const registerResponse = await registerUser();
+		const userId = registerResponse.data.data._id;
 
-        if (profilePicture) {
-            await uploadImage(userId, profilePicture, 'Profile_Pictures');
-        }
+		if (profilePicture) {
+			await uploadImage(userId, profilePicture, 'Profile_Pictures');
+		}
 
-        handleLogin();
-    };
+		handleLogin();
+	};
 
-    const handlePickImage = async () => {
-        const imageUri = await pickImage();
-        if (imageUri) {
-            setProfilePicture(imageUri);
-        }
-    };
+	const handlePickImage = async () => {
+		const imageUri = await pickImage();
+		if (imageUri) {
+			setProfilePicture(imageUri);
+		}
+	};
 
     return (
         <View style={styles.container}>

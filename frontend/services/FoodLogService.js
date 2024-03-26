@@ -8,9 +8,8 @@ import { LocalIP } from '../screens/IPIndex';
  * @returns {Promise} Axios Response Promise with the log operation result.
  */
 export const logDatabaseFood = async (data) => {
-    const token = await AsyncStorage.getItem('token');
-    // console.log('Logging food SERVICE:', data);
-    return await axios.post(`http://${LocalIP}:3000/food/logDatabaseFood`, data, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.post(`http://${LocalIP}:3000/food/logDatabaseFood`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -19,8 +18,8 @@ export const logDatabaseFood = async (data) => {
  * @returns {Promise} Axios Response Promise with the create operation result.
  */
 export const createNewRecipeByUser = async (data) => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.post(`http://${LocalIP}:3000/food/createNewRecipeByUser`, data, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.post(`http://${LocalIP}:3000/food/createNewRecipeByUser`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -29,8 +28,8 @@ export const createNewRecipeByUser = async (data) => {
  * @returns {Promise} Axios Response Promise with the log operation result.
  */
 export const logRecipeFood = async (data) => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.post(`http://${LocalIP}:3000/food/logRecipeFood`, data, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.post(`http://${LocalIP}:3000/food/logRecipeFood`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -39,8 +38,8 @@ export const logRecipeFood = async (data) => {
  * @returns {Promise} Axios Response Promise with the duplicate operation result.
  */
 export const duplicateRecipeToUser = async (data) => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.post(`http://${LocalIP}:3000/food/duplicateRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.post(`http://${LocalIP}:3000/food/duplicateRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -48,14 +47,14 @@ export const duplicateRecipeToUser = async (data) => {
  * @returns {Promise} Axios Response Promise with all food items.
  */
 export const getFood = async () => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        const response = await axios.get(`http://${LocalIP}:3000/food/getFood`, { headers: { Authorization: `Bearer ${token}` } });
-        return response;
-    } catch (error) {
-        console.error('Error fetching food:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		const response = await axios.get(`http://${LocalIP}:3000/food/getFood`, { headers: { Authorization: `Bearer ${token}` } });
+		return response;
+	} catch (error) {
+		console.error('Error fetching food:', error);
+		throw error;
+	}
 }
 
 /**
@@ -64,11 +63,11 @@ export const getFood = async () => {
  * @returns {Promise} Axios Response Promise with the search results.
  */
 export const searchFoods = async (params) => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/searchFoods`, { 
-        headers: { Authorization: `Bearer ${token}` },
-        params: params
-    });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/searchFoods`, { 
+		headers: { Authorization: `Bearer ${token}` },
+		params: params
+	});
 }
 
 /**
@@ -76,8 +75,8 @@ export const searchFoods = async (params) => {
  * @returns {Promise} Axios Response Promise with the recipe.
  */
 export const getRecipe = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getRecipe`, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/getRecipe`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -85,8 +84,8 @@ export const getRecipe = async () => {
  * @returns {Promise} Axios Response Promise with the recipe weight.
  */
 export const getRecipeWeight = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getRecipeWeight`, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/getRecipeWeight`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -94,8 +93,8 @@ export const getRecipeWeight = async () => {
  * @returns {Promise} Axios Response Promise with the recipe macro.
  */
 export const getRecipeMacro = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getRecipeMacro`, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/getRecipeMacro`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -103,8 +102,8 @@ export const getRecipeMacro = async () => {
  * @returns {Promise} Axios Response Promise with all user's recipes.
  */
 export const getAllUserRecipes = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getUserRecipes`, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/getUserRecipes`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -112,8 +111,8 @@ export const getAllUserRecipes = async () => {
  * @returns {Promise} Axios Response Promise with the recipe ingredients.
  */
 export const getRecipeIngredients = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getRecipeIngredients`, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/getRecipeIngredients`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -121,8 +120,8 @@ export const getRecipeIngredients = async () => {
  * @returns {Promise} Axios Response Promise with all community recipes.
  */
 export const getCommunityRecipes = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getCommunityRecipes`, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/getCommunityRecipes`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -130,8 +129,8 @@ export const getCommunityRecipes = async () => {
  * @returns {Promise} Axios Response Promise with the latest logged food item.
  */
 export const getLatestLoggedFood = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getLatestLoggedFood`, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/getLatestLoggedFood`, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -140,8 +139,8 @@ export const getLatestLoggedFood = async () => {
  * @returns {Promise} Axios Response Promise with the add operation result.
  */
 export const addItemToRecipe = async (data) => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.put(`http://${LocalIP}:3000/food/addItemToRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.put(`http://${LocalIP}:3000/food/addItemToRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -150,8 +149,8 @@ export const addItemToRecipe = async (data) => {
  * @returns {Promise} Axios Response Promise with the delete operation result.
  */
 export const deleteIngredientFromRecipe = async (data) => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.delete(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.delete(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
 /**
@@ -160,7 +159,25 @@ export const deleteIngredientFromRecipe = async (data) => {
  * @returns {Promise} Axios Response Promise with the log operation result.
  */
 export const logWater = async (data) => {
+	const token = await AsyncStorage.getItem('token');
+	return await axios.post(`http://${LocalIP}:3000/food/logWater`, data, { headers: { Authorization: `Bearer ${token}` } });
+}
+
+export const getPictureURL = async (RecipeId) => {
+    console.log('RecipeID:' + RecipeId);
     const token = await AsyncStorage.getItem('token');
-    // console.log('Logging water SERVICE:', data);
-    return await axios.post(`http://${LocalIP}:3000/food/logWater`, data, { headers: { Authorization: `Bearer ${token}` } });
+    const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${RecipeId}&folderName=Recipe_Pictures`, { headers: { Authorization: `Bearer ${token}` } });
+    const url =  response.data.url;
+    return url;
+}
+
+export const logManualMacro = async (data) => {
+    try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.post(`http://${LocalIP}:3000/food/logManualMacro`, data, { headers: { Authorization: `Bearer ${token}` } });
+        return response;
+    } catch (error) {
+        console.error('Error logging manual macro:', error);
+        throw error; // re-throw the error so it can be handled by the calling function
+    }
 }

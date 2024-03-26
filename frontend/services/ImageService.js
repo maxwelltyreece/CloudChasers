@@ -9,12 +9,12 @@ import * as ImageManipulator from 'expo-image-manipulator';
  * @returns {Promise} Promise representing the permission request result.
  */
 export const requestImagePermissions = async () => {
-    if (Platform.OS !== 'web') {
-        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== 'granted') {
-            alert('Sorry, we need camera roll permissions to make this work!');
-        }
-    }
+	if (Platform.OS !== 'web') {
+		const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+		if (status !== 'granted') {
+			alert('Sorry, we need camera roll permissions to make this work!');
+		}
+	}
 };
 
 /**
@@ -22,16 +22,16 @@ export const requestImagePermissions = async () => {
  * @returns {Promise<string>} Promise that resolves to the URI of the picked image.
  */
 export const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
-        allowsEditing: true,
-        aspect: [4, 4],
-        quality: 0.3,
-    });
+	let result = await ImagePicker.launchImageLibraryAsync({
+		mediaTypes: ImagePicker.MediaTypeOptions.All,
+		allowsEditing: true,
+		aspect: [4, 4],
+		quality: 0.3,
+	});
 
-    if (!result.cancelled) {
-        return result.uri;
-    }
+	if (!result.canceled) {
+		return result.uri;
+	}
 };
 
 /**

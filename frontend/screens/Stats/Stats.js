@@ -19,7 +19,6 @@ const Stats = () => {
 	const [loading, setLoading] = useState(false);
 	const { todayStats, updateTodayStats } = useStats();
 	const { goals, fetchGoals } = useGoals();
-
 	/**
 	 * Checks if the user is logged in
 	 * @async

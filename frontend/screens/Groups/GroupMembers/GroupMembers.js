@@ -8,59 +8,59 @@ import { styles } from './styles';
 const ICON_SIZE = 20;
 
 function ItemSeparator() {
-    return <View style={styles.separator} />;
+	return <View style={styles.separator} />;
 }
 
 function MemberItem({ item }) {
-    return (
-        <View style={styles.memberContainer}>
-            <View style={styles.iconAndName}>
-                <Icon name={item.role === 'admin' ? "crown" : "user"} size={ICON_SIZE} style={styles.memberIcon} />
-                <Text style={styles.member}>{item.username}</Text>
-            </View>
-        </View>
-    );
+	return (
+		<View style={styles.memberContainer}>
+			<View style={styles.iconAndName}>
+				<Icon name={item.role === 'admin' ? "crown" : "user"} size={ICON_SIZE} style={styles.memberIcon} />
+				<Text style={styles.member}>{item.username}</Text>
+			</View>
+		</View>
+	);
 }
 
 const keyExtractor = (item) => item.username;
 
 function GroupMembers({ route }) {
-    const { community } = route.params;
-    const { getCommunityMembers } = useCommunity();
-    const [members, setMembers] = useState([]);
+	const { community } = route.params;
+	const { getCommunityMembers } = useCommunity();
+	const [members, setMembers] = useState([]);
 
-    useEffect(() => {
-        const fetchMembers = async () => {
-            // console.log('Fetching members for community:');
-            const membersData = await getCommunityMembers(community.id);
-            // console.log('Members:', membersData);
-            setMembers(membersData.data);
-        };
+	useEffect(() => {
+		const fetchMembers = async () => {
+			// console.log('Fetching members for community:');
+			const membersData = await getCommunityMembers(community.id);
+			// console.log('Members:', membersData);
+			setMembers(membersData.data);
+		};
 
-        fetchMembers();
-    }, []);
+		fetchMembers();
+	}, []);
 
-    return (
-        <View style={styles.container}>
-            <FlatList
-                data={members}
-                renderItem={({ item }) => <MemberItem item={item} />}
-                keyExtractor={keyExtractor}
-                ItemSeparatorComponent={ItemSeparator}
-            />
-        </View>
-    );
+	return (
+		<View style={styles.container}>
+			<FlatList
+				data={members}
+				renderItem={({ item }) => <MemberItem item={item} />}
+				keyExtractor={keyExtractor}
+				ItemSeparatorComponent={ItemSeparator}
+			/>
+		</View>
+	);
 }
 
 export default GroupMembers;
 
 MemberItem.propTypes = {
-    item: PropTypes.shape({
-        username: PropTypes.string,
-        role: PropTypes.string,
-    }).isRequired,
+	item: PropTypes.shape({
+		username: PropTypes.string,
+		role: PropTypes.string,
+	}).isRequired,
 };
 
 GroupMembers.propTypes = {
-    route: PropTypes.object.isRequired,
+	route: PropTypes.object.isRequired,
 };

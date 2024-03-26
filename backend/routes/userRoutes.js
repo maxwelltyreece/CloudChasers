@@ -7,7 +7,7 @@ const firebaseController = require('../controllers/firebaseImageController.js');
 
 
 router.get('/', (req, res) => {
-    res.send('Welcome to GOBL API');
+	res.send('Welcome to GOBL API');
 });
 
 router.post('/register', userController.register);

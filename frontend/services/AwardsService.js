@@ -8,10 +8,10 @@ import { LocalIP } from '../screens/IPIndex';
  * @returns {Promise} Axios Response Promise with the created award.
  */
 const createAward = async (awardData) => {
-    const token = await AsyncStorage.getItem('token');
-    return axios.post(`http://${LocalIP}:3000/awards/createAward`, awardData, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+	const token = await AsyncStorage.getItem('token');
+	return axios.post(`http://${LocalIP}:3000/awards/createAward`, awardData, {
+		headers: { Authorization: `Bearer ${token}` }
+	});
 };
 
 /**
@@ -19,10 +19,10 @@ const createAward = async (awardData) => {
  * @returns {Promise} Axios Response Promise with all awards.
  */
 const getAllAwards = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return axios.get(`http://${LocalIP}:3000/awards/getAllAwards`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+	const token = await AsyncStorage.getItem('token');
+	return axios.get(`http://${LocalIP}:3000/awards/getAllAwards`, {
+		headers: { Authorization: `Bearer ${token}` }
+	});
 };
 
 /**
@@ -31,11 +31,11 @@ const getAllAwards = async () => {
  * @returns {Promise} Axios Response Promise with the requested award.
  */
 const getAward = async (awardId) => {
-    const token = await AsyncStorage.getItem('token');
-    return axios.get(`http://${LocalIP}:3000/awards/getAward`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { awardId }
-    });
+	const token = await AsyncStorage.getItem('token');
+	return axios.get(`http://${LocalIP}:3000/awards/getAward`, {
+		headers: { Authorization: `Bearer ${token}` },
+		params: { awardId }
+	});
 };
 
 /**
@@ -44,10 +44,10 @@ const getAward = async (awardId) => {
  * @returns {Promise} Axios Response Promise after awarding the user.
  */
 const awardUser = async (awardData) => {
-    const token = await AsyncStorage.getItem('token');
-    return axios.post(`http://${LocalIP}:3000/awards/awardUser`, awardData, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+	const token = await AsyncStorage.getItem('token');
+	return axios.post(`http://${LocalIP}:3000/awards/awardUser`, awardData, {
+		headers: { Authorization: `Bearer ${token}` }
+	});
 };
 
 /**
@@ -55,10 +55,10 @@ const awardUser = async (awardData) => {
  * @returns {Promise} Axios Response Promise with the user's awards.
  */
 const getUserAwards = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return axios.get(`http://${LocalIP}:3000/awards/getUserAwards`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+	const token = await AsyncStorage.getItem('token');
+	return axios.get(`http://${LocalIP}:3000/awards/getUserAwards`, {
+		headers: { Authorization: `Bearer ${token}` }
+	});
 };
 
 /**
@@ -66,10 +66,10 @@ const getUserAwards = async () => {
  * @returns {Promise} Axios Response Promise with awards to be issued.
  */
 const getAwardsToBeIssued = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return axios.get(`http://${LocalIP}:3000/awards/getAwardsToBeIssued`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+	const token = await AsyncStorage.getItem('token');
+	return axios.get(`http://${LocalIP}:3000/awards/getAwardsToBeIssued`, {
+		headers: { Authorization: `Bearer ${token}` }
+	});
 };
 
 /**
@@ -77,18 +77,18 @@ const getAwardsToBeIssued = async () => {
  * @returns {Promise} Axios Response Promise with completed awards and total awards.
  */
 const getNumberOfCompletedAwards = async () => {
-    const token = await AsyncStorage.getItem('token');
-    return axios.get(`http://${LocalIP}:3000/awards/getNumberOfCompletedAwards`, {
-        headers: { Authorization: `Bearer ${token}` }
-    });
+	const token = await AsyncStorage.getItem('token');
+	return axios.get(`http://${LocalIP}:3000/awards/getNumberOfCompletedAwards`, {
+		headers: { Authorization: `Bearer ${token}` }
+	});
 };
 
 export default {
-    createAward,
-    getAllAwards,
-    getAward,
-    awardUser,
-    getUserAwards,
-    getAwardsToBeIssued,
-    getNumberOfCompletedAwards,
+	createAward,
+	getAllAwards,
+	getAward,
+	awardUser,
+	getUserAwards,
+	getAwardsToBeIssued,
+	getNumberOfCompletedAwards,
 };

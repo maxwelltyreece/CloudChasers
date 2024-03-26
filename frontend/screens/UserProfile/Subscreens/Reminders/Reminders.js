@@ -41,7 +41,7 @@ function Reminders() {
         );
         setReminders(updatedReminders);
     };
-
+  
 	/**
      * Opens the modal and resets the new reminder details.
      */
@@ -185,17 +185,17 @@ function Reminders() {
 					<View key={reminder.id} style={styles.reminderItem}>
 						<Text style={styles.remindersDescription} numberOfLines={4}>{reminder.description}</Text>
 						<Text style={styles.reminderInfoText}>
-						<Text style={styles.reminderInfoTitle}>Time:</Text>
-						{' '}
-						{reminder.time}
+							<Text style={styles.reminderInfoTitle}>Time:</Text>
+							{' '}
+							{reminder.time}
 						</Text>
 						<Text style={styles.reminderInfoText}>
-						<Text style={styles.reminderInfoTitle}>Frequency:</Text>
-						{' '}
-						{reminder.frequency}
+							<Text style={styles.reminderInfoTitle}>Frequency:</Text>
+							{' '}
+							{reminder.frequency}
 						</Text>
 						<Pressable onPress={() => toggleActionButtonsVisibility(reminder.id)} style={styles.threeDotsButton}>
-						<Text style={styles.threeDotsText}>...</Text>
+							<Text style={styles.threeDotsText}>...</Text>
 						</Pressable>
 						{reminder.showActions && (
 						<View style={styles.reminderActionButtonsSection}>

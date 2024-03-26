@@ -28,5 +28,4 @@ const WelcomeBar = () => (
         <Text style={styles.title}>Today&apos;s Statistics</Text>
     </View>
 );
-
 export default WelcomeBar;

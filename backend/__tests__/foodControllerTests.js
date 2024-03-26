@@ -121,13 +121,13 @@ describe("logDatabaseFood Endpoint", () => {
 	
 	it("should return 404 when given a non-existent food", async () => {
 		const response = await request(app)
-		.post("/food/logDatabaseFood")
-		.set("Authorization", `Bearer ${token}`)
-		.send({
-			mealType: "breakfast",
-			foodID: new mongoose.Types.ObjectId().toString(),
-			weight: 100,
-		});
+			.post("/food/logDatabaseFood")
+			.set("Authorization", `Bearer ${token}`)
+			.send({
+				mealType: "breakfast",
+				foodID: new mongoose.Types.ObjectId().toString(),
+				weight: 100,
+			});
 		
 		expect(response.statusCode).toBe(404);
 		expect(response.body.error).toBe("Food not found");
@@ -194,7 +194,7 @@ describe("logDatabaseFood Endpoint", () => {
 	});
 
 	it("should log food to an existing UserDayMeal", async () => {
-        const today = new Date();
+		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 
 		const existingUserDay = await UserDay.create({
@@ -967,7 +967,7 @@ describe("POST /addIngredientToDatabase", () => {
 		expect(ingredient.group).toBe("Fruits");
 		for (const key in newIngredient) {
 			if (key !== "group" && key !== "name")
-			expect(ingredient[key]).toBe(0);
+				expect(ingredient[key]).toBe(0);
 		}
 	});
 

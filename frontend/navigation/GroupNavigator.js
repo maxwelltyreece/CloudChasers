@@ -36,15 +36,15 @@ export default function GroupNavigator() {
 			<GroupStack.Screen name="NewGroup" component={NewGroup} />
 			<GroupStack.Screen name="GroupPage" component={GroupPage} />
 			<GroupStack.Screen 
-                name="GroupMembers" 
-                component={GroupMembers} 
-                options={{ title: 'Members' }}
-            />
+				name="GroupMembers" 
+				component={GroupMembers} 
+				options={{ title: 'Members' }}
+			/>
 			<GroupStack.Screen name="GroupSettings" component={GroupSettings} />
-            <GroupStack.Screen name="JoinGroup" component={JoinGroup} />
-            <GroupStack.Screen name="NewPostPage" component={NewPost} />
-            <GroupStack.Screen name="PendingRequests" component={PendingRequests} />
-            <GroupStack.Screen name="GroupRecipes" component={GroupRecipes} />
+			<GroupStack.Screen name="JoinGroup" component={JoinGroup} />
+			<GroupStack.Screen name="NewPostPage" component={NewPost} />
+			<GroupStack.Screen name="PendingRequests" component={PendingRequests} />
+			<GroupStack.Screen name="GroupRecipes" component={GroupRecipes} />
 		</GroupStack.Navigator>
 	);
 }

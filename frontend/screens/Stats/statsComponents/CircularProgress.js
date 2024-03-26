@@ -5,22 +5,22 @@ import Proptypes from 'prop-types';
 
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: -10,
-  },
-  keyContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 20,
-    width: '100%',
-  },
-  keyText: {
-    marginHorizontal: 5,
-    fontSize: 16,
-    fontFamily: 'Montserrat_700Bold',
-  },
+	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		top: -10,
+	},
+	keyContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		paddingTop: 20,
+		width: '100%',
+	},
+	keyText: {
+		marginHorizontal: 5,
+		fontSize: 16,
+		fontFamily: 'Montserrat_700Bold',
+	},
 });
 
 const initialMacroValues = {
@@ -153,8 +153,8 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
 };
 
 CircularProgressComponent.propTypes = {
-  todayStats: Proptypes.object,
-  goals: Proptypes.object,
+	todayStats: Proptypes.object,
+	goals: Proptypes.object,
 };
 
 export default CircularProgressComponent;

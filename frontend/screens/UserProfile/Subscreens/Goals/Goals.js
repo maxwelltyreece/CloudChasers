@@ -116,10 +116,9 @@ const Goals = () => {
 	const [isGoalsFetched, setIsGoalsFetched] = useState(false);
 	const [fetchedGoals, setFetchedGoals] = useState([]);
 
-
-    /**
-     * Fetches goals from the server
-     */
+  /**
+   * Fetches goals from the server
+   */
 	useEffect(() => {
 		const fetchData = async () => {
 			await fetchGoals();

@@ -8,16 +8,16 @@ import { LocalIP } from '../screens/IPIndex';
  * @returns {Promise} Axios Response Promise with the streaks data.
  */
 const getStreaks = async (date) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        const response = await axios.post(`http:${LocalIP}:3000/stats/streak`, { today: date }, {
-            headers: { Authorization: `Bearer ${token}` }
-        });
-        return response.data;
-    } catch (error) {
-        console.error('Error fetching streak data:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		const response = await axios.post(`http:${LocalIP}:3000/stats/streak`, { today: date }, {
+			headers: { Authorization: `Bearer ${token}` }
+		});
+		return response.data;
+	} catch (error) {
+		console.error('Error fetching streak data:', error);
+		throw error;
+	}
 };
 
 /**
@@ -26,15 +26,15 @@ const getStreaks = async (date) => {
  * @returns {Promise} Axios Response Promise with the daily caloric intake data.
  */
 const getDailyCaloricIntake = async (date) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        return await axios.get(`http:${LocalIP}:3000/stats/dailyCaloricIntake?date=${date}`, { 
-            headers: { Authorization: `Bearer ${token}` } 
-        });
-    } catch (error) {
-        console.error('Error fetching daily caloric intake SERVICE:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		return await axios.get(`http:${LocalIP}:3000/stats/dailyCaloricIntake?date=${date}`, { 
+			headers: { Authorization: `Bearer ${token}` } 
+		});
+	} catch (error) {
+		console.error('Error fetching daily caloric intake SERVICE:', error);
+		throw error;
+	}
 };
 
 /**
@@ -43,13 +43,13 @@ const getDailyCaloricIntake = async (date) => {
  * @returns {Promise} Axios Response Promise with the daily water intake data.
  */
 const getDailyWaterIntake = async (date) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        return await axios.get(`http:${LocalIP}:3000/stats/dailyWaterIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-        console.error('Error fetching daily water intake:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		return await axios.get(`http:${LocalIP}:3000/stats/dailyWaterIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
+	} catch (error) {
+		console.error('Error fetching daily water intake:', error);
+		throw error;
+	}
 };
 
 /**
@@ -58,13 +58,13 @@ const getDailyWaterIntake = async (date) => {
  * @returns {Promise} Axios Response Promise with the daily protein intake data.
  */
 const getDailyProteinIntake = async (date) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        return await axios.get(`http:${LocalIP}:3000/stats/dailyProteinIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-        console.error('Error fetching daily protein intake:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		return await axios.get(`http:${LocalIP}:3000/stats/dailyProteinIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
+	} catch (error) {
+		console.error('Error fetching daily protein intake:', error);
+		throw error;
+	}
 };
 
 /**
@@ -73,13 +73,13 @@ const getDailyProteinIntake = async (date) => {
  * @returns {Promise} Axios Response Promise with the daily carb intake data.
  */
 const getDailyCarbIntake = async (date) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        return await axios.get(`http:${LocalIP}:3000/stats/dailyCarbIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-        console.error('Error fetching daily carb intake:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		return await axios.get(`http:${LocalIP}:3000/stats/dailyCarbIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
+	} catch (error) {
+		console.error('Error fetching daily carb intake:', error);
+		throw error;
+	}
 };
 
 /**
@@ -88,13 +88,13 @@ const getDailyCarbIntake = async (date) => {
  * @returns {Promise} Axios Response Promise with the daily fat intake data.
  */
 const getDailyFatIntake = async (date) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        return await axios.get(`http:${LocalIP}:3000/stats/dailyFatIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-        console.error('Error fetching daily fat intake:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		return await axios.get(`http:${LocalIP}:3000/stats/dailyFatIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
+	} catch (error) {
+		console.error('Error fetching daily fat intake:', error);
+		throw error;
+	}
 };
 
 /**
@@ -103,13 +103,13 @@ const getDailyFatIntake = async (date) => {
  * @returns {Promise} Axios Response Promise with the daily sugar intake data.
  */
 const getDailySugarIntake = async (date) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        return await axios.get(`http:${LocalIP}:3000/stats/dailySugarIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-        console.error('Error fetching daily sugar intake:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		return await axios.get(`http:${LocalIP}:3000/stats/dailySugarIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
+	} catch (error) {
+		console.error('Error fetching daily sugar intake:', error);
+		throw error;
+	}
 };
 
 /**
@@ -118,13 +118,13 @@ const getDailySugarIntake = async (date) => {
  * @returns {Promise} Axios Response Promise with the daily sodium intake data.
  */
 const getDailySodiumIntake = async (date) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        return await axios.get(`http:${LocalIP}:3000/stats/dailySodiumIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-        console.error('Error fetching daily sodium intake:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		return await axios.get(`http:${LocalIP}:3000/stats/dailySodiumIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
+	} catch (error) {
+		console.error('Error fetching daily sodium intake:', error);
+		throw error;
+	}
 };
 
 /**
@@ -133,23 +133,23 @@ const getDailySodiumIntake = async (date) => {
  * @returns {Promise} Axios Response Promise with the daily fibre intake data.
  */
 const getDailyFibreIntake = async (date) => {
-    try {
-        const token = await AsyncStorage.getItem('token');
-        return await axios.get(`http:${LocalIP}:3000/stats/dailyFibreIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (error) {
-        console.error('Error fetching daily fibre intake:', error);
-        throw error;
-    }
+	try {
+		const token = await AsyncStorage.getItem('token');
+		return await axios.get(`http:${LocalIP}:3000/stats/dailyFibreIntake?date=${date}`, { headers: { Authorization: `Bearer ${token}` } });
+	} catch (error) {
+		console.error('Error fetching daily fibre intake:', error);
+		throw error;
+	}
 };
 
 export default {
-    getStreaks,
-    getDailyCaloricIntake,
-    getDailyWaterIntake,
-    getDailyProteinIntake,
-    getDailyCarbIntake,
-    getDailyFatIntake,
-    getDailySugarIntake,
-    getDailySodiumIntake,
-    getDailyFibreIntake,
+	getStreaks,
+	getDailyCaloricIntake,
+	getDailyWaterIntake,
+	getDailyProteinIntake,
+	getDailyCarbIntake,
+	getDailyFatIntake,
+	getDailySugarIntake,
+	getDailySodiumIntake,
+	getDailyFibreIntake,
 };
