@@ -11,26 +11,26 @@ const CommunityContext = createContext();
 export function CommunityProvider({ children }) {
 	const [userCommunities, setUserCommunities] = useState([]);
 
-    const getUserCommunities = async () => {
-        const communities = await communityService.getUserCommunities();
-        setUserCommunities(communities.data);
-    };
+	const getUserCommunities = async () => {
+		const communities = await communityService.getUserCommunities();
+		setUserCommunities(communities.data);
+	};
 
 	useEffect(() => {
 		getUserCommunities();
 	}, []);
 
-    const getAvailableCommunities = async () => {
-        const response = await getAllCommunities();
-        if (response.success) {
-            return response.data.filter(
-                (community) => !userCommunities.some((userCommunity) => userCommunity.id === community.id)
-            );
-        } else {
-            console.error('Failed to get communities:', response);
-            return [];
-        }
-    };
+	const getAvailableCommunities = async () => {
+		const response = await getAllCommunities();
+		if (response.success) {
+			return response.data.filter(
+				(community) => !userCommunities.some((userCommunity) => userCommunity.id === community.id)
+			);
+		} else {
+			console.error('Failed to get communities:', response);
+			return [];
+		}
+	};
 
 	// eslint-disable-next-line max-len
 	const getCommunityDetails = async (communityId) => communityService.getCommunityDetails(communityId);
@@ -38,10 +38,10 @@ export function CommunityProvider({ children }) {
 	// eslint-disable-next-line max-len
 	const getCommunityMembers = async (communityId) => communityService.getCommunityMembers(communityId);
 
-    const getUserRole = async (communityId) => {
-        const response = await communityService.getUserRole(communityId);
-        return response.data.role;
-    };
+	const getUserRole = async (communityId) => {
+		const response = await communityService.getUserRole(communityId);
+		return response.data.role;
+	};
 	const getAllCommunities = async () => communityService.getAllCommunities();
 
 	const createCommunity = async (communityData) => {
@@ -49,110 +49,110 @@ export function CommunityProvider({ children }) {
 		return communityService.createCommunity(communityData);
 	};
 
-    const resetUserCommunities = () => {
-        setUserCommunities([]);
-    };
+	const resetUserCommunities = () => {
+		setUserCommunities([]);
+	};
 
-    const joinCommunity = async (communityId) => {
-        // console.log('Attempting to join community with ID:', communityId);
+	const joinCommunity = async (communityId) => {
+		// console.log('Attempting to join community with ID:', communityId);
 
-        try {
-            const response = await communityService.joinCommunity(communityId);
-            // console.log('Successfully joined community. Response:', response);
-            return response;
-        } catch (error) {
-            console.error('Error joining community:', error);
-            throw error;
-        }
-    };
+		try {
+			const response = await communityService.joinCommunity(communityId);
+			// console.log('Successfully joined community. Response:', response);
+			return response;
+		} catch (error) {
+			console.error('Error joining community:', error);
+			throw error;
+		}
+	};
 
-    const deleteCommunity = async (communityId, navigation) => {
-        // console.log('Deleting community with ID:', communityId);
-        const response = await communityService.deleteCommunity(communityId);
-        if (response && response.success) {
-            // console.log('Successfully deleted community:', response);
-            getUserCommunities();
-            navigation.navigate('Groups');
-        } else {
-            console.error('Failed to delete community:', response);
-            // Handle error
-        }
-    };
+	const deleteCommunity = async (communityId, navigation) => {
+		// console.log('Deleting community with ID:', communityId);
+		const response = await communityService.deleteCommunity(communityId);
+		if (response && response.success) {
+			// console.log('Successfully deleted community:', response);
+			getUserCommunities();
+			navigation.navigate('Groups');
+		} else {
+			console.error('Failed to delete community:', response);
+			// Handle error
+		}
+	};
 
-    const leaveCommunity = async (communityId, navigation) => {
-        // console.log('Leaving community with ID:', communityId);
-        const response = await communityService.leaveCommunity(communityId);
-        if (response && response.success) {
-            // console.log('Successfully left community:', response);
-            getUserCommunities();
-            navigation.navigate('Groups');
-        } else {
-            console.error('Failed to leave community:', response);
-            // Handle error
-        }
-    };
+	const leaveCommunity = async (communityId, navigation) => {
+		// console.log('Leaving community with ID:', communityId);
+		const response = await communityService.leaveCommunity(communityId);
+		if (response && response.success) {
+			// console.log('Successfully left community:', response);
+			getUserCommunities();
+			navigation.navigate('Groups');
+		} else {
+			console.error('Failed to leave community:', response);
+			// Handle error
+		}
+	};
 
-    const updateCommunityDesc = async (communityId, description) => {
-        const response = await communityService.updateCommunityDesc(communityId, description);
-        return response;
-    };
+	const updateCommunityDesc = async (communityId, description) => {
+		const response = await communityService.updateCommunityDesc(communityId, description);
+		return response;
+	};
 
-    const updateJoinPrivacy = async (communityId, joinPrivacy) => {
-        const response = await communityService.updateJoinPrivacy(communityId, joinPrivacy);
-        return response;
-    };
+	const updateJoinPrivacy = async (communityId, joinPrivacy) => {
+		const response = await communityService.updateJoinPrivacy(communityId, joinPrivacy);
+		return response;
+	};
 
-    const getCommunityImage = async (Id, folderName) => {
-        try {
-            const response = await communityService.getCommunityImage(Id, folderName);
-            return response;
-        } catch (error) {
-            console.error(error);
-            return { status: error.message };
-        }
-    }
+	const getCommunityImage = async (Id, folderName) => {
+		try {
+			const response = await communityService.getCommunityImage(Id, folderName);
+			return response;
+		} catch (error) {
+			console.error(error);
+			return { status: error.message };
+		}
+	}
 
-    const makePost = async (postData) => {
-        const response = await communityService.makePost(postData);
-        return response;
-    };
+	const makePost = async (postData) => {
+		const response = await communityService.makePost(postData);
+		return response;
+	};
     
-    const getCommunityPosts = async (communityId) => {
-        const response = await communityService.getCommunityPosts(communityId);
-        return response.data;
-    };
+	const getCommunityPosts = async (communityId) => {
+		const response = await communityService.getCommunityPosts(communityId);
+		return response.data;
+	};
      
-    const removeMember = async (communityId, memberId) => {
-        const response = await communityService.removeMember(communityId, memberId);
-        return response;
-    };
+	const removeMember = async (communityId, memberId) => {
+		const response = await communityService.removeMember(communityId, memberId);
+		return response;
+	};
 
-    const acceptRequest = async (requestId) => {
-        const response = await communityService.acceptRequest(requestId);
-        return response;
-    };
+	const acceptRequest = async (requestId) => {
+		const response = await communityService.acceptRequest(requestId);
+		return response;
+	};
 
-    const denyRequest = async (requestId) => {
-        const response = await communityService.denyRequest(requestId);
-        return response;
-    };
+	const denyRequest = async (requestId) => {
+		const response = await communityService.denyRequest(requestId);
+		return response;
+	};
     
-    const getPendingRequests = async (communityId) => {
-        const response = await communityService.getPendingRequests(communityId);
-        return response;
-    };
+	const getPendingRequests = async (communityId) => {
+		const response = await communityService.getPendingRequests(communityId);
+		return response;
+	};
 
-    const getCommunityRecipes = async (communityId) => {
-        const response = await communityService.getCommunityRecipes(communityId);
-        return response;
-    }
+	const getCommunityRecipes = async (communityId) => {
+		const response = await communityService.getCommunityRecipes(communityId);
+		return response;
+	}
 
 	const value = useMemo(() => ({
-        deleteCommunity,
-        leaveCommunity,
-        updateCommunityDesc,
-        updateJoinPrivacy,
-        getCommunityImage,
+		deleteCommunity,
+		leaveCommunity,
+		updateCommunityDesc,
+		updateJoinPrivacy,
+		getCommunityImage,
 		getCommunityDetails,
 		getCommunityMembers,
 		getUserRole,
@@ -161,16 +161,16 @@ export function CommunityProvider({ children }) {
 		getAllCommunities,
 		createCommunity,
 		joinCommunity,
-        getAvailableCommunities,
-        resetUserCommunities,
-        getUserCommunities,
-        makePost,
-        getCommunityPosts,
-        removeMember,
-        acceptRequest,
-        denyRequest,
-        getPendingRequests,
-        getCommunityRecipes,
+		getAvailableCommunities,
+		resetUserCommunities,
+		getUserCommunities,
+		makePost,
+		getCommunityPosts,
+		removeMember,
+		acceptRequest,
+		denyRequest,
+		getPendingRequests,
+		getCommunityRecipes,
 	// eslint-disable-next-line max-len
 	}), [getCommunityRecipes, makePost, getCommunityPosts, removeMember, getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy, getCommunityImage, acceptRequest, denyRequest, getPendingRequests]);
 
@@ -184,5 +184,5 @@ export function CommunityProvider({ children }) {
 export const useCommunity = () => useContext(CommunityContext);
 
 CommunityProvider.propTypes = {
-    children: PropTypes.node.isRequired,
+	children: PropTypes.node.isRequired,
 };

@@ -379,6 +379,7 @@ exports[`Awards Screen matches the awards snapshot 1`] = `
                             <Text
                               style={
                                 {
+                                  "fontFamily": "Montserrat_500Medium",
                                   "fontSize": 14,
                                 }
                               }
@@ -416,6 +417,7 @@ exports[`Awards Screen matches the awards snapshot 1`] = `
                             <Text
                               style={
                                 {
+                                  "fontFamily": "Montserrat_500Medium",
                                   "fontSize": 14,
                                 }
                               }
@@ -451,6 +453,7 @@ exports[`Awards Screen matches the awards snapshot 1`] = `
                                 numberOfLines={1}
                                 style={
                                   {
+                                    "fontFamily": "Montserrat_700Bold",
                                     "fontSize": 16,
                                     "fontWeight": "bold",
                                   }
@@ -504,6 +507,7 @@ exports[`Awards Screen matches the awards snapshot 1`] = `
                                 numberOfLines={1}
                                 style={
                                   {
+                                    "fontFamily": "Montserrat_700Bold",
                                     "fontSize": 16,
                                     "fontWeight": "bold",
                                   }
@@ -557,6 +561,7 @@ exports[`Awards Screen matches the awards snapshot 1`] = `
                                 numberOfLines={1}
                                 style={
                                   {
+                                    "fontFamily": "Montserrat_700Bold",
                                     "fontSize": 16,
                                     "fontWeight": "bold",
                                   }
@@ -610,6 +615,7 @@ exports[`Awards Screen matches the awards snapshot 1`] = `
                                 numberOfLines={1}
                                 style={
                                   {
+                                    "fontFamily": "Montserrat_700Bold",
                                     "fontSize": 16,
                                     "fontWeight": "bold",
                                   }
@@ -663,6 +669,7 @@ exports[`Awards Screen matches the awards snapshot 1`] = `
                                 numberOfLines={1}
                                 style={
                                   {
+                                    "fontFamily": "Montserrat_700Bold",
                                     "fontSize": 16,
                                     "fontWeight": "bold",
                                   }
@@ -716,6 +723,7 @@ exports[`Awards Screen matches the awards snapshot 1`] = `
                                 numberOfLines={1}
                                 style={
                                   {
+                                    "fontFamily": "Montserrat_700Bold",
                                     "fontSize": 16,
                                     "fontWeight": "bold",
                                   }
@@ -769,6 +777,7 @@ exports[`Awards Screen matches the awards snapshot 1`] = `
                                 numberOfLines={1}
                                 style={
                                   {
+                                    "fontFamily": "Montserrat_700Bold",
                                     "fontSize": 16,
                                     "fontWeight": "bold",
                                   }

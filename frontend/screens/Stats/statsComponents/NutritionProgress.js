@@ -4,116 +4,104 @@ import PropTypes from 'prop-types';
 
 
 const styles = StyleSheet.create({
-    // -------Goal Progress Bar-------//
-    progressBarComponentContainer: {
-        justifyContent: 'center',
-        alignContent: 'center',
-        marginTop: '7%',
-        marginBottom: Platform.OS === 'android' ? '5%' : '2%',
-        borderRadius: 15,
-        width: '100%',
-        height: '100%',
-    },
-    progressBarContainer: {
-        flexDirection: 'row',
-        marginTop: '1%',
-        backgroundColor: '#F0F0F0',
-        borderRadius: 32,
-        overflow: 'hidden',
-        width: '100%',
-        height: 15,
-    },
-    filledProgressBar: {
-        backgroundColor: '#FF815E',
-        height: 15,
-        borderRadius: 32,
-    },
-    progressBarItem: {
-        marginBottom: Platform.OS === 'android' ? 12 : 8,
-        paddingHorizontal: 20,
-        paddingVertical: 8,
-        backgroundColor: 'white',
-        borderRadius: 12,
-        width: '96%',
-        height: '20%',
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.22,
-        shadowRadius: 2.22,
-        elevation: 3,
-        alignSelf: 'center',
-    },
-    labelContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginBottom: 2,
-    },
-    label: {
-        fontFamily: 'Montserrat_700Bold',
-        fontSize: 14,
-        fontWeight: 'bold',
-    },
+	// -------Goal Progress Bar-------//
+	progressBarComponentContainer: {
+		justifyContent: 'center',
+		alignContent: 'center',
+		marginTop: '7%',
+		marginBottom: Platform.OS === 'android' ? '5%' : '2%',
+		borderRadius: 15,
+		width: '100%',
+		height: '100%',
+	},
+	progressBarContainer: {
+		flexDirection: 'row',
+		marginTop: '1%',
+		backgroundColor: '#F0F0F0',
+		borderRadius: 32,
+		overflow: 'hidden',
+		width: '100%',
+		height: 15,
+	},
+	filledProgressBar: {
+		backgroundColor: '#FF815E',
+		height: 15,
+		borderRadius: 32,
+	},
+	progressBarItem: {
+		marginBottom: Platform.OS === 'android' ? 12 : 8,
+		paddingHorizontal: 20,
+		paddingVertical: 8,
+		backgroundColor: 'white',
+		borderRadius: 12,
+		width: '96%',
+		height: '20%',
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 1 },
+		shadowOpacity: 0.22,
+		shadowRadius: 2.22,
+		elevation: 3,
+		alignSelf: 'center',
+	},
+	labelContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+		marginBottom: 2,
+	},
+	label: {
+		fontFamily: 'Montserrat_700Bold',
+		fontSize: 14,
+		fontWeight: 'bold',
+	},
 
 });
 
+/**
+ * Units for the nutrients
+ */
 const nutrientUnits = {
-    calories: 'kcal',
-    protein: 'g',
-    carbs: 'g',
-    fat: 'g',
-    fibre: 'g',
-    sugar: 'g',
-    sodium: 'mg',
-    water: 'ml',
+	calories: 'kcal',
+	protein: 'g',
+	carbs: 'g',
+	fat: 'g',
+	fibre: 'g',
+	sugar: 'g',
+	sodium: 'mg',
+	water: 'ml',
 };
 
-
-// ProgressBar component
-const ProgressBar = ({ label, progress, max, unit }) => {
-
-    const [containerWidth, setContainerWidth] = useState(0);
-    const animatedWidth = useRef(new Animated.Value(0)).current;
-
-    // Function to measure the width of the container
-    const measureContainer = (event) => {
-        const { width } = event.nativeEvent.layout;
-        setContainerWidth(width);
-    };
-
+/**
+ * Progress bar component
+ * @param {Object} props - Component props
+ * @param {string} props.label - Label for the progress bar
+ * @param {number} [props.progress=0] - Current progress
+ * @param {number} props.max - Maximum value for the progress
+ * @param {string} [props.unit=''] - Unit for the progress
+ */
+const ProgressBar = ({ label, progress = 0, max, unit = '' }) => {
+    const progressAnim = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
-        // Safe division function to avoid dividing by zero
-        const safeDivision = (numerator, denominator, containerWidth) => {
-            if (denominator > 0) {
-                return (numerator / denominator) * containerWidth;
-            } else {
-                // Default to 0 or any other fallback width
-                return 0;
-            }
-        };
-
-        let finalWidth = 0;
-
-		{(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ? 
-			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0} // Still load app of error occurs and data is any data is undefined.
-		
-
-        Animated.timing(animatedWidth, {
-            toValue: finalWidth,
-            duration: 1000,
+        Animated.timing(progressAnim, {
+            toValue: (progress / max) * 100,
+            duration: 500,
             useNativeDriver: false,
         }).start();
-    }, [progress, max, containerWidth]);
+    }, [progress]);
 
+    const widthInterpolated = progressAnim.interpolate({
+        inputRange: [0, 100],
+        outputRange: ['0%', '100%'],
+    });
 
     return (
         <View style={styles.progressBarItem}>
             <View style={styles.labelContainer}>
                 <Text style={styles.label}>{label}</Text>
-                <Text style={styles.label}>{`${progress ?? 0} / ${max} ${unit}`}</Text>
+                <Text style={styles.label}>{`${progress} / ${max} ${unit}`}</Text>
             </View>
-            <View style={styles.progressBarContainer} onLayout={measureContainer}>
-                <Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
+            <View style={styles.progressBarContainer}>
+                <Animated.View style={[styles.filledProgressBar, { width: widthInterpolated }]} />
             </View>
         </View>
     );
@@ -121,19 +109,19 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 
 ProgressBar.propTypes = {
     label: PropTypes.string.isRequired,
-    progress: PropTypes.number.isRequired,
+    progress: PropTypes.number,
     max: PropTypes.number.isRequired,
     unit: PropTypes.string,
 };
 
-ProgressBar.defaultProps = {
-    progress: 0,
-    unit: '',
-};
-
-
+/**
+ * Nutrition progress component
+ * @param {Object} props - Component props
+ * @param {Object} props.todayStats - Today's stats
+ * @param {Object} props.goals - Goals
+ */
 const NutritionProgress = ({ todayStats, goals }) => {
-    let initialMacroValues = {
+    const initialMacroValues = {
         calories: 0,
         water: 0,
         fat: 0,
@@ -144,20 +132,12 @@ const NutritionProgress = ({ todayStats, goals }) => {
         fibre: 0,
     };
 
-    let currentMacroValues = { ...initialMacroValues };
+    const currentMacroValues = Object.keys(initialMacroValues).reduce((acc, key) => {
+        acc[key] = todayStats[key] ? parseInt(todayStats[key].toFixed(0)) : 0;
+        return acc;
+    }, {});
 
-	Object.keys(todayStats).forEach(key => {
-		if (todayStats[key] !== null && todayStats[key] !== undefined) {
-			currentMacroValues[key] = todayStats[key];
-		}
-	});
-
-	Object.keys(currentMacroValues).forEach(key => {
-		currentMacroValues[key] = parseInt(currentMacroValues[key].toFixed(0));
-	});
-
-    // Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
-    let nutrientGoals = {
+    const nutrientGoals = {
         calories: 2000,
         fat: 70,
         sodium: 2300,
@@ -168,7 +148,6 @@ const NutritionProgress = ({ todayStats, goals }) => {
         fibre: 30,
     };
 
-    // If the goals object contains goals, populate the nutrientGoals with actual values
     if (goals && goals.goals) {
         goals.goals.forEach(goal => {
             if (goal.measurement in nutrientGoals) {
@@ -177,31 +156,26 @@ const NutritionProgress = ({ todayStats, goals }) => {
         });
     }
 
-    // Define the list of nutrients we want to display progress bars for
     const nutrientsOfInterest = ['carbs', 'fat', 'sodium', 'sugar', 'fibre'];
 
     return (
         <View style={styles.progressBarComponentContainer}>
-            {nutrientsOfInterest.map((nutrient) => {
-                // Check if todaysStats contains the nutrient, and goals were provided for it
-                return (
-                    <ProgressBar
-                        key={nutrient}
-                        label={nutrient.charAt(0).toUpperCase() + nutrient.slice(1)} // Capitalize the first letter for display
-                        progress={currentMacroValues[nutrient]}
-                        max={nutrientGoals[nutrient]}
-                        unit={nutrientUnits[nutrient]}
-                    />
-                );
-            })}
+            {nutrientsOfInterest.map((nutrient) => (
+                <ProgressBar
+                    key={nutrient}
+                    label={nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}
+                    progress={currentMacroValues[nutrient]}
+                    max={nutrientGoals[nutrient]}
+                    unit={nutrientUnits[nutrient]}
+                />
+            ))}
         </View>
     );
 };
 
 NutritionProgress.propTypes = {
-    todayStats: PropTypes.object.isRequired,
-    goals: PropTypes.object,
+	todayStats: PropTypes.object.isRequired,
+	goals: PropTypes.object,
 };
-
 
 export default NutritionProgress;

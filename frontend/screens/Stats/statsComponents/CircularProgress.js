@@ -1,33 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { CircularProgressBase } from 'react-native-circular-progress-indicator';
-// import { useFocusEffect } from '@react-navigation/native';
 import Proptypes from 'prop-types';
 
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: -10,
-  },
-  keyContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    paddingTop: 20,
-    width: '100%',
-  },
-  keyText: {
-    marginHorizontal: 5,
-    fontSize: 16,
-    fontFamily: 'Montserrat_700Bold',
-  },
+	container: {
+		justifyContent: 'center',
+		alignItems: 'center',
+		top: -10,
+	},
+	keyContainer: {
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		paddingTop: 20,
+		width: '100%',
+	},
+	keyText: {
+		marginHorizontal: 5,
+		fontSize: 16,
+		fontFamily: 'Montserrat_700Bold',
+	},
 });
 
-const CircularProgressComponent = ({ todayStats, goals }) => {
-
-  let initialMacroValues = {
-
+const initialMacroValues = {
     calories: 0,
     water: 0,
     fat: 0,
@@ -36,11 +32,9 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     protein: 0,
     sugar: 0,
     fibre: 0,
-  };
-
-  let currentMacroValues = { ...initialMacroValues, ...todayStats }
-
-  let nutrientGoals = {
+};
+  
+const nutrientGoals = {
     calories: 2000,
     fat: 70,
     sodium: 2300,
@@ -49,7 +43,23 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     protein: 50,
     sugar: 25,
     fibre: 30,
-  };
+};
+
+const colorScheme = {
+    calories: '#ff592b',
+    protein: '#ff815e',
+    water: '#5edcff',
+};
+
+/**
+ * Circular progress component
+ * @component
+ * @param {Object} todayStats - The stats for today
+ * @param {Object} goals - The goals
+ */
+const CircularProgressComponent = ({ todayStats, goals }) => {
+
+  const currentMacroValues = { ...initialMacroValues, ...todayStats }
 
   if (goals && goals.goals) {
     goals.goals.forEach(goal => {
@@ -59,40 +69,38 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     });
   }
 
-
   const [progressValues, setProgressValues] = useState({
     calories: 0,
     protein: 0,
     water: 0,
   });
 
-  const colorScheme = {
-    calories: '#ff592b',
-    protein: '#ff815e',
-    water: '#5edcff',
-  };
-
+  /**
+   * Safely divides two numbers
+   * @param {number} numerator - The numerator
+   * @param {number} denominator - The denominator
+   * @returns {number} - The result of the division, or 0 if the denominator is 0
+   */
   const safeDivide = (numerator, denominator) => {
     const ratio = denominator === 0 ? 0 : numerator / denominator;
     return ratio >= 1 ? 100 : ratio * 100;
   };
 
-  const updateProgressValues = () => {
-    const newProgressValues = {
-      calories: todayStats.calories != undefined
-        ? safeDivide(currentMacroValues.calories, nutrientGoals.calories)
-        : 0,
-      protein: todayStats.protein != undefined
-        ? safeDivide(currentMacroValues.protein, nutrientGoals.protein)
-        : 0,
-      water: todayStats.water != undefined
-        ? safeDivide(currentMacroValues.water, nutrientGoals.water)
-        : 0,
+    /**
+     * Updates the progress values
+     */
+    const updateProgressValues = () => {
+        const newProgressValues = ['calories', 'protein', 'water'].reduce((acc, key) => {
+            acc[key] = todayStats[key] !== undefined ? safeDivide(currentMacroValues[key], nutrientGoals[key]) : 0;
+            return acc;
+        }, {});
+
+        setProgressValues(newProgressValues);
     };
 
-    setProgressValues(newProgressValues);
-  };
-
+  /**
+   * Updates the progress values when the stats or goals change
+   */
   useEffect(() => {
     updateProgressValues();
   }, [todayStats, goals]);
@@ -145,8 +153,8 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
 };
 
 CircularProgressComponent.propTypes = {
-  todayStats: Proptypes.object,
-  goals: Proptypes.object,
+	todayStats: Proptypes.object,
+	goals: Proptypes.object,
 };
 
 export default CircularProgressComponent;

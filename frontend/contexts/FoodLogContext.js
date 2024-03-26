@@ -1,6 +1,6 @@
 // FoodContext.js
 import React, {
-    createContext, useState, useContext, useMemo,
+	createContext, useState, useContext, useMemo,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as foodLogService from '../services/FoodLogService';
@@ -21,13 +21,13 @@ export function FoodLogProvider({ children }) {
         }
         const food = await foodLogService.getLatestLoggedFood();
         setLatestLoggedFood(food.data);
-        // console.log('Latest logged food:', food.data);
+        console.log('Latest logged food:', food.data);
     }
 
     const logDatabaseFood = async (data) => {
-        // console.log('Logging food CONTEXT:', data);
+        console.log('Logging food CONTEXT:', data);
         await foodLogService.logDatabaseFood(data);
-        // console.log('Food logged response given');
+        console.log('Food logged response given');
     }
 
     const createNewRecipeByUser = async (data) => {
@@ -85,12 +85,16 @@ export function FoodLogProvider({ children }) {
     }
 
     const getPictureURL = async (data) => {
-        // console.log('IMAGE:' + data);
+        console.log('IMAGE:' + data);
         return await foodLogService.getPictureURL(data);
     }
 
     const logWater = async (data) => {
         await foodLogService.logWater(data);
+    }
+
+    const logManualMacro = async (data) => {
+        await foodLogService.logManualMacro(data);
     }
 
     const value = useMemo(() => ({
@@ -112,18 +116,18 @@ export function FoodLogProvider({ children }) {
         deleteIngredientFromRecipe,
         getPictureURL,
         logWater,
-    }), [latestLoggedFood, getLatestLoggedFood, logDatabaseFood, createNewRecipeByUser, logRecipeFood, duplicateRecipeToUser, getFood, searchFoods, getRecipe, getRecipeWeight, getRecipeMacro, getAllUserRecipes, getRecipeIngredients, getCommunityRecipes, addItemToRecipe, deleteIngredientFromRecipe, getPictureURL, logWater]);
+        logManualMacro,
+    }), [latestLoggedFood, getLatestLoggedFood, logDatabaseFood, createNewRecipeByUser, logRecipeFood, duplicateRecipeToUser, getFood, searchFoods, getRecipe, getRecipeWeight, getRecipeMacro, getAllUserRecipes, getRecipeIngredients, getCommunityRecipes, addItemToRecipe, deleteIngredientFromRecipe, getPictureURL, logWater, logManualMacro]);
 
     return (
         <FoodLogContext.Provider value={value}>
             {children}
         </FoodLogContext.Provider>
     );
-
 }
 
 export const useFoodLog = () => useContext(FoodLogContext);
 
 FoodLogProvider.propTypes = {
-    children: PropTypes.node.isRequired,
+	children: PropTypes.node.isRequired,
 };
