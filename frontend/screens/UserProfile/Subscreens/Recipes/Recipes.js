@@ -36,7 +36,6 @@ function Recipes() {
     const fetchRecipes = async () => {
 
       const fetchedRecipes = await getAllUserRecipes();
-      console.log("fetchedRecipes:", fetchedRecipes);
 
       const mappedRecipes = fetchedRecipes.map((recipe) => ({
         id: recipe._id,
@@ -95,7 +94,7 @@ function Recipes() {
               style={styles.box}
             />
           )}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item) => item.id}
           numColumns={2}
           columnWrapperStyle={styles.row}
           style={styles.list}
