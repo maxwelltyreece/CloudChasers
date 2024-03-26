@@ -47,33 +47,33 @@ function Dashboard() {
 		}
 	};
 
-	useEffect(() => {
-		setLoading(true);
-		const fetchData = async () => {
-			try {
-				await checkUserLogin();
+	// useEffect(() => {
+	// 	setLoading(true);
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			await checkUserLogin();
 
-				await Promise.all([
-					updateUserDetails(),
-					updateTodayStats(),
-					getUserCommunities(),
-					getLatestLoggedFood(),
-					fetchGoals(),
-					fetchUserAwards(),
-					fetchAwards(),
-					// fetchAwardsToBeIssued()
-				]);
-			} catch (error) {
-				if (latestLoggedFood != undefined) {
-					console.error("Error fetching data for dashboard:", error);
-				}
-			} finally {
-				setLoading(false);
-			}
-		};
+	// 			await Promise.all([
+	// 				updateUserDetails(),
+	// 				updateTodayStats(),
+	// 				getUserCommunities(),
+	// 				getLatestLoggedFood(),
+	// 				fetchGoals(),
+	// 				fetchUserAwards(),
+	// 				fetchAwards(),
+	// 				// fetchAwardsToBeIssued()
+	// 			]);
+	// 		} catch (error) {
+	// 			if (latestLoggedFood != undefined) {
+	// 				console.error("Error fetching data for dashboard:", error);
+	// 			}
+	// 		} finally {
+	// 			setLoading(false);
+	// 		}
+	// 	};
 
-		fetchData();
-	}, []);
+	// 	fetchData();
+	// }, []);
 
 	const updateDashboardData = async () => {
 		try {
@@ -99,9 +99,10 @@ function Dashboard() {
 	useFocusEffect(
         useCallback(() => {
             console.log('DASHBOARD FOCUSED');
-            updateDashboardData();
-		}, [])
-	);
+            setLoading(true);
+            updateDashboardData().finally(() => setLoading(false));
+        }, [])
+    );
 
 
 	if (loading) {
