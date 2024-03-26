@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
 		fontFamily: "Montserrat_700Bold",
 
 		textAlign: "center",
-		fontSize: 20, // Made the size consistent with modalText
+		fontSize: 20,
 	},
 	ingredientText: {
 		fontFamily: "Montserrat_400Regular",
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
 });
 
 
-function RecipeBox({ id, title, description, onDelete }) {
+function RecipeBox({ id, title, description, }) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [ingredients, setIngredients] = useState([]);
 	const [imageUrl, setImageUrl] = useState(null);
