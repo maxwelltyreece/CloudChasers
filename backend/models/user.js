@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 function validateEmail(email) {
 	// checks that an email has some text, then an @, then some text, then a dot, then some text [regex from https://stackoverflow.com/questions/35788383/regex-validation-in-javascript-email]
-	const emailRegex = /\S+@\S+\.\S+/;
+	const emailRegex = /([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])/;
 	return emailRegex.test(email);
 }
 
