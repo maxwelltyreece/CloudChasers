@@ -2,7 +2,6 @@
 import statsService from '../../services/StatsService';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../../screens/IPIndex';
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -32,7 +31,7 @@ describe('statsService', () => {
 
 			const result = await statsService.getStreaks(date);
 
-			expect(axios.post).toHaveBeenCalledWith(`http:${LocalIP}:3000/stats/streak`, { today: date }, {
+			expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/stats/streak`, { today: date }, {
 				headers: { Authorization: `Bearer ${token}` }
 			});
 			expect(result).toEqual(mockStreakData);
@@ -55,7 +54,7 @@ describe('statsService', () => {
 
 			const result = await statsService.getDailyCaloricIntake(date);
 
-			expect(axios.get).toHaveBeenCalledWith(`http:${LocalIP}:3000/stats/dailyCaloricIntake?date=${date}`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/stats/dailyCaloricIntake?date=${date}`, {
 				headers: { Authorization: `Bearer ${token}` }
 			});
 			expect(result.data).toEqual(mockCaloricData);
@@ -96,7 +95,7 @@ describe('statsService', () => {
 
 				const result = await statsService[fn](date);
 
-				expect(axios.get).toHaveBeenCalledWith(`http:${LocalIP}:3000/stats/${endpoint}?date=${date}`, {
+				expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/stats/${endpoint}?date=${date}`, {
 					headers: { Authorization: `Bearer ${token}` }
 				});
 				expect(result.data).toEqual(mockData);

@@ -2,7 +2,6 @@
 import userService from '../../services/UserService';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../../screens/IPIndex';
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({

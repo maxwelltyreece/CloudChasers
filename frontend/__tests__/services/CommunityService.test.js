@@ -19,7 +19,6 @@ import {
 	getCommunityPosts,
 	removeMember,
 } from '../../services/CommunityService';
-import { LocalIP } from '../../screens/IPIndex';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
 	getItem: jest.fn(),

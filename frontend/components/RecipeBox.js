@@ -13,7 +13,7 @@ import {
 	TouchableWithoutFeedback,
 } from "react-native";
 import proptypes from "prop-types";
-import { LocalIP } from "../screens/IPIndex";
+
 import axios from "axios";
 
 const styles = StyleSheet.create({

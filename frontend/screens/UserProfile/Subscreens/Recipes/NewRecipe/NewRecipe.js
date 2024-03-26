@@ -16,7 +16,6 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { LocalIP } from "../../../../IPIndex";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "./styles";

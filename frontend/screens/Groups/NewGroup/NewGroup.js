@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'; // Import PropTypes
 import { styles } from './styles';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
-import { LocalIP } from '../../IPIndex';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
