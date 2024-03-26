@@ -7,39 +7,36 @@ import { LocalIP } from '../IPIndex';
 import { styles } from './styles';
 // import { useUser } from '../../contexts/UserContext';
 
-function Login({ navigation }) {
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
+const handleLogin = async () => {
+    if (!username || !password) {
+        Alert.alert('Error', 'Please fill out all fields');
+        return;
+    }
 
-	const handleLogin = () => {
-		if (!username || !password) {
-			Alert.alert('Error', 'Please fill out all fields');
-			return;
-		}
-        
-		axios.post(`http://api.gobl-up.me:80/login`, {
-			username,
-			password,
-		})
-			.then((response) => {
-				if(response.data.data) {
-					AsyncStorage.setItem('token', response.data.data);
-					navigation.reset({
-						index: 0,
-						routes: [{ name: 'Main' }],
-					});
-				} else {
-					Alert.alert('Login failed', 'Please try again');
-				}
-			})
-			.catch((error) => {
-				if (error.response && error.response.data.message) {
-					Alert.alert(error.response.data.message);
-				} else {
-					console.error('Error:', error.message);
-				}
-			});
-	};
+    try {
+        const response = await logRecipeFood({
+            mealType: username,
+            recipeID: password,
+            totalRecipeWeight: parseInt(inputWeight),
+        });
+
+        if(response.data.data) {
+            AsyncStorage.setItem('token', response.data.data);
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'Main' }],
+            });
+        } else {
+            Alert.alert('Login failed', 'Please try again');
+        }
+    } catch (error) {
+        if (error.response && error.response.data.message) {
+            Alert.alert(error.response.data.message);
+        } else {
+            console.error('Error:', error.message);
+        }
+    }
+};
 
 	return (
 		<View style={styles.container}>
