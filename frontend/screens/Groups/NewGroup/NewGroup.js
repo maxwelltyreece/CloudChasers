@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import {
-	View, Text, TextInput, Pressable,
+	View, Text, TextInput, Pressable, Button, Image
 } from 'react-native';
 import { useCommunity } from '../../../contexts/CommunityContext';
 import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types'; // Import PropTypes
 import { styles } from './styles';
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
+import { LocalIP } from '../../IPIndex';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
 
 function CustomCheckbox({ label, isChecked, onCheck }) {
 	return (
@@ -35,9 +42,35 @@ function NewGroup() {
             recipePrivacy: areRecipesPrivate ? 'private' : 'public',
         };
         createCommunity(communityData)
-            .then((response) => {
+            .then(async (response) => {
                 if (response && response.success) {
-                    // console.log('Successfully created community:', response);
+                    const communityID = response.data._id;
+                    console.log('Community created:', communityID);
+
+                    if (image) {
+                        const formData = new FormData();
+                        formData.append('objectID', communityID);
+                        formData.append('folderName', 'Community_Pictures');
+                        formData.append('file', {
+                          uri: image,
+                          name: getFileName(image),
+                          type: 'image/jpeg',
+                        });
+                  
+                        const token = await AsyncStorage.getItem('token');
+                        await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+                          headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'multipart/form-data',
+                          },
+                        }).catch(error => {
+                            console.error('Error uploading image:', error);
+                        });
+                      }
+                  
+                      setRecipeName(''); 
+                      setImage(null); 
+
                     getUserCommunities();
                     navigation.navigate('Groups');
                 } else {
@@ -48,6 +81,35 @@ function NewGroup() {
                 console.error("Error creating community: ", error);
             });
     };
+
+    const [image, setImage] = useState(null);
+    const [recipeName, setRecipeName] = useState('');
+    var recipeID = '';
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+    
+    
+        if (!result.canceled) {
+          setImage(result.assets[0].uri);
+        }
+    
+        getFileName(result.assets[0].uri);
+    
+      };
+
+      function getFileName(image){
+        // console.log("RHIS ONGGets to here");
+        const fileName = image.split('/').pop();
+        // console.log(fileName);
+        return fileName;
+      }
 
     return (
         <View style={styles.container}>
@@ -76,6 +138,17 @@ function NewGroup() {
                     onCheck={() => setAreRecipesPrivate(!areRecipesPrivate)}
                 />
             </View>
+
+            <View style={[styles.button]}>
+                <Button title="Pick Recipe Image" onPress={pickImage} />
+                {image && (
+                  <Image
+                    source={{ uri: image }}
+                    style={{ width: 200, height: 200 }}
+                  />
+                )}
+            </View>
+
             <Pressable style={styles.buttonContainer} onPress={handleButtonPress}>
                 <Text style={styles.buttonText}>Create Group</Text>
             </Pressable>
