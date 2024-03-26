@@ -23,47 +23,22 @@ const Stats = () => {
   const { todayStats, updateTodayStats } = useStats();
   const { goals, fetchGoals } = useGoals();
 
-  const checkUserLogin = async () => {
-    try {
-      const token = await AsyncStorage.getItem('token');
-      if (!token) {
-        console.error("No token found");
-        navigation.navigate('Login'); // Redirect to login if no token
-        return;
-      }
-      return token;
-    } catch (error) {
-      console.error("Error accessing AsyncStorage:", error);
-      navigation.navigate('Login'); // Redirect to login if error
-    }
-  };
+  	const checkUserLogin = async () => {
+		try {
+			const token = await AsyncStorage.getItem('token');
+			if (!token) {
+				console.error("No token found");
+				navigation.navigate('Login');
+				return;
+			}
+			return token;
+		} catch (error) {
+			console.error("Error accessing AsyncStorage:", error);
+			navigation.navigate('Login');
+		}
+  	};
 
-  useEffect(() => {
-    setLoading(true);
-
-    const fetchData = async () => {
-      try {
-        await checkUserLogin();
-
-        await Promise.all([
-
-          updateTodayStats(),
-          fetchGoals(),
-
-        ]);
-
-      } catch (error) {
-        console.error("Error fetching data for stat page:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-
-	const updateStatPageData = async () => {
+    const updateStatPageData = async () => {
         try {
             await checkUserLogin();
 
@@ -73,12 +48,15 @@ const Stats = () => {
             ]);
         } catch (error) {
             console.error("Error fetching data for state page:", error);
+        } finally {
+            setLoading(false);
         }
     };
-	
-	useFocusEffect(
+
+    useFocusEffect(
         useCallback(() => {
-          updateStatPageData();
+            setLoading(true);
+            updateStatPageData();
         }, [])
     ); 
 
