@@ -137,6 +137,10 @@ describe('Register Screen', () => {
 			const { getByText } = renderRegisterScreen();
 			fireEvent.press(getByText('Create account'));
 
+			await waitFor(() => {
+				expect(console.error).toHaveBeenCalledWith('Response data:', responseError.response.data);
+				expect(console.error).toHaveBeenCalledWith('Response status:', responseError.response.status);
+			});
 		});
 
 	});

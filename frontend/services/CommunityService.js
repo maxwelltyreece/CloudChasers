@@ -19,7 +19,7 @@ export async function createCommunity(communityData) {
 
 		const jsonResponse = response.data;
 		if (jsonResponse.success) {
-			console.log(jsonResponse.message);
+			// console.log(jsonResponse.message);
 			return jsonResponse;
 		}
 		console.error(jsonResponse.message);
@@ -77,7 +77,7 @@ export async function getUserRole(communityId) {
 		},
 	});
 
-	console.log('Server response:', response.data);
+	// console.log('Server response:', response.data);
 	return response.data;
 }
 
@@ -104,24 +104,15 @@ export async function getUserCommunities() {
 }
 
 export async function deleteCommunity(communityId) {
-	try {
-		const token = await AsyncStorage.getItem('token');
-		const response = await axios.put(`http://${LocalIP}:3000/community/delete`, { communityId }, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				'Content-Type': 'application/json',
-			},
-		});
-		return response.data;
-	} catch (error) {
-		if (error.response && error.response.status === 403) {
-			console.error('Forbidden - Not allowed to delete the community.');
-			return { success: false, message: 'Forbidden' };
-		} else {
-			console.error('An unexpected error occurred: ', error.message);
-			return { success: false, message: 'An error occurred' };
-		}
-	}
+	const token = await AsyncStorage.getItem('token');
+	const response = await axios.put(`http://${LocalIP}:3000/community/delete`, { communityId }, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+			'Content-Type': 'application/json',
+		},
+	});
+
+	return response.data;
 }
 
 export async function leaveCommunity(communityId) {

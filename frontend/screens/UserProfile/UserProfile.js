@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import {
-	View, Text, Image, FlatList, TouchableOpacity,
+	View, Text, Image, FlatList, TouchableOpacity, ActivityIndicator,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUser } from '../../contexts/UserContext';
 import SettingsButton from '../../components/SettingsButton';
 import { styles } from './styles';
+import { LocalIP } from '../../screens/IPIndex';
+import axios from 'axios';
 
 function UserProfile() {
 	const navigation = useNavigation();
 	const { userDetails, updateUserDetails } = useUser();
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [imageLink, setImageLink] = useState('');
+	const [imageLoaded, setImageLoaded] = useState(false);
 
 	useEffect(() => {
 		const verifyLoginStatus = async () => {
@@ -21,6 +25,17 @@ function UserProfile() {
 
 		verifyLoginStatus();
 	}, []);
+    
+	useEffect(() => {
+		if (userDetails && userDetails._id) {
+			const fetchImageLink = async () => {
+				const link = await getImageLink();
+				setImageLink(link);
+			};
+	
+			fetchImageLink();
+		}
+	}, [userDetails]);
 
 	const renderItem = ({ item }) => (
 		<TouchableOpacity activeOpacity={0.3} onPress={item.handler}>
@@ -29,6 +44,22 @@ function UserProfile() {
 			</View>
 		</TouchableOpacity>
 	);
+
+
+	const getImageLink = async () => {
+		try {
+			const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
+				params: {
+					folderName: 'Profile_Pictures',
+					id: userDetails ? userDetails._id : null,
+				},
+			});
+			return response.data.url;
+		} catch (error) {
+			console.error('Error:', error.message);
+			return null;
+		}
+	};
 
 	const UserProfileOptions = [
 		{
@@ -49,14 +80,24 @@ function UserProfile() {
 		},
 	];
 
+	let currentUsername = '';
+	if (userDetails && userDetails.username) {
+		currentUsername = userDetails.username;
+	}
+
 	return (
 		<View style={styles.container}>
-			<Image
-				source={{ uri: 'https://placekitten.com/200/200' }}
-				style={styles.profilePic}
-			/>
-			{/* {isLoggedIn && <Text style={styles.username}>{userDetails.username}</Text>} */}
-			<Text>TODO! fix bug when logging out while showing backend username</Text>
+			<View style={styles.semiCircle}/>
+			{imageLink ? (
+				<Image
+					source={{ uri: imageLink }}
+					style={styles.profilePic}
+					onLoad={() => setImageLoaded(true)}
+				/>
+			) : (
+				<ActivityIndicator size="large" color="#0000ff" />
+			)}
+			{isLoggedIn && userDetails && <Text style={styles.username}>{currentUsername}</Text>}			
 			<FlatList
 				style={styles.subPageList}
 				data={UserProfileOptions}

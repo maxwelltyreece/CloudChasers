@@ -31,7 +31,6 @@ exports.getPictureURL = async (req, res) => {
 		// Construct the path to the profile picture
 		const validExtensions = ['png', 'jpg', 'jpeg', 'gif'];
 		const validFolders = ['Profile_Pictures', 'Recipe_Pictures', 'Community_Pictures'];
-		console.log(folderName);
 		if (!validFolders.includes(folderName)) {
 			return res.status(400).json({ error: "Invalid folder name " + folderName + "   valid folder names are ['Profile_Pictures', 'Recipe_Pictures', 'Community_Pictures']" });
 		}
@@ -107,7 +106,7 @@ exports.uploadPicture = async (req, res) => {
 		}
 		const fileStream = newFileLocationReference.createWriteStream();
 		if (objectID === "") {
-			console.log("No OB ID provided 1.");
+			console.log("No OB ID provided 1.")
 			return res.status(400).json({ error: "No object ID provided (At least before the file was received). Make sure the obejct ID is passed in the form before the file" });
 		}
 		if (folderName === "") {

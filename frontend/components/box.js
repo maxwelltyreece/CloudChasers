@@ -11,7 +11,10 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		justifyContent: 'flex-end',
 		padding: 10,
-
+		//added
+		// width: '48%', 
+		// aspectRatio: 1, 
+		// marginBottom: 16, 
         
 	},
 	text: {
@@ -31,8 +34,8 @@ const styles = StyleSheet.create({
 function Box({ title, image }) {
 	return (
 		<View style={styles.box}>
-			{image && <Image source={{ uri: image }} style={styles.image} testID="image" />}
-			<Text style={styles.title} testID="title">{title}</Text>
+			{image && <Image source={{ uri: image }} style={styles.image} />}
+			<Text style={styles.title}>{title}</Text>
 		</View>
 	);
 

@@ -6,11 +6,10 @@ import { LocalIP } from '../screens/IPIndex';
 const getStreaks = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		// Assuming you have to POST the date, since the controller expects a body. Adjust if needed.
 		const response = await axios.post(`http:${LocalIP}:3000/stats/streak`, { today: date }, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
-		return response.data; // Return the response data which should include the streak information.
+		return response.data;
 	} catch (error) {
 		console.error('Error fetching streak data:', error);
 		throw error;

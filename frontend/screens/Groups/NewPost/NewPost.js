@@ -12,7 +12,7 @@ function NewPostPage({ navigation, route }) {
 	const [content, setContent] = useState('');
 	const [tab, setTab] = useState('message');
 	const { communityId } = route.params;
-	console.log("THIS IS ID",communityId);
+	// console.log("THIS IS ID",communityId);
 
 	const handlePost = async () => {
 		const postData = {

@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
 	initialiseInfoText: {
 		fontFamily: 'Montserrat_500Medium',
 		textAlign: 'center',
-		fontSize: 15,
+		fontSize: 14,
 		alignSelf: 'center',
 	},
 	buttonText: {

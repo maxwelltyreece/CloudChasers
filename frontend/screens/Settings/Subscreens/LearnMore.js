@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 		marginBottom: 12,
 		color: '#FF815E',
 		left: '4%',
-		alignSelf: 'left',
+		alignSelf: 'flex-start',
 	},
 	textContainer: {
 		height: 'auto',
@@ -58,29 +58,6 @@ const styles = StyleSheet.create({
 	contentText: {
 		fontSize: 15,
 	},
-	closeButtonText: {
-		fontFamily: 'Montserrat_700Bold',
-		color: '#FFFFFF',
-		marginTop: 20,
-		backgroundColor: '#007BFF',
-		paddingVertical: 10,
-		paddingHorizontal: 20,
-		borderRadius: 20,
-		overflow: 'hidden',
-		alignSelf: 'center',
-		textTransform: 'uppercase',
-		fontWeight: 'bold',
-		letterSpacing: 1,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 2,
-		},
-		shadowOpacity: 0.25,
-		shadowRadius: 3.84,
-		elevation: 5,
-		opacity: 0.9,
-	},
 });
 
 function LearnMore() {
@@ -90,7 +67,12 @@ function LearnMore() {
 		<View>
 			<ScrollView style={styles.scrollView}>
 				<Text style={styles.headerText}>Understanding Nutrition</Text>
+				<Text style={styles.headerText}>Understanding Nutrition</Text>
 
+				<View style={styles.textContainer}>
+					{/* Calories */}
+					<Text style={styles.subheaderText}>Calories (kcal):</Text>
+					<Text style={styles.contentText}>
 				<View style={styles.textContainer}>
 					{/* Calories */}
 					<Text style={styles.subheaderText}>Calories (kcal):</Text>
@@ -100,13 +82,21 @@ function LearnMore() {
 					functions.
 					</Text>
 				</View>
+					</Text>
+				</View>
 
+				<View style={styles.textContainer}>
+					{/* Carbohydrates */}
+					<Text style={styles.subheaderText}>Carbohydrates (g):</Text>
+					<Text style={styles.contentText}>
 				<View style={styles.textContainer}>
 					{/* Carbohydrates */}
 					<Text style={styles.subheaderText}>Carbohydrates (g):</Text>
 					<Text style={styles.contentText}>
 					The body&apos;s main source of energy, broken down into glucose.
 					Found in fruits, vegetables, breads, and cereals.
+					</Text>
+				</View>
 					</Text>
 				</View>
 

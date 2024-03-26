@@ -66,10 +66,10 @@ function GroupPage({ route, navigation }) {
 				const posts = await getCommunityPosts(community.id);
 				setMessages(posts);
 
-				console.log('Community ID:', community.id);
+				// console.log('Community ID:', community.id);
 				try {
 					const communityDetails = await getCommunityDetails(community.id);
-					console.log('Community details:', communityDetails.data.community);
+					// console.log('Community details:', communityDetails.data.community);
 					setNewDescription(communityDetails.data.community.description);
 				} catch (error) {
 					console.error('Error fetching community details:', error);

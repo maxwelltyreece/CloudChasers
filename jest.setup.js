@@ -17,5 +17,3 @@ jest.mock('@react-native-async-storage/async-storage', () => jest.requireActual(
 jest.mock('@expo-google-fonts/montserrat', () => ({
 	useFonts: jest.fn().mockReturnValue([true]),
 }));
-
-// jest.mock('react-native-gesture-handler', () => {});

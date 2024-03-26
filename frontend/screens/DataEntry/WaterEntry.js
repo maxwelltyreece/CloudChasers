@@ -1,29 +1,56 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { Alert, View, Text, TouchableOpacity, TextInput } from 'react-native';
 import globalStyles from '../../styles/global';
 import { styles } from './styles';
+import { useFoodLog } from '../../contexts/FoodLogContext';
+import { useNavigation } from '@react-navigation/native';
 
 function WaterEntry() {
-	const [waterAmount, setWaterAmount] = useState('0');
-
+	const [waterAmount, setWaterAmount] = useState('');
+	const { logWater } = useFoodLog();
+	const navigation = useNavigation();
 	const handleWaterEntry = () => {
-		console.log('Water amount entered:', waterAmount);
+		if (!waterAmount) {
+			Alert.alert('Error', 'Please fill all fields');
+			return;
+		}
+		// console.log('Logging water:', waterAmount);
+		logWater({ weight: waterAmount });
+		// console.log('Water logged');
+		Alert.alert(
+			'Water Logged',
+			'Want to log more water?',
+			[
+				{
+					text: 'Yes',
+					onPress: () => {
+						setWaterAmount('');
+					}
+				},
+				{
+					text: 'No',
+					onPress: () => {
+						navigation.goBack();
+					}
+				},
+			],
+			{ cancelable: false },
+		);
 	};
 
 	return (
 		<View style={styles.container}>
-			<Text style={[globalStyles.medium, styles.label]}>Enter Amount of Water Drank (in cups):</Text>
-			<View style={styles.pickerContainer}>
-				<Picker
-					style={styles.picker}
-					selectedValue={waterAmount}
-					onValueChange={(itemValue) => setWaterAmount(itemValue)}
-				>
-					{[...Array(31)].map((_, index) => (
-						<Picker.Item key={index} label={`${index} `} value={index.toString()} />
-					))}
-				</Picker>
+			<View style={styles.semiCircle} />
+			<Text style={styles.label}>Log water consumed (ml):</Text>
+			<View style={styles.inputContainer}>
+				<TextInput
+					style={styles.input}
+					keyboardType="numeric"
+					value={waterAmount}
+					onChangeText={(text) => setWaterAmount(text)}
+					placeholder="..."
+					returnKeyType='done'
+				/>
 			</View>
 			<TouchableOpacity style={styles.button} onPress={handleWaterEntry}>
 				<Text style={styles.buttonText}>Submit</Text>

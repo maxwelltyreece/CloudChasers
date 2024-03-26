@@ -113,11 +113,13 @@ const styles = StyleSheet.create({
 	},
 	remindersScrolView: {
 		width: '100%',
-		height: Platform.OS === 'android' ? '60%' : '61%',
-		marginBottom: 5,
+		height: Platform.OS === 'android' ? '55%' : '58%',
+		marginTop: 5.5,
+		borderBottomRightRadius: 15,
+		borderBottomLeftRadius: 15,
 	},
 	reminderItem: {
-		marginBottom: '2%',
+		marginBottom: '1.5%',
 		justifyContent: 'center',
 		alignItems: 'flex-start',
 		paddingHorizontal: 20,
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		borderRadius: 12,
 		width: '100%',
-		height: 'auto',
+		height: 52,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.22,
@@ -176,9 +178,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		alignSelf: 'center',
-		marginVertical: 15,
+		marginVertical: 12,
 		width: '90%',
-		padding: 25,
+		padding: 20,
 		backgroundColor: 'white',
 		borderRadius: 15,
 		shadowColor: '#000',
@@ -211,13 +213,12 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 
 	const progressBarStyle = label === 'Calories' ? styles.calorieProgressBarItem
 		: label === 'Water' ? styles.waterProgressBarItem
-			: styles.progressBarItem; // Default style
+			: styles.progressBarItem;
 
 	const labelStyle = label === 'Calories' ? styles.firstLabel
 		: label === 'Water' ? styles.firstLabel
-			: styles.label; // Default style
+			: styles.label;
 
-	// Function to measure the width of the container
 	const measureContainer = (event) => {
 		const { width } = event.nativeEvent.layout;
 		setContainerWidth(width);
@@ -225,21 +226,21 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 
 
 	useEffect(() => {
-		// Safe division function to avoid dividing by zero
 		const safeDivision = (numerator, denominator, containerWidth) => {
 			if (denominator > 0) {
 				return (numerator / denominator) * containerWidth;
 			} else {
-				// Default to 0 or any other fallback width
 				return 0;
 			}
 		};
 
 		let finalWidth = 0;
 
-		{(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ? 
-			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0} // Still load app of error occurs and data is any data is undefined.
-		
+		{
+			(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ?
+				finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0
+		}
+
 
 		Animated.timing(animatedWidth, {
 			toValue: finalWidth,
@@ -252,7 +253,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 		<View style={progressBarStyle}>
 			<View style={styles.labelContainer}>
 				<Text style={labelStyle}>{label}</Text>
-				<Text style={labelStyle}>{`${progress.toFixed(0) ?? 0} / ${max} ${unit}`}</Text>
+				<Text style={labelStyle}>{`${progress ?? 0} / ${max} ${unit}`}</Text>
 			</View>
 			<View style={styles.progressBarContainer} onLayout={measureContainer}>
 				<Animated.View style={[styles.filledProgressBar, { width: animatedWidth }]} />
@@ -274,7 +275,6 @@ ProgressBar.defaultProps = {
 };
 
 
-// Single Reminder Component
 const ReminderItem = ({ reminder }) => {
 	return (
 		<View style={styles.reminderItem}>
@@ -293,6 +293,11 @@ ReminderItem.propTypes = {
 	reminder: PropTypes.object.isRequired,
 };
 
+ReminderItem.defaultProps = {
+	reminder: {},
+};
+
+
 // Main component
 function GoalProgressBar({ todayStats, goals }) {
 	const { reminders } = useReminders();
@@ -309,7 +314,17 @@ function GoalProgressBar({ todayStats, goals }) {
 		fibre: 0,
 	};
 
-	let currentMacroValues = { ...initialMacroValues, ...todayStats }
+	let currentMacroValues = { ...initialMacroValues };
+
+	Object.keys(todayStats).forEach(key => {
+		if (todayStats[key] !== null && todayStats[key] !== undefined) {
+			currentMacroValues[key] = todayStats[key];
+		}
+	});
+
+	Object.keys(currentMacroValues).forEach(key => {
+		currentMacroValues[key] = parseInt(currentMacroValues[key].toFixed(0));
+	});
 
 	// Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
 	let nutrientGoals = {
@@ -373,7 +388,11 @@ function GoalProgressBar({ todayStats, goals }) {
 
 	return (
 		<View style={styles.progressBarComponentContainer}>
-			<Swiper showsButtons={false} loop={false}>
+			<Swiper
+				showsButtons={false}
+				loop={false}
+				activeDotColor="white" 
+			>
 
 				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>
@@ -385,6 +404,15 @@ function GoalProgressBar({ todayStats, goals }) {
 				{/* Reminders slide */}
 				<View style={styles.slideContainer}>
 					<Text style={styles.slideTitle}>Reminders</Text>
+					{reminders.length > 0 ? (
+						<Pressable
+							style={styles.seeAllRemindersButton}
+							onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
+							testID='see-all-reminders-button'
+						>
+							<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
+						</Pressable>
+					) : null}
 					<ScrollView style={styles.remindersScrolView}>
 						{sortedReminders.length > 0 ? (
 							sortedReminders.map((reminder, index) => (
@@ -404,15 +432,6 @@ function GoalProgressBar({ todayStats, goals }) {
 							</View>
 						)}
 					</ScrollView>
-					{reminders.length > 0 ? (
-						<Pressable
-							style={styles.seeAllRemindersButton}
-							onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
-							testID='see-all-reminders-button'
-						>
-							<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
-						</Pressable>
-					) : null}
 				</View>
 
 

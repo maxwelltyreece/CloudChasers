@@ -74,7 +74,7 @@ exports.getStreaks = async (req, res) => {
  * @returns {Promise<void>} - A promise that resolves with the total nutrient intake.
  * @throws {Error} - If there is an error retrieving the nutrient intake.
  */
-const getNutrientIntake = async (req, res, nutrient) => {
+const LegacygetNutrientIntake = async (req, res, nutrient) => {
 	try {
 		const { date } = req.query; 
 		const user = req.user;
@@ -99,6 +99,8 @@ const getNutrientIntake = async (req, res, nutrient) => {
 					food = await Food.findById(foodItem.foodID);
 					totalNutrient += food[nutrient] * (foodItem.weight / 100);
 				} else {
+
+					
 					const recipeQuantity = await RecipeQuantity.findById(mealItem.recipeQuantityID);
 					const recipe = await Recipe.findById(recipeQuantity.recipeID);
 					const allRecipeItems = await RecipeItem.find({ recipeID: recipe._id });
@@ -111,19 +113,94 @@ const getNutrientIntake = async (req, res, nutrient) => {
 						recipeNutrient += food[nutrient] * (foodItem.weight / 100);
 						totalRecipeWeight += foodItem.weight;
 					}
-					totalNutrient += recipeNutrient * (recipeQuantity.quantity / totalRecipeWeight);
+					totalNutrient += recipeNutrient * (recipeQuantity.totalRecipeWeight / totalRecipeWeight);
 
 				}
 			}
 		}
-		console.log(totalNutrient)
-		console.log(res.constructor.toString())	
-		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: totalNutrient });
+		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: Math.round(totalNutrient * 10) / 10 });
 	}
 	catch (error) {
 		return res.status(500).send({ error: error.toString() });
 	}
 };
+
+const getNutrientIntake = async (req, res, nutrient) => {
+	try {
+		const { date } = req.query;
+		const user = req.user;
+		const userDay = await UserDay.findOne({ userID: user._id, date: date });
+		if (!userDay) {
+			// console.log("No userDay found");
+			return res.status(200).send({ [`total${nutrient}`]: 0 });
+		}
+
+		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
+		// console.log(`Found ${userDayMeals.length} userDayMeals`);
+
+		// Batch fetch all MealItems for the day
+		const mealItems = await MealItem.find({ userDayMealID: { $in: userDayMeals.map(meal => meal._id) } });
+		// console.log(`Found ${mealItems.length} mealItems`);
+
+		// Prepare for recipe processing
+		const recipeQuantityIds = mealItems.filter(item => item.recipeQuantityID).map(item => item.recipeQuantityID);
+		const recipeQuantities = await RecipeQuantity.find({ _id: { $in: recipeQuantityIds } });
+		const recipeIds = recipeQuantities.map(rq => rq.recipeID);
+		const recipes = await Recipe.find({ _id: { $in: recipeIds } });
+		const allRecipeItems = await RecipeItem.find({ recipeID: { $in: recipeIds } });
+		// console.log(`Fetched ${recipeQuantities.length} recipeQuantities, ${recipes.length} recipes, and ${allRecipeItems.length} recipeItems`);
+
+		// Get all FoodItem IDs including those from recipes
+		const foodItemIds = [
+			...mealItems.filter(item => item.foodItemID).map(item => item.foodItemID),
+			...allRecipeItems.map(item => item.foodItemID)
+		];
+
+		const foodItems = await FoodItem.find({ _id: { $in: foodItemIds } });
+		const foods = await Food.find({ _id: { $in: foodItems.map(fi => fi.foodID) } });
+		// console.log(`Fetched ${foodItems.length} foodItems and ${foods.length} foods`);
+
+		let totalNutrient = 0;
+
+		// Process meals
+		for (const meal of userDayMeals) {
+			const items = mealItems.filter(item => item.userDayMealID.toString() === meal._id.toString());
+
+			for (const mealItem of items) {
+				if (mealItem.foodItemID) {
+					const foodItem = foodItems.find(item => item._id.toString() === mealItem.foodItemID.toString());
+					const food = foods.find(f => f._id.toString() === foodItem.foodID.toString());
+					totalNutrient += food[nutrient] * (foodItem.weight / 100);
+				} else {
+					const recipeQuantity = recipeQuantities.find(rq => rq._id.toString() === mealItem.recipeQuantityID.toString());
+					const recipeItems = allRecipeItems.filter(ri => ri.recipeID.toString() === recipeQuantity.recipeID.toString());
+
+					let recipeNutrient = 0;
+					let totalRecipeWeight = 0;
+
+					for (const recipeItem of recipeItems) {
+						const foodItem = foodItems.find(fi => fi._id.toString() === recipeItem.foodItemID.toString());
+						const food = foods.find(f => f._id.toString() === foodItem.foodID.toString());
+
+						if (food && foodItem) {
+							recipeNutrient += food[nutrient] * (foodItem.weight / 100);
+							totalRecipeWeight += foodItem.weight;
+						}
+					}
+
+					totalNutrient += recipeNutrient * (recipeQuantity.totalRecipeWeight / totalRecipeWeight);
+				}
+			}
+		}
+
+		// console.log(`Total ${nutrient} intake: ${totalNutrient}`);
+		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: Math.round(totalNutrient * 10) / 10 });
+	} catch (error) {
+		console.error("Error in getNutrientIntake: ", error);
+		return res.status(500).send({ error: error.toString() });
+	}
+};
+
 
 /**
  * Retrieves the total daily caloric intake for a given date and user.

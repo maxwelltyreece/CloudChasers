@@ -27,16 +27,27 @@ const styles = StyleSheet.create({
 	},
 });
 
+
 function CurrentStreak({ streak }) {
+
+	let finalStreak;
+
+	if (streak === 0) {
+		finalStreak = 1;
+	} else {
+		finalStreak = streak;
+	}
+
+
 	return (
 		<View style={styles.currentStreakContainer}>
 			<Text style={styles.streakText}>
-				{streak}
+				{finalStreak}
 			</Text>
 		</View>
 	);
 }
-  
+
 
 CurrentStreak.propTypes = {
 	streak: PropTypes.number.isRequired,

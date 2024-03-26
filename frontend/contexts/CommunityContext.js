@@ -45,7 +45,7 @@ export function CommunityProvider({ children }) {
 	const getAllCommunities = async () => communityService.getAllCommunities();
 
 	const createCommunity = async (communityData) => {
-		console.log('Community Data:', communityData);
+		// console.log('Community Data:', communityData);
 		return communityService.createCommunity(communityData);
 	};
 
@@ -54,11 +54,11 @@ export function CommunityProvider({ children }) {
 	};
 
 	const joinCommunity = async (communityId) => {
-		console.log('Attempting to join community with ID:', communityId);
+		// console.log('Attempting to join community with ID:', communityId);
 
 		try {
 			const response = await communityService.joinCommunity(communityId);
-			console.log('Successfully joined community. Response:', response);
+			// console.log('Successfully joined community. Response:', response);
 			return response;
 		} catch (error) {
 			console.error('Error joining community:', error);
@@ -67,10 +67,10 @@ export function CommunityProvider({ children }) {
 	};
 
 	const deleteCommunity = async (communityId, navigation) => {
-		console.log('Deleting community with ID:', communityId);
+		// console.log('Deleting community with ID:', communityId);
 		const response = await communityService.deleteCommunity(communityId);
 		if (response && response.success) {
-			console.log('Successfully deleted community:', response);
+			// console.log('Successfully deleted community:', response);
 			getUserCommunities();
 			navigation.navigate('Groups');
 		} else {
@@ -80,10 +80,10 @@ export function CommunityProvider({ children }) {
 	};
 
 	const leaveCommunity = async (communityId, navigation) => {
-		console.log('Leaving community with ID:', communityId);
+		// console.log('Leaving community with ID:', communityId);
 		const response = await communityService.leaveCommunity(communityId);
 		if (response && response.success) {
-			console.log('Successfully left community:', response);
+			// console.log('Successfully left community:', response);
 			getUserCommunities();
 			navigation.navigate('Groups');
 		} else {

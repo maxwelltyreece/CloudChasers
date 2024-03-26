@@ -73,6 +73,7 @@ exports.getUserAwards = async (req, res) => {
 }
 
 exports.getAwardsToBeIssued = async (req, res) => {
+	// console.log('Issuing awards');
 	try {
 		const user = req.user;
 		newAwards = [];
@@ -98,6 +99,7 @@ exports.getAwardsToBeIssued = async (req, res) => {
 			newAwards.push('Make 10 Posts');
 		}
 		var newlyIssuedAwards = {};
+		// console.log('New awards:', newAwards);
 		for (awardName of newAwards) {
 			const award = await personalAward.findOne({name: awardName });
 			const newAwardID = await createAwardItem(await award._id, await user._id);
@@ -133,7 +135,8 @@ async function issueJoinCommunityAwardQuery(user) {
 	const userID = await user._id;
 	const communityUsers = await CommunityUser.find({ userID: userID });
 	if (communityUsers.length > 0) {
-		return (checkIfAwardByNameExists('Join Community', await getAllAwards()))
+		const hasAlreadyWonAwardPredicate = !checkIfAwardByNameExists('Join Community', await getUserAwards(await user._id));
+		return (hasAlreadyWonAwardPredicate)
 	} 
 	return false;
 }
@@ -143,9 +146,9 @@ async function issueMakePostAwardQuery(user, x) {
 	const communityPosts = await CommmunityPost.find({ userID: userID });
 	if (communityPosts.length >= x) {
 		if (x === 1) {
-			return (checkIfAwardByNameExists('Make a Post', await getAllAwards()))
+			return (!checkIfAwardByNameExists('Make a Post', await getUserAwards(await user._id)))
 		}
-		return (checkIfAwardByNameExists('Make ' + x + ' Posts', await getAllAwards()))
+		return (!checkIfAwardByNameExists('Make ' + x + ' Posts', await getUserAwards(await user._id)))
 	}
 	return false;
 }
@@ -186,6 +189,7 @@ async function checkIfUserHasAward(awardID, userID) {
 function checkIfAwardByNameExists(name, awards) {
 	for (award of awards) {
 		if (award.name === name) {
+			// console.log('Award:', award.name, 'Name:', name);
 			return true;
 		}
 	}

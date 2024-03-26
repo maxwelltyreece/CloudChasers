@@ -201,7 +201,7 @@ exports.changeGoalMacroValue = async (req, res) => {
 			return res.status(404).send({ message: 'No goal for this macro' });
 		}
 		goal = goal[0];
-		console.log(goal.minTargetMass, goal.maxTargetMass);
+		// console.log(goal.minTargetMass, goal.maxTargetMass);
 		if (!checkValidMinMaxValues(newMinValue, newMaxValue)) {
 			return res.status(400).send({ message: 'Invalid min or max values' });
 		}

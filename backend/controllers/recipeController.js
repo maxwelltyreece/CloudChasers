@@ -93,7 +93,7 @@ exports.getRecipeIngredients = async (req, res) => {
 	try {
 		const recipeItems = await RecipeItem.find({ recipeID: recipeID });
 		if (recipeItems.length === 0) {
-			return res.status(400).send({ message: 'Recipe does not exist' });
+			return res.status(200).json({ message: 'No ingredients found for this recipe', data: [] });
 		}
 
 		let recipeIngredients = [];
@@ -135,23 +135,23 @@ exports.deleteIngredientFromRecipe = async (req, res) => {
 	}
 }
 async function createUserDay(userID, date){
-	console.log('createUserDay called with userID:', userID, 'and date:', date);
+	// console.log('createUserDay called with userID:', userID, 'and date:', date);
 	let newUserDay;
 	try {
 		const existingUserDay = await UserDay.findOne({ userID, date });
-		console.log('existingUserDay:', existingUserDay);
+		// console.log('existingUserDay:', existingUserDay);
 		if (!existingUserDay) {
 			newUserDay = new UserDay({
 				date,
 				userID
 			});	
 			await newUserDay.save();
-			console.log('newUserDay saved:', newUserDay);
+			// console.log('newUserDay saved:', newUserDay);
 		} else {
 			return existingUserDay;
 		}
 	} catch (error) {
-		console.log('Error in createUserDay:', error);
+		// console.log('Error in createUserDay:', error);
 		throw new Error('Failed to create UserDay: ' + error.toString());
 	}
 	return newUserDay; // Return the newly created UserDay object
@@ -161,11 +161,11 @@ async function createUserDay(userID, date){
 async function createUserDayMeal(mealType, userDay) {
 	let newUserDayMeal;
 	try {
-		console.log('mealType:', mealType);
-		console.log('userDay._id:', userDay._id);
+		// console.log('mealType:', mealType);
+		// console.log('userDay._id:', userDay._id);
 
 		const existingUserDayMeal = await UserDayMeal.findOne({ name: mealType, userDayID: userDay._id });
-		console.log('existingUserDayMeal:', existingUserDayMeal);
+		// console.log('existingUserDayMeal:', existingUserDayMeal);
 		const order = await UserDayMeal.countDocuments({ userDayID: userDay._id }) + 1;
 		if (!existingUserDayMeal) {
 			newUserDayMeal = new UserDayMeal({
@@ -174,13 +174,13 @@ async function createUserDayMeal(mealType, userDay) {
 				order,
 			});	
 			await newUserDayMeal.save();
-			console.log('newUserDayMeal:', newUserDayMeal);
+			// console.log('newUserDayMeal:', newUserDayMeal);
 		} else {
 			return existingUserDayMeal;
 		}
 
 	} catch (error) {
-		console.log('Error in createUserDayMeal:', error);
+		// console.log('Error in createUserDayMeal:', error);
 		throw new Error(error.toString());
 	}
 	return newUserDayMeal;
@@ -240,7 +240,7 @@ exports.logRecipeFood = async (req, res) => {
 
 exports.getCommunityRecipes = async (req, res) => {
 	const { communityID } = req.query;
-	console.log('Requested community ID:', communityID); // Log the requested community ID
+	// console.log('Requested community ID:', communityID); // Log the requested community ID
 
 	try {
 		let recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });

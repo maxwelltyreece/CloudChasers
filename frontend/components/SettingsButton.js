@@ -27,14 +27,12 @@ const styles = StyleSheet.create({
 export default function SettingsButton() {
 	const navigation = useNavigation();
 
-	console.log("settings nav loaded");
-
 	return (
 		<TouchableOpacity
 			style={styles.button}
 			onPress={() => navigation.navigate('Settings')}
 		>
-			<FontAwesome5 name="cog" size={24} color="#000000" solid />
+			<FontAwesome5 name="cog" size={24} color="#FFFFFF" solid />
 		</TouchableOpacity>
 	);
 }
