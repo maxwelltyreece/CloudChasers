@@ -113,11 +113,13 @@ const styles = StyleSheet.create({
 	},
 	remindersScrolView: {
 		width: '100%',
-		height: Platform.OS === 'android' ? '55%' : '59%',
-		marginBottom: 4,
+		height: Platform.OS === 'android' ? '55%' : '58%',
+		marginTop: 5.5,
+		borderBottomRightRadius: 15,
+		borderBottomLeftRadius: 15,
 	},
 	reminderItem: {
-		marginBottom: '2%',
+		marginBottom: '1.5%',
 		justifyContent: 'center',
 		alignItems: 'flex-start',
 		paddingHorizontal: 20,
@@ -125,7 +127,7 @@ const styles = StyleSheet.create({
 		backgroundColor: 'white',
 		borderRadius: 12,
 		width: '100%',
-		height: 'auto',
+		height: 52,
 		shadowColor: '#000',
 		shadowOffset: { width: 0, height: 1 },
 		shadowOpacity: 0.22,
@@ -176,9 +178,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		alignSelf: 'center',
-		marginVertical: 15,
+		marginVertical: 12,
 		width: '90%',
-		padding: 25,
+		padding: 20,
 		backgroundColor: 'white',
 		borderRadius: 15,
 		shadowColor: '#000',
@@ -389,7 +391,6 @@ function GoalProgressBar({ todayStats, goals }) {
 			<Swiper
 				showsButtons={false}
 				loop={false}
-				// dotColor="white"
 				activeDotColor="white" 
 			>
 
@@ -403,6 +404,15 @@ function GoalProgressBar({ todayStats, goals }) {
 				{/* Reminders slide */}
 				<View style={styles.slideContainer}>
 					<Text style={styles.slideTitle}>Reminders</Text>
+					{reminders.length > 0 ? (
+						<Pressable
+							style={styles.seeAllRemindersButton}
+							onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
+							testID='see-all-reminders-button'
+						>
+							<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
+						</Pressable>
+					) : null}
 					<ScrollView style={styles.remindersScrolView}>
 						{sortedReminders.length > 0 ? (
 							sortedReminders.map((reminder, index) => (
@@ -422,15 +432,6 @@ function GoalProgressBar({ todayStats, goals }) {
 							</View>
 						)}
 					</ScrollView>
-					{reminders.length > 0 ? (
-						<Pressable
-							style={styles.seeAllRemindersButton}
-							onPress={() => navigation.navigate('User', { screen: 'Reminders' })}
-							testID='see-all-reminders-button'
-						>
-							<Text style={styles.seeAllRemindersButtonText}>See All Reminders</Text>
-						</Pressable>
-					) : null}
 				</View>
 
 

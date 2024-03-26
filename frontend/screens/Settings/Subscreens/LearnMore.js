@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 		marginBottom: 12,
 		color: '#FF815E',
 		left: '4%',
-		alignSelf: 'left',
+		alignSelf: 'flex-start',
 	},
 	textContainer: {
 		height: 'auto',

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import {
-	View, Text, ScrollView, KeyboardAvoidingView, Modal, 
+	View, Text, ScrollView, KeyboardAvoidingView, Modal,
 	TextInput, Pressable, Alert, Platform
 } from 'react-native';
 import { useReminders } from '../../../../contexts/RemindersContext';
@@ -33,7 +33,7 @@ function Reminders() {
 
 
 	const toggleActionButtonsVisibility = (id) => {
-		const updatedReminders = reminders.map((reminder) => 
+		const updatedReminders = reminders.map((reminder) =>
 			reminder.id === id ? { ...reminder, showActions: !reminder.showActions } : reminder
 		);
 		setReminders(updatedReminders);
@@ -161,20 +161,15 @@ function Reminders() {
 								<Pressable onPress={() => deleteReminder(reminder.id)} style={styles.deleteButton}>
 									<Text style={styles.actionButtonText}>Delete</Text>
 								</Pressable>
-								{/* <Pressable onPress={() => toggleActionButtonsVisibility(reminder.id)} style={styles.backButton}>
-								<Text style={styles.backButtonText}>Back</Text>
-							</Pressable> */}
 							</View>
 						)}
 					</View>
 				))}
 			</ScrollView>
 
-			{/* <View style={styles.semiCircle}></View> */}
-
 			<Pressable style={styles.addReminderButton} onPress={openModalAndResetFields}>
 				<Text style={styles.addReminderButtonText}>
-						Add Reminder
+					Add Reminder
 				</Text>
 			</Pressable>
 
