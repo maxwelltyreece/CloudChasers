@@ -1,23 +1,15 @@
 // React related imports
 import React, { useState, useCallback } from 'react';
 import { View, Animated, Platform } from 'react-native';
-
-// Navigation related imports
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
-
-// Style related imports
-import globalStyles from '../styles/global';
-import navbarStyles from '../styles/NavbarStyles';
-
-// Component imports
-import TabBarIcon from './TabBarIcon';
-
-// Screen imports
+import globalStyles from '../../styles/global';
+import styles from './styles';
+import TabBarIcon from '../TabBarIcon/TabBarIcon';
 import {
 	Dashboard, Stats, Groups, DataEntry,
-} from '../screens';
-import UserNavigator from '../navigation/UserNavigator';
+} from '../../screens';
+import UserNavigator from '../../navigation/UserNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -71,10 +63,6 @@ export default function MainTabNavigator() {
 	const navigation = useNavigation();
 	const [animation] = useState(new Animated.Value(1));
 
-	// startAnimation triggers a sequence of animations that first scales up
-	// the animation value to 1.1 over 100ms, then scales it back down to 1 over 100ms.
-	// This creates a "bounce" effect when the user interacts with the animated element.
-	// The function is memoized with useCallback and only updates when the `animation` state changes.
 	const startAnimation = useCallback(() => {
 		Animated.sequence([
 			Animated.timing(animation, {

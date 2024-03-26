@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Feather } from '@expo/vector-icons';
 import { View
 } from 'react-native';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar/Navbar';
 import SettingsNavigator from './SettingsNavigator';
 import GroupNavigator from './GroupNavigator';
 import UserNavigator from './UserNavigator';

@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Animated, Platform } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import PropTypes from 'prop-types';
-import CustomIcon from './AddButton';
+import CustomIcon from '../AddButton/AddButton';
 
 /**
  * TabBarIcon is a component that renders an icon for the tab bar.

@@ -3,7 +3,7 @@ import {
 	View, Text, FlatList, TextInput, TouchableOpacity, Modal, Button
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import Box from '../../../components/box';
+import Box from '../../../components/Box/box';
 import { useCommunity } from '../../../contexts/CommunityContext';
 import { styles } from './styles';
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect  } from "react";
 import { View, FlatList, Text, Pressable } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
-import RecipeBox from "../../../../components/RecipeBox";
+import RecipeBox from "../../../../components/RecipeBox/RecipeBox";
 import { styles } from "./styles";
 import { useFoodLog } from "../../../../contexts/FoodLogContext";
 import { useNavigation } from '@react-navigation/native';

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, FlatList, Text } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import RecipeBox from '../../../components/RecipeBox';
+import RecipeBox from '../../../components/RecipeBox/RecipeBox';
 import { styles } from './styles';
 import { useCommunity } from '../../../contexts/CommunityContext';
 

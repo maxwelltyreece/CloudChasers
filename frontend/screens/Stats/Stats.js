@@ -8,7 +8,7 @@ import NutritionProgress from './statsComponents/NutritionProgress.js';
 import { useStats } from '../../contexts/StatsContext';
 import { useGoals } from '../../contexts/GoalsContext';
 import { styles } from './styles';
-import SettingsButton from '../../components/SettingsButton.js';
+import SettingsButton from '../../components/SettingsButton/SettingsButton.js';
 
 /**
  * Stats component
