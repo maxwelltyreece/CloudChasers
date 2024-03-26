@@ -147,6 +147,21 @@ export function CommunityProvider({ children }) {
         return response;
     }
 
+    const addRecipeToCommunity = async (recipeId, communityId) => {
+        try {
+        const response = await communityService.addRecipeToCommunity(recipeId, communityId);
+        console.log("Recipe added to community");
+        return response;
+        } catch (error) {
+            console.error("Error adding recipe to community");
+            return { status: error.message };
+        }
+    }
+
+
+
+
+
 	const value = useMemo(() => ({
         deleteCommunity,
         leaveCommunity,
@@ -171,8 +186,9 @@ export function CommunityProvider({ children }) {
         denyRequest,
         getPendingRequests,
         getCommunityRecipes,
+        addRecipeToCommunity
 	// eslint-disable-next-line max-len
-	}), [getCommunityRecipes, makePost, getCommunityPosts, removeMember, getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy, getCommunityImage, acceptRequest, denyRequest, getPendingRequests]);
+	}), [getCommunityRecipes, makePost, getCommunityPosts, removeMember, getUserCommunities, getCommunityDetails, getAvailableCommunities, resetUserCommunities, userCommunities, setUserCommunities, getCommunityMembers, getUserRole, getAllCommunities, createCommunity, joinCommunity, deleteCommunity, leaveCommunity, updateCommunityDesc, updateJoinPrivacy, getCommunityImage, acceptRequest, denyRequest, getPendingRequests, addRecipeToCommunity]);
 
 	return (
 		<CommunityContext.Provider value={value}>

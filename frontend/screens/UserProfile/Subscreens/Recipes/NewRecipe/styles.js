@@ -5,6 +5,7 @@ const { width } = Dimensions.get('window');
 export const styles = StyleSheet.create({
   container: {
   flexGrow: 1,
+    justifyContent: 'space-between',
   paddingHorizontal: '5%',
   backgroundColor: '#FFFFFF',
   paddingVertical: 25,
@@ -53,12 +54,12 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderRadius: 15,
+    width: '60%',
     alignSelf: 'center',
-    width: '80%',
-    position: 'absolute',
-    bottom: 20,
-
+    marginBottom: 2, // Ensures some space at the bottom
   },
+  
+  
   submitButtonText: {
     color: '#fff',
     textAlign: 'center',
@@ -101,6 +102,8 @@ export const styles = StyleSheet.create({
       backgroundColor: "white",
       borderRadius: 20,
       padding: 35,
+      width: 300,
+      alignItems: "stretch", 
       alignItems: "center",
       shadowColor: "#000",
       shadowOffset: {

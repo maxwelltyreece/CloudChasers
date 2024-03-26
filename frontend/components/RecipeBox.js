@@ -44,6 +44,13 @@ const styles = StyleSheet.create({
     textShadowOffset: { width: -1, height: 1 },
     textShadowRadius: 10,
   },
+
+  background:{
+    backgroundColor: '#F0F0F0',
+    borderRadius: 20,
+    width: 250,
+  },
+
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -54,7 +61,7 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: "white",
     borderRadius: 20,
-    padding: 35,
+    padding:20,
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -71,17 +78,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-start',
   },
-  ingredient: {
-    fontSize: 16,
-    fontFamily: "Montserrat_400Regular",
-    color: "#000",
-    marginBottom: 10,
-    textAlign: "left",
-  },
   
   modalImage: {
     width: 200,
     height: 200,
+    borderRadius: 20,
     resizeMode: "contain",
   },
   modalText: {
@@ -106,16 +107,21 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     fontFamily: "Montserrat_700Bold",
-    paddingBottom: 20
-
+    paddingBottom: 10,
     
   },
-  
+  ingredient: {
+    fontSize: 15,
+    fontFamily: "Montserrat_400Regular",
+    color: "#000",
+    padding: 8,
+    textAlign: "left",
+  },
   ingredientsTitle: {
     fontFamily: "Montserrat_700Bold",
-
+    paddingBottom: 10,
     textAlign: "center",
-    fontSize: 20, // Made the size consistent with modalText
+    fontSize: 20,
   },
   ingredientText: {
     fontFamily: "Montserrat_400Regular",
@@ -184,15 +190,19 @@ function RecipeBox({ id, title, description, onDelete }) {
                 <Text style={styles.text}>{title}</Text>
                 <Text style={styles.description}>{description}</Text>
                 <Text style={styles.ingredientsTitle}>Ingredients</Text>
-               <ScrollView style={styles.dropdown} maxHeight={180}>
-                  {ingredients.map((ingredient, index) => (
-                    <Text
-                      key={`${ingredient.name}:${ingredient.weight}`}
-                      style={styles.ingredient}
-                    >
-                      {ingredient.weight}g of {ingredient.name}
-                    </Text>
-                  ))}
+                <ScrollView style={styles.background} maxHeight={190}>
+                  {ingredients.length > 0 ? (
+                    ingredients.map((ingredient) => (
+                      <Text
+                        key={`${ingredient.name}:${ingredient.weight}`}
+                        style={styles.ingredient}
+                      >
+                        {ingredient.weight}g of {ingredient.name}
+                      </Text>
+                    ))
+                  ) : (
+                    <Text style={styles.ingredient}>No ingredients added</Text>
+                  )}
                 </ScrollView>
               </View>
             </TouchableWithoutFeedback>

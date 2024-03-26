@@ -274,3 +274,20 @@ export async function getCommunityRecipes(communityId) {
         throw error;
     }
 }
+
+export async function addRecipeToCommunity(communityID, recipeID) {
+    try {
+        const token = await AsyncStorage.getItem('token');
+        const response = await axios.post(`http://${LocalIP}:3000/food/addRecipeToCommunity`, recipeID, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+
+        return response.data;
+    } catch (error) {
+        console.error('Error adding recipe to community:', error);
+        throw error;
+    }
+}
