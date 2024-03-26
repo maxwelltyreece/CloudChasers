@@ -42,7 +42,6 @@ export const uploadImage = async (userId, profilePicture, folderName) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        // console.log('Image uploaded');
         return response;
     } catch (error) {
         console.error('Error:', error.message);

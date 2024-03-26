@@ -1,4 +1,3 @@
-// userService.js
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../screens/IPIndex';
@@ -12,8 +11,7 @@ export const fetchUserDetails = async (token) => {
 		});
 		return response.data;
 	} catch (error) {
-		if (error.response) {
-		} else if (error.request) {
+		if (error.response) {  } else if (error.request) {
 			console.log(error.request);
 		} else {
 			console.log('Error', error.message);
@@ -24,11 +22,8 @@ export const fetchUserDetails = async (token) => {
 };
 
 export const editUserDetails = async (newValues) => {
-    // console.log("STARTING Server Side");
-    // console.log(newValues);
     try {
         const token = await AsyncStorage.getItem('token');
-        // console.log("Token", token);
         const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, newValues, {
             headers: {
                 Authorization: `Bearer ${token}`,

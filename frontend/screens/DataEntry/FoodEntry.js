@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Alert, View, Text, TextInput, TouchableOpacity, ScrollView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { styles } from './styles';
-import NewFoodModal from '../../components/NewFoodModal';
+import NewFoodModal from './DataEntryComponents/NewFoodModal';
 import { useFoodLog } from '../../contexts/FoodLogContext';
 import { useNavigation } from '@react-navigation/native';
 
