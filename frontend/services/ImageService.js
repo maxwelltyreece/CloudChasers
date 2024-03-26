@@ -2,6 +2,7 @@ import axios from 'axios';
 import { LocalIP } from '../screens/IPIndex';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
+import * as ImageManipulator from 'expo-image-manipulator';
 
 export const requestImagePermissions = async () => {
     if (Platform.OS !== 'web') {
@@ -28,13 +29,18 @@ export const pickImage = async () => {
 export const uploadImage = async (userId, profilePicture, folderName) => {
     try {
         const token = await AsyncStorage.getItem('token');
+        const resizedImage = await ImageManipulator.manipulateAsync(
+            profilePicture,
+            [{ resize: { width: 300, height: 300 } }],
+            { compress: 0.3, format: ImageManipulator.SaveFormat.JPEG }
+        );
         const formData = new FormData();
-        let filename = profilePicture.split('/').pop();
+        let filename = resizedImage.uri.split('/').pop();
         let match = /\.(\w+)$/.exec(filename);
-        let type = 'image/jpeg';
+        let type = match ? `image/${match[1]}` : `image`;
         formData.append('objectID', userId);
         formData.append('folderName', folderName);
-        formData.append('image', { uri: profilePicture, name: filename, type });
+        formData.append('image', { uri: resizedImage.uri, name: filename, type });
 
         const response = await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
             headers: {
@@ -42,9 +48,23 @@ export const uploadImage = async (userId, profilePicture, folderName) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-        // console.log('Image uploaded');
         return response;
     } catch (error) {
         console.error('Error:', error.message);
+    }
+};
+
+export const getImageLink = async (folderName, id) => {
+    try {
+        const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
+            params: {
+                folderName: folderName,
+                id: id,
+            },
+        });
+        return response.data.url;
+    } catch (error) {
+        console.error('Error:', error.message);
+        return null;
     }
 };

@@ -9,6 +9,8 @@ import SettingsButton from '../../components/SettingsButton';
 import { styles } from './styles';
 import { LocalIP } from '../../screens/IPIndex';
 import axios from 'axios';
+import { getImageLink } from '../../services/ImageService';
+import { useFocusEffect } from '@react-navigation/native';
 
 function UserProfile() {
 	const navigation = useNavigation();
@@ -26,17 +28,19 @@ function UserProfile() {
 		verifyLoginStatus();
 	}, []);
     
-    useEffect(() => {
-		if (userDetails && userDetails._id) {
-			const fetchImageLink = async () => {
-				const link = await getImageLink();
-				setImageLink(link);
-			};
-	
-			fetchImageLink();
-		}
-	}, [userDetails]);
+    useFocusEffect(
+        React.useCallback(() => {
+            if (userDetails && userDetails._id) {
+                const fetchImageLink = async () => {
+                    const link = await getImageLink('Profile_Pictures', userDetails._id);
+                    setImageLink(link);
+                };
 
+                fetchImageLink();
+            }
+        }, [userDetails])
+    );
+    
 	const renderItem = ({ item }) => (
 		<TouchableOpacity activeOpacity={0.3} onPress={item.handler}>
 			<View style={styles.itemButton}>
@@ -44,22 +48,6 @@ function UserProfile() {
 			</View>
 		</TouchableOpacity>
 	);
-
-
-    const getImageLink = async () => {
-        try {
-            const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
-                params: {
-                    folderName: 'Profile_Pictures',
-                    id: userDetails ? userDetails._id : null,
-                },
-            });
-            return response.data.url;
-        } catch (error) {
-            console.error('Error:', error.message);
-            return null;
-        }
-    };
 
 	const UserProfileOptions = [
 		{
@@ -85,28 +73,29 @@ function UserProfile() {
 		currentUsername = userDetails.username;
 	}
 
-	return (
-		<View style={styles.container}>
-            <View style={styles.semiCircle}/>
-			{imageLink ? (
+return (
+    <View style={styles.container}>
+        <View style={styles.semiCircle}/>
+        <View style={styles.profilePicContainer}>
+            {!imageLoaded && <ActivityIndicator size="large" color="#0000ff" />}
+            {imageLink && (
                 <Image
                     source={{ uri: imageLink }}
-                    style={styles.profilePic}
+                    style={[styles.profilePic, imageLoaded ? {} : { position: 'absolute', opacity: 0 }]}
                     onLoad={() => setImageLoaded(true)}
                 />
-            ) : (
-                <ActivityIndicator size="large" color="#0000ff" />
             )}
-            {isLoggedIn && userDetails && <Text style={styles.username}>{currentUsername}</Text>}			
-            <FlatList
-				style={styles.subPageList}
-				data={UserProfileOptions}
-				renderItem={renderItem}
-				keyExtractor={(item) => item.name}
-			/>
-			<SettingsButton />
-		</View>
-	);
+        </View>
+        {isLoggedIn && userDetails && <Text style={styles.username}>{currentUsername}</Text>}         
+        <FlatList
+            style={styles.subPageList}
+            data={UserProfileOptions}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.name}
+        />
+        <SettingsButton />
+    </View>
+);
 }
 
 export default UserProfile;

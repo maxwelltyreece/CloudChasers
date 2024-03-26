@@ -56,10 +56,23 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
     },
+    profilePictureContainer: {
+        width: 140,
+        height: 140,
+        justifyContent: 'center',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 20,
+    },
     profilePicture: {
-        width: 100,
-        height: 100,
-        borderRadius: 50,
-        marginBottom: 16,
+        width: '100%',
+        height: '100%',
+    },
+    cameraIcon: {
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        color: 'rgba(0, 0, 0, 0.7)',
+        borderRadius: 15,
     },
 });

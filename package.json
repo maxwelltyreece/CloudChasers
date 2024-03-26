@@ -18,7 +18,7 @@
       "<rootDir>/jest.setup.js"
     ],
     "transformIgnorePatterns": [
-        "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-community|@react-native-async-storage/async-storage)/"
+      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-community|@react-native-async-storage/async-storage)/"
     ]
   },
   "dependencies": {
@@ -36,6 +36,7 @@
     "dotenv": "^16.4.1",
     "expo": "~49.0.15",
     "expo-font": "~11.4.0",
+    "expo-image-manipulator": "^11.8.0",
     "expo-image-picker": "~14.3.2",
     "expo-navigation-bar": "~2.3.0",
     "expo-status-bar": "~1.6.0",
@@ -62,6 +63,7 @@
     "react-native-elements": "^3.4.3",
     "react-native-feather": "^1.1.2",
     "react-native-gesture-handler": "~2.12.0",
+    "react-native-image-resizer": "^1.4.5",
     "react-native-linear-gradient": "^2.8.3",
     "react-native-modal": "^13.0.1",
     "react-native-paper": "^5.12.1",
