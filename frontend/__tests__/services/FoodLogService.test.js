@@ -2,7 +2,6 @@
 import * as FoodLogService from '../../services/FoodLogService';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../../screens/IPIndex';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
 	getItem: jest.fn(),

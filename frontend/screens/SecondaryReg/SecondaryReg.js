@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Alert, View, TextInput, TouchableOpacity, Text, Image, Button } from 'react-native';
 import axios from 'axios';
-import { LocalIP } from '../IPIndex';
+
 import { styles } from './styles';
 import { useUser } from '../../contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';

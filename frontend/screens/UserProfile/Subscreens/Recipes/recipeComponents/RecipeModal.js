@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet,Alert, Modal, TouchableOpacity, TextInput, TouchableWithoutFeedback, Keyboard, Button, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { LocalIP } from '../../../../IPIndex';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 

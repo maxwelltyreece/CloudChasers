@@ -7,7 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUser } from '../../contexts/UserContext';
 import SettingsButton from '../../components/SettingsButton';
 import { styles } from './styles';
-import { LocalIP } from '../../screens/IPIndex';
 import axios from 'axios';
 
 function UserProfile() {
