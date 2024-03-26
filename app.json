@@ -34,11 +34,12 @@
       }
     },
     "plugins": [
-      "expo-build-properties", {
+      ["expo-build-properties", {
         "android": {
           "usesCleartextTraffic": true
         }
       }
+    ]
     ]
   }
 }
