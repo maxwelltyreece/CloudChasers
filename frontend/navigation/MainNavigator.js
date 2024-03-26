@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Feather } from '@expo/vector-icons';
 import { View
- } from 'react-native';
+} from 'react-native';
 import Navbar from '../components/Navbar';
 import SettingsNavigator from './SettingsNavigator';
 import GroupNavigator from './GroupNavigator';
@@ -33,18 +33,18 @@ const commonOptions = {
 
 export default function MainNavigator() {
 	const { userDetails, updateUserDetails } = useUser();
-    const { getUserCommunities } = useCommunity();
+	const { getUserCommunities } = useCommunity();
 
 	useEffect(() => {
 		if (!userDetails) {
 			updateUserDetails();
 		}
-        getUserCommunities();
+		getUserCommunities();
 	}, []);
 
 	return (
 		<Stack.Navigator initialRouteName="Navbar">
-            <Stack.Screen
+			<Stack.Screen
 				name="Navbar"
 				component={Navbar}
 				options={{ headerShown: false }}
@@ -63,7 +63,7 @@ export default function MainNavigator() {
 				name='FoodEntry' 
 				component={FoodEntry} 
 				options={{...commonOptions, 
-				title:'Food'}}/>
+					title:'Food'}}/>
 			<Stack.Screen 
 				name='WaterEntry' 
 				component={WaterEntry} 

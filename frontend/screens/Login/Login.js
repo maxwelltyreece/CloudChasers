@@ -12,10 +12,10 @@ function Login({ navigation }) {
 	const [password, setPassword] = useState('');
 
 	const handleLogin = () => {
-        if (!username || !password) {
-            Alert.alert('Error', 'Please fill out all fields');
-            return;
-        }
+		if (!username || !password) {
+			Alert.alert('Error', 'Please fill out all fields');
+			return;
+		}
         
 		axios.post(`http://${LocalIP}:3000/login`, {
 			username,
@@ -28,16 +28,16 @@ function Login({ navigation }) {
 					// Navigate to Dashboard
 					navigation.navigate('Main');
 				} else {
-                    Alert.alert('Login failed', 'Please try again');
+					Alert.alert('Login failed', 'Please try again');
 				}
 			})
 			.catch((error) => {
-                if (error.response && error.response.data.message) {
-                    Alert.alert(error.response.data.message);
-                } else {
-                    console.error('Error:', error.message);
-                }
-            });
+				if (error.response && error.response.data.message) {
+					Alert.alert(error.response.data.message);
+				} else {
+					console.error('Error:', error.message);
+				}
+			});
 	};
 
 	return (

@@ -9,43 +9,43 @@ import Stats from '../../../screens/Stats/Stats';
 
 // Mock the contexts
 jest.mock('../../../contexts/StatsContext', () => ({
-    useStats: () => ({
-        todayStats: {},
-        streak: 1,
-        updateTodayStats: jest.fn()
-    }),
+	useStats: () => ({
+		todayStats: {},
+		streak: 1,
+		updateTodayStats: jest.fn()
+	}),
 }));
 
 jest.mock('../../../contexts/GoalsContext', () => ({
-    useGoals: () => ({
-        goals: [],
-        fetchGoals: jest.fn()
-    }),
+	useGoals: () => ({
+		goals: [],
+		fetchGoals: jest.fn()
+	}),
 }));
 
 // Mock useNavigation and useFocusEffect hooks
 jest.mock('@react-navigation/native', () => {
-    const actualNav = jest.requireActual('@react-navigation/native');
-    return {
-      ...actualNav,
-      useNavigation: () => ({
-        navigate: jest.fn(),
-        addListener: jest.fn((event, callback) => {
-          if (event === 'focus') {
-            // Trigger the focus effect callback immediately for testing
-            callback();
-          }
-          return jest.fn(); // Return an unsubscribe function
-        }),
-      }),
-      useFocusEffect: (callback) => callback(),
-    };
-  });
+	const actualNav = jest.requireActual('@react-navigation/native');
+	return {
+		...actualNav,
+		useNavigation: () => ({
+			navigate: jest.fn(),
+			addListener: jest.fn((event, callback) => {
+				if (event === 'focus') {
+					// Trigger the focus effect callback immediately for testing
+					callback();
+				}
+				return jest.fn(); // Return an unsubscribe function
+			}),
+		}),
+		useFocusEffect: (callback) => callback(),
+	};
+});
   
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
-    getItem: jest.fn(() => Promise.resolve('token')), // Simulate a token present
+	getItem: jest.fn(() => Promise.resolve('token')), // Simulate a token present
 }));
 
 // Mock navigation
@@ -54,66 +54,66 @@ const Stack = createStackNavigator();
 
 describe('Stats', () => {
 
-    it('renders correctly with empty data', async () => {
+	it('renders correctly with empty data', async () => {
 
-        const { getByText } = render(
-            <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen name="Stats" component={Stats} />
-                </Stack.Navigator>
-            </NavigationContainer>
-        );
+		const { getByText } = render(
+			<NavigationContainer>
+				<Stack.Navigator>
+					<Stack.Screen name="Stats" component={Stats} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		);
 
-        await act(async () => {
-            await waitFor(() => expect(getByText("Today's Statistics")).toBeTruthy());
+		await act(async () => {
+			await waitFor(() => expect(getByText("Today's Statistics")).toBeTruthy());
            
-        });
+		});
 
-    });
+	});
 
-    it('shows loading indicator while fetching data', async () => {
-        const { getByTestId } = render(
-            <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen name="Stats" component={Stats} />
-                </Stack.Navigator>
-            </NavigationContainer>
-        );
+	it('shows loading indicator while fetching data', async () => {
+		const { getByTestId } = render(
+			<NavigationContainer>
+				<Stack.Navigator>
+					<Stack.Screen name="Stats" component={Stats} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		);
 
-        // Expect the loading indicator to be present initially
-        expect(getByTestId('loading-indicator')).toBeTruthy();
-    });
+		// Expect the loading indicator to be present initially
+		expect(getByTestId('loading-indicator')).toBeTruthy();
+	});
 
-    it('hides loading indicator and displays data after fetching', async () => {
-        AsyncStorage.getItem.mockResolvedValue('mocked-token');
+	it('hides loading indicator and displays data after fetching', async () => {
+		AsyncStorage.getItem.mockResolvedValue('mocked-token');
 
-        const { queryByTestId, getByText } = render(
-            <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen name="Stats" component={Stats} />
-                </Stack.Navigator>
-            </NavigationContainer>
-        );
+		const { queryByTestId, getByText } = render(
+			<NavigationContainer>
+				<Stack.Navigator>
+					<Stack.Screen name="Stats" component={Stats} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		);
 
-        // Wait for the loading indicator to disappear
-        await waitFor(() => {
-            expect(queryByTestId('loading-indicator')).toBeNull();
-        });
+		// Wait for the loading indicator to disappear
+		await waitFor(() => {
+			expect(queryByTestId('loading-indicator')).toBeNull();
+		});
 
-        // Example: Verify if a piece of text is displayed after data is fetched
-        expect(getByText("Today's Statistics")).toBeTruthy();
-    });
+		// Example: Verify if a piece of text is displayed after data is fetched
+		expect(getByText("Today's Statistics")).toBeTruthy();
+	});
 
-    it('matches the snapshot', async () => {
-        const Stack = createStackNavigator();
-        const tree = render(
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen name="Stats" component={Stats} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        ).toJSON();
-        expect(tree).toMatchSnapshot();
-      });
+	it('matches the snapshot', async () => {
+		const Stack = createStackNavigator();
+		const tree = render(
+			<NavigationContainer>
+				<Stack.Navigator>
+					<Stack.Screen name="Stats" component={Stats} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		).toJSON();
+		expect(tree).toMatchSnapshot();
+	});
 
 });

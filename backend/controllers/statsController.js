@@ -82,8 +82,8 @@ const getNutrientIntake = async (req, res, nutrient) => {
 		if (!userDay) {
 			//return res.status(400).send({ message: "No data for this day." });
 			// // Instead of sending a 400 error, return a response with a total nutrient value of 0
-            return res.status(200).send({ [`total${nutrient}`]: 0 });
-        }
+			return res.status(200).send({ [`total${nutrient}`]: 0 });
+		}
 
 		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
 

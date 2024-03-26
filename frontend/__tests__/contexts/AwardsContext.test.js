@@ -6,231 +6,231 @@ import awardsService from '../../services/AwardsService';
 import { Text, Pressable } from 'react-native';
 
 jest.mock('../../services/AwardsService', () => ({
-    getAllAwards: jest.fn(),
-    createAward: jest.fn(),
-    getUserAwards: jest.fn(),
-    getAward: jest.fn(),
-    awardUser: jest.fn(),
-    getAwardsToBeIssued: jest.fn(),
-    getNumberOfCompletedAwards: jest.fn(),
+	getAllAwards: jest.fn(),
+	createAward: jest.fn(),
+	getUserAwards: jest.fn(),
+	getAward: jest.fn(),
+	awardUser: jest.fn(),
+	getAwardsToBeIssued: jest.fn(),
+	getNumberOfCompletedAwards: jest.fn(),
 }));
 
 function TestConsumer() {
-    const {
-        awards,
-        userAwards,
-        fetchAwards,
-        createAward,
-        fetchUserAwards,
-        fetchAward,
-        awardUser,
-        fetchAwardsToBeIssued,
-        fetchNumberOfCompletedAwards,
-    } = useAwards();
+	const {
+		awards,
+		userAwards,
+		fetchAwards,
+		createAward,
+		fetchUserAwards,
+		fetchAward,
+		awardUser,
+		fetchAwardsToBeIssued,
+		fetchNumberOfCompletedAwards,
+	} = useAwards();
 
-    // Helper function to simulate creating a new award
-    const handleCreateAward = () => {
-        createAward({ title: 'New Award' }).then(() => {
-            fetchAwards();
-        });
-    };
+	// Helper function to simulate creating a new award
+	const handleCreateAward = () => {
+		createAward({ title: 'New Award' }).then(() => {
+			fetchAwards();
+		});
+	};
 
-    // Helper function to simulate awarding a user
-    const handleAwardUser = () => {
-        awardUser({ userId: 'user1', awardId: 'award1' }).then(() => {
-            fetchUserAwards(); // Refetch user awards to see the update
-        });
-    };
+	// Helper function to simulate awarding a user
+	const handleAwardUser = () => {
+		awardUser({ userId: 'user1', awardId: 'award1' }).then(() => {
+			fetchUserAwards(); // Refetch user awards to see the update
+		});
+	};
 
-    return (
-        <>
-            <Pressable onPress={fetchAwards} testID="fetch-awards">Fetch Awards</Pressable>
-            <Pressable onPress={handleCreateAward} testID="create-award">Create Award</Pressable>
-            <Pressable onPress={fetchUserAwards} testID="fetch-user-awards">Fetch User Awards</Pressable>
-            <Pressable onPress={() => fetchAward('award1')} testID="fetch-single-award">Fetch Single Award</Pressable>
-            <Pressable onPress={handleAwardUser} testID="award-user">Award User</Pressable>
-            <Pressable onPress={fetchAwardsToBeIssued} testID="fetch-awards-to-be-issued">Fetch Awards To Be Issued</Pressable>
-            <Pressable onPress={fetchNumberOfCompletedAwards} testID="fetch-number-of-completed-awards">Fetch Number Of Completed Awards</Pressable>
-            {awards?.map((award, index) => (
-                <Text key={`award-${index}`}>{award.title}</Text>
-            ))}
-            {userAwards?.map((award, index) => (
-                <Text key={`userAward-${index}`}>{award.title}</Text>
-            ))}
-        </>
-    );
+	return (
+		<>
+			<Pressable onPress={fetchAwards} testID="fetch-awards">Fetch Awards</Pressable>
+			<Pressable onPress={handleCreateAward} testID="create-award">Create Award</Pressable>
+			<Pressable onPress={fetchUserAwards} testID="fetch-user-awards">Fetch User Awards</Pressable>
+			<Pressable onPress={() => fetchAward('award1')} testID="fetch-single-award">Fetch Single Award</Pressable>
+			<Pressable onPress={handleAwardUser} testID="award-user">Award User</Pressable>
+			<Pressable onPress={fetchAwardsToBeIssued} testID="fetch-awards-to-be-issued">Fetch Awards To Be Issued</Pressable>
+			<Pressable onPress={fetchNumberOfCompletedAwards} testID="fetch-number-of-completed-awards">Fetch Number Of Completed Awards</Pressable>
+			{awards?.map((award, index) => (
+				<Text key={`award-${index}`}>{award.title}</Text>
+			))}
+			{userAwards?.map((award, index) => (
+				<Text key={`userAward-${index}`}>{award.title}</Text>
+			))}
+		</>
+	);
 }
 
 
 describe('AwardsContext functionality', () => {
-    beforeEach(() => {
-        jest.resetAllMocks();
-    });
+	beforeEach(() => {
+		jest.resetAllMocks();
+	});
 
-    it('fetches and displays all awards', async () => {
-        const mockAwards = [{ title: 'Award 1' }, { title: 'Award 2' }];
-        awardsService.getAllAwards.mockResolvedValue({ data: mockAwards });
+	it('fetches and displays all awards', async () => {
+		const mockAwards = [{ title: 'Award 1' }, { title: 'Award 2' }];
+		awardsService.getAllAwards.mockResolvedValue({ data: mockAwards });
 
-        const { findByText, getByTestId } = render(
-            <AwardsProvider>
-                <TestConsumer />
-            </AwardsProvider>
-        );
+		const { findByText, getByTestId } = render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
 
-        fireEvent.press(getByTestId('fetch-awards'));
+		fireEvent.press(getByTestId('fetch-awards'));
 
-        await act(async () => {
-            await expect(findByText('Award 1')).toBeTruthy();
-            await expect(findByText('Award 2')).toBeTruthy();
-        });
-    });
+		await act(async () => {
+			await expect(findByText('Award 1')).toBeTruthy();
+			await expect(findByText('Award 2')).toBeTruthy();
+		});
+	});
 
-    it('creates an award and refetches awards', async () => {
-        const newAward = { title: 'New Award' };
-        awardsService.createAward.mockResolvedValue({ data: newAward });
-        awardsService.getAllAwards.mockResolvedValue({ data: [newAward] });
+	it('creates an award and refetches awards', async () => {
+		const newAward = { title: 'New Award' };
+		awardsService.createAward.mockResolvedValue({ data: newAward });
+		awardsService.getAllAwards.mockResolvedValue({ data: [newAward] });
 
-        const { getByTestId, findByText } = render(
-            <AwardsProvider>
-                <TestConsumer />
-            </AwardsProvider>
-        );
+		const { getByTestId, findByText } = render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
 
-        fireEvent.press(getByTestId('create-award'));
+		fireEvent.press(getByTestId('create-award'));
 
-        await act(async () => {
-            await expect(findByText(newAward.title)).toBeTruthy();
-        });
+		await act(async () => {
+			await expect(findByText(newAward.title)).toBeTruthy();
+		});
 
-        expect(awardsService.getAllAwards).toHaveBeenCalled();
-    });
-
-
-    it('fetches a single award', async () => {
-        const mockAward = { id: '1', title: 'Single Award' };
-        awardsService.getAward.mockResolvedValue({ data: { award: mockAward } });
-
-        const { findByText } = render(
-            <AwardsProvider>
-                <TestConsumer />
-            </AwardsProvider>
-        );
+		expect(awardsService.getAllAwards).toHaveBeenCalled();
+	});
 
 
-        await expect(findByText(mockAward.title)).toBeTruthy();
-    });
+	it('fetches a single award', async () => {
+		const mockAward = { id: '1', title: 'Single Award' };
+		awardsService.getAward.mockResolvedValue({ data: { award: mockAward } });
 
-    it('awards a user and refreshes user awards', async () => {
-        awardsService.awardUser.mockResolvedValue({ data: { success: true } });
-        const mockUserAwards = [{ id: '1', title: 'Awarded' }];
-        awardsService.getUserAwards.mockResolvedValue({ data: { awards: mockUserAwards } });
-
-        const { getByTestId, findByText } = render(
-            <AwardsProvider>
-                <TestConsumer />
-            </AwardsProvider>
-        );
-
-        fireEvent.press(getByTestId('award-user'));
-
-        await expect(findByText(mockUserAwards[0].title)).toBeTruthy();
-    });
-
-    it('fetches awards ready to be issued', async () => {
-        const mockAwardsToBeIssued = [{ id: '1', title: 'Award Ready' }];
-        awardsService.getAwardsToBeIssued.mockResolvedValue({ data: mockAwardsToBeIssued });
+		const { findByText } = render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
 
 
-        const { findByText } = render(
-            <AwardsProvider>
-                <TestConsumer />
-            </AwardsProvider>
-        );
+		await expect(findByText(mockAward.title)).toBeTruthy();
+	});
+
+	it('awards a user and refreshes user awards', async () => {
+		awardsService.awardUser.mockResolvedValue({ data: { success: true } });
+		const mockUserAwards = [{ id: '1', title: 'Awarded' }];
+		awardsService.getUserAwards.mockResolvedValue({ data: { awards: mockUserAwards } });
+
+		const { getByTestId, findByText } = render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
+
+		fireEvent.press(getByTestId('award-user'));
+
+		await expect(findByText(mockUserAwards[0].title)).toBeTruthy();
+	});
+
+	it('fetches awards ready to be issued', async () => {
+		const mockAwardsToBeIssued = [{ id: '1', title: 'Award Ready' }];
+		awardsService.getAwardsToBeIssued.mockResolvedValue({ data: mockAwardsToBeIssued });
 
 
-        await expect(findByText(mockAwardsToBeIssued[0].title)).toBeTruthy();
-    });
-
-    it('fetches number of completed awards', async () => {
-        const mockCompletedAwardsCount = { completed: 5, total: 10 };
-        awardsService.getNumberOfCompletedAwards.mockResolvedValue({ data: mockCompletedAwardsCount });
-
-        const { findByText } = render(
-            <AwardsProvider>
-                <TestConsumer />
-            </AwardsProvider>
-        );
+		const { findByText } = render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
 
 
-        await expect(findByText(`Completed: ${mockCompletedAwardsCount.completed}`)).toBeTruthy();
-    });
+		await expect(findByText(mockAwardsToBeIssued[0].title)).toBeTruthy();
+	});
 
-it('handles errors gracefully when awarding user fails', async () => {
+	it('fetches number of completed awards', async () => {
+		const mockCompletedAwardsCount = { completed: 5, total: 10 };
+		awardsService.getNumberOfCompletedAwards.mockResolvedValue({ data: mockCompletedAwardsCount });
 
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+		const { findByText } = render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
 
-    const mockError = new Error('Failed to award user');
-    awardsService.awardUser.mockRejectedValue(mockError);
 
-    const { getByTestId } = render(
-      <AwardsProvider>
-        <TestConsumer />
-      </AwardsProvider>
-    );
+		await expect(findByText(`Completed: ${mockCompletedAwardsCount.completed}`)).toBeTruthy();
+	});
 
-    act(() => {
-        fireEvent.press(getByTestId('award-user'));
-    });
+	it('handles errors gracefully when awarding user fails', async () => {
 
-    await waitFor(() => {
-        expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Error awarding user:'), mockError);
-    });
-});
+		jest.spyOn(console, 'error').mockImplementation(() => {});
 
-it('handles errors gracefully when fetching awards to be issued fails', async () => {
+		const mockError = new Error('Failed to award user');
+		awardsService.awardUser.mockRejectedValue(mockError);
 
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+		const { getByTestId } = render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
 
-    const mockError = new Error('Failed to fetch awards to be issued');
-    awardsService.getAwardsToBeIssued.mockRejectedValue(mockError);
+		act(() => {
+			fireEvent.press(getByTestId('award-user'));
+		});
 
-    const { getByTestId } = render(
-      <AwardsProvider>
-        <TestConsumer />
-      </AwardsProvider>
-    );
+		await waitFor(() => {
+			expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Error awarding user:'), mockError);
+		});
+	});
 
-    act(() => {
-        fireEvent.press(getByTestId('fetch-awards-to-be-issued'));
-    });
+	it('handles errors gracefully when fetching awards to be issued fails', async () => {
 
-    await waitFor(() => {
-        expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Error fetching awards to be issued:'), mockError);
-    });
-});
+		jest.spyOn(console, 'error').mockImplementation(() => {});
 
-// Testing error handling for getNumberOfCompletedAwards
-it('handles errors gracefully when fetching number of completed awards fails', async () => {
+		const mockError = new Error('Failed to fetch awards to be issued');
+		awardsService.getAwardsToBeIssued.mockRejectedValue(mockError);
 
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+		const { getByTestId } = render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
 
-    const mockError = new Error('Failed to fetch number of completed awards');
-    awardsService.getNumberOfCompletedAwards.mockRejectedValue(mockError);
+		act(() => {
+			fireEvent.press(getByTestId('fetch-awards-to-be-issued'));
+		});
 
-    const { getByTestId } = render(
-      <AwardsProvider>
-        <TestConsumer />
-      </AwardsProvider>
-    );
+		await waitFor(() => {
+			expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Error fetching awards to be issued:'), mockError);
+		});
+	});
 
-    act(() => {
-        fireEvent.press(getByTestId('fetch-number-of-completed-awards'));
-    });
+	// Testing error handling for getNumberOfCompletedAwards
+	it('handles errors gracefully when fetching number of completed awards fails', async () => {
 
-    await waitFor(() => {
-        expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Error fetching number of completed awards:'), mockError);
-    });
-});
+		jest.spyOn(console, 'error').mockImplementation(() => {});
+
+		const mockError = new Error('Failed to fetch number of completed awards');
+		awardsService.getNumberOfCompletedAwards.mockRejectedValue(mockError);
+
+		const { getByTestId } = render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
+
+		act(() => {
+			fireEvent.press(getByTestId('fetch-number-of-completed-awards'));
+		});
+
+		await waitFor(() => {
+			expect(console.error).toHaveBeenCalledWith(expect.stringContaining('Error fetching number of completed awards:'), mockError);
+		});
+	});
 
 
 });

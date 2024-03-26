@@ -239,16 +239,16 @@ exports.logRecipeFood = async (req, res) => {
 };
 
 exports.getCommunityRecipes = async (req, res) => {
-    const { communityID } = req.query;
-    console.log('Requested community ID:', communityID); // Log the requested community ID
+	const { communityID } = req.query;
+	console.log('Requested community ID:', communityID); // Log the requested community ID
 
-    try {
-        let recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });
-        return res.status(200).json({ message: 'Recipes found', data: recipes });
-    } catch (error) {
-        console.error('Error in getCommunityRecipes:', error); // Log any errors
-        return res.status(400).json({ error: error.toString() });
-    }
+	try {
+		let recipes = await Recipe.find({ communityThatOwnsRecipe: communityID });
+		return res.status(200).json({ message: 'Recipes found', data: recipes });
+	} catch (error) {
+		console.error('Error in getCommunityRecipes:', error); // Log any errors
+		return res.status(400).json({ error: error.toString() });
+	}
 }
 
 exports.getRecipeWeight = async (req, res) => {
@@ -386,7 +386,7 @@ exports.addMacroToRecipe = async (req, res) => {
 		const newFoodItem = new FoodItem({
 			foodID: newFood._id,
 			weight: 100
-	});
+		});
 		await newFoodItem.save();
 		const newRecipeItem = new RecipeItem({
 			foodItemID: newFoodItem._id,

@@ -33,7 +33,7 @@ async function createUserDay(userID, date) {
 		throw new Error("Failed to create UserDay: " + error.toString());
 	}
 	return newUserDay;
-};
+}
 // eslint-disable-next-line no-extra-semi
 
 async function createUserDayMeal(mealType, userDay) {
@@ -66,7 +66,7 @@ async function createUserDayMeal(mealType, userDay) {
 		throw new Error("Failed to create UserDayMeal: " + error.toString());
 	}
 	return newUserDayMeal;
-};
+}
 // eslint-disable-next-line no-extra-semi
 
 /**
@@ -302,7 +302,7 @@ exports.getLastLoggedFoodOrRecipe = async (req, res) => {
 	}
 };
 
-exports.getUserDayMealMacros = async (userDayMealID) => {;
+exports.getUserDayMealMacros = async (userDayMealID) => {
 	try {
 		const mealItems = await MealItem.find({ userDayMealID });
 		let totals = { calories: 0, protein: 0, carbs: 0, fat: 0 };
@@ -321,9 +321,9 @@ exports.getUserDayMealMacros = async (userDayMealID) => {;
 			} else {
 				const recipeQuantity = await RecipeQuantity.findById(
 					mealItem.recipeQuantityID
-					);
-					const allRecipeItems = await RecipeItem.find({
-						recipeID: recipeQuantity.recipeID,
+				);
+				const allRecipeItems = await RecipeItem.find({
+					recipeID: recipeQuantity.recipeID,
 				});
 
 				for (const recipeItem of allRecipeItems) {

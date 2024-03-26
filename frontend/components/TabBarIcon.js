@@ -20,27 +20,27 @@ import CustomIcon from './AddButton';
  * @returns {React.Element} The rendered component.
  */
 export default function TabBarIcon({ name, color, size, animation, onPress, navigation }) {
-    if (name === '+') {
-        const iconStyle = {
-            transform: [{ scale: animation }],
-            marginTop: Platform.OS === 'android' ? -10 : 0, // Adjust this value as needed
-        };
+	if (name === '+') {
+		const iconStyle = {
+			transform: [{ scale: animation }],
+			marginTop: Platform.OS === 'android' ? -10 : 0, // Adjust this value as needed
+		};
 
-        return (
-            <Animated.View style={iconStyle}>
-                <TouchableOpacity 
-                    onPress={() => {
-                        onPress();
-                        navigation.navigate('+'); 
-                    }} 
-                    activeOpacity={0.6}
-                >
-                    <CustomIcon width={70} height={70} startAnimation={onPress} animation={animation} />
-                </TouchableOpacity>
-            </Animated.View>
-        );
-    }
-  return <FontAwesome5 name={name} color={color} size={size} solid />;
+		return (
+			<Animated.View style={iconStyle}>
+				<TouchableOpacity 
+					onPress={() => {
+						onPress();
+						navigation.navigate('+'); 
+					}} 
+					activeOpacity={0.6}
+				>
+					<CustomIcon width={70} height={70} startAnimation={onPress} animation={animation} />
+				</TouchableOpacity>
+			</Animated.View>
+		);
+	}
+	return <FontAwesome5 name={name} color={color} size={size} solid />;
 }
 
 /**

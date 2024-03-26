@@ -13,16 +13,16 @@ function Register({ navigation }) {
 	const [confirmPassword, setConfirmPassword] = useState('');
 
 	const handleNext = () => {
-        if (!username || !email || !password || !confirmPassword) {
-            Alert.alert('Error', 'Please fill out all fields');
-            return;
-        }
-        if (password !== confirmPassword) {
-            Alert.alert('Error', 'Passwords do not match');
-            return;
-        }
-        navigation.navigate('SecondaryReg', { username, email, password });        
-    }
+		if (!username || !email || !password || !confirmPassword) {
+			Alert.alert('Error', 'Please fill out all fields');
+			return;
+		}
+		if (password !== confirmPassword) {
+			Alert.alert('Error', 'Passwords do not match');
+			return;
+		}
+		navigation.navigate('SecondaryReg', { username, email, password });        
+	}
 
 	return (
 		<View style={styles.container}>

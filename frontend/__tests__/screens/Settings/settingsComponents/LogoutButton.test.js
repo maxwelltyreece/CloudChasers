@@ -12,44 +12,44 @@ const Stack = createStackNavigator();
 // Mock the useNavigation hook
 jest.mock('@react-navigation/native', () => {
 
-    const navigate = jest.fn();
+	const navigate = jest.fn();
 
-    return {
-        ...jest.requireActual('@react-navigation/native'),
-        useNavigation: () => ({
-            navigate,
-        }),
-    };
+	return {
+		...jest.requireActual('@react-navigation/native'),
+		useNavigation: () => ({
+			navigate,
+		}),
+	};
 });
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
-    getItem: jest.fn(() => Promise.resolve('token')),
+	getItem: jest.fn(() => Promise.resolve('token')),
 }));
 
 describe('Logout Button Settings Component', () => {
 
-    it('renders correctly', async () => {
-        const { getByText } = render(<LogoutButton onPress={() => { }} />);
-        await act(async () => {
-            await waitFor(() => { expect(getByText('Logout')).toBeTruthy(); });
-        });
-    });
+	it('renders correctly', async () => {
+		const { getByText } = render(<LogoutButton onPress={() => { }} />);
+		await act(async () => {
+			await waitFor(() => { expect(getByText('Logout')).toBeTruthy(); });
+		});
+	});
 
-        it('handles press events', () => {
-            const onPressMock = jest.fn();
-            const { getByText } = render(<LogoutButton onPress={onPressMock} />);
+	it('handles press events', () => {
+		const onPressMock = jest.fn();
+		const { getByText } = render(<LogoutButton onPress={onPressMock} />);
 
-            fireEvent.press(getByText('Logout'));
-            expect(onPressMock).toHaveBeenCalledTimes(1);
-        });
+		fireEvent.press(getByText('Logout'));
+		expect(onPressMock).toHaveBeenCalledTimes(1);
+	});
 
-        it('animates on press in and press out', async () => {
-            const { getByText } = render(<LogoutButton onPress={() => { }} />);
+	it('animates on press in and press out', async () => {
+		const { getByText } = render(<LogoutButton onPress={() => { }} />);
 
-            fireEvent(getByText('Logout'), 'pressIn');
-            fireEvent(getByText('Logout'), 'pressOut');
-        });
+		fireEvent(getByText('Logout'), 'pressIn');
+		fireEvent(getByText('Logout'), 'pressOut');
+	});
 
 
 });

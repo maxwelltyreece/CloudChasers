@@ -9,60 +9,60 @@ import * as userService from '../../services/UserService';
 import * as communityService from '../../services/CommunityService';
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
-    getItem: jest.fn(),
-    setItem: jest.fn(),
-    removeItem: jest.fn(),
+	getItem: jest.fn(),
+	setItem: jest.fn(),
+	removeItem: jest.fn(),
 }));
 
 jest.mock('../../services/UserService', () => ({
-    fetchUserDetails: jest.fn(),
-    editUserDetails: jest.fn(),
+	fetchUserDetails: jest.fn(),
+	editUserDetails: jest.fn(),
 }));
 
 jest.mock('../../services/CommunityService', () => ({
-    fetchUserCommunities: jest.fn(),
+	fetchUserCommunities: jest.fn(),
 }));
 
 jest.mock('../../contexts/CommunityContext', () => ({
-    useCommunity: () => ({
-        resetUserCommunities: jest.fn(),
-    }),
+	useCommunity: () => ({
+		resetUserCommunities: jest.fn(),
+	}),
 }));
 
 
 function UserConsumer() {
-    const { userDetails } = useUser();
-    return <Text>{userDetails?.username}</Text>;
+	const { userDetails } = useUser();
+	return <Text>{userDetails?.username}</Text>;
 }
 
 console.log(CommunityProvider, UserProvider);
 
 
 const TestComponent = () => {
-    return (
-        <CommunityProvider>
-            <UserProvider>
-                <UserConsumer />
-            </UserProvider>
-        </CommunityProvider>
-    );
+	return (
+		<CommunityProvider>
+			<UserProvider>
+				<UserConsumer />
+			</UserProvider>
+		</CommunityProvider>
+	);
 };
 
 describe('UserContext', () => {
-    it('provides user details to consuming components', async () => {
+	it('provides user details to consuming components', async () => {
 
-        AsyncStorage.getItem.mockResolvedValue('mocked-token');
+		AsyncStorage.getItem.mockResolvedValue('mocked-token');
 
-        userService.fetchUserDetails.mockResolvedValue({
-            data: { username: 'JohnDoe', email: 'user@test.com' },
-        });
+		userService.fetchUserDetails.mockResolvedValue({
+			data: { username: 'JohnDoe', email: 'user@test.com' },
+		});
 
-        const { findByText } = render(<TestComponent />);
+		const { findByText } = render(<TestComponent />);
 
-        await waitFor(() => {
-            expect(findByText('JohnDoe')).toBeTruthy();
-        });
-    });
+		await waitFor(() => {
+			expect(findByText('JohnDoe')).toBeTruthy();
+		});
+	});
 });
 
 

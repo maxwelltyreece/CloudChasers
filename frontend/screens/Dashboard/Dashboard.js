@@ -34,7 +34,7 @@ function Dashboard() {
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
-            console.log('Token:', token);
+			console.log('Token:', token);
 			if (!token) {
 				console.error("No token found");
 				navigation.navigate('Login');
@@ -76,7 +76,7 @@ function Dashboard() {
 	}, []);
 
 	const updateDashboardData = async () => {
-        console.log(userDetails)
+		console.log(userDetails)
 		try {
 			await checkUserLogin();
 

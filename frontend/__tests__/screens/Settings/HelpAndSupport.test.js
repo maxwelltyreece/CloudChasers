@@ -11,49 +11,49 @@ const Stack = createStackNavigator();
 // Mock the useNavigation hook
 jest.mock('@react-navigation/native', () => {
 
-    const navigate = jest.fn();
+	const navigate = jest.fn();
 
-    return {
-        ...jest.requireActual('@react-navigation/native'),
-        useNavigation: () => ({
-            navigate,
-        }),
-    };
+	return {
+		...jest.requireActual('@react-navigation/native'),
+		useNavigation: () => ({
+			navigate,
+		}),
+	};
 });
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
-    getItem: jest.fn(() => Promise.resolve('token')), // Simulate a token present
+	getItem: jest.fn(() => Promise.resolve('token')), // Simulate a token present
 }));
 
 describe('About Subscreen', () => {
 
-    it('renders the About page correctly', async () => {
-        const { getByText } = render(
-            <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
-                </Stack.Navigator>
-            </NavigationContainer>
-        );
+	it('renders the About page correctly', async () => {
+		const { getByText } = render(
+			<NavigationContainer>
+				<Stack.Navigator>
+					<Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		);
 
-        await act(async () => {
-            await waitFor(() => { expect(getByText('Q: How do I change my notification settings?')).toBeDefined(); });
-            await waitFor(() => { expect(getByText('A: You can change your notification settings from the \'Notifications\' section in the settings menu.')).toBeDefined(); });
+		await act(async () => {
+			await waitFor(() => { expect(getByText('Q: How do I change my notification settings?')).toBeDefined(); });
+			await waitFor(() => { expect(getByText('A: You can change your notification settings from the \'Notifications\' section in the settings menu.')).toBeDefined(); });
 
-        });
-    });
+		});
+	});
 
-    it('matches the about snapshot', async () => {
-        const Stack = createStackNavigator();
-        const tree = render(
-            <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
-                </Stack.Navigator>
-            </NavigationContainer>
-        ).toJSON();
-        expect(tree).toMatchSnapshot();
-    });
+	it('matches the about snapshot', async () => {
+		const Stack = createStackNavigator();
+		const tree = render(
+			<NavigationContainer>
+				<Stack.Navigator>
+					<Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
+				</Stack.Navigator>
+			</NavigationContainer>
+		).toJSON();
+		expect(tree).toMatchSnapshot();
+	});
 
 });

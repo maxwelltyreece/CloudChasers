@@ -35,7 +35,7 @@ function CurrentStreak({ streak }) {
 			</Text>
 		</View>
 	);
-  }
+}
   
 
 CurrentStreak.propTypes = {
