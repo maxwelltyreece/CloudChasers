@@ -63,8 +63,6 @@ exports.createCommunity = async (req, res) => {
 
 exports.joinCommunity = async (req, res) => {
     const { communityId } = req.body;
-    console.log('Body:', req.body);
-    console.log('Community ID server side:', communityId);
     try {
         // Get user from token
         const user = req.user; 
@@ -93,7 +91,7 @@ exports.joinCommunity = async (req, res) => {
             await joinRequest.save();
             return res.status(200).json({ success: true, message: 'Request to join sent' });
         }
-        else if (community.joinPrivacy === 'public') {
+        else {
             console.log('Joining community');
             // Create CommunityUser to join community
             const newCommunityUser = new CommunityUser({
@@ -101,7 +99,6 @@ exports.joinCommunity = async (req, res) => {
                 userID: user._id,
                 role: 'member',
             });
-            console.log('Community joined', newCommunityUser);
             await newCommunityUser.save();
 
             console.log('Community joined');
@@ -163,6 +160,9 @@ exports.acceptRequest = async (req, res) => {
         if (!isAdmin) {
             return res.status(400).send({ message: 'User is not an admin of the community' });
         }
+        if (request.status !== 'Pending') {
+            return res.status(400).send({ message: 'Request has already been accepted or denied' });
+        }
         // Accept request
         await JoinRequest.updateOne({ _id: requestId }, { status: 'Approved' });
         // Create CommunityUser to join community
@@ -198,6 +198,9 @@ exports.denyRequest = async (req, res) => {
         const isAdmin = await CommunityUser.findOne({ communityID: request.communityID, userID: user._id, role: 'admin' });
         if (!isAdmin) {
             return res.status(400).send({ message: 'User is not an admin of the community' });
+        }
+        if (request.status !== 'Pending') {
+            return res.status(400).send({ message: 'Request has already been accepted or denied' });
         }
         // Deny request
         await JoinRequest.updateOne({ _id: requestId }, { status: 'Rejected' });
@@ -263,7 +266,6 @@ exports.getUserRole = async (req, res) => {
     try {
         const user = req.user;
         // Get community
-        console.log(communityId);
         const community = await Community.findById(communityId);
         if (!community) {
             return res.status(404).send({ message: 'Community not found' });
@@ -471,7 +473,7 @@ exports.makePost = async (req, res) => {
             userID: user._id,
             recipeID,
             text,
-            data: Date.now(),
+            date: Date.now(),
             title,
         });
         await newPost.save();
