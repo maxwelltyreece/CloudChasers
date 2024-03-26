@@ -100,7 +100,7 @@ function RecipeBox({ id, title }) {
     const handleImageRetrieval = () => {
       axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`)
       .then((response) => {
-        console.log("RESPONSE", response.data.url);
+        // console.log("RESPONSE", response.data.url);
         setImageUrl(response.data.url); 
       })
       .catch((error) => console.error("Failed to fetch image URL", error));
@@ -109,7 +109,7 @@ function RecipeBox({ id, title }) {
     handleImageRetrieval();
   }, [id]); 
 
-  console.log("URL", imageUrl)
+  // console.log("URL", imageUrl)
 
   return (
     <Pressable style={styles.box} onPress={() => setModalVisible(true)}>

@@ -48,7 +48,7 @@ function RegisterDetails({ navigation, route }) {
                 forename: firstName,
                 surname: lastName,
             });
-            console.log('User registered');
+            // console.log('User registered');
             return response;
         } catch (error) {
             if (error.response && error.response.data.error) {

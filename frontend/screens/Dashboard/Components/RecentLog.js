@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
 
 function RecentLog({ streak, userLogStats }) {
 
-	console.log('userLogStats:', userLogStats);
+	// console.log('userLogStats:', userLogStats);
 
 	const {
 		latestUserDayMeal = {},

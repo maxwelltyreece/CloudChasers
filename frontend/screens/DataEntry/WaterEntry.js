@@ -14,9 +14,9 @@ function WaterEntry() {
             Alert.alert('Error', 'Please fill all fields');
             return;
         }
-        console.log('Logging water:', waterAmount);
+        // console.log('Logging water:', waterAmount);
         logWater({ weight: waterAmount });
-        console.log('Water logged');
+        // console.log('Water logged');
         Alert.alert(
             'Water Logged',
             'Want to log more water?',
