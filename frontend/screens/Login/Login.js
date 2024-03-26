@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Alert, View, TextInput, Text, Pressable } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../IPIndex';
 import { styles } from './styles';
 // import { useUser } from '../../contexts/UserContext';
 
