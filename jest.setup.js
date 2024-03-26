@@ -1,10 +1,7 @@
-require('dotenv').config({ path: './backend/.env.test' });
-
-/* eslint-disable no-undef */
-// Load environment variables for all tests
-
 // FOR BACKEND
 require('dotenv').config({ path: './backend/.env.test' });
+
+console.log('JEST SETUP FILE HAS RUN');
 
 
 

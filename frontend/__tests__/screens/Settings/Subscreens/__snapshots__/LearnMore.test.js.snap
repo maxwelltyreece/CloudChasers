@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`About Subscreen matches the about snapshot 1`] = `
+exports[`Learn More Subscreen matches the about snapshot 1`] = `
 <View
   style={
     {
@@ -344,7 +344,7 @@ exports[`About Subscreen matches the about snapshot 1`] = `
                             <Text
                               style={
                                 {
-                                  "alignSelf": "left",
+                                  "alignSelf": "flex-start",
                                   "color": "#FF815E",
                                   "fontFamily": "Montserrat_700Bold",
                                   "fontSize": 20,

@@ -27,9 +27,9 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 	getItem: jest.fn(() => Promise.resolve('token')), // Simulate a token present
 }));
 
-describe('About Subscreen', () => {
+describe('Learn More Subscreen', () => {
 
-	it('renders the About page correctly', async () => {
+	it('renders the Learn More page correctly', async () => {
 		const { getByText } = render(
 			<NavigationContainer>
 				<Stack.Navigator>

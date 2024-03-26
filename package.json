@@ -9,34 +9,10 @@
     "web": "expo start --web",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
-    "test": "jest --coverage --verbose",
-    "test sequence": "jest --coverage ",
-    "test:env": "NODE_ENV=test jest",
+    "test:backend": "jest --config ./backend/__tests__/jest.config.js --runInBand",
+    "test:frontend": "jest --config ./frontend/__tests__/jest.config.js",
+    "test": "npm run test:frontend && npm run test:backend",
     "test:update": "jest --updateSnapshot"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "preset": "jest-expo",
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.js"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-community|@react-native-async-storage/async-storage)/"
-    ],
-    "collectCoverageFrom": [
-      "**/*.{js,jsx}",
-      "**/frontend/**",
-      "**/backend/**",
-      "!**/node_modules/**",
-      "!**/jest.setup.js",
-      "!**/AppEntry.js",
-      "!**/jest.config.js",
-      "!**/babel.config.js",
-      "!**/coverage/**",
-      "!**/__snapshots__/**",
-      "!**/eslintrc.js",
-      "!**/logger.js"
-    ]
   },
   "dependencies": {
     "@expo-google-fonts/montserrat": "^0.2.3",
