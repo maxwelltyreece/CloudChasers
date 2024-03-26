@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
 const CircularProgressComponent = ({ todayStats, goals }) => {
 
 	let initialMacroValues = {
-
 		calories: 0,
 		water: 0,
 		fat: 0,

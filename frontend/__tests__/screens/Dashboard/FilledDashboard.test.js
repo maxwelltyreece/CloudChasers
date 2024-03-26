@@ -105,7 +105,7 @@ jest.mock('../../../contexts/RemindersContext', () => ({
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
-	getItem: jest.fn(() => Promise.resolve('token')), // Simulate a token present
+	getItem: jest.fn(() => Promise.resolve('token')),
 }));
 
 // Mock navigation
@@ -155,7 +155,7 @@ describe('Filled Dashboard', () => {
 			await waitFor(() => expect(getByText('All we talk about is pasta, we love it.')).toBeTruthy());
 			await waitFor(() => expect(getByText('Posts: 0')).toBeTruthy());
 			await waitFor(() => expect(getByText('Awards')).toBeTruthy());
-			await waitFor(() => expect(getByText('2/7')).toBeTruthy());
+			await waitFor(() => expect(getByText('2 / 7')).toBeTruthy());
 			await waitFor(() => expect(getByText("On your way!")).toBeTruthy());
 			await waitFor(() => expect(getByText('3')).toBeTruthy());
 			await waitFor(() => expect(getByText('Last Log:')).toBeTruthy());
@@ -164,31 +164,31 @@ describe('Filled Dashboard', () => {
 		});
 	});
 
-	it('shows loading indicator while fetching data', async () => {
-		const { getByTestId } = render(
-			<NavigationContainer>
-				<Stack.Navigator>
-					<Stack.Screen name="Dashboard" component={Dashboard} />
-				</Stack.Navigator>
-			</NavigationContainer>
-		);
-		await act(async () => {
-			await waitFor(() => {
-				expect(getByTestId('loading-indicator')).toBeTruthy();
-			});
-		});
-	});
+    it('shows loading indicator while fetching data', async () => {
+        const { getByTestId } = render(
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Dashboard" component={Dashboard} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
+        await act(async () => {
+            await waitFor(() => {
+                expect(getByTestId('loading-indicator')).toBeTruthy();
+            });
+        });
+    });
 
-	it('hides loading indicator after data is fetched', async () => {
-		AsyncStorage.getItem.mockResolvedValue('mocked-token');
+    it('hides loading indicator after data is fetched', async () => {
+        AsyncStorage.getItem.mockResolvedValue('mocked-token');
 
-		const { queryByTestId } = render(
-			<NavigationContainer>
-				<Stack.Navigator>
-					<Stack.Screen name="Dashboard" component={Dashboard} />
-				</Stack.Navigator>
-			</NavigationContainer>
-		);
+        const { queryByTestId } = render(
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Dashboard" component={Dashboard} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
 
 		await act(async () => {
 			await waitFor(() => {
@@ -197,17 +197,17 @@ describe('Filled Dashboard', () => {
 		});
 	});
 
-	it('matches the filled dashboard snapshot', async () => {
-		const Stack = createStackNavigator();
-		const tree = render(
-			<NavigationContainer>
-				<Stack.Navigator>
-					<Stack.Screen name="Dashboard" component={Dashboard} />
-				</Stack.Navigator>
-			</NavigationContainer>
-		).toJSON();
-		expect(tree).toMatchSnapshot();
-	});
+    it('matches the filled dashboard snapshot', async () => {
+        const Stack = createStackNavigator();
+        const tree = render(
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="Dashboard" component={Dashboard} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        ).toJSON();
+        expect(tree).toMatchSnapshot();
+    });
 
 
 	describe('GoalProgressBar Navigation', () => {
@@ -281,6 +281,7 @@ describe('Filled Dashboard', () => {
 				fireEvent.press(button);
 			});
 
+
 			expect(useNavigation().navigate).toHaveBeenCalledWith('User', { screen: 'Awards' });
 		});
 	});
@@ -311,8 +312,12 @@ describe('Filled Dashboard', () => {
 				});
 			});
 		});
+			await act(async () => {
+				await waitFor(() => {
+					expect(AsyncStorage.getItem).toHaveBeenCalledWith('token');
+					expect(useNavigation().navigate).toHaveBeenCalledWith('Login');
+				});
+			});
+		});
 
-	});
-
-
-});
+    });

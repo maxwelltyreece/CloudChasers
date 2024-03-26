@@ -67,7 +67,12 @@ function LearnMore() {
 		<View>
 			<ScrollView style={styles.scrollView}>
 				<Text style={styles.headerText}>Understanding Nutrition</Text>
+				<Text style={styles.headerText}>Understanding Nutrition</Text>
 
+				<View style={styles.textContainer}>
+					{/* Calories */}
+					<Text style={styles.subheaderText}>Calories (kcal):</Text>
+					<Text style={styles.contentText}>
 				<View style={styles.textContainer}>
 					{/* Calories */}
 					<Text style={styles.subheaderText}>Calories (kcal):</Text>
@@ -77,7 +82,13 @@ function LearnMore() {
 					functions.
 					</Text>
 				</View>
+					</Text>
+				</View>
 
+				<View style={styles.textContainer}>
+					{/* Carbohydrates */}
+					<Text style={styles.subheaderText}>Carbohydrates (g):</Text>
+					<Text style={styles.contentText}>
 				<View style={styles.textContainer}>
 					{/* Carbohydrates */}
 					<Text style={styles.subheaderText}>Carbohydrates (g):</Text>
@@ -86,10 +97,12 @@ function LearnMore() {
 					Found in fruits, vegetables, breads, and cereals.
 					</Text>
 				</View>
+					</Text>
+				</View>
 
 				<View style={styles.textContainer}>
-					{/* Proteins */}
-					<Text style={styles.subheaderText}>Proteins (g):</Text>
+					{/* Protein */}
+					<Text style={styles.subheaderText}>Protein (g):</Text>
 					<Text style={styles.contentText}>
 					Essential for building tissues, making enzymes, and supporting immune
 					function. Good sources include meat, fish, dairy, legumes, and nuts.
@@ -123,6 +136,24 @@ function LearnMore() {
 					Crucial for life, water aids in digestion, absorption,
 					circulation, and excretion. It regulates body temperature and
 					maintains electrolyte balance.
+					</Text>
+				</View>
+
+				<View style={styles.textContainer}>
+					{/* Sugars */}
+					<Text style={styles.subheaderText}>Sugars (g):</Text>
+					<Text style={styles.contentText}>
+					Simple carbohydrates that provide a quick source of energy.
+					Found in fruits, vegetables, and dairy products.
+					</Text>
+				</View>
+
+				<View style={styles.textContainer}>
+					{/* Sodium */}
+					<Text style={styles.subheaderText}>Sodium (mg):</Text>
+					<Text style={styles.contentText}>
+					An essential mineral that helps maintain the body&apos;s fluid balance.
+					Found in salt, processed foods, and condiments.
 					</Text>
 				</View>
 

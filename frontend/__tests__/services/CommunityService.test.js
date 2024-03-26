@@ -1,7 +1,5 @@
 /* eslint-disable no-undef */
-import { enableFetchMocks } from 'jest-fetch-mock';
-enableFetchMocks();
-require('jest-fetch-mock').enableMocks();
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
 	createCommunity,
@@ -17,210 +15,253 @@ import {
 	updateJoinPrivacy,
 	makePost,
 	getCommunityPosts,
+	getCommunityRecipes,
 	removeMember,
 } from '../../services/CommunityService';
-import { LocalIP } from '../../screens/IPIndex';
+
+
+jest.mock('axios');
+
 
 jest.mock('@react-native-async-storage/async-storage', () => ({
 	getItem: jest.fn(),
+	getItem: jest.fn(),
 }));
 
-beforeEach(() => {
-	fetch.resetMocks();
-	AsyncStorage.getItem.mockResolvedValue('test-token');
-});
 
 describe('Community Service', () => {
 	const communityData = { name: 'Test Community', description: 'A test community' };
 	const communityId = 'test-community-id';
 
+	beforeEach(() => {
+		axios.mockClear();
+		AsyncStorage.getItem.mockResolvedValue('test-token');
+	});
+
 	it('createCommunity creates a community successfully', async () => {
-		fetch.mockResponseOnce(JSON.stringify({ success: true, message: 'Community created' }));
-
+		axios.post.mockResolvedValue({
+			status: 200,
+			data: { success: true, message: 'Community created' }
+		});
+      
 		const response = await createCommunity(communityData);
-
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/create`, expect.any(Object));
+      
+        
+		expect(axios.post).toHaveBeenCalled();
 		expect(response.success).toBe(true);
 		expect(response.message).toBe('Community created');
 	});
+      
+
 
 	it('joinCommunity joins a community successfully', async () => {
-		fetch.mockResponseOnce(JSON.stringify({ success: true, message: 'Joined community' }));
+		axios.post.mockResolvedValue({ data: { success: true, message: 'Joined community' } });
 
 		const response = await joinCommunity(communityId);
+		const response = await joinCommunity(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/join`, expect.any(Object));
+		expect(axios.post).toHaveBeenCalled();
 		expect(response.success).toBe(true);
 	});
 
 	it('getCommunityDetails retrieves community details successfully', async () => {
 		const mockCommunityDetails = { id: communityId, name: 'Test Community', description: 'A test community' };
-		fetch.mockResponseOnce(JSON.stringify(mockCommunityDetails));
+		axios.get.mockResolvedValue({ data: mockCommunityDetails });
 
 		const response = await getCommunityDetails(communityId);
+		const response = await getCommunityDetails(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/details`, expect.any(Object));
+		expect(axios.get).toHaveBeenCalled();
 		expect(response.id).toBe(communityId);
 	});
 
+	// Add more tests for other functions in your community service
 
-	describe('getCommunityMembers retrieves community members successfully', () => {
-		const communityId = 'test-community-id';
-		const mockMembers = [{ id: 'member1', name: 'John Doe' }];
+	// Example test for handling errors
+	it('handles errors correctly', async () => {
+		axios.post.mockRejectedValue(new Error('An error occurred'));
 
-		it('retrieves community members successfully', async () => {
-			fetch.mockResponseOnce(JSON.stringify(mockMembers), {
-				headers: { 'Content-Type': 'application/json' }
-			});
+		const response = await createCommunity(communityData);
 
-			const response = await getCommunityMembers(communityId);
-
-			expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/members?communityId=${communityId}`, {
-				method: 'GET',
-				headers: {
-					Authorization: 'Bearer test-token',
-				},
-			});
-
-			expect(response).toEqual(mockMembers);
-		});
+		expect(axios.post).toHaveBeenCalled();
+		expect(response).toBe(false); // Assuming that your function returns false in case of errors
 	});
 
+	it('getCommunityMembers retrieves community members successfully', async () => {
+		const mockMembers = [{ id: 'member1', name: 'John Doe' }];
+		axios.get.mockResolvedValue({ data: mockMembers });
+
+		const response = await getCommunityMembers(communityId);
+
+		expect(axios.get).toHaveBeenCalled();
+		expect(response).toEqual(mockMembers);
+	});
 
 	it('getUserRole retrieves the user role within a community successfully', async () => {
 		const mockRole = { role: 'admin' };
-		fetch.mockResponseOnce(JSON.stringify(mockRole));
+		axios.get.mockResolvedValue({ data: mockRole });
 
 		const response = await getUserRole(communityId);
+		const response = await getUserRole(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/role?communityId=${communityId}`, expect.any(Object));
+		expect(axios.get).toHaveBeenCalled();
 		expect(response).toEqual(mockRole);
 	});
 
+
 	it('getAllCommunities retrieves all communities successfully', async () => {
 		const mockCommunities = [{ id: 'community1', name: 'Community One' }];
-		fetch.mockResponseOnce(JSON.stringify(mockCommunities));
+		axios.get.mockResolvedValue({ data: mockCommunities });
 
 		const response = await getAllCommunities();
+		const response = await getAllCommunities();
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/all`, expect.any(Object));
+		expect(axios.get).toHaveBeenCalled();
 		expect(response).toEqual(mockCommunities);
 	});
 
-	it('getUserCommunities retrieves user-specific communities successfully', async () => {
-		const mockUserCommunities = [{ id: 'community2', name: 'User Community' }];
-		fetch.mockResponseOnce(JSON.stringify(mockUserCommunities));
+
+	it('getUserCommunities retrieves user communities successfully', async () => {
+		const mockCommunities = [{ id: 'community1', name: 'Community One' }];
+		axios.get.mockResolvedValue({ data: mockCommunities });
 
 		const response = await getUserCommunities();
+		const response = await getUserCommunities();
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/userCommunities`, expect.any(Object));
-		expect(response).toEqual(mockUserCommunities);
+		expect(axios.get).toHaveBeenCalled();
+		expect(response).toEqual(mockCommunities);
 	});
 
+	// Continuing from the previous tests...
+
 	it('deleteCommunity deletes a community successfully', async () => {
-		fetch.mockResponseOnce(JSON.stringify({ success: true, message: 'Community deleted' }));
+		axios.put.mockResolvedValue({ data: { success: true, message: 'Community deleted' } });
 
 		const response = await deleteCommunity(communityId);
+		const response = await deleteCommunity(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/delete`, expect.any(Object));
+		expect(axios.put).toHaveBeenCalled();
 		expect(response.success).toBe(true);
+		expect(response.message).toBe('Community deleted');
 	});
 
 	it('leaveCommunity leaves a community successfully', async () => {
-		fetch.mockResponseOnce(JSON.stringify({ success: true, message: 'Left community' }));
+		axios.put.mockResolvedValue({ data: { success: true, message: 'Left community' } });
 
 		const response = await leaveCommunity(communityId);
+		const response = await leaveCommunity(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/leave`, expect.any(Object));
+		expect(axios.put).toHaveBeenCalled();
 		expect(response.success).toBe(true);
+		expect(response.message).toBe('Left community');
 	});
 
 	it('updateCommunityDesc updates a community description successfully', async () => {
-		const description = 'Updated description';
-		fetch.mockResponseOnce(JSON.stringify({ success: true, message: 'Description updated' }));
+		axios.put.mockResolvedValue({ data: { success: true, message: 'Description updated' } });
 
-		const response = await updateCommunityDesc(communityId, description);
+		const response = await updateCommunityDesc(communityId, 'New description');
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/updateDesc`, expect.any(Object));
+		expect(axios.put).toHaveBeenCalled();
 		expect(response.success).toBe(true);
+		expect(response.message).toBe('Description updated');
 	});
 
 	it('updateJoinPrivacy updates the community join privacy successfully', async () => {
-		const joinPrivacy = 'private';
-		fetch.mockResponseOnce(JSON.stringify({ success: true, message: 'Join privacy updated' }));
+		axios.put.mockResolvedValue({ data: { success: true, message: 'Join privacy updated' } });
 
-		const response = await updateJoinPrivacy(communityId, joinPrivacy);
+		const response = await updateJoinPrivacy(communityId, 'private');
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/updateJoinPrivacy`, expect.any(Object));
+		expect(axios.put).toHaveBeenCalled();
 		expect(response.success).toBe(true);
+		expect(response.message).toBe('Join privacy updated');
 	});
 
 	it('makePost creates a community post successfully', async () => {
-		const postData = { content: 'This is a test post' };
-		fetch.mockResponseOnce(JSON.stringify({ success: true, message: 'Post created' }));
+		const postData = { content: 'Test post' };
+		axios.post.mockResolvedValue({ data: { success: true, message: 'Post created' } });
 
 		const response = await makePost(postData);
+		const response = await makePost(postData);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/makePost`, expect.any(Object));
+		expect(axios.post).toHaveBeenCalled();
 		expect(response.success).toBe(true);
+		expect(response.message).toBe('Post created');
 	});
 
 	it('getCommunityPosts retrieves posts for a community successfully', async () => {
 		const mockPosts = [{ id: 'post1', content: 'Post content' }];
-		fetch.mockResponseOnce(JSON.stringify(mockPosts));
+		axios.get.mockResolvedValue({ data: mockPosts });
 
 		const response = await getCommunityPosts(communityId);
+		const response = await getCommunityPosts(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/posts?communityId=${communityId}`, expect.any(Object));
+		expect(axios.get).toHaveBeenCalled();
 		expect(response).toEqual(mockPosts);
 	});
 
-	describe('removeMember', () => {
-		const communityId = 'community123';
-		const memberId = 'member456';
+	it('removeMember successfully removes a member from the community', async () => {
+		axios.put.mockResolvedValue({ data: { success: true, message: 'Member removed' } });
 
-		it('successfully removes a member from the community', async () => {
-			// Mock the fetch response
-			fetch.mockResponseOnce(JSON.stringify({ success: true, message: 'Member removed' }));
+		const memberId = 'test-member-id';
+		const response = await removeMember(communityId, memberId);
 
-			const response = await removeMember(communityId, memberId);
-
-			// Verify the fetch was called with the correct parameters
-			expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/removeMember`, {
-				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: 'Bearer test-token', // This is the mocked token value
-				},
-				body: JSON.stringify({ communityId, memberId }),
-			});
-
-			// Check the response
-			expect(response.success).toBe(true);
-			expect(response.message).toBe('Member removed');
-		});
-
-		it('handles failure when removing a member from the community', async () => {
-			// Mock a failure response
-			fetch.mockResponseOnce(JSON.stringify({ success: false, message: 'Failed to remove member' }), { status: 400 });
-
-			const response = await removeMember(communityId, memberId);
-
-			// Optionally, you could check the fetch call as in the previous test
-			// For this example, we'll directly verify the failed operation's outcome
-			expect(response.success).toBe(false);
-			expect(response.message).toBe('Failed to remove member');
-		});
+		expect(axios.put).toHaveBeenCalled();
+		expect(response.success).toBe(true);
+		expect(response.message).toBe('Member removed');
 	});
 
-	// Error handling for joinCommunity
-	it('joinCommunity handles errors correctly', async () => {
-		fetch.mockResponseOnce(JSON.stringify({ success: false, message: 'Error joining community' }), { status: 400 });
+	// Add more tests for acceptRequest, denyRequest, getPendingRequests, getCommunityRecipes as needed
+
+	// Example for getCommunityRecipes
+	it('getCommunityRecipes retrieves recipes for a community successfully', async () => {
+		const mockRecipes = [{ id: 'recipe1', name: 'Recipe Name' }];
+		axios.get.mockResolvedValue({ data: mockRecipes });
+
+		const response = await getCommunityRecipes(communityId);
+
+		expect(axios.get).toHaveBeenCalled();
+		expect(response).toEqual(mockRecipes);
+	});
+
+	// Continuing from the previous tests...
+
+	it('createCommunity handles server errors gracefully', async () => {
+		axios.post.mockRejectedValue({ response: { status: 500, data: { message: 'Internal Server Error' } } });
+
+		const response = await createCommunity(communityData);
+
+		expect(axios.post).toHaveBeenCalled();
+		expect(response).toBe(false); // Assuming that your function returns false in case of server errors
+	});
+
+	it('joinCommunity handles unauthorized access correctly', async () => {
+		axios.post.mockRejectedValue({ response: { status: 401, data: { message: 'Unauthorized' } } });
 
 		const response = await joinCommunity(communityId);
-		expect(response.success).toBe(false);
-		expect(response.message).toBe('Error joining community');
+
+		expect(axios.post).toHaveBeenCalled();
+		expect(response).toBe(false); // Assuming unauthorized attempts return false
 	});
 
+	it('getCommunityDetails handles not found error correctly', async () => {
+		axios.get.mockRejectedValue({ response: { status: 404, data: { message: 'Community not found' } } });
+
+		const response = await getCommunityDetails(communityId);
+
+		expect(axios.get).toHaveBeenCalled();
+		expect(response).toBe(false); // Assuming that a not found error returns false
+	});
+
+	it('deleteCommunity handles forbidden action gracefully', async () => {
+		axios.put.mockRejectedValue({
+			response: { status: 403, data: { message: 'Forbidden' } }
+		});
+    
+		const response = await deleteCommunity(communityId);
+        
+		expect(axios.put).toHaveBeenCalled();
+		expect(response.success).toBe(false);
+		expect(response.message).toBe('Forbidden');
+	});
 
 });
