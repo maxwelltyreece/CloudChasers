@@ -7,18 +7,21 @@ import {
   Modal,
   Pressable,
   TouchableOpacity,
+  ScrollView,
   onClose,
+  Alert,
+  TouchableWithoutFeedback,
 } from "react-native";
 import proptypes from "prop-types";
 import { LocalIP } from "../screens/IPIndex";
-import axios from 'axios';
+import axios from "axios";
 
 const styles = StyleSheet.create({
   box: {
     backgroundColor: "white",
     borderRadius: 10,
     overflow: "hidden",
-    width: "48%",
+    width: "45%",
     aspectRatio: 1,
     margin: 8,
   },
@@ -62,23 +65,36 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
     width: 300,
-    height: 400,
+    height: "60%",
   },
+  scrollViewContainer: {
+    flexGrow: 1,
+    justifyContent: 'flex-start',
+  },
+  ingredient: {
+    fontSize: 16,
+    fontFamily: "Montserrat_400Regular",
+    color: "#000",
+    marginBottom: 10,
+    textAlign: "left",
+  },
+  
   modalImage: {
-    width: 250,
-    height: 250,
+    width: 200,
+    height: 200,
     resizeMode: "contain",
   },
-  text: {
+  modalText: {
     fontSize: 20,
     marginBottom: 15,
     textAlign: "center",
     fontFamily: "Montserrat_700Bold",
   },
-  closeText: {
-    fontSize: 24,
+  description: {
+    fontSize: 14,
+    fontFamily: "Montserrat_300Light",
     color: "black",
-    fontWeight: "bold",
+    
   },
   closeButton: {
     position: "absolute",
@@ -87,29 +103,63 @@ const styles = StyleSheet.create({
     padding: 10,
     zIndex: 1,
   },
+  text: {
+    fontSize: 24,
+    fontFamily: "Montserrat_700Bold",
+    paddingBottom: 20
+
+    
+  },
+  
+  ingredientsTitle: {
+    fontFamily: "Montserrat_700Bold",
+
+    textAlign: "center",
+    fontSize: 20, // Made the size consistent with modalText
+  },
+  ingredientText: {
+    fontFamily: "Montserrat_400Regular",
+    textAlign: "left", 
+  },
 });
 
 
-
-
-function RecipeBox({ id, title }) {
+function RecipeBox({ id, title, description, onDelete }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null); 
-  
+  const [ingredients, setIngredients] = useState([]);
+  const [imageUrl, setImageUrl] = useState(null);
+
   useEffect(() => {
     const handleImageRetrieval = () => {
-      axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`)
-      .then((response) => {
-        // console.log("RESPONSE", response.data.url);
-        setImageUrl(response.data.url); 
-      })
-      .catch((error) => console.error("Failed to fetch image URL", error));
+      axios
+        .get(
+          `http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`
+        )
+        .then((response) => {
+          setImageUrl(response.data.url);
+        })
+        .catch((error) => console.error("Failed to fetch image URL", error));
     };
 
     handleImageRetrieval();
-  }, [id]); 
 
-  // console.log("URL", imageUrl)
+    const getIngredients = async () => {
+      try {
+        const response = await axios.get(
+          `http://${LocalIP}:3000/food/getRecipeIngredients?recipeID=${id}`
+        );
+        if (Array.isArray(response.data.data)) {
+          setIngredients(response.data.data);
+        } else {
+          setIngredients([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch ingredients", error);
+      }
+    };
+
+    getIngredients();
+  }, [id]);
 
   return (
     <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
@@ -126,19 +176,28 @@ function RecipeBox({ id, title }) {
           setModalVisible(!modalVisible);
         }}
       >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Pressable
-              onPress={() => setModalVisible(false)}
-              style={styles.closeButton}
-            >
-              <Text style={styles.closeText}>X</Text>
-            </Pressable>
-
-            <Text style={styles.text}>{title}</Text>
-            <Image source={{ uri: imageUrl }} style={styles.modalImage} />
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View style={styles.centeredView}>
+            <TouchableWithoutFeedback onPress={() => {}}>
+              <View style={styles.modalView}>
+                <Image source={{ uri: imageUrl }} style={styles.modalImage} />
+                <Text style={styles.text}>{title}</Text>
+                <Text style={styles.description}>{description}</Text>
+                <Text style={styles.ingredientsTitle}>Ingredients</Text>
+               <ScrollView style={styles.dropdown} maxHeight={180}>
+                  {ingredients.map((ingredient, index) => (
+                    <Text
+                      key={`${ingredient.name}:${ingredient.weight}`}
+                      style={styles.ingredient}
+                    >
+                      {ingredient.weight}g of {ingredient.name}
+                    </Text>
+                  ))}
+                </ScrollView>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
       </Modal>
     </Pressable>
   );
@@ -148,5 +207,6 @@ export default RecipeBox;
 
 RecipeBox.propTypes = {
   title: proptypes.string.isRequired,
+  description: proptypes.string,
   image: proptypes.string,
 };

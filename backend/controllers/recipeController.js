@@ -93,8 +93,8 @@ exports.getRecipeIngredients = async (req, res) => {
 	try {
 		const recipeItems = await RecipeItem.find({ recipeID: recipeID });
 		if (recipeItems.length === 0) {
-			return res.status(400).send({ message: 'Recipe does not exist' });
-		}
+            return res.status(200).json({ message: 'No ingredients found for this recipe', data: [] });
+        }
 
 		let recipeIngredients = [];
 		for (const recipeItem of recipeItems) {
