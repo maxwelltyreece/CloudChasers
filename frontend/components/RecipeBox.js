@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     overflow: "hidden",
-    width: "48%",
+    width: "45%",
     aspectRatio: 1,
     margin: 8,
   },
@@ -83,18 +83,7 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_300Light",
     color: "black",
   },
-  closeText: {
-    fontSize: 24,
-    color: "black",
-    fontWeight: "bold",
-  },
-  closeButton: {
-    position: "absolute",
-    top: 3,
-    right: 2,
-    padding: 10,
-    zIndex: 1,
-  },
+  
 });
 
 function RecipeBox({ id, title, description, onDelete }) {
