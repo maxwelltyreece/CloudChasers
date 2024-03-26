@@ -8,9 +8,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const RecipeModal = ({ isVisible, onClose }) => {
 
   function getFileName(image){
-    console.log("RHIS ONGGets to here");
+    // console.log("RHIS ONGGets to here");
     const fileName = image.split('/').pop();
-    console.log(fileName);
+    // console.log(fileName);
     return fileName;
   }
 
@@ -50,7 +50,7 @@ const RecipeModal = ({ isVisible, onClose }) => {
   
     try {
       const response = await axios.post(`http://${LocalIP}:3000/food/createNewRecipeByUser`, recipeData, { headers: { Authorization: `Bearer ${token}` } });
-      console.log('Recipe created:', response.data.data._id);
+      // console.log('Recipe created:', response.data.data._id);
       recipeID = response.data.data._id;
   
       if (image) {

@@ -24,11 +24,11 @@ export const fetchUserDetails = async (token) => {
 };
 
 export const editUserDetails = async (newValues) => {
-    console.log("STARTING Server Side");
-    console.log(newValues);
+    // console.log("STARTING Server Side");
+    // console.log(newValues);
     try {
         const token = await AsyncStorage.getItem('token');
-        console.log("Token", token);
+        // console.log("Token", token);
         const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, newValues, {
             headers: {
                 Authorization: `Bearer ${token}`,

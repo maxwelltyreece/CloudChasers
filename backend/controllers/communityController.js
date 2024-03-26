@@ -34,7 +34,7 @@ exports.createCommunity = async (req, res) => {
         if (community) {
             return res.status(400).send({ message: 'Community already exists' });
         }
-        console.log('Creating community');
+        // console.log('Creating community');
         const newCommunity = new Community({
             name,
             description,
@@ -44,14 +44,14 @@ exports.createCommunity = async (req, res) => {
         });
        
         await newCommunity.save();
-        console.log('Community created', newCommunity);
+        // console.log('Community created', newCommunity);
         // Create CommunityUser to join community
         const newCommunityUser = new CommunityUser({
             communityID: newCommunity._id,
             userID: user._id,
             role: 'admin',
         });
-        console.log('Community joined', newCommunityUser);
+        // console.log('Community joined', newCommunityUser);
 
         await newCommunityUser.save();
         return res.status(200).json({ success: true, message: 'Community created', data: newCommunity });
@@ -92,7 +92,7 @@ exports.joinCommunity = async (req, res) => {
             return res.status(200).json({ success: true, message: 'Request to join sent' });
         }
         else {
-            console.log('Joining community');
+            // console.log('Joining community');
             // Create CommunityUser to join community
             const newCommunityUser = new CommunityUser({
                 communityID: community._id,
@@ -101,7 +101,7 @@ exports.joinCommunity = async (req, res) => {
             });
             await newCommunityUser.save();
 
-            console.log('Community joined');
+            // console.log('Community joined');
             return res.status(200).json({ success: true, message: 'Community joined', data: newCommunityUser });
             
         }

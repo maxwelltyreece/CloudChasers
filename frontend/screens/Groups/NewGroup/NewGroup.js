@@ -37,7 +37,7 @@ function NewGroup() {
         createCommunity(communityData)
             .then((response) => {
                 if (response && response.success) {
-                    console.log('Successfully created community:', response);
+                    // console.log('Successfully created community:', response);
                     getUserCommunities();
                     navigation.navigate('Groups');
                 } else {

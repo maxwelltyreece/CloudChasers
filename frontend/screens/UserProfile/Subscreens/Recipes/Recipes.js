@@ -34,14 +34,14 @@ function Recipes() {
   useEffect(() => {
     const fetchRecipes = async () => {
       const fetchedRecipes = await getAllUserRecipes();
-      console.log("fetchedRecipes:", fetchedRecipes);
+      // console.log("fetchedRecipes:", fetchedRecipes);
 
       const mappedRecipes = fetchedRecipes.map((recipe) => ({
         id: recipe._id,
         title: recipe.name,
         image: recipe.image,
       }));
-      console.log("RECIPEID" + mappedRecipes[0].id);
+      // console.log("RECIPEID" + mappedRecipes[0].id);
       setRecipes(mappedRecipes);
     };
 

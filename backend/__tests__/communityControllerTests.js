@@ -463,7 +463,7 @@ describe("Community Management", () => {
 				const response = await request(app)
 					.get("/community/userCommunities")
 					.set("Authorization", `Bearer ${token}`);
-				console.log(response.body);
+				// console.log(response.body);
 				expect(response.statusCode).toBe(200);
 				expect(response.body).toHaveProperty("success", true);
 				expect(response.body.data.length).toBe(1);
@@ -477,7 +477,7 @@ describe("Community Management", () => {
 				const response = await request(app)
 					.get("/community/userCommunities")
 					.set("Authorization", `Bearer ${token4}`);
-				console.log(response.body);
+				// console.log(response.body);
 				expect(response.statusCode).toBe(200);
 				expect(response.body).toHaveProperty("success", true);
 				expect(response.body.data.length).toBe(0);
@@ -922,7 +922,7 @@ describe("Community Management", () => {
 							.get("/community/requests")
 							.set("Authorization", `Bearer ${token3}`)
 							.query({ communityId: newPrivateCommunity._id.toString() });
-						console.log(response.body);
+						// console.log(response.body);
 						expect(response.statusCode).toBe(200);
 						expect(response.body).toHaveProperty("success", true);
 						expect(response.body.data.length).toBe(2);

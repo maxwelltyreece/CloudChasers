@@ -21,13 +21,13 @@ export function FoodLogProvider({ children }) {
         }
         const food = await foodLogService.getLatestLoggedFood();
         setLatestLoggedFood(food.data);
-        console.log('Latest logged food:', food.data);
+        // console.log('Latest logged food:', food.data);
     }
 
     const logDatabaseFood = async (data) => {
-        console.log('Logging food CONTEXT:', data);
+        // console.log('Logging food CONTEXT:', data);
         await foodLogService.logDatabaseFood(data);
-        console.log('Food logged response given');
+        // console.log('Food logged response given');
     }
 
     const createNewRecipeByUser = async (data) => {
@@ -85,7 +85,7 @@ export function FoodLogProvider({ children }) {
     }
 
     const getPictureURL = async (data) => {
-        console.log('IMAGE:' + data);
+        // console.log('IMAGE:' + data);
         return await foodLogService.getPictureURL(data);
     }
 

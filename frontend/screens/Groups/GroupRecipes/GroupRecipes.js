@@ -18,8 +18,8 @@ function GroupRecipes({ route }) {
     useEffect(() => {
         const fetchRecipes = async () => {
             const fetchedRecipes = await getCommunityRecipes(community.id);
-            console.log("ID: ", community.id);
-            console.log('Fetched recipes:', fetchedRecipes);
+            // console.log("ID: ", community.id);
+            // console.log('Fetched recipes:', fetchedRecipes);
         
             if (Array.isArray(fetchedRecipes.data)) {
                 const mappedRecipes = fetchedRecipes.data.map(recipe => ({

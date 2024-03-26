@@ -34,7 +34,7 @@ function Dashboard() {
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
-            console.log('Token:', token);
+            // console.log('Token:', token);
 			if (!token) {
 				console.error("No token found");
 				navigation.navigate('Login');
@@ -53,15 +53,16 @@ function Dashboard() {
 			try {
 				await checkUserLogin();
 
+				await fetchAwardsToBeIssued();
+
 				await Promise.all([
 					updateUserDetails(),
 					updateTodayStats(),
 					getUserCommunities(),
 					getLatestLoggedFood(),
 					fetchGoals(),
-					fetchUserAwards(),
 					fetchAwards(),
-					// fetchAwardsToBeIssued()
+					fetchUserAwards()
 				]);
 			} catch (error) {
 				if (latestLoggedFood != undefined) {
@@ -79,15 +80,16 @@ function Dashboard() {
 		try {
 			await checkUserLogin();
 
+			await fetchAwardsToBeIssued();
+
 			await Promise.all([
 				updateUserDetails(),
 				updateTodayStats(),
 				getUserCommunities(),
 				getLatestLoggedFood(),
 				fetchGoals(),
-				fetchUserAwards(),
 				fetchAwards(),
-				// fetchAwardsToBeIssued()
+				fetchUserAwards()
 			]);
 		} catch (error) {
 			if (latestLoggedFood != undefined) {
@@ -98,7 +100,7 @@ function Dashboard() {
 
 	useFocusEffect(
         useCallback(() => {
-            console.log('DASHBOARD FOCUSED');
+            // console.log('DASHBOARD FOCUSED');
             updateDashboardData();
 		}, [])
 	);
