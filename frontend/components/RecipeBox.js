@@ -114,12 +114,12 @@ const styles = StyleSheet.create({
   ingredientsTitle: {
     fontFamily: "Montserrat_700Bold",
 
-    textAlign: "center", // Centered ingredients title
+    textAlign: "center",
     fontSize: 20, // Made the size consistent with modalText
   },
   ingredientText: {
-    fontFamily: "Montserrat_400Regular", // Ensured font consistency
-    textAlign: "left", // Ensure text alignment is consistent
+    fontFamily: "Montserrat_400Regular",
+    textAlign: "left", 
   },
 });
 

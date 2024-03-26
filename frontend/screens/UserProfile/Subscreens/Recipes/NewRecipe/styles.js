@@ -16,8 +16,10 @@ export const styles = StyleSheet.create({
     width: 150, // or any other dimensions you want
     height: 150,
     resizeMode: 'contain', // or 'cover' depending on what you want
-    marginBottom: 10, // optional, to add some space below the image
- 
+    position: 'absolute', // Add this line
+    bottom: 80, // Adjust this value as needed
+    alignSelf: 'center', // Add this line
+    borderRadius: 10,
   },
   formContainer: {
     alignItems: 'center',
@@ -55,7 +57,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '80%',
     position: 'absolute',
-    bottom: 30,
+    bottom: 20,
 
   },
   submitButtonText: {

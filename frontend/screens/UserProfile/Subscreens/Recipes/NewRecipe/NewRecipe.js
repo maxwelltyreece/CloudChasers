@@ -3,14 +3,12 @@ import {
   Alert,
   View,
   Text,
-  StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
   TouchableOpacity,
   FlatList,
   TextInput,
   Modal,
-  Button,
   Image,
   Pressable,
   ScrollView,
@@ -18,7 +16,7 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
-import { LocalIP } from "../../../../IPIndex"; 
+import { LocalIP } from "../../../../IPIndex";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "./styles";
@@ -95,11 +93,16 @@ const NewRecipe = ({}) => {
       Alert.alert("Error", "Weight is required");
       return;
     }
-  
+
     if (!selectedFoods.some((food) => food._id === selectedItem._id)) {
-      setSelectedFoods([...selectedFoods, { ...selectedItem, weight: inputWeight }]);
-      setInputWeight(""); 
+      setSelectedFoods([
+        ...selectedFoods,
+        { ...selectedItem, weight: inputWeight },
+      ]);
+      setInputWeight("");
       setModalVisible(false);
+      setSelectedItem(null); // Clear selected item
+      setSearchQuery(""); // Clear search query
     } else {
       Alert.alert("Item already added");
     }
@@ -109,7 +112,9 @@ const NewRecipe = ({}) => {
     <TouchableOpacity
       style={[
         styles.item,
-        { backgroundColor: item._id === selectedItem?._id ? "orange" : "white" }
+        {
+          backgroundColor: item._id === selectedItem?._id ? "orange" : "white",
+        },
       ]}
       onPress={() => setSelectedItem(item)}
       key={item._id}
@@ -127,24 +132,28 @@ const NewRecipe = ({}) => {
     setSelectedFoods(selectedFoods.filter((item) => item._id !== id));
   };
 
-const addItemsToRecipe = async (recipeID, token) => {
+  const addItemsToRecipe = async (recipeID, token) => {
     for (const food of selectedFoods) {
-        const payload = {
-            recipeID: recipeID,
-            foodID: food._id,
-            weight: food.weight,
-        };
-        console.log("Payload:", payload)
+      const payload = {
+        recipeID: recipeID,
+        foodID: food._id,
+        weight: food.weight,
+      };
+      console.log("Payload:", payload);
 
-        try {
-            await axios.put(`http://${LocalIP}:3000/food/addItemToRecipe`, payload, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-        } catch (error) {
-            console.error("Error adding item to recipe:", error);
-        }
+      try {
+        await axios.put(
+          `http://${LocalIP}:3000/food/addItemToRecipe`,
+          payload,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+      } catch (error) {
+        console.error("Error adding item to recipe:", error);
+      }
     }
-};
+  };
 
   useEffect(() => {
     if (searchQuery.length >= 3) {
@@ -163,7 +172,7 @@ const addItemsToRecipe = async (recipeID, token) => {
       description: recipeDescription,
       foods: selectedFoods,
     };
-    
+
     try {
       const response = await axios.post(
         `http://${LocalIP}:3000/food/createNewRecipeByUser`,
@@ -176,7 +185,7 @@ const addItemsToRecipe = async (recipeID, token) => {
       console.log("ALL DATA:", recipeData);
       const recipeID = response.data.data._id;
 
-        await addItemsToRecipe(recipeID, token);
+      await addItemsToRecipe(recipeID, token);
 
       if (image) {
         const formData = new FormData();
@@ -206,8 +215,8 @@ const addItemsToRecipe = async (recipeID, token) => {
       setImage(null);
       navigation.goBack();
     } catch (error) {
-        console.error("Error creating recipe or uploading image:", error);
-        Alert.alert("Error", "Failed to create recipe");
+      console.error("Error creating recipe or uploading image:", error);
+      Alert.alert("Error", "Failed to create recipe");
     }
   };
 
@@ -238,11 +247,15 @@ const addItemsToRecipe = async (recipeID, token) => {
             >
               <View style={{ alignItems: "center" }}>
                 <AddFoodButton onPress={() => setModalVisible(true)} />
-                <Text style= {{fontFamily: 'Montserrat_700Bold'}}>Add Food</Text>
+                <Text style={{ fontFamily: "Montserrat_700Bold" }}>
+                  Add Food
+                </Text>
               </View>
               <View style={{ alignItems: "center" }}>
                 <AddImageButton onPress={pickImage} />
-                <Text style= {{fontFamily: 'Montserrat_700Bold'}}>Add Image</Text>
+                <Text style={{ fontFamily: "Montserrat_700Bold" }}>
+                  Add Image
+                </Text>
               </View>
             </View>
             <Modal
@@ -299,40 +312,49 @@ const addItemsToRecipe = async (recipeID, token) => {
             </Modal>
           </View>
 
-          <View style={{ marginVertical: 20, paddingTop: 20 }}>
-            <Text style={styles.text}>
-              Selected Foods:
-            </Text>
+          <View style={{ marginVertical: 20, paddingTop: 10, height: 150 }}>
+            <Text style={styles.text}>Selected Foods:</Text>
             {selectedFoods.length > 0 ? (
-              <FlatList
-                data={selectedFoods}
-                keyExtractor={(item) => item._id}
-                renderItem={({ item }) => (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      marginBottom: 5,
-                    }}
-                  >
-                    <View style={{ flexDirection: "row", flex: 1 }}>
-                      <Text>
-                        {item.weight}g {item.name}{" "}
-                      </Text>
+              <ScrollView>
+                <FlatList
+                  data={selectedFoods}
+                  keyExtractor={(item) => item._id.toString()}
+                  renderItem={({ item }) => (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: 5,
+                        paddingHorizontal: 10, // Add some padding around items
+                      }}
+                    >
+                      <View style={{ flex: 0.8 }}>
+                        <Text>
+                          {item.weight}g {item.name}
+                        </Text>
+                      </View>
+                      <Pressable onPress={() => removeItem(item._id)}>
+                        <Text style={{ color: "red" }}>Remove</Text>
+                      </Pressable>
                     </View>
-                    <TouchableOpacity onPress={() => removeItem(item._id)}>
-                      <Text style={{ color: "red" }}>Remove</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              />
+                  )}
+                  contentContainerStyle={{ paddingBottom: 20 }} // Ensures padding at the bottom
+                />
+              </ScrollView>
             ) : (
-              <Text style={{paddingVertical: 10, fontFamily: 'Montserrat_400Regular'}}>No foods added</Text>
+              <Text
+                style={{
+                  paddingVertical: 10,
+                  fontFamily: "Montserrat_400Regular",
+                }}
+              >
+                No foods added
+              </Text>
             )}
           </View>
         </KeyboardAvoidingView>
-       
+
         {image && <Image source={{ uri: image }} style={styles.imagePreview} />}
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
           <Text style={styles.submitButtonText}>Submit Recipe</Text>
