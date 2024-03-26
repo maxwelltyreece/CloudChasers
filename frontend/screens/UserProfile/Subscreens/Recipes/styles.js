@@ -28,8 +28,8 @@ export const styles = StyleSheet.create({
 	},
 
 	titleContainer: {
-		flexDirection: 'row', // Add this line
-		alignItems: 'center', // Add this line
+		flexDirection: 'row', 
+		alignItems: 'center', 
 		alignSelf: 'stretch',
 		paddingHorizontal: '5%',
         
