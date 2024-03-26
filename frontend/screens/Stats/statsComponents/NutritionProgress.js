@@ -119,7 +119,7 @@ ProgressBar.propTypes = {
  * @param {Object} props.todayStats - Today's stats
  * @param {Object} props.goals - Goals
  */
-const NutritionProgress = ({ todayStats, goals }) => {
+const NutritionProgress = ({ todayStats = {}, goals }) => {
 	const initialMacroValues = {
 		calories: 0,
 		water: 0,
