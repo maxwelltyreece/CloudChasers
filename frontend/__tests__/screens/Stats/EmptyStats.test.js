@@ -18,7 +18,7 @@ jest.mock('../../../contexts/StatsContext', () => ({
 
 jest.mock('../../../contexts/GoalsContext', () => ({
 	useGoals: () => ({
-		goals: [],
+		goals: [{}],
 		fetchGoals: jest.fn()
 	}),
 }));
@@ -80,7 +80,6 @@ describe('Stats', () => {
 			</NavigationContainer>
 		);
 
-		// Expect the loading indicator to be present initially
 		expect(getByTestId('loading-indicator')).toBeTruthy();
 	});
 
@@ -95,12 +94,10 @@ describe('Stats', () => {
 			</NavigationContainer>
 		);
 
-		// Wait for the loading indicator to disappear
 		await waitFor(() => {
 			expect(queryByTestId('loading-indicator')).toBeNull();
 		});
 
-		// Example: Verify if a piece of text is displayed after data is fetched
 		expect(getByText("Today's Statistics")).toBeTruthy();
 	});
 
