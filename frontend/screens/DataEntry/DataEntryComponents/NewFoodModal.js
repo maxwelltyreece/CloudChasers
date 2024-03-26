@@ -37,13 +37,13 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal}) => {
   const [sodium, setSodium] = useState('');
 
   const handleLogFood = () => {
-    console.log('Food Item:', foodItem);
-    console.log('Calories:', calories);
-    console.log('Protein:', protein);
-    console.log('Sugar:', sugar);
-    console.log('Fat:', fat);
-    console.log('Carbs:', carbs);
-    console.log('Sodium:', sodium);
+    // console.log('Food Item:', foodItem);
+    // console.log('Calories:', calories);
+    // console.log('Protein:', protein);
+    // console.log('Sugar:', sugar);
+    // console.log('Fat:', fat);
+    // console.log('Carbs:', carbs);
+    // console.log('Sodium:', sodium);
     
     toggleModal();
   };
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
 
 NewFoodModal.propTypes = {
   isVisible: proptypes.bool.isRequired,
-  onBackdropPress: proptypes.func.isRequired,
+  onBackdropPress: proptypes.func,
   toggleModal: proptypes.func.isRequired,
 };
 

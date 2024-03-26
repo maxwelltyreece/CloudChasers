@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
 	},
 	remindersScrolView: {
 		width: '100%',
-		height: Platform.OS === 'android' ? '60%' : '61%',
-		marginBottom: 5,
+		height: Platform.OS === 'android' ? '55%' : '59%',
+		marginBottom: 4,
 	},
 	reminderItem: {
 		marginBottom: '2%',
@@ -211,13 +211,12 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 
 	const progressBarStyle = label === 'Calories' ? styles.calorieProgressBarItem
 		: label === 'Water' ? styles.waterProgressBarItem
-			: styles.progressBarItem; // Default style
+			: styles.progressBarItem;
 
 	const labelStyle = label === 'Calories' ? styles.firstLabel
 		: label === 'Water' ? styles.firstLabel
-			: styles.label; // Default style
+			: styles.label;
 
-	// Function to measure the width of the container
 	const measureContainer = (event) => {
 		const { width } = event.nativeEvent.layout;
 		setContainerWidth(width);
@@ -225,12 +224,10 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 
 
 	useEffect(() => {
-		// Safe division function to avoid dividing by zero
 		const safeDivision = (numerator, denominator, containerWidth) => {
 			if (denominator > 0) {
 				return (numerator / denominator) * containerWidth;
 			} else {
-				// Default to 0 or any other fallback width
 				return 0;
 			}
 		};
@@ -239,8 +236,8 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 
 		{
 			(progress != undefined && progress != null && max != undefined && max != null && containerWidth != undefined && containerWidth != null) ?
-			finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0
-		} // Still load app of error occurs and data is any data is undefined.
+				finalWidth = safeDivision(progress, max, containerWidth) : finalWidth = 0
+		}
 
 
 		Animated.timing(animatedWidth, {
@@ -276,7 +273,6 @@ ProgressBar.defaultProps = {
 };
 
 
-// Single Reminder Component
 const ReminderItem = ({ reminder }) => {
 	return (
 		<View style={styles.reminderItem}>
@@ -294,6 +290,11 @@ const ReminderItem = ({ reminder }) => {
 ReminderItem.propTypes = {
 	reminder: PropTypes.object.isRequired,
 };
+
+ReminderItem.defaultProps = {
+	reminder: {},
+};
+
 
 // Main component
 function GoalProgressBar({ todayStats, goals }) {
@@ -319,10 +320,8 @@ function GoalProgressBar({ todayStats, goals }) {
 		}
 	});
 
-	console.log('CURRENT MACRO VALUES:', currentMacroValues);
-
 	Object.keys(currentMacroValues).forEach(key => {
-		currentMacroValues[key] = currentMacroValues[key].toFixed(0);
+		currentMacroValues[key] = parseInt(currentMacroValues[key].toFixed(0));
 	});
 
 	// Pre-filled with default nutrient goals based on recommended daily amount for each nutrient.
@@ -387,7 +386,12 @@ function GoalProgressBar({ todayStats, goals }) {
 
 	return (
 		<View style={styles.progressBarComponentContainer}>
-			<Swiper showsButtons={false} loop={false}>
+			<Swiper
+				showsButtons={false}
+				loop={false}
+				// dotColor="white"
+				activeDotColor="white" 
+			>
 
 				{/* Calories & Water slide */}
 				<View style={styles.firstSlideContainer}>

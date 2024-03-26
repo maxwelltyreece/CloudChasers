@@ -87,14 +87,16 @@ const styles = StyleSheet.create({
 		marginLeft: 4,
 	},
 	noLogText: {
-		textAlign: 'center', 
-		left: '18%',
+		textAlign: 'center',
+		alignSelf: 'center', 
 		fontSize: 14,
 		fontFamily: 'Montserrat_500Medium',
 	},
 });
 
 function RecentLog({ streak, userLogStats }) {
+
+	// console.log('userLogStats:', userLogStats);
 
 	const {
 		latestUserDayMeal = {},
@@ -113,7 +115,7 @@ function RecentLog({ streak, userLogStats }) {
 
 					{(latestUserDayMeal && latestUserDayMeal.name) ?
 						(
-							<Text style={styles.recentLogMealTypeText}>
+							<Text style={styles.recentLogMealTypeText} numberOfLines={1}>
 								{latestUserDayMeal.name.charAt(0).toUpperCase() + latestUserDayMeal.name.slice(1)}
 							</Text>
 
@@ -145,7 +147,7 @@ function RecentLog({ streak, userLogStats }) {
 	);
 }
 
-export default RecentLog;
+export default React.memo(RecentLog);
 
 RecentLog.propTypes = {
 	streak: PropTypes.number,

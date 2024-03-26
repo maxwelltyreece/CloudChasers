@@ -19,7 +19,7 @@ export async function createCommunity(communityData) {
 
         const jsonResponse = response.data;
         if (jsonResponse.success) {
-            console.log(jsonResponse.message);
+            // console.log(jsonResponse.message);
             return jsonResponse;
         }
         console.error(jsonResponse.message);
@@ -77,7 +77,7 @@ export async function getUserRole(communityId) {
         },
     });
 
-    console.log('Server response:', response.data);
+    // console.log('Server response:', response.data);
     return response.data;
 }
 

@@ -26,18 +26,6 @@ const styles = StyleSheet.create({
 
 const CircularProgressComponent = ({ todayStats, goals }) => {
 
-  // Initial macro values moved into state
-  // const [currentMacroValues, setCurrentMacroValues] = useState({
-  //   calories: 0,
-  //   water: 0,
-  //   fat: 0,
-  //   sodium: 0,
-  //   carbs: 0,
-  //   protein: 0,
-  //   sugar: 0,
-  //   fibre: 0,
-  // });
-
   let initialMacroValues = {
 
     calories: 0,
@@ -84,13 +72,6 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
     water: '#5edcff',
   };
 
-  // useEffect(() => {
-  //   const newCurrentMacroValues = { ...currentMacroValues, ...todayStats };
-  //   console.log('New Current Macro Values:', newCurrentMacroValues);
-  //   setCurrentMacroValues(newCurrentMacroValues);
-  // }, [todayStats]);
-
-  // Safe divide function to avoid dividing by zero or if filled to 100%
   const safeDivide = (numerator, denominator) => {
     const ratio = denominator === 0 ? 0 : numerator / denominator;
     return ratio >= 1 ? 100 : ratio * 100;
@@ -115,12 +96,6 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
   useEffect(() => {
     updateProgressValues();
   }, [todayStats, goals]);
-
-
-  console.log('Progress Values:', progressValues);
-  console.log('Current Macro Values:', currentMacroValues);
-  console.log('Nutrient Goals:', nutrientGoals);
-  console.log('Today Stats:', todayStats);
 
   return (
     <View style={styles.container}>

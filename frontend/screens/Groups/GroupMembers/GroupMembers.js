@@ -31,9 +31,9 @@ function GroupMembers({ route }) {
 
     useEffect(() => {
         const fetchMembers = async () => {
-            console.log('Fetching members for community:');
+            // console.log('Fetching members for community:');
             const membersData = await getCommunityMembers(community.id);
-            console.log('Members:', membersData);
+            // console.log('Members:', membersData);
             setMembers(membersData.data);
         };
 

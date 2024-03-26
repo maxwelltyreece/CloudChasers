@@ -21,7 +21,7 @@ export function UserProvider({ children }) {
 		}
 		const details = await userService.fetchUserDetails(token);
 		setUserDetails(details.data);
-		console.log('User details:', details.data);
+		// console.log('User details:', details.data);
 	}
 
 	const updateUserDetails = async () => {
@@ -34,8 +34,8 @@ export function UserProvider({ children }) {
 	};
 
     const editUserDetails = async (newValues) => {
-        console.log("New Values", newValues)
-        console.log("STARTING")
+        // console.log("New Values", newValues)
+        // console.log("STARTING")
         try {
             await userService.editUserDetails(newValues);
             updateUserDetails();
@@ -47,7 +47,7 @@ export function UserProvider({ children }) {
 	const logout = async (navigation) => {
         try {
             await AsyncStorage.removeItem('token');
-            console.log('Token removed!');
+            // console.log('Token removed!');
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'Auth' }],
