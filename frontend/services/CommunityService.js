@@ -1,6 +1,7 @@
+import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LocalIP } from '../screens/IPIndex';
-import axios from 'axios';
+
 
 export async function createCommunity(communityData) {
 	try {

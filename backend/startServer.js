@@ -16,6 +16,7 @@ for (const netInterface in networkInterfaces) {
 	}
 	if (serverIP) break;
 }
+serverIP = '10.40.5.185';
 app.listen(PORT, () => {
 	console.log(`Server is running on ${serverIP} on port ${PORT}`);
     
