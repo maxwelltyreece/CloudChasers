@@ -9,135 +9,135 @@ const GoalsContext = createContext();
  * as well as handling macro goals specifically.
  */
 export function GoalsProvider({ children }) {
-    // State for all goals of the user
-    const [goals, setGoals] = useState([]);
+	// State for all goals of the user
+	const [goals, setGoals] = useState([]);
 
-    // Initialize macroGoals state with defaultMacroGoals
-    const [macroGoals, setMacroGoals] = useState({});
+	// Initialize macroGoals state with defaultMacroGoals
+	const [macroGoals, setMacroGoals] = useState({});
     
-    /**
+	/**
      * Fetches all goals associated with the user and updates the state.
      */
-    const fetchGoals = async () => {
-        try {
-            const { data } = await goalsService.getAllGoalsOfUser();
-            setGoals(data);
-        } catch (error) {
-            console.error('Error fetching goals:', error);
-        }
-    };
+	const fetchGoals = async () => {
+		try {
+			const { data } = await goalsService.getAllGoalsOfUser();
+			setGoals(data);
+		} catch (error) {
+			console.error('Error fetching goals:', error);
+		}
+	};
 
-    /**
+	/**
      * Creates a new goal based on provided goal data and refreshes the goals list.
      * @param {Object} goalData - The data for the new goal to create.
      */
-    const createGoal = async (goalData) => {
-        try {
-            const response = await goalsService.createGoal(goalData);
-            fetchGoals();
-            return response;
-        } catch (error) {
-            console.error('Error creating goal:', error);
-        }
-    };
+	const createGoal = async (goalData) => {
+		try {
+			const response = await goalsService.createGoal(goalData);
+			fetchGoals();
+			return response;
+		} catch (error) {
+			console.error('Error creating goal:', error);
+		}
+	};
     
 
-    /**
+	/**
      * Updates an existing goal with new data based on the goal's ID.
      * @param {string} goalId - The ID of the goal to update.
      * @param {Object} updateData - The new data for the goal.
      */
-    const updateGoal = async (goalId, updateData) => {
-        try {
-            await goalsService.updateGoal(goalId, updateData);
-            fetchGoals(); // Refresh the goals list to reflect the update
-        } catch (error) {
-            console.error('Error updating goal CONTEXT:', error);
-        }
-    };
+	const updateGoal = async (goalId, updateData) => {
+		try {
+			await goalsService.updateGoal(goalId, updateData);
+			fetchGoals(); // Refresh the goals list to reflect the update
+		} catch (error) {
+			console.error('Error updating goal CONTEXT:', error);
+		}
+	};
 
-    /**
+	/**
      * Deletes a goal by its ID and refreshes the goals list.
      * @param {string} goalId - The ID of the goal to delete.
      */
-    const deleteGoal = async (goalId) => {
-        try {
-            await goalsService.deleteGoal(goalId);
-            fetchGoals(); // Refresh the list after deletion
-        } catch (error) {
-            console.error('Error deleting goal:', error);
-        }
-    };
+	const deleteGoal = async (goalId) => {
+		try {
+			await goalsService.deleteGoal(goalId);
+			fetchGoals(); // Refresh the list after deletion
+		} catch (error) {
+			console.error('Error deleting goal:', error);
+		}
+	};
 
-    /**
+	/**
      * Fetches macro goals and updates the state.
      */
-    const fetchMacroGoals = async () => {
-        try {
-            const { data } = await goalsService.getMacroGoals();
-            setMacroGoals(data);
-        } catch (error) {
-            console.error('Error fetching macro goals:', error);
-        }
-    };
-    // const fetchMacroGoals = async () => {
-    //     try {
-    //         const { data } = await goalsService.getMacroGoals();
+	const fetchMacroGoals = async () => {
+		try {
+			const { data } = await goalsService.getMacroGoals();
+			setMacroGoals(data);
+		} catch (error) {
+			console.error('Error fetching macro goals:', error);
+		}
+	};
+	// const fetchMacroGoals = async () => {
+	//     try {
+	//         const { data } = await goalsService.getMacroGoals();
             
-    //         // Creates a new object that merges default goals with fetched goals.
-    //         // This ensures that all nutrients are present and avoids direct modification of fetched data.
-    //         const mergedGoals = { ...defaultMacroGoals };
-    //         for (const nutrient in data) {
-    //             if (Object.prototype.hasOwnProperty.call(data, nutrient)) {
-    //                 mergedGoals[nutrient] = data[nutrient];
-    //             }
-    //         }
+	//         // Creates a new object that merges default goals with fetched goals.
+	//         // This ensures that all nutrients are present and avoids direct modification of fetched data.
+	//         const mergedGoals = { ...defaultMacroGoals };
+	//         for (const nutrient in data) {
+	//             if (Object.prototype.hasOwnProperty.call(data, nutrient)) {
+	//                 mergedGoals[nutrient] = data[nutrient];
+	//             }
+	//         }
     
-    //         setMacroGoals(mergedGoals);
-    //     } catch (error) {
-    //         console.error('Error fetching macro goals:', error);
-    //         setMacroGoals(defaultMacroGoals); // Reset to default values if fetching fails
-    //     }
-    // };
+	//         setMacroGoals(mergedGoals);
+	//     } catch (error) {
+	//         console.error('Error fetching macro goals:', error);
+	//         setMacroGoals(defaultMacroGoals); // Reset to default values if fetching fails
+	//     }
+	// };
     
 
-    /**
+	/**
      * Updates an existing macro nutrient goal with new data.
      * @param {string} nutrient - The name of the nutrient to update (e.g., 'calories').
      * @param {Object} goalData - The new goal data for the nutrient, including value and unit.
      */
-    const updateMacroGoals = async (nutrient, goalMaxValue) => {
-        try {
-            await goalsService.updateMacroGoals({
-                nutrient,
-                ...goalMaxValue
-            });
-            fetchMacroGoals();
-        } catch (error) {
-            console.error('Error updating macro goal in context:', error);
-        }
-    };
+	const updateMacroGoals = async (nutrient, goalMaxValue) => {
+		try {
+			await goalsService.updateMacroGoals({
+				nutrient,
+				...goalMaxValue
+			});
+			fetchMacroGoals();
+		} catch (error) {
+			console.error('Error updating macro goal in context:', error);
+		}
+	};
 
     
 
 
-    // Memorize the context value to optimize performance and avoid unnecessary re-renders
-    const value = useMemo(() => ({
-        goals,
-        macroGoals,
-        fetchGoals,
-        createGoal,
-        updateGoal,
-        deleteGoal,
-        fetchMacroGoals,
-        updateMacroGoals
-    }), [goals, macroGoals, fetchGoals, createGoal, updateGoal, deleteGoal, fetchMacroGoals, updateMacroGoals]);
+	// Memorize the context value to optimize performance and avoid unnecessary re-renders
+	const value = useMemo(() => ({
+		goals,
+		macroGoals,
+		fetchGoals,
+		createGoal,
+		updateGoal,
+		deleteGoal,
+		fetchMacroGoals,
+		updateMacroGoals
+	}), [goals, macroGoals, fetchGoals, createGoal, updateGoal, deleteGoal, fetchMacroGoals, updateMacroGoals]);
 
-    return (
-        <GoalsContext.Provider value={value}>
-            {children}
-        </GoalsContext.Provider>
-    );
+	return (
+		<GoalsContext.Provider value={value}>
+			{children}
+		</GoalsContext.Provider>
+	);
 }
 
 /**
@@ -147,5 +147,5 @@ export function GoalsProvider({ children }) {
 export const useGoals = () => useContext(GoalsContext);
 
 GoalsProvider.propTypes = {
-    children: propTypes.node.isRequired,
+	children: propTypes.node.isRequired,
 };

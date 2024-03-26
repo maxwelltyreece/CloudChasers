@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import {
-	View, Text, ScrollView, KeyboardAvoidingView, Modal, 
+	View, Text, ScrollView, KeyboardAvoidingView, Modal,
 	TextInput, Pressable, Alert, Platform
 } from 'react-native';
 import { useReminders } from '../../../../contexts/RemindersContext';
@@ -33,7 +33,7 @@ function Reminders() {
 
 
 	const toggleActionButtonsVisibility = (id) => {
-		const updatedReminders = reminders.map((reminder) => 
+		const updatedReminders = reminders.map((reminder) =>
 			reminder.id === id ? { ...reminder, showActions: !reminder.showActions } : reminder
 		);
 		setReminders(updatedReminders);
@@ -141,40 +141,35 @@ function Reminders() {
 					<View key={reminder.id} style={styles.reminderItem}>
 						<Text style={styles.remindersDescription} numberOfLines={4}>{reminder.description}</Text>
 						<Text style={styles.reminderInfoText}>
-						<Text style={styles.reminderInfoTitle}>Time:</Text>
-						{' '}
-						{reminder.time}
+							<Text style={styles.reminderInfoTitle}>Time:</Text>
+							{' '}
+							{reminder.time}
 						</Text>
 						<Text style={styles.reminderInfoText}>
-						<Text style={styles.reminderInfoTitle}>Frequency:</Text>
-						{' '}
-						{reminder.frequency}
+							<Text style={styles.reminderInfoTitle}>Frequency:</Text>
+							{' '}
+							{reminder.frequency}
 						</Text>
 						<Pressable onPress={() => toggleActionButtonsVisibility(reminder.id)} style={styles.threeDotsButton}>
-						<Text style={styles.threeDotsText}>...</Text>
+							<Text style={styles.threeDotsText}>...</Text>
 						</Pressable>
 						{reminder.showActions && (
-						<View style={styles.reminderActionButtonsSection}>
-							<Pressable onPress={() => editReminder(reminder.id)} style={styles.editButton}>
-								<Text style={styles.actionButtonText}>Edit</Text>
-							</Pressable>
-							<Pressable onPress={() => deleteReminder(reminder.id)} style={styles.deleteButton}>
-								<Text style={styles.actionButtonText}>Delete</Text>
-							</Pressable>
-							{/* <Pressable onPress={() => toggleActionButtonsVisibility(reminder.id)} style={styles.backButton}>
-								<Text style={styles.backButtonText}>Back</Text>
-							</Pressable> */}
-						</View>
+							<View style={styles.reminderActionButtonsSection}>
+								<Pressable onPress={() => editReminder(reminder.id)} style={styles.editButton}>
+									<Text style={styles.actionButtonText}>Edit</Text>
+								</Pressable>
+								<Pressable onPress={() => deleteReminder(reminder.id)} style={styles.deleteButton}>
+									<Text style={styles.actionButtonText}>Delete</Text>
+								</Pressable>
+							</View>
 						)}
 					</View>
 				))}
 			</ScrollView>
 
-			{/* <View style={styles.semiCircle}></View> */}
-
 			<Pressable style={styles.addReminderButton} onPress={openModalAndResetFields}>
 				<Text style={styles.addReminderButtonText}>
-						Add Reminder
+					Add Reminder
 				</Text>
 			</Pressable>
 
@@ -204,7 +199,7 @@ function Reminders() {
 
 							{(Platform.OS != 'ios' || !newReminder.time) && (
 								<Text style={styles.currentTimeSelectedText}>{newReminder.time || '(Choose Time)'}</Text>
-								)
+							)
 							}
 
 							{Platform.OS === 'ios' || showTimePicker ? (
@@ -215,7 +210,7 @@ function Reminders() {
 									onChange={onChangeTime}
 									is24Hour={false}
 								/>
-								) : (
+							) : (
 								<Pressable onPress={() => setShowTimePicker(true)} style={styles.timePickerButton}>
 									<Text style={styles.timePickerButtonText}>Select Time</Text>
 								</Pressable>

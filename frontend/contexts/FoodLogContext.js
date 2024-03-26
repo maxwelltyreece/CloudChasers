@@ -1,6 +1,6 @@
 // FoodContext.js
 import React, {
-    createContext, useState, useContext, useMemo,
+	createContext, useState, useContext, useMemo,
 } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as foodLogService from '../services/FoodLogService';
@@ -124,11 +124,10 @@ export function FoodLogProvider({ children }) {
             {children}
         </FoodLogContext.Provider>
     );
-
 }
 
 export const useFoodLog = () => useContext(FoodLogContext);
 
 FoodLogProvider.propTypes = {
-    children: PropTypes.node.isRequired,
+	children: PropTypes.node.isRequired,
 };

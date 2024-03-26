@@ -5,7 +5,7 @@ import {
 
 import {
 	WelcomeBar, RecentLog, CommunityStatus, CurrentGoalProgress, AchievementsFeature,
-} from './Components';
+} from './DashboardComponents';
 
 import { useUser } from '../../contexts/UserContext';
 import { useCommunity } from '../../contexts/CommunityContext';
@@ -34,7 +34,7 @@ function Dashboard() {
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
-            console.log('Token:', token);
+			// console.log('Token:', token);
 			if (!token) {
 				console.error("No token found");
 				navigation.navigate('Login');
@@ -47,37 +47,39 @@ function Dashboard() {
 		}
 	};
 
-	useEffect(() => {
-		setLoading(true);
-		const fetchData = async () => {
-			try {
-				await checkUserLogin();
+	// useEffect(() => {
+	// 	setLoading(true);
+	// 	const fetchData = async () => {
+	// 		try {
+	// 			await checkUserLogin();
 
-				await Promise.all([
-					updateUserDetails(),
-					updateTodayStats(),
-					getUserCommunities(),
-					getLatestLoggedFood(),
-					fetchGoals(),
-					fetchUserAwards(),
-					fetchAwards(),
-					// fetchAwardsToBeIssued()
-				]);
-			} catch (error) {
-				if (latestLoggedFood != undefined) {
-					console.error("Error fetching data for dashboard:", error);
-				}
-			} finally {
-				setLoading(false);
-			}
-		};
+	// 			await Promise.all([
+	// 				updateUserDetails(),
+	// 				updateTodayStats(),
+	// 				getUserCommunities(),
+	// 				getLatestLoggedFood(),
+	// 				fetchGoals(),
+	// 				fetchUserAwards(),
+	// 				fetchAwards(),
+	// 				// fetchAwardsToBeIssued()
+	// 			]);
+	// 		} catch (error) {
+	// 			if (latestLoggedFood != undefined) {
+	// 				console.error("Error fetching data for dashboard:", error);
+	// 			}
+	// 		} finally {
+	// 			setLoading(false);
+	// 		}
+	// 	};
 
-		fetchData();
-	}, []);
+	// 	fetchData();
+	// }, []);
 
 	const updateDashboardData = async () => {
 		try {
 			await checkUserLogin();
+
+			await fetchAwardsToBeIssued();
 
 			await Promise.all([
 				updateUserDetails(),
@@ -85,9 +87,8 @@ function Dashboard() {
 				getUserCommunities(),
 				getLatestLoggedFood(),
 				fetchGoals(),
-				fetchUserAwards(),
 				fetchAwards(),
-				// fetchAwardsToBeIssued()
+				fetchUserAwards()
 			]);
 		} catch (error) {
 			if (latestLoggedFood != undefined) {
@@ -97,11 +98,13 @@ function Dashboard() {
 	};
 
 	useFocusEffect(
-        useCallback(() => {
-            console.log('DASHBOARD FOCUSED');
-            updateDashboardData();
+		useCallback(() => {
+			console.log('DASHBOARD FOCUSED');
+			setLoading(true);
+			updateDashboardData().finally(() => setLoading(false));
 		}, [])
 	);
+
 
 
 	if (loading) {

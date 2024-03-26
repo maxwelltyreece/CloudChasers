@@ -34,7 +34,7 @@ exports.register = async (req, res) => {
 		}
 		const hashedPassword = await bcrypt.hash(password, 10);
 
-		console.log('Creating user');
+		// console.log('Creating user');
 		const newUser = new User({
 			forename: forename,
 			surname: surname,
@@ -49,7 +49,7 @@ exports.register = async (req, res) => {
 			profilePictureLink,
 		});
 		await newUser.save();
-		console.log('User created', newUser);
+		// console.log('User created', newUser);
 		return res.status(200).json({ success: true, message: 'User created', data: newUser });
 	} catch (error) {
 		return res.status(400).json({ error: error.toString() });
@@ -69,7 +69,7 @@ exports.login = async (req, res) => {
 		const user = await User.findOne({ username: req.body.username });
 
 		if (!user || !await bcrypt.compare(req.body.password, user.password)) {
-			console.log('Invalid credentials');
+			// console.log('Invalid credentials');
 			return res.status(401).json({ message: 'Invalid credentials' });
 		}
 		// Generate and send token
@@ -103,9 +103,9 @@ exports.getUsers = async (req, res) => {
  * @returns {Object} res.data - The user object.
  */
 exports.getUserDetail =  async (req, res) => {
-	console.log('Getting user details'); 
+	// console.log('Getting user details'); 
 	try {
-		console.log('Getting user details2'); 
+		// console.log('Getting user details2'); 
 		return res.status(200).json({data: req.user});
 
 	} catch (error) {
@@ -125,10 +125,10 @@ exports.updateProfile = async (req, res) => {
 	//TODO: Add guard for updating fields that are not allowed to be updated
 	const { ...updates } = req.body;
 	const user = req.user;
-	console.log('User', user);
-	console.log('Updates', updates);
+	// console.log('User', user);
+	// console.log('Updates', updates);
 	try {
-		console.log('Updating user');
+		// console.log('Updating user');
 		// Loop over the updates object and update the user
 		Object.keys(updates).forEach((update) => {
 			user[update] = updates[update];

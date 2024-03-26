@@ -57,11 +57,11 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal}) => {
     toggleModal();
   };
 
-  return (
-    <Modal
-      isVisible={isVisible}
-      onBackdropPress={onBackdropPress}
-      
+	return (
+		<Modal
+			isVisible={isVisible}
+			onBackdropPress={onBackdropPress}
+    
       backdropTransitionOutTiming={0}
       animationIn="pulse"
       animationOut="fadeOut"
@@ -87,68 +87,68 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal}) => {
       <FoodInput label="Fat (g)" value={fat} onChangeText={setFat} />
       <FoodInput label="Carbs (g)" value={carbs} onChangeText={setCarbs} />
       
-      <View style={styles.buttonContainer}>
-            <TouchableOpacity style={{ ...styles.button, padding: 8 }} onPress={toggleModal}>
-                <FontAwesome5 name='times' color='white' size={27}/>
-            </TouchableOpacity>
+			<View style={styles.buttonContainer}>
+				<TouchableOpacity style={{ ...styles.button, padding: 8 }} onPress={toggleModal}>
+					<FontAwesome5 name='times' color='white' size={27}/>
+				</TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={handleLogFood}>
-                <Text style={styles.buttonText}>Submit</Text>
-            </TouchableOpacity>   
+				<TouchableOpacity style={styles.button} onPress={handleLogFood}>
+					<Text style={styles.buttonText}>Submit</Text>
+				</TouchableOpacity>   
 
-        </View>   
-    </Modal>
-  );
+			</View>   
+		</Modal>
+	);
 };
 
 const styles = StyleSheet.create({
-  modal: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 30,
-    paddingHorizontal: 25,
-  },
-  inputContainer: {
-    marginBottom: 20,
-    fontFamily: 'Montserrat_600SemiBold',
-  },
-  label: {
-    marginBottom: 5,
-    fontFamily: 'Montserrat_700Bold',
-    fontSize: 14,
-  },
-  input: {
-    height: 40,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    paddingHorizontal: 10,
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: '#FF815E',
-    padding: 12,
-    borderRadius: 15,
-    alignSelf: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontFamily: 'Montserrat_700Bold',
-    fontSize: 16,
-  },
-  buttonContainer: {
-    justifyContent: 'space-evenly',
-    flexDirection: 'row',
+	modal: {
+		flex: 1,
+		justifyContent: 'center',
+		backgroundColor: '#FFFFFF',
+		borderRadius: 30,
+		paddingHorizontal: 25,
+	},
+	inputContainer: {
+		marginBottom: 20,
+		fontFamily: 'Montserrat_600SemiBold',
+	},
+	label: {
+		marginBottom: 5,
+		fontFamily: 'Montserrat_700Bold',
+		fontSize: 14,
+	},
+	input: {
+		height: 40,
+		borderWidth: 1,
+		borderColor: '#ccc',
+		borderRadius: 5,
+		paddingHorizontal: 10,
+		marginBottom: 10,
+	},
+	button: {
+		backgroundColor: '#FF815E',
+		padding: 12,
+		borderRadius: 15,
+		alignSelf: 'center',
+	},
+	buttonText: {
+		color: '#fff',
+		textAlign: 'center',
+		fontFamily: 'Montserrat_700Bold',
+		fontSize: 16,
+	},
+	buttonContainer: {
+		justifyContent: 'space-evenly',
+		flexDirection: 'row',
 
-},
+	},
 });
 
 NewFoodModal.propTypes = {
-  isVisible: proptypes.bool.isRequired,
-  onBackdropPress: proptypes.func,
-  toggleModal: proptypes.func.isRequired,
+	isVisible: PropTypes.bool.isRequired,
+	onBackdropPress: PropTypes.func.isRequired,
+	toggleModal: PropTypes.func.isRequired,
 };
 
 

@@ -9,7 +9,7 @@ import { useUser } from '../../contexts/UserContext';
 import SettingsOptions from './SettingsOptions'; // Import the settings options
 import globalStyles from '../../styles/global';
 import LogoutButton from './settingsComponents/LogoutButton';
-import proptypes from 'prop-types'; // Import proptypes
+import PropTypes from 'prop-types';
 import { styles } from './styles';
 
 const ICON_SIZE = 25;
@@ -76,16 +76,16 @@ function Settings() {
 
 export default Settings;
 
-SettingsItem.propTypes = {
-	item: proptypes.shape({
-		name: proptypes.string,
-		handler: proptypes.func,
+SettingsItem.PropTypes = {
+	item: PropTypes.shape({
+		name: PropTypes.string,
+		handler: PropTypes.func,
 	}).isRequired,
 };
 
-SettingsFooter.propTypes = {
-	userEmail: proptypes.string.isRequired,
-	navigation: proptypes.shape({
-		navigate: proptypes.func,
+SettingsFooter.PropTypes = {
+	userEmail: PropTypes.string.isRequired,
+	navigation: PropTypes.shape({
+		navigate: PropTypes.func,
 	}).isRequired,
 };
