@@ -54,7 +54,7 @@ function RecipeBox({ id, title, description, }) {
 	}, [id]);
 
 	return (
-		<Pressable style={styles.box} onPress={() => setModalVisible(true)}>
+		<Pressable style={styles.box} onPress={() => setModalVisible(true)} testID="recipe-box">
 			<Image source={{ uri: imageUrl }} style={styles.image} />
 			<View style={styles.titleContainer}>
 				<Text style={styles.title}>{title}</Text>
@@ -67,6 +67,7 @@ function RecipeBox({ id, title, description, }) {
 				onRequestClose={() => {
 					setModalVisible(!modalVisible);
 				}}
+				testID="modal"
 			>
 				<TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
 					<View style={styles.centeredView}>

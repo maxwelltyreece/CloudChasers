@@ -17,6 +17,7 @@ export default function SettingsButton() {
 		<TouchableOpacity
 			style={styles.button}
 			onPress={() => navigation.navigate('Settings')}
+			testID='settings-button'
 		>
 			<FontAwesome5 name="cog" size={24} color="#FFFFFF" solid />
 		</TouchableOpacity>
