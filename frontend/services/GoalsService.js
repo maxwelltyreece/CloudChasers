@@ -17,7 +17,6 @@ const createGoal = async (goalData) => {
 	}
 };
 
-
 /**
  * Retrieves all goals associated with the user.
  * @returns {Promise} Axios Response Promise with the user's goals.

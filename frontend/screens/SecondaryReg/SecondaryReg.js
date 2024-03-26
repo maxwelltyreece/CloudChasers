@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Alert, View, TextInput, TouchableOpacity, Text, Image, Button } from 'react-native';
+import { ImageBackground, Alert, View, TextInput, TouchableOpacity, Text, Image, Button } from 'react-native';
 import axios from 'axios';
 import { LocalIP } from '../IPIndex';
 import { styles } from './styles';
 import { useUser } from '../../contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { requestImagePermissions, pickImage, uploadImage } from '../../services/ImageService';
 
 function RegisterDetails({ navigation, route }) {
@@ -82,36 +83,45 @@ function RegisterDetails({ navigation, route }) {
 		}
 	};
 
-	return (
-		<View style={styles.container}>
-			<View style={styles.loginContainer}>
-				<Text style={styles.header}>Complete Your Profile!</Text>
-				<TextInput
-					style={styles.input}
-					placeholder="First Name"
-					value={firstName}
-					onChangeText={setFirstName}
-					underlineColorAndroid="transparent"
-					autoCapitalize="none"
-				/>
-				<TextInput
-					style={styles.input}
-					placeholder="Last Name"
-					value={lastName}
-					onChangeText={setLastName}
-					underlineColorAndroid="transparent"
-					autoCapitalize="none"
-				/>
-				<Button title="Pick Profile Picture" onPress={handlePickImage} />
-				{profilePicture ? <Image source={{ uri: profilePicture }} style={styles.profilePicture} /> : null}
-				<View style={styles.buttonContainer}>
-					<TouchableOpacity style={styles.button} onPress={handleRegisterDetails}>
-						<Text style={styles.buttonText}>Submit</Text>
-					</TouchableOpacity>
-				</View>
-			</View>
-		</View>
-	);
+    return (
+        <View style={styles.container}>
+            <View style={styles.loginContainer}>
+                <Text style={styles.header}>Complete Your Profile!</Text>
+                <TouchableOpacity onPress={handlePickImage}>
+                    <View style={styles.profilePictureContainer}>
+                        <ImageBackground
+                            source={profilePicture ? { uri: profilePicture } : { uri: 'https://your-website.com/path-to-default-image.png' }}
+                            style={styles.profilePicture}
+                            imageStyle={{ borderRadius: 70 }}
+                        >
+                        </ImageBackground>
+                        <Icon name="camera" size={30} color="#000" style={styles.cameraIcon} />
+                    </View>
+                </TouchableOpacity>
+                <TextInput
+                    style={styles.input}
+                    placeholder="First Name"
+                    value={firstName}
+                    onChangeText={setFirstName}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <TextInput
+                    style={styles.input}
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChangeText={setLastName}
+                    underlineColorAndroid="transparent"
+                    autoCapitalize="none"
+                />
+                <View style={styles.buttonContainer}>
+                    <TouchableOpacity style={styles.button} onPress={handleRegisterDetails}>
+                        <Text style={styles.buttonText}>Submit</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </View>
+    );
 }
 
 export default RegisterDetails;
