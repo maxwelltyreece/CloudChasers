@@ -3,40 +3,55 @@ import React, { useState } from 'react';
 import { Alert, View, TextInput, Text, Pressable } from 'react-native';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { LocalIP } from '../IPIndex';
 import { styles } from './styles';
 // import { useUser } from '../../contexts/UserContext';
 
-const handleLogin = async () => {
-    if (!username || !password) {
-        Alert.alert('Error', 'Please fill out all fields');
-        return;
-    }
+function Login({ navigation }) {
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-    try {
-        const response = await logRecipeFood({
-            mealType: username,
-            recipeID: password,
-            totalRecipeWeight: parseInt(inputWeight),
+    const handleLogin = () => {
+        if (!username || !password) {
+            Alert.alert('Error', 'Please fill out all fields');
+            return;
+        }
+        
+        axios.post(`http://api.gobl-up.me:80/login`, {
+            username,
+            password,
+        })
+        .then((response) => {
+            if(response.data.data) {
+                AsyncStorage.setItem('token', response.data.data);
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Main' }],
+                });
+            } else {
+                Alert.alert('Login failed', 'Please try again');
+            }
+        })
+        .catch((error) => {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
         });
-
-        if(response.data.data) {
-            AsyncStorage.setItem('token', response.data.data);
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'Main' }],
-            });
-        } else {
-            Alert.alert('Login failed', 'Please try again');
-        }
-    } catch (error) {
-        if (error.response && error.response.data.message) {
-            Alert.alert(error.response.data.message);
-        } else {
-            console.error('Error:', error.message);
-        }
-    }
-};
+    };
+}
 
 	return (
 		<View style={styles.container}>
