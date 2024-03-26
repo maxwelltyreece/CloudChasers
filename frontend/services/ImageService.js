@@ -4,6 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as ImageManipulator from 'expo-image-manipulator';
 
+/**
+ * Request image permissions from the user.
+ * @returns {Promise} Promise representing the permission request result.
+ */
 export const requestImagePermissions = async () => {
     if (Platform.OS !== 'web') {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -13,6 +17,10 @@ export const requestImagePermissions = async () => {
     }
 };
 
+/**
+ * Pick an image from the user's media library.
+ * @returns {Promise<string>} Promise that resolves to the URI of the picked image.
+ */
 export const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -26,6 +34,13 @@ export const pickImage = async () => {
     }
 };
 
+/**
+ * Upload an image to the server.
+ * @param {string} userId - The ID of the user uploading the image.
+ * @param {string} profilePicture - The URI of the image to upload.
+ * @param {string} folderName - The name of the folder to upload the image to.
+ * @returns {Promise} Axios Response Promise with the upload operation result.
+ */
 export const uploadImage = async (userId, profilePicture, folderName) => {
     try {
         const token = await AsyncStorage.getItem('token');
@@ -54,6 +69,12 @@ export const uploadImage = async (userId, profilePicture, folderName) => {
     }
 };
 
+/**
+ * Get the link to an image from the server.
+ * @param {string} folderName - The name of the folder where the image is stored.
+ * @param {string} id - The ID of the image.
+ * @returns {Promise<string>} Promise that resolves to the URL of the image.
+ */
 export const getImageLink = async (folderName, id) => {
     try {
         const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
