@@ -30,7 +30,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.logDatabaseFood(data);
 
-			expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/logDatabaseFood`, data, {
+			expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/logDatabaseFood`, data, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockResponse.data);
@@ -44,7 +44,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.createNewRecipeByUser(data);
 
-			expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/createNewRecipeByUser`, data, {
+			expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/createNewRecipeByUser`, data, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockResponse.data);
@@ -58,7 +58,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.searchFoods(params);
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/searchFoods`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/searchFoods`, {
 				headers: { Authorization: `Bearer ${token}` },
 				params: params,
 			});
@@ -70,7 +70,7 @@ describe('FoodLogService', () => {
 		it('should log recipe food successfully', async () => {
 			axios.post.mockResolvedValue({ data: { success: true, message: 'Recipe food logged successfully' } });
 			const result = await FoodLogService.logRecipeFood(data);
-			expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/logRecipeFood`, data, {
+			expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/logRecipeFood`, data, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data.success).toBe(true);
@@ -85,7 +85,7 @@ describe('FoodLogService', () => {
 			it('should duplicate recipe for user successfully', async () => {
 				axios.post.mockResolvedValue({ data: { success: true, message: 'Recipe duplicated successfully' } });
 				const result = await FoodLogService.duplicateRecipeToUser(data);
-				expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/duplicateRecipe`, data, {
+				expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/duplicateRecipe`, data, {
 					headers: { Authorization: `Bearer ${token}` },
 				});
 				expect(result.data.success).toBe(true);
@@ -102,7 +102,7 @@ describe('FoodLogService', () => {
 			it('should fetch food successfully', async () => {
 				axios.get.mockResolvedValue({ data: [{ id: '1', name: 'Apple' }] });
 				const result = await FoodLogService.getFood();
-				expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getFood`, {
+				expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/getFood`, {
 					headers: { Authorization: `Bearer ${token}` },
 				});
 				expect(result.data.length).toBeGreaterThan(0);
@@ -122,7 +122,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.getRecipe();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getRecipe`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/getRecipe`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockResponse.data);
@@ -142,7 +142,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.getRecipeIngredients();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getRecipeIngredients`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/getRecipeIngredients`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockIngredients);
@@ -156,7 +156,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.getAllUserRecipes();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getUserRecipes`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/getUserRecipes`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockRecipes);
@@ -171,7 +171,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.getLatestLoggedFood();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getLatestLoggedFood`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/getLatestLoggedFood`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockLoggedFood);
@@ -185,7 +185,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.getCommunityRecipes();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getCommunityRecipes`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/getCommunityRecipes`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockRecipes);
@@ -199,7 +199,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.getRecipeWeight();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getRecipeWeight`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/getRecipeWeight`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockWeight);
@@ -213,7 +213,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.getRecipeMacro();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getRecipeMacro`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/getRecipeMacro`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockMacro);

@@ -19,7 +19,7 @@ function RegisterDetails({ navigation, route }) {
 	}, []);
 
 	const handleLogin = () => {
-		axios.post(`http://${LocalIP}:3000/login`, {
+		axios.post(`http://api.gobl-up.me:80/login`, {
 			username,
 			password,
 		})
@@ -41,7 +41,7 @@ function RegisterDetails({ navigation, route }) {
 
 	const registerUser = async () => {
 		try {
-			const response = await axios.post(`http://${LocalIP}:3000/register`, {
+			const response = await axios.post(`http://api.gobl-up.me:80/register`, {
 				username,
 				email,
 				password,

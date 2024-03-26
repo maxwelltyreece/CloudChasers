@@ -17,7 +17,7 @@ function Login({ navigation }) {
 			return;
 		}
         
-		axios.post(`http://${LocalIP}:3000/login`, {
+		axios.post(`http://api.gobl-up.me:80/login`, {
 			username,
 			password,
 		})

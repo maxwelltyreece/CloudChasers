@@ -133,7 +133,7 @@ function RecipeBox({ id, title, description, onDelete }) {
 		const handleImageRetrieval = () => {
 			axios
 				.get(
-					`http://${LocalIP}:3000/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`
+					`http://api.gobl-up.me:80/image/getPictureURL?id=${id}&folderName=Recipe_Pictures`
 				)
 				.then((response) => {
 					setImageUrl(response.data.url);
@@ -146,7 +146,7 @@ function RecipeBox({ id, title, description, onDelete }) {
 		const getIngredients = async () => {
 			try {
 				const response = await axios.get(
-					`http://${LocalIP}:3000/food/getRecipeIngredients?recipeID=${id}`
+					`http://api.gobl-up.me:80/food/getRecipeIngredients?recipeID=${id}`
 				);
 				if (Array.isArray(response.data.data)) {
 					setIngredients(response.data.data);

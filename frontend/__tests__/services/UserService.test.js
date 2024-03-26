@@ -35,7 +35,7 @@ describe('userService', () => {
 
 			const result = await userService.fetchUserDetails(token);
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/userDetails`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/userDetails`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
@@ -55,7 +55,7 @@ describe('userService', () => {
 
 			await userService.editUserDetails(field, newValue);
 
-			expect(axios.put).toHaveBeenCalledWith(`http://${LocalIP}:3000/updateProfile`, {
+			expect(axios.put).toHaveBeenCalledWith(`http://api.gobl-up.me:80/updateProfile`, {
 				[field]: newValue,
 			}, {
 				headers: {

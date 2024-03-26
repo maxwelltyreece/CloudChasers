@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LocalIP } from '../screens/IPIndex';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -36,7 +36,7 @@ export const uploadImage = async (userId, profilePicture, folderName) => {
 		formData.append('folderName', folderName);
 		formData.append('image', { uri: profilePicture, name: filename, type });
 
-		const response = await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+		const response = await axios.post(`http://api.gobl-up.me:80/image/uploadPicture`, formData, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 				Authorization: `Bearer ${token}`,

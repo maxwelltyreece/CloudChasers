@@ -1,10 +1,10 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../screens/IPIndex';
+
 
 export const fetchUserDetails = async (token) => {
 	try {
-		const response = await axios.get(`http://${LocalIP}:3000/userDetails`, {
+		const response = await axios.get(`http://api.gobl-up.me:80/userDetails`, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
@@ -24,7 +24,7 @@ export const fetchUserDetails = async (token) => {
 export const editUserDetails = async (newValues) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, newValues, {
+		const response = await axios.put(`http://api.gobl-up.me:80/updateProfile`, newValues, {
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},

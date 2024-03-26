@@ -31,7 +31,7 @@ describe('goalsService', () => {
 
 			const result = await goalsService.createGoal(goalData);
 
-			expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/goals/createGoal`, goalData, {
+			expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/goals/createGoal`, goalData, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockResponse.data);
@@ -52,7 +52,7 @@ describe('goalsService', () => {
 
 			const result = await goalsService.getAllGoalsOfUser();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/goals/getAllGoalsOfUser`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/goals/getAllGoalsOfUser`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockGoalsData);
@@ -73,7 +73,7 @@ describe('goalsService', () => {
 
 			const result = await goalsService.getSingleGoalItem(goalId);
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/getSingleGoalItem?goalId=${goalId}`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/getSingleGoalItem?goalId=${goalId}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockGoalData);
@@ -93,7 +93,7 @@ describe('goalsService', () => {
 
 			const result = await goalsService.deleteGoal(goalId);
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/deleteGoal?goalId=${goalId}`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/deleteGoal?goalId=${goalId}`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data.success).toBe(true);
@@ -115,7 +115,7 @@ describe('goalsService', () => {
     
 			const result = await goalsService.updateGoal(goalId, updateData);
     
-			expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/goals/updateGoal`, {
+			expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/goals/updateGoal`, {
 				goalID: goalId,
 				...updateData,
 			}, {
@@ -140,7 +140,7 @@ describe('goalsService', () => {
 
 			const result = await goalsService.getMacroGoals();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/goals/getMacroGoal`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/goals/getMacroGoal`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockMacroGoalsData);

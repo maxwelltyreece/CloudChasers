@@ -49,7 +49,7 @@ const RecipeModal = ({ isVisible, onClose }) => {
 		};
   
 		try {
-			const response = await axios.post(`http://${LocalIP}:3000/food/createNewRecipeByUser`, recipeData, { headers: { Authorization: `Bearer ${token}` } });
+			const response = await axios.post(`http://api.gobl-up.me:80/food/createNewRecipeByUser`, recipeData, { headers: { Authorization: `Bearer ${token}` } });
 			// console.log('Recipe created:', response.data.data._id);
 			recipeID = response.data.data._id;
   
@@ -63,7 +63,7 @@ const RecipeModal = ({ isVisible, onClose }) => {
 					type: 'image/jpeg',
 				});
   
-				await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+				await axios.post(`http://api.gobl-up.me:80/image/uploadPicture`, formData, {
 					headers: {
 						Authorization: `Bearer ${token}`,
 						'Content-Type': 'multipart/form-data',

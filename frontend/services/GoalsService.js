@@ -1,6 +1,6 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../screens/IPIndex';
+
 
 /**
  * Creates a new goal with the provided data.
@@ -10,7 +10,7 @@ import { LocalIP } from '../screens/IPIndex';
 const createGoal = async (goalData) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		return await axios.post(`http://${LocalIP}:3000/goals/createGoal`, goalData, { headers: { Authorization: `Bearer ${token}` } });
+		return await axios.post(`http://api.gobl-up.me:80/goals/createGoal`, goalData, { headers: { Authorization: `Bearer ${token}` } });
 	} catch (error) {
 		console.error('Error creating goal:', error);
 		throw error;
@@ -19,7 +19,7 @@ const createGoal = async (goalData) => {
 // const createGoal = async (goalData) => {
 //     try {
 //         const token = await AsyncStorage.getItem('token');
-//         const response = await fetch(`http://${LocalIP}:3000/goals/createGoal`, {
+//         const response = await fetch(`http://api.gobl-up.me:80/goals/createGoal`, {
 //             method: 'POST',
 //             headers: {
 //                 'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ const createGoal = async (goalData) => {
 const getAllGoalsOfUser = async () => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		return await axios.get(`http://${LocalIP}:3000/goals/getAllGoalsOfUser`, { headers: { Authorization: `Bearer ${token}` } });
+		return await axios.get(`http://api.gobl-up.me:80/goals/getAllGoalsOfUser`, { headers: { Authorization: `Bearer ${token}` } });
 	} catch (error) {
 		console.error('Error fetching all goals of user:', error);
 		throw error;
@@ -70,7 +70,7 @@ const getAllGoalsOfUser = async () => {
 const getSingleGoalItem = async (goalId) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		return await axios.get(`http://${LocalIP}:3000/getSingleGoalItem?goalId=${goalId}`, { headers: { Authorization: `Bearer ${token}` } });
+		return await axios.get(`http://api.gobl-up.me:80/getSingleGoalItem?goalId=${goalId}`, { headers: { Authorization: `Bearer ${token}` } });
 	} catch (error) {
 		console.error('Error fetching single goal item:', error);
 		throw error;
@@ -85,7 +85,7 @@ const getSingleGoalItem = async (goalId) => {
 const deleteGoal = async (goalId) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		return await axios.get(`http://${LocalIP}:3000/deleteGoal?goalId=${goalId}`, { headers: { Authorization: `Bearer ${token}` } });
+		return await axios.get(`http://api.gobl-up.me:80/deleteGoal?goalId=${goalId}`, { headers: { Authorization: `Bearer ${token}` } });
 	} catch (error) {
 		console.error('Error deleting goal:', error);
 		throw error;
@@ -105,7 +105,7 @@ const updateGoal = async (goalId, updateData) => {
 			goalID: goalId,
 			...updateData
 		};
-		return await axios.post(`http://${LocalIP}:3000/goals/updateGoal`, payload, {
+		return await axios.post(`http://api.gobl-up.me:80/goals/updateGoal`, payload, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
 	} catch (error) {
@@ -122,7 +122,7 @@ const updateGoal = async (goalId, updateData) => {
 const getMacroGoals = async () => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		return await axios.get(`http://${LocalIP}:3000/goals/getMacroGoal`, { headers: { Authorization: `Bearer ${token}` } });
+		return await axios.get(`http://api.gobl-up.me:80/goals/getMacroGoal`, { headers: { Authorization: `Bearer ${token}` } });
 	} catch (error) {
 		console.error('Error fetching macro goal:', error);
 		throw error;
@@ -144,7 +144,7 @@ const updateMacroGoals = async (nutrient) => {
 		};
 		// console.log('updateMacroGoals SERVICE', payload);
 		// Make sure to include http:// and the correct port if necessary
-		return await axios.post(`http://${LocalIP}:3000/goals/changeGoalMacroValue`, payload, {
+		return await axios.post(`http://api.gobl-up.me:80/goals/changeGoalMacroValue`, payload, {
 			headers: { Authorization: `Bearer ${token}` }
 		});
 	} catch (error) {
@@ -162,7 +162,7 @@ const updateMacroGoals = async (nutrient) => {
 const getUntrackedMacroGoals = async () => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		return await axios.get(`http://${LocalIP}:3000/getUntrackedMacroGoals`, { headers: { Authorization: `Bearer ${token}` } });
+		return await axios.get(`http://api.gobl-up.me:80/getUntrackedMacroGoals`, { headers: { Authorization: `Bearer ${token}` } });
 	} catch (error) {
 		console.error('Error fetching untracked macro goals:', error);
 		throw error;

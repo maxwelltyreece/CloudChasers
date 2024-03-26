@@ -39,7 +39,7 @@ describe('Community Service', () => {
 
 		const response = await createCommunity(communityData);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/create`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/create`, expect.any(Object));
 		expect(response.success).toBe(true);
 		expect(response.message).toBe('Community created');
 	});
@@ -49,7 +49,7 @@ describe('Community Service', () => {
 
 		const response = await joinCommunity(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/join`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/join`, expect.any(Object));
 		expect(response.success).toBe(true);
 	});
 
@@ -59,7 +59,7 @@ describe('Community Service', () => {
 
 		const response = await getCommunityDetails(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/details`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/details`, expect.any(Object));
 		expect(response.id).toBe(communityId);
 	});
 
@@ -75,7 +75,7 @@ describe('Community Service', () => {
 
 			const response = await getCommunityMembers(communityId);
 
-			expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/members?communityId=${communityId}`, {
+			expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/members?communityId=${communityId}`, {
 				method: 'GET',
 				headers: {
 					Authorization: 'Bearer test-token',
@@ -93,7 +93,7 @@ describe('Community Service', () => {
 
 		const response = await getUserRole(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/role?communityId=${communityId}`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/role?communityId=${communityId}`, expect.any(Object));
 		expect(response).toEqual(mockRole);
 	});
 
@@ -103,7 +103,7 @@ describe('Community Service', () => {
 
 		const response = await getAllCommunities();
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/all`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/all`, expect.any(Object));
 		expect(response).toEqual(mockCommunities);
 	});
 
@@ -113,7 +113,7 @@ describe('Community Service', () => {
 
 		const response = await getUserCommunities();
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/userCommunities`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/userCommunities`, expect.any(Object));
 		expect(response).toEqual(mockUserCommunities);
 	});
 
@@ -122,7 +122,7 @@ describe('Community Service', () => {
 
 		const response = await deleteCommunity(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/delete`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/delete`, expect.any(Object));
 		expect(response.success).toBe(true);
 	});
 
@@ -131,7 +131,7 @@ describe('Community Service', () => {
 
 		const response = await leaveCommunity(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/leave`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/leave`, expect.any(Object));
 		expect(response.success).toBe(true);
 	});
 
@@ -141,7 +141,7 @@ describe('Community Service', () => {
 
 		const response = await updateCommunityDesc(communityId, description);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/updateDesc`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/updateDesc`, expect.any(Object));
 		expect(response.success).toBe(true);
 	});
 
@@ -151,7 +151,7 @@ describe('Community Service', () => {
 
 		const response = await updateJoinPrivacy(communityId, joinPrivacy);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/updateJoinPrivacy`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/updateJoinPrivacy`, expect.any(Object));
 		expect(response.success).toBe(true);
 	});
 
@@ -161,7 +161,7 @@ describe('Community Service', () => {
 
 		const response = await makePost(postData);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/makePost`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/makePost`, expect.any(Object));
 		expect(response.success).toBe(true);
 	});
 
@@ -171,7 +171,7 @@ describe('Community Service', () => {
 
 		const response = await getCommunityPosts(communityId);
 
-		expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/posts?communityId=${communityId}`, expect.any(Object));
+		expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/posts?communityId=${communityId}`, expect.any(Object));
 		expect(response).toEqual(mockPosts);
 	});
 
@@ -186,7 +186,7 @@ describe('Community Service', () => {
 			const response = await removeMember(communityId, memberId);
 
 			// Verify the fetch was called with the correct parameters
-			expect(fetch).toHaveBeenCalledWith(`http://${LocalIP}:3000/community/removeMember`, {
+			expect(fetch).toHaveBeenCalledWith(`http://api.gobl-up.me:80/community/removeMember`, {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json',

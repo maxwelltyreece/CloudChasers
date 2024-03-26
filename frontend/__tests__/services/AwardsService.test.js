@@ -32,7 +32,7 @@ describe('Awards Service', () => {
 
 			const response = await awardsService.createAward(awardData);
 
-			expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/awards/createAward`, awardData, {
+			expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/awards/createAward`, awardData, {
 				headers: { Authorization: `Bearer test-token` },
 			});
 			expect(response.data.success).toBe(true);
@@ -45,7 +45,7 @@ describe('Awards Service', () => {
 
 			const response = await awardsService.getAllAwards();
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/awards/getAllAwards`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/awards/getAllAwards`, {
 				headers: { Authorization: `Bearer test-token` },
 			});
 			expect(response.data).toContainEqual(awardData);
@@ -58,7 +58,7 @@ describe('Awards Service', () => {
 
 			const response = await awardsService.getAward(awardId);
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/awards/getAward`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/awards/getAward`, {
 				headers: { Authorization: `Bearer test-token` },
 				params: { awardId },
 			});
@@ -72,7 +72,7 @@ describe('Awards Service', () => {
 
 			const response = await awardsService.awardUser({ awardId, userId });
 
-			expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/awards/awardUser`, { awardId, userId }, {
+			expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/awards/awardUser`, { awardId, userId }, {
 				headers: { Authorization: `Bearer test-token` },
 			});
 			expect(response.data.success).toBe(true);
@@ -85,7 +85,7 @@ describe('Awards Service', () => {
     
 		const response = await awardsService.getUserAwards();
     
-		expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/awards/getUserAwards`, {
+		expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/awards/getUserAwards`, {
 			headers: { Authorization: `Bearer test-token` }
 		});
 		expect(response.data).toEqual(mockAwards);
@@ -97,7 +97,7 @@ describe('Awards Service', () => {
     
 		const response = await awardsService.getAwardsToBeIssued();
     
-		expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/awards/getAwardsToBeIssued`, {
+		expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/awards/getAwardsToBeIssued`, {
 			headers: { Authorization: `Bearer test-token` }
 		});
 		expect(response.data).toEqual(mockAwards);
@@ -109,7 +109,7 @@ describe('Awards Service', () => {
     
 		const response = await awardsService.getNumberOfCompletedAwards();
     
-		expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/awards/getNumberOfCompletedAwards`, {
+		expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/awards/getNumberOfCompletedAwards`, {
 			headers: { Authorization: `Bearer test-token` }
 		});
 		expect(response.data).toEqual(mockCounts);

@@ -58,7 +58,7 @@ function NewGroup() {
 						});
                   
 						const token = await AsyncStorage.getItem('token');
-						await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
+						await axios.post(`http://api.gobl-up.me:80/image/uploadPicture`, formData, {
 							headers: {
 								Authorization: `Bearer ${token}`,
 								'Content-Type': 'multipart/form-data',

@@ -48,7 +48,7 @@ function UserProfile() {
 
 	const getImageLink = async () => {
 		try {
-			const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
+			const response = await axios.get(`http://api.gobl-up.me:80/image/getPictureURL`, {
 				params: {
 					folderName: 'Profile_Pictures',
 					id: userDetails ? userDetails._id : null,

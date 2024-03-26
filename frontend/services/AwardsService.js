@@ -1,7 +1,7 @@
 // Import necessary libraries
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LocalIP } from '../screens/IPIndex';
+
 
 /**
  * Create a new award with the provided data.
@@ -10,7 +10,7 @@ import { LocalIP } from '../screens/IPIndex';
  */
 const createAward = async (awardData) => {
 	const token = await AsyncStorage.getItem('token');
-	return axios.post(`http://${LocalIP}:3000/awards/createAward`, awardData, {
+	return axios.post(`http://api.gobl-up.me:80/awards/createAward`, awardData, {
 		headers: { Authorization: `Bearer ${token}` }
 	});
 };
@@ -21,7 +21,7 @@ const createAward = async (awardData) => {
  */
 const getAllAwards = async () => {
 	const token = await AsyncStorage.getItem('token');
-	return axios.get(`http://${LocalIP}:3000/awards/getAllAwards`, {
+	return axios.get(`http://api.gobl-up.me:80/awards/getAllAwards`, {
 		headers: { Authorization: `Bearer ${token}` }
 	});
 };
@@ -33,7 +33,7 @@ const getAllAwards = async () => {
  */
 const getAward = async (awardId) => {
 	const token = await AsyncStorage.getItem('token');
-	return axios.get(`http://${LocalIP}:3000/awards/getAward`, {
+	return axios.get(`http://api.gobl-up.me:80/awards/getAward`, {
 		headers: { Authorization: `Bearer ${token}` },
 		params: { awardId }
 	});
@@ -46,7 +46,7 @@ const getAward = async (awardId) => {
  */
 const awardUser = async (awardData) => {
 	const token = await AsyncStorage.getItem('token');
-	return axios.post(`http://${LocalIP}:3000/awards/awardUser`, awardData, {
+	return axios.post(`http://api.gobl-up.me:80/awards/awardUser`, awardData, {
 		headers: { Authorization: `Bearer ${token}` }
 	});
 };
@@ -57,7 +57,7 @@ const awardUser = async (awardData) => {
  */
 const getUserAwards = async () => {
 	const token = await AsyncStorage.getItem('token');
-	return axios.get(`http://${LocalIP}:3000/awards/getUserAwards`, {
+	return axios.get(`http://api.gobl-up.me:80/awards/getUserAwards`, {
 		headers: { Authorization: `Bearer ${token}` }
 	});
 };
@@ -68,7 +68,7 @@ const getUserAwards = async () => {
  */
 const getAwardsToBeIssued = async () => {
 	const token = await AsyncStorage.getItem('token');
-	return axios.get(`http://${LocalIP}:3000/awards/getAwardsToBeIssued`, {
+	return axios.get(`http://api.gobl-up.me:80/awards/getAwardsToBeIssued`, {
 		headers: { Authorization: `Bearer ${token}` }
 	});
 };
@@ -79,7 +79,7 @@ const getAwardsToBeIssued = async () => {
  */
 const getNumberOfCompletedAwards = async () => {
 	const token = await AsyncStorage.getItem('token');
-	return axios.get(`http://${LocalIP}:3000/awards/getNumberOfCompletedAwards`, {
+	return axios.get(`http://api.gobl-up.me:80/awards/getNumberOfCompletedAwards`, {
 		headers: { Authorization: `Bearer ${token}` }
 	});
 };
