@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import PropTypes from 'prop-types';
-import styles from './styles';
+import { styles } from './styles';
 
 /**
  * Modal component for adding a new food entry.

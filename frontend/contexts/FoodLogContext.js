@@ -68,8 +68,9 @@ export function FoodLogProvider({ children }) {
 		return response.data.data;
 	}
 
-	const getRecipeIngredients = async () => {
-		await foodLogService.getRecipeIngredients();
+	const getRecipeIngredients = async (id) => {
+		const response = await foodLogService.getRecipeIngredients(id);
+        return response.data.data;
 	}
 
 	const getCommunityRecipes = async () => {
