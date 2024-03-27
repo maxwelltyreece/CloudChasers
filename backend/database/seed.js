@@ -20,6 +20,7 @@ const Community_Awards = require('../models/communityAward');
 const Communties = require('../models/community');
 const Community_Users = require('../models/communityUser');
 const Recipe_Quantities = require('../models/recipeQuantity');
+const Community_Posts = require('../models/communityPost');
 
 const userDayMeal = require('../models/userDayMeal');
 
@@ -50,6 +51,7 @@ async function seed() {
 	await Communties.collection.drop();
 	await Community_Users.collection.drop();
 	await Recipe_Quantities.collection.drop();
+	await Community_Posts.collection.drop();
     
 
 	// User Seeding
@@ -89,7 +91,7 @@ async function seed() {
 	console.log('User_Day_Meals Seeded');
 
 	// Goal Seeding
-	const Macrolist = ['Calories', 'Protein', 'Carbs', 'Fat', 'Sugar', 'Salt', 'Fibre'];
+	const Macrolist = ['calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre'];
 	for (let i = 0; i < 10; i++) {
 		if (i % 2 == 0) {
 			var newGoal = new Goals({
@@ -103,7 +105,6 @@ async function seed() {
 		} else {
 			var newGoal = new Goals({
 				name: `Goal${i}`,
-				description: `This a ${Macrolist[i]} goal`,
 				measurement: Macrolist[i],
 				minTargetMass: null,
 				maxTargetMass: 200,
@@ -192,6 +193,19 @@ async function seed() {
 		await newCommunityUser.save();
 	}
 	console.log('Community_Users Seeded');
+
+	// Community_Posts Seeding
+	for (let i = 0; i < 10; i++) {
+		const newCommunityPost = new Community_Posts({
+			communityID: await newCommunity._id,
+			userID: await newUser._id,
+			recipeID: null,
+			title: `Post ${i}`,
+			text: `This a post, specifically post number ${i}`,
+		});
+		await newCommunityPost.save();
+	}
+	console.log('Community_Posts Seeded');
 
 	const sampleFood = await Foods.findOne({ name: 'Butter, salted' });
 	const sampleFoodID = await sampleFood._id;
