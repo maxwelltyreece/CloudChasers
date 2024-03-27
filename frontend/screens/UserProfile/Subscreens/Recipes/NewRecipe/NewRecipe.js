@@ -112,7 +112,6 @@ const NewRecipe = ({}) => {
     try {
       const communities = await getUserCommunities();
       setUserCommunities(communities.data);
-
       const communityNames = communities.data.map(
         (community) => community.name
       );
@@ -166,36 +165,36 @@ const NewRecipe = ({}) => {
     }
   };
 
-	/**
-	 * Renders an item in the list.
-	 *
-	 * @param {Object} item - The item to render.
-	 * @returns {JSX.Element} The rendered item.
-	 */
-	const renderItem = (item) => (
-		<TouchableOpacity
-			style={[
-				styles.item,
-				{
-					backgroundColor: item._id === selectedItem?._id ? "#FF815E" : "#F0F0F0", 
-				
-				},
-			]}
-			onPress={() => setSelectedItem(item)}
-			key={item._id}
-		>
-			<Text>{item.name}</Text>
-		</TouchableOpacity>
-	);
+  /**
+   * Renders an item in the list.
+   *
+   * @param {Object} item - The item to render.
+   * @returns {JSX.Element} The rendered item.
+   */
+  const renderItem = (item) => (
+    <TouchableOpacity
+      style={[
+        styles.item,
+        {
+          backgroundColor:
+            item._id === selectedItem?._id ? "#FF815E" : "#F0F0F0",
+        },
+      ]}
+      onPress={() => setSelectedItem(item)}
+      key={item._id}
+    >
+      <Text>{item.name}</Text>
+    </TouchableOpacity>
+  );
 
-	/**
-	 * Searches for foods based on the provided search query.
-	 * @returns {Promise<void>} A promise that resolves when the search is complete.
-	 */
-	const searchFood = async () => {
-		const response = await searchFoods({ name: searchQuery });
-		setFoods(response.data.foods);
-	};
+  /**
+   * Searches for foods based on the provided search query.
+   * @returns {Promise<void>} A promise that resolves when the search is complete.
+   */
+  const searchFood = async () => {
+    const response = await searchFoods({ name: searchQuery });
+    setFoods(response.data.foods);
+  };
 
   const removeItem = (id) => {
     setSelectedFoods(selectedFoods.filter((item) => item._id !== id));
@@ -276,7 +275,6 @@ const NewRecipe = ({}) => {
       Alert.alert("Error", "Failed to create recipe");
     }
   };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container} keyboardShouldPersistTaps="handled">

@@ -39,26 +39,46 @@ export const styles = StyleSheet.create({
 		margin: 20,
 		backgroundColor: "white",
 		borderRadius: 20,
-		padding: 15,
+		padding: 35,
 		alignItems: "center",
 		shadowColor: "#000",
 		shadowOffset: {
 			width: 0,
-			height: 2
+			height: 2,
 		},
 		shadowOpacity: 0.25,
 		shadowRadius: 4,
 		elevation: 5,
-		width: '90%',
+	},
+	modalText: {
+		marginBottom: 15,
+		textAlign: "center",
+		fontFamily: 'Montserrat_700Bold',
 	},
 	modalText: {
 		marginBottom: 15,
 		textAlign: "center"
 	},
 	buttonContainer: {
-		flexDirection: 'row',
+		flexDirection: 'column',
 		justifyContent: 'space-around',
 		width: '60%',
 		padding: 10,
 	},
+
+	button: {
+		borderRadius: 20,
+		padding: 10,
+		elevation: 2,
+		backgroundColor: "#FF815E",
+		alignItems: 'center',
+		marginBottom: 10,
+
+	},
+	buttonText: {
+		color: 'white',
+		fontFamily: 'Montserrat_600SemiBold',
+		textAlign: 'center',
+	},
+	
 });
