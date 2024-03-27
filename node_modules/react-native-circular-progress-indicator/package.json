@@ -1,0 +1,132 @@
+{
+  "name": "react-native-circular-progress-indicator",
+  "version": "4.4.2",
+  "description": "React Native customizable circular progress indicator",
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
+  "types": "lib/typescript/index.d.ts",
+  "react-native": "src/index",
+  "files": [
+    "src",
+    "lib",
+    "!**/__tests__"
+  ],
+  "scripts": {
+    "test": "jest --forceExit",
+    "lint": "eslint --ext .ts,.tsx . --max-warnings 0",
+    "lint:fix": "eslint --ext .ts,.tsx . --fix",
+    "tsc": "tsc",
+    "ci": "yarn lint && yarn tsc",
+    "build": "bob build",
+    "prepare": "yarn build && husky install"
+  },
+  "repository": {
+    "name": "GitHub",
+    "type": "git",
+    "url": "git+https://github.com/nithinpp69/react-native-circular-progress-indicator.git"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-native": ">=0.59.0",
+    "react-native-reanimated": ">=2.2.0",
+    "react-native-svg": ">=12.1.1"
+  },
+  "author": "Nithin P P <nithinpp69@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nithinpp69/react-native-circular-progress-indicator/issues"
+  },
+  "homepage": "https://github.com/nithinpp69/react-native-circular-progress-indicator.git",
+  "devDependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-react": "^7.10.1",
+    "@babel/runtime": "^7.18.3",
+    "@react-native-community/eslint-config": "^3.0.3",
+    "@testing-library/react-native": "^10.1.1",
+    "@types/jest": "^28.1.3",
+    "@types/react-native": "^0.69.1",
+    "@types/react-test-renderer": "^18.0.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^28.1.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
+    "eslint": "^8.18.0",
+    "eslint-plugin-import": "^2.26.0",
+    "husky": "^8.0.1",
+    "jest": "^28.1.0",
+    "metro-react-native-babel-preset": "^0.71.1",
+    "prettier": "^2.7.1",
+    "react": "17.0.2",
+    "react-dom": "^17.0.2",
+    "react-native": "0.68.2",
+    "react-native-builder-bob": "^0.18.3",
+    "react-native-gesture-handler": "^1.10.3",
+    "react-native-reanimated": "^2.3.2",
+    "react-native-svg": "^12.1.1",
+    "react-test-renderer": "16.13.1",
+    "typescript": "^4.7.4"
+  },
+  "resolutions": {
+    "@types/react": "^17"
+  },
+  "keywords": [
+    "react-native",
+    "react",
+    "native",
+    "animated",
+    "reanimated",
+    "chart",
+    "ui",
+    "animated-chart",
+    "progress-indicator",
+    "animated-progress-indicator",
+    "animated-progress-bar",
+    "circular-progress-bar",
+    "circular-progress",
+    "circular-progress-indicator",
+    "mobile",
+    "android",
+    "ios"
+  ],
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      "commonjs",
+      "module",
+      [
+        "typescript",
+        {
+          "project": "tsconfig.build.json"
+        }
+      ]
+    ]
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "testEnvironment": "node",
+    "clearMocks": true,
+    "setupFilesAfterEnv": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ],
+    "modulePathIgnorePatterns": [
+      "<rootDir>/lib/"
+    ],
+    "transformIgnorePatterns": []
+  },
+  "dependencies": {
+    "react-native-redash": "*"
+  }
+}

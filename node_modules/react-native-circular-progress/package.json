@@ -1,0 +1,35 @@
+{
+  "name": "react-native-circular-progress",
+  "version": "1.3.9",
+  "description": "React Native component for creating animated, circular progress with react-native-svg",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bgryszko/react-native-circular-progress.git"
+  },
+  "keywords": [
+    "react",
+    "react-native",
+    "react-component",
+    "progress",
+    "chart",
+    "react-svg"
+  ],
+  "author": {
+    "name": "Bart Gryszko",
+    "email": "b@gryszko.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bgryszko/react-native-circular-progress/issues"
+  },
+  "homepage": "https://github.com/bgryszko/react-native-circular-progress",
+  "dependencies": {
+    "prop-types": "^15.8.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.0.0",
+    "react-native": ">=0.50.0",
+    "react-native-svg": ">=7.0.0"
+  }
+}

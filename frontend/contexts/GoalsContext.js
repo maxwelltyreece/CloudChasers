@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useMemo } from 'react';
 import goalsService from '../services/GoalsService';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const GoalsContext = createContext();
 
@@ -9,10 +9,7 @@ const GoalsContext = createContext();
  * as well as handling macro goals specifically.
  */
 export function GoalsProvider({ children }) {
-	// State for all goals of the user
 	const [goals, setGoals] = useState([]);
-
-	// Initialize macroGoals state with defaultMacroGoals
 	const [macroGoals, setMacroGoals] = useState({});
     
 	/**
@@ -50,7 +47,7 @@ export function GoalsProvider({ children }) {
 	const updateGoal = async (goalId, updateData) => {
 		try {
 			await goalsService.updateGoal(goalId, updateData);
-			fetchGoals(); // Refresh the goals list to reflect the update
+			fetchGoals(); 
 		} catch (error) {
 			console.error('Error updating goal CONTEXT:', error);
 		}
@@ -63,7 +60,7 @@ export function GoalsProvider({ children }) {
 	const deleteGoal = async (goalId) => {
 		try {
 			await goalsService.deleteGoal(goalId);
-			fetchGoals(); // Refresh the list after deletion
+			fetchGoals();
 		} catch (error) {
 			console.error('Error deleting goal:', error);
 		}
@@ -80,26 +77,6 @@ export function GoalsProvider({ children }) {
 			console.error('Error fetching macro goals:', error);
 		}
 	};
-	// const fetchMacroGoals = async () => {
-	//     try {
-	//         const { data } = await goalsService.getMacroGoals();
-            
-	//         // Creates a new object that merges default goals with fetched goals.
-	//         // This ensures that all nutrients are present and avoids direct modification of fetched data.
-	//         const mergedGoals = { ...defaultMacroGoals };
-	//         for (const nutrient in data) {
-	//             if (Object.prototype.hasOwnProperty.call(data, nutrient)) {
-	//                 mergedGoals[nutrient] = data[nutrient];
-	//             }
-	//         }
-    
-	//         setMacroGoals(mergedGoals);
-	//     } catch (error) {
-	//         console.error('Error fetching macro goals:', error);
-	//         setMacroGoals(defaultMacroGoals); // Reset to default values if fetching fails
-	//     }
-	// };
-    
 
 	/**
      * Updates an existing macro nutrient goal with new data.
@@ -118,10 +95,6 @@ export function GoalsProvider({ children }) {
 		}
 	};
 
-    
-
-
-	// Memorize the context value to optimize performance and avoid unnecessary re-renders
 	const value = useMemo(() => ({
 		goals,
 		macroGoals,
@@ -146,6 +119,6 @@ export function GoalsProvider({ children }) {
  */
 export const useGoals = () => useContext(GoalsContext);
 
-GoalsProvider.propTypes = {
-	children: propTypes.node.isRequired,
+GoalsProvider.PropTypes = {
+	children: PropTypes.node.isRequired,
 };

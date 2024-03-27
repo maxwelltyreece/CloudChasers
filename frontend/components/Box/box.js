@@ -21,7 +21,7 @@ function Box({ title, image }) {
     );
 }
 
-Box.propTypes = {
+Box.PropTypes = {
     title: PropTypes.string.isRequired,
     image: PropTypes.string,
 };

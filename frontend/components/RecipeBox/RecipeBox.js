@@ -19,6 +19,16 @@ import Icon from "react-native-vector-icons/FontAwesome5";
 import { useUser } from "../../contexts/UserContext";
 import { useFoodLog } from "../../contexts/FoodLogContext";
 
+/**
+ * Displays a recipe box with an image, title, and description. On press, it displays a modal with more details including ingredients.
+ * 
+ * @component
+ * @param {Object} props The component props.
+ * @param {number} props.id The unique identifier for the recipe.
+ * @param {string} props.title The title of the recipe.
+ * @param {string} [props.description] The description of the recipe.
+ * @returns {React.ReactElement} A RecipeBox component.
+ */
 function RecipeBox({ id, title, description, creatorId}) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [ingredients, setIngredients] = useState([]);
@@ -54,6 +64,10 @@ function RecipeBox({ id, title, description, creatorId}) {
     };
 
 	useEffect(() => {
+
+		/**
+		 * Fetches the image URL for the recipe from the server and updates the state.
+		 */
 		const handleImageRetrieval = () => {
 			axios
 				.get(
@@ -66,7 +80,9 @@ function RecipeBox({ id, title, description, creatorId}) {
 		};
 
 		handleImageRetrieval();
-
+		/**
+		 * Fetches the ingredients for the recipe from the server and updates the state.
+		 */
 		const getIngredients = async () => {
 			try {
 				const response = await axios.get(
@@ -110,7 +126,7 @@ function RecipeBox({ id, title, description, creatorId}) {
 								<Text style={styles.description}>{description}</Text>
 								<Text style={styles.ingredientsTitle}>Ingredients</Text>
 								<ScrollView style={styles.dropdown} maxHeight={180}>
-									{ingredients.map((ingredient, index) => (
+									{ingredients.map((ingredient) => (
 										<Text
 											key={`${ingredient.name}:${ingredient.weight}`}
 											style={styles.ingredient}
