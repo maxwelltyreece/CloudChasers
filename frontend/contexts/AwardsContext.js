@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useMemo } from 'react';
 import awardsService from '../services/AwardsService'; 
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const AwardsContext = createContext();
 
