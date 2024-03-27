@@ -120,7 +120,8 @@ function FoodEntry() {
                     
 
 					<TouchableOpacity 
-						style={styles.button} 
+						style={styles.button}
+						testID='submit-button' 
 						onPress={async () => {
 							if (!selectedFood || !weight || !mealName) { 
 								Alert.alert('Error', 'Please fill in all fields');
