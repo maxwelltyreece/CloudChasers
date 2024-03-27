@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, View, TextInput, TouchableOpacity, Text, Platform } from 'react-native';
+import { KeyboardAvoidingView, View, TextInput, TouchableOpacity, Text, Platform, Alert } from 'react-native';
 import PropTypes from 'prop-types';
 import { useCommunity } from '../../../contexts/CommunityContext';
 import { styles } from './styles';
@@ -21,6 +21,11 @@ function NewPostPage({ navigation, route }) {
      * Handles the creation of a new post.
      */
     const handlePost = async () => {
+        if (!title.trim() || !content.trim()) {
+            Alert.alert('Error', 'Cannot post without a title or message.');
+            return;
+        }
+
         const postData = {
             communityId,
             title,
