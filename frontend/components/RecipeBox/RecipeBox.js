@@ -11,7 +11,7 @@ import {
 	Alert,
 	TouchableWithoutFeedback,
 } from "react-native";
-import proptypes from "prop-types";
+import PropTypes from "prop-types";
 
 import axios from "axios";
 import { styles } from "./styles";
