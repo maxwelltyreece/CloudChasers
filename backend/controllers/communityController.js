@@ -231,7 +231,18 @@ exports.denyRequest = async (req, res) => {
 	}
 };
 
-
+/**
+ * Handles the GET /details request to retrieve the details of a community.
+ * Takes a community ID as a query parameter and returns the community details and the number of its members.
+ * @async
+ * @function getCommunityDetails
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the query.
+ * @param {Object} req.user - The user making the request.
+ * @param {string} req.query.communityId - The ID of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the data of the community and the number of its members.
+ * @throws {Error} Will throw an error if retrieving the community or counting the community users fails.
+ */
 exports.getCommunityDetails = async (req, res) => {
 	const { communityId } = req.query;
 	try {
@@ -248,6 +259,19 @@ exports.getCommunityDetails = async (req, res) => {
 	}
 };
 
+/**
+ * Handles the GET /members request to retrieve the members of a community.
+ * Only members of the community can retrieve the members.
+ * 
+ * @async
+ * @function getCommunityMembers
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the query.
+ * @param {Object} req.user - The user making the request.
+ * @param {string} req.query.communityId - The ID of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the data of the community members, including their IDs, usernames, profile picture links, and roles.
+ * @throws {Error} Will throw an error if retrieving the community, the community user, the community members, or the user details fails.
+ */
 exports.getCommunityMembers = async (req, res) => {
 	const { communityId } = req.query;
 	try {
@@ -275,6 +299,18 @@ exports.getCommunityMembers = async (req, res) => {
 	}
 };
 
+/**
+ * Handles the GET /role request to retrieve the role of a user in a community.
+ *
+ * @async
+ * @function getUserRole
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the query.
+ * @param {Object} req.user - The user whose role is to be retrieved.
+ * @param {string} req.query.communityId - The ID of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the role of the user in the community. If the user is not a member of the community, it returns 'none'.
+ * @throws {Error} Will throw an error if retrieving the community or the community user fails.
+ */
 exports.getUserRole = async (req, res) => {
 	const { communityId } = req.query;
 	try {
@@ -294,7 +330,16 @@ exports.getUserRole = async (req, res) => {
 	}
 }
 
-
+/**
+ * Handles the GET /all request to retrieve a list of all communities.
+ *
+ * @async
+ * @function getAllCommunities
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns an array of all communities, each represented by an object containing its ID, name, and description.
+ * @throws {Error} Will throw an error if retrieving the communities fails.
+ */
 exports.getAllCommunities = async (req, res) => {
 	try {
 		const communities = await Community.find();
@@ -310,7 +355,17 @@ exports.getAllCommunities = async (req, res) => {
 	}
 }
 
-
+/**
+ * Handles the GET /userCommunities request to retrieve all communities that a user is a member of.
+ *
+ * @async
+ * @function getUserCommunities
+ * @param {Object} req - Express request object, containing the user.
+ * @param {Object} req.user - The user whose communities are to be retrieved.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns an array of all communities the user is a member of, each represented by an object containing its ID, name, and description.
+ * @throws {Error} Will throw an error if retrieving the communities fails.
+ */
 exports.getUserCommunities = async (req, res) => {
 	try {
 		const user = req.user;
