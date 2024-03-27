@@ -101,6 +101,6 @@ function GroupSettings({ route }) {
 
 export default GroupSettings;
 
-GroupSettings.propTypes = {
+GroupSettings.PropTypes = {
 	route: PropTypes.object.isRequired,
 };

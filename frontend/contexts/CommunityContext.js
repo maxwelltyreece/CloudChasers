@@ -178,6 +178,6 @@ export function CommunityProvider({ children }) {
 
 export const useCommunity = () => useContext(CommunityContext);
 
-CommunityProvider.propTypes = {
+CommunityProvider.PropTypes = {
 	children: PropTypes.node.isRequired,
 };

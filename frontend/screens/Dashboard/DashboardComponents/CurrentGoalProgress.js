@@ -262,7 +262,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 	);
 };
 
-ProgressBar.propTypes = {
+ProgressBar.PropTypes = {
 	label: PropTypes.string.isRequired,
 	progress: PropTypes.number.isRequired,
 	max: PropTypes.number.isRequired,
@@ -289,7 +289,7 @@ const ReminderItem = ({ reminder }) => {
 		</View>
 	);
 };
-ReminderItem.propTypes = {
+ReminderItem.PropTypes = {
 	reminder: PropTypes.object.isRequired,
 };
 
@@ -440,7 +440,7 @@ function GoalProgressBar({ todayStats, goals }) {
 	);
 }
 
-GoalProgressBar.propTypes = {
+GoalProgressBar.PropTypes = {
 	todayStats: PropTypes.object.isRequired,
 	goals: PropTypes.any.isRequired,
 };

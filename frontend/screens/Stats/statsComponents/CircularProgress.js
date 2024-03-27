@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import { CircularProgressBase } from 'react-native-circular-progress-indicator';
 // import { useFocusEffect } from '@react-navigation/native';
-import Proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 
 const styles = StyleSheet.create({
@@ -169,9 +169,9 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
   );
 };
 
-CircularProgressComponent.propTypes = {
-  todayStats: Proptypes.object,
-  goals: Proptypes.object,
+CircularProgressComponent.PropTypes = {
+  todayStats: PropTypes.object,
+  goals: PropTypes.object,
 };
 
 export default CircularProgressComponent;

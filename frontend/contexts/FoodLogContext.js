@@ -129,6 +129,6 @@ export function FoodLogProvider({ children }) {
 
 export const useFoodLog = () => useContext(FoodLogContext);
 
-FoodLogProvider.propTypes = {
+FoodLogProvider.PropTypes = {
 	children: PropTypes.node.isRequired,
 };

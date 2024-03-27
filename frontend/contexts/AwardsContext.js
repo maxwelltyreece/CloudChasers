@@ -1,7 +1,7 @@
 // Import necessary libraries
 import React, { createContext, useState, useContext, useMemo } from 'react';
 import awardsService from '../services/AwardsService'; // Make sure to import your AwardsService correctly
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const AwardsContext = createContext();
 
@@ -148,8 +148,8 @@ export function AwardsProvider({ children }) {
  */
 export const useAwards = () => useContext(AwardsContext);
 
-AwardsProvider.propTypes = {
-	children: propTypes.node.isRequired,
+AwardsProvider.PropTypes = {
+	children: PropTypes.node.isRequired,
 };
 
 export default AwardsContext;

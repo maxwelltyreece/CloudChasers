@@ -101,7 +101,7 @@ const AddModal = ({ isVisible, onBackdropPress, navigator, pageNames, toggleModa
     );
 };
 
-AddModal.propTypes = {
+AddModal.PropTypes = {
     isVisible: PropTypes.bool.isRequired,
     onBackdropPress: PropTypes.func.isRequired,
     navigator: PropTypes.object.isRequired,
