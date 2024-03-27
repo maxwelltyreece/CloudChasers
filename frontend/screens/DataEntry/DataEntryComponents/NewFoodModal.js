@@ -59,7 +59,22 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
      * Logs the food data to the context.
      */
     const handleLogFood = async () => {
-        // Log the food data
+        if (!foodItem || !calories || !protein || !fat || !carbs) {
+            Alert.alert('Error', 'Please fill all fields');
+            return;
+        }
+        if (isNaN(calories) || isNaN(protein) || isNaN(fat) || isNaN(carbs)) {
+            Alert.alert('Error', 'Weight must be valid numbers');
+            return;
+        }
+        if (calories <= 0 || protein <= 0 || fat <= 0 || carbs <= 0) {
+            Alert.alert('Error', 'Weight must be more than 0g');
+            return;
+        }
+        if (calories >= 100 || protein >= 100 || fat >= 100 || carbs >= 100) {
+            Alert.alert('Error', 'Weight must be less than 100g');
+            return;
+        }
         const data = {
             mealType: foodItem,
             calories: Number(calories),

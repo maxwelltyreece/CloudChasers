@@ -123,13 +123,20 @@ const NewRecipe = ({}) => {
  */
   const addItem = () => {
     if (!selectedItem) {
-      Alert.alert("Error", "You must select a food");
-      return;
+        Alert.alert("Error", "You must select a food");
+        return;
     }
-
     if (!inputWeight.trim()) {
-      Alert.alert("Error", "Weight is required");
-      return;
+        Alert.alert("Error", "Weight is required");
+        return;
+    }
+    if (isNaN(inputWeight)) {
+        Alert.alert('Error', 'Please enter a valid number for weight');
+        return;
+    }
+    if (Number(inputWeight) <= 0) {
+        Alert.alert('Error', 'Weight must be more than 0');
+        return;
     }
 
     if (!selectedFoods.some((food) => food._id === selectedItem._id)) {
@@ -230,7 +237,7 @@ const NewRecipe = ({}) => {
       return;
     }
     const token = await AsyncStorage.getItem("token");
-    
+
     let recipeData = {
         name: recipeName,
         description: recipeDescription,
