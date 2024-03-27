@@ -42,7 +42,7 @@ function Login({ navigation }) {
                 // The request was made but no response was received
                 // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
                 // http.ClientRequest in node.js
-                Alert.alert('Error', error.request);
+                Alert.alert('Error', 'Request Error');
             } else {
                 // Something happened in setting up the request that triggered an Error
                 Alert.alert('Error', error.message);
