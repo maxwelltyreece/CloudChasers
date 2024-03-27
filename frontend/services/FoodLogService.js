@@ -174,7 +174,7 @@ export const getPictureURL = async (RecipeId) => {
 export const logManualMacro = async (data) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
-		const response = await axios.post(`http://${LocalIP}:3000/food/logManualMacro`, data, { headers: { Authorization: `Bearer ${token}` } });
+		const response = await axios.post(`http://api.gobl-up.me:80/food/logManualMacro`, data, { headers: { Authorization: `Bearer ${token}` } });
 		return response;
 	} catch (error) {
 		console.error('Error logging manual macro:', error);

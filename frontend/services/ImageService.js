@@ -77,7 +77,7 @@ export const uploadImage = async (userId, profilePicture, folderName) => {
  */
 export const getImageLink = async (folderName, id) => {
 	try {
-		const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL`, {
+		const response = await axios.get(`http://api.gobl-up.me:80/image/getPictureURL`, {
 			params: {
 				folderName: folderName,
 				id: id,

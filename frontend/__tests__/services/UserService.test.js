@@ -54,7 +54,7 @@ describe('userService', () => {
 
 			await userService.editUserDetails(newValues);
 
-			expect(axios.put).toHaveBeenCalledWith(`http://${LocalIP}:3000/updateProfile`,
+			expect(axios.put).toHaveBeenCalledWith(`http://api.gobl-up.me:80/updateProfile`,
 				newValues,
 				{
 					headers: {
