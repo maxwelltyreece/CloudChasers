@@ -230,11 +230,15 @@ const NewRecipe = ({}) => {
       return;
     }
     const token = await AsyncStorage.getItem("token");
-    const recipeData = {
+    
+    let recipeData = {
         name: recipeName,
         description: recipeDescription,
-        communityThatOwnsRecipe: recipeCommunity,
     };
+
+    if (recipeCommunity) {
+        recipeData.communityThatOwnsRecipe = recipeCommunity;
+    }
 
     try {
         const response = await axios.post(
