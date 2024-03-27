@@ -114,7 +114,7 @@ function RecipeBox({ id, title, description, }) {
 
 export default RecipeBox;
 
-RecipeBox.PropTypes = {
+RecipeBox.propTypes = {
 	title: PropTypes.string.isRequired,
 	description: PropTypes.string,
 	image: PropTypes.string,

@@ -101,7 +101,7 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
 	);
 };
 
-GoalItem.PropTypes = {
+GoalItem.propTypes = {
 	nutrient: PropTypes.string.isRequired,
 	currentGoal: PropTypes.object.isRequired,
 	onUpdate: PropTypes.func.isRequired,

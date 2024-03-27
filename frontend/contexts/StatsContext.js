@@ -145,6 +145,6 @@ export function StatsProvider({ children }) {
  */
 export const useStats = () => useContext(StatsContext);
 
-StatsProvider.PropTypes = {
+StatsProvider.propTypes = {
 	children: PropTypes.node.isRequired,
 };

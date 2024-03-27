@@ -216,6 +216,6 @@ const logManualMacro = async (data) => {
 
 export const useFoodLog = () => useContext(FoodLogContext);
 
-FoodLogProvider.PropTypes = {
+FoodLogProvider.propTypes = {
 	children: PropTypes.node.isRequired,
 };

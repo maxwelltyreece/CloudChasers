@@ -11,9 +11,9 @@ module.exports = {
 		"/__snapshots__/",
 		"\\.snap$",
 	],
-	transformIgnorePatterns: [
-		"node_modules/(?!(jest-)?react-native|@react-native-community|@react-navigation|@expo|expo(nent)?|@unimodules|unimodules|react-navigation|@react-native-picker|@react-native-community/datetimepicker)/"
-	],
+	"transformIgnorePatterns": [
+		"node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-community|@react-native-async-storage/async-storage)/"
+	],	  
 	transform: {
 		"^.+\\.[jt]sx?$": ["babel-jest", { configFile: "./babel.config.js" }],
 	},

@@ -49,7 +49,7 @@ function CurrentStreak({ streak }) {
 }
 
 
-CurrentStreak.PropTypes = {
+CurrentStreak.propTypes = {
 	streak: PropTypes.number.isRequired,
 };
 

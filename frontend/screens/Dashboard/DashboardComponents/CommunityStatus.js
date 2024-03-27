@@ -164,7 +164,7 @@ function CommunityUpdates({ communities }) {
 
 export default CommunityUpdates;
 
-CommunityUpdates.PropTypes = {
+CommunityUpdates.propTypes = {
 	communities: PropTypes.arrayOf(PropTypes.shape({
 		name: PropTypes.string,
 		description: PropTypes.string,

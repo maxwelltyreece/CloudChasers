@@ -42,7 +42,7 @@ const FoodInput = ({ label, value, onChangeText }) => {
  */
 const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 
-    FoodInput.PropTypes = {
+    FoodInput.propTypes = {
         label: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
         onChangeText: PropTypes.func.isRequired,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     },
 });
 
-NewFoodModal.PropTypes = {
+NewFoodModal.propTypes = {
     isVisible: PropTypes.bool.isRequired,
     onBackdropPress: PropTypes.func.isRequired,
     toggleModal: PropTypes.func.isRequired,

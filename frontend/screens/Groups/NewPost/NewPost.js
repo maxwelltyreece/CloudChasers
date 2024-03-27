@@ -64,7 +64,7 @@ function NewPostPage({ navigation, route }) {
 
 export default NewPostPage;
 
-NewPostPage.PropTypes = {
+NewPostPage.propTypes = {
     navigation: PropTypes.shape({
         goBack: PropTypes.func.isRequired,
     }).isRequired,
