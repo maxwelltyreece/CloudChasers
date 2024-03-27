@@ -9,7 +9,7 @@
     "web": "expo start --web",
     "lint": "eslint . --ext .js",
     "lint:fix": "eslint . --ext .js --fix",
-    "test:backend": "jest --config ./backend/__tests__/jest.config.js --runInBand",
+    "test:backend": "jest --coverage --config ./backend/__tests__/jest.config.js --runInBand --detectOpenHandles",
     "test:frontend": "jest --config ./frontend/__tests__/jest.config.js",
     "test": "npm run test:frontend && npm run test:backend",
     "test:update": "jest --updateSnapshot"
