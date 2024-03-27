@@ -231,7 +231,6 @@ describe("Community Management", () => {
 		});	
 	});
 	describe("Getting community details", () => {
-		// get community
 		it("should retrieve a community and its details", async () => {
 			const response = await request(app)
 				.get("/community/details")
@@ -511,7 +510,6 @@ describe("Community Management", () => {
 			expect(response.body).toHaveProperty("message", "User is not an admin of the community");
 		});
 		it("should handle errors during community update", async () => {
-			// Mock the save function to simulate a failure
 			jest.spyOn(Community, "findById").mockImplementationOnce(() => {
 				throw new Error("Database error");
 			});
