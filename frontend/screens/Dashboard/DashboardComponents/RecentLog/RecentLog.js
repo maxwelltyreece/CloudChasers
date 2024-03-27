@@ -1,103 +1,20 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable no-unused-vars */
-// React Imports
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import CurrentStreak from './CurrentStreak';
-import PropTypes from 'prop-types'; // Import PropTypes
+import { View, Text } from 'react-native';
+import CurrentStreak from '../CurrentStreak/CurrentStreak';
+import PropTypes from 'prop-types';
+import { styles } from './styles';
 
-
-const styles = StyleSheet.create({
-	recentLogContainer: {
-		alignItems: 'flex-start',
-		justifyContent: 'center',
-		padding: 5,
-		backgroundColor: 'white',
-		borderRadius: 12,
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 1 },
-		shadowOpacity: 0.22,
-		shadowRadius: 2.22,
-		elevation: 3,
-		height: '95%',
-		width: '94%',
-		right: '1.5%',
-	},
-	recentLogTitleContainer: {
-		justifyContent: 'space-between',
-		alignItems: 'flex-end',
-		flexDirection: 'row',
-		paddingLeft: 8,
-		paddingBottom: 12,
-		width: '100%',
-		height: '40%',
-	},
-	innerRecentLogContainer: {
-		justifyContent: 'center',
-		alignItems: 'flex-start',
-		backgroundColor: '#F5F5F5',
-		borderRadius: 8,
-		padding: 8,
-		width: '92%',
-		height: '50%',
-		alignSelf: 'center',
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 1 },
-		shadowOpacity: 0.22,
-		shadowRadius: 2.22,
-		elevation: 3,
-	},
-	recentLogTitle: {
-		fontFamily: 'Montserrat_700Bold',
-		fontSize: 20,
-		fontWeight: 'bold',
-	},
-	recentLogMealTypeText: {
-		fontFamily: 'Montserrat_700Bold',
-		fontSize: 17,
-		fontWeight: 'bold',
-		marginBottom: 7,
-		marginLeft: 4,
-	},
-	logItemInfoText: {
-		fontFamily: 'Montserrat_500Medium',
-		fontSize: 17,
-		fontWeight: '500',
-		marginLeft: 4,
-		marginBottom: 4,
-	},
-	recentLogCaloriesText: {
-		fontFamily: 'Montserrat_700Bold',
-		fontSize: 16,
-		fontWeight: 'bold',
-		marginLeft: 4,
-	},
-	logInfoText: {
-		fontSize: 1,
-		fontFamily: 'Montserrat_500Medium',
-		fontWeight: '500',
-		marginLeft: 4,
-	},
-	logInfoMeasurementText: {
-		fontFamily: 'Montserrat_500Medium',
-		fontSize: 16,
-		fontWeight: '500',
-		marginTop: 3.2,
-		left: 2,
-		marginLeft: 4,
-	},
-	noLogText: {
-		textAlign: 'center',
-		alignSelf: 'center', 
-		fontSize: 14,
-		fontFamily: 'Montserrat_500Medium',
-	},
-});
-
+/**
+ * RecentLog component
+ * @param {Object} props - The properties passed to the component
+ * @param {number} props.streak - The current streak
+ * @param {Object} props.userLogStats - The user's log statistics
+ * @param {Object} props.userLogStats.latestUserDayMeal - The latest meal of the user
+ * @param {Object} props.userLogStats.macros - The macros of the user's meal
+ * @param {Array} props.userLogStats.mealItems - The items of the user's meal
+ * @returns {JSX.Element} The RecentLog component
+ */
 function RecentLog({ streak, userLogStats }) {
-
-	// console.log('userLogStats:', userLogStats);
-
 	const {
 		latestUserDayMeal = {},
 		macros = {},
@@ -126,15 +43,12 @@ function RecentLog({ streak, userLogStats }) {
 							</Text>
 						)
 					}
-
-
 					{(macros && macros.calories) ? (
 						<View>
 							<Text style={styles.recentLogCaloriesText}>Calories:{' '}</Text>
 							<Text style={styles.logInfoMeasurementText}>{macros.calories.toFixed(0) ?? 0} kcal</Text>
 						</View>
 					) : null}
-
 				</View>
 			) : (
 				<View style={styles.innerRecentLogContainer}>

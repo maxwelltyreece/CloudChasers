@@ -30,8 +30,8 @@ const RecipeEntry = () => {
                 style={styles.list}
             />
         ) : (
-            <View style={styles.container}>
-                <Text>No recipes found. Please add some.</Text>
+            <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>No recipes found. Please add some.</Text>
             </View>
         )
     );
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
     },
     emptyContainer: {
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
+        paddingTop: 50,
         paddingHorizontal: 20,
     },
     emptyText: {
