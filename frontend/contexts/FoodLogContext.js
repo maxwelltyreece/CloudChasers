@@ -98,6 +98,10 @@ export function FoodLogProvider({ children }) {
 		await foodLogService.logManualMacro(data);
 	}
 
+    const deleteRecipe = async (data) => {
+        await foodLogService.deleteRecipe(data);
+    }    
+
 	const value = useMemo(() => ({
 		latestLoggedFood,
 		getLatestLoggedFood,
@@ -118,7 +122,8 @@ export function FoodLogProvider({ children }) {
 		getPictureURL,
 		logWater,
 		logManualMacro,
-	}), [latestLoggedFood, getLatestLoggedFood, logDatabaseFood, createNewRecipeByUser, logRecipeFood, duplicateRecipeToUser, getFood, searchFoods, getRecipe, getRecipeWeight, getRecipeMacro, getAllUserRecipes, getRecipeIngredients, getCommunityRecipes, addItemToRecipe, deleteIngredientFromRecipe, getPictureURL, logWater, logManualMacro]);
+        deleteRecipe,
+	}), [latestLoggedFood, getLatestLoggedFood, logDatabaseFood, createNewRecipeByUser, logRecipeFood, duplicateRecipeToUser, getFood, searchFoods, getRecipe, getRecipeWeight, getRecipeMacro, getAllUserRecipes, getRecipeIngredients, getCommunityRecipes, addItemToRecipe, deleteIngredientFromRecipe, getPictureURL, logWater, logManualMacro, deleteRecipe]);
 
 	return (
 		<FoodLogContext.Provider value={value}>

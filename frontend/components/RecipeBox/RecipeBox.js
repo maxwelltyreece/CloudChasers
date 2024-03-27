@@ -15,11 +15,43 @@ import PropTypes from 'prop-types';
 import { LocalIP } from "../../screens/IPIndex";
 import axios from "axios";
 import { styles } from "./styles";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { useUser } from "../../contexts/UserContext";
+import { useFoodLog } from "../../contexts/FoodLogContext";
 
-function RecipeBox({ id, title, description, }) {
+function RecipeBox({ id, title, description, creatorId}) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [ingredients, setIngredients] = useState([]);
 	const [imageUrl, setImageUrl] = useState(null);
+    const { deleteRecipe } = useFoodLog();
+    const { userDetails } = useUser();
+
+    console.log('creatorId:', creatorId);
+    console.log('userDetails:', userDetails._id);
+    console.log(userDetails._id === creatorId);
+
+    const handleDeletePress = async () => {
+        Alert.alert(
+            "Delete Recipe",
+            `Are you sure you want to delete "${title}"?`,
+            [
+                {
+                    text: "No",
+                    style: "cancel"
+                },
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        deleteRecipe({ recipeID: id })
+                            .then(() => {
+                                setModalVisible(false);
+                            })
+                            .catch((error) => console.error("Failed to delete recipe", error));
+                    }
+                }
+            ]
+        );
+    };
 
 	useEffect(() => {
 		const handleImageRetrieval = () => {
@@ -87,6 +119,11 @@ function RecipeBox({ id, title, description, }) {
 										</Text>
 									))}
 								</ScrollView>
+                                {String(creatorId) === String(userDetails._id) && (
+                                    <TouchableOpacity style={styles.trashIconContainer} onPress={handleDeletePress}>
+                                        <Icon name="trash" size={24} color='black' />
+                                    </TouchableOpacity>
+                                )}
 							</View>
 						</TouchableWithoutFeedback>
 					</View>
