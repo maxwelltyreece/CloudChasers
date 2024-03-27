@@ -26,6 +26,7 @@ import { useFoodLog } from "../../../../../contexts/FoodLogContext";
 import { useCommunity } from "../../../../../contexts/CommunityContext";
 import { getUserCommunities } from "../../../../../services/CommunityService";
 import { uploadImage, pickImage } from "../../../../../services/ImageService";
+import IconButton from "./NewRecipeComponents/IconButton";
 
 /**
  * @description Renders the NewRecipe component allowing users to create a new recipe by adding details and selected foods.
@@ -62,44 +63,44 @@ const NewRecipe = ({}) => {
     fetchUserCommunities();
   }, []);
 
-  function AddFoodButton({ onPress }) {
-    return (
-      <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
-        <Pressable
-          onPress={onPress}
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-        >
-          <Feather name="plus" size={40} color="black" />
-        </Pressable>
-      </View>
-    );
-  }
+  // function AddFoodButton({ onPress }) {
+  //   return (
+  //     <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
+  //       <Pressable
+  //         onPress={onPress}
+  //         style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
+  //       >
+  //         <Feather name="plus" size={40} color="black" />
+  //       </Pressable>
+  //     </View>
+  //   );
+  // }
 
-  function AddImageButton({ onPress }) {
-    return (
-      <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
-        <Pressable
-          onPress={onPress}
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-        >
-          <Feather name="image" size={40} color="black" />
-        </Pressable>
-      </View>
-    );
-  }
+  // function AddImageButton({ onPress }) {
+  //   return (
+  //     <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
+  //       <Pressable
+  //         onPress={onPress}
+  //         style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
+  //       >
+  //         <Feather name="image" size={40} color="black" />
+  //       </Pressable>
+  //     </View>
+  //   );
+  // }
 
-  function AddCommunityButton({ onPress }) {
-    return (
-      <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
-        <Pressable
-          onPress={onPress}
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-        >
-          <Feather name="users" size={40} color="black" />
-        </Pressable>
-      </View>
-    );
-  }
+  // function AddCommunityButton({ onPress }) {
+  //   return (
+  //     <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
+  //       <Pressable
+  //         onPress={onPress}
+  //         style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
+  //       >
+  //         <Feather name="users" size={40} color="black" />
+  //       </Pressable>
+  //     </View>
+  //   );
+  // }
 
     const handleImagePick = async () => {
         const result = await pickImage();
@@ -125,19 +126,19 @@ const NewRecipe = ({}) => {
   }, []);
 
   useEffect(() => {
-  }, [userCommunities]); // This effect runs whenever `userCommunities` changes
+  }, [userCommunities]); 
 
   const handleAddCommunityPress = async () => {
     await fetchUserCommunities();
-    setSelectedCommunity(null); // Reset selected community ID
-    setSelectedCommunityName(""); // Reset selected community name
+    setSelectedCommunity(null); 
+    setSelectedCommunityName(""); 
     setCommunityModalVisible(true);
   };
 
   const handleCommunitySelection = (community) => {
     setSelectedCommunity(community.id);
-    setSelectedCommunityName(community.name); // Store the name for display
-    console.log("Selected community:", community.name); // Optionally log the name
+    setSelectedCommunityName(community.name); 
+    console.log("Selected community:", community.name);
   };
 
   const addItem = () => {
@@ -297,32 +298,21 @@ const NewRecipe = ({}) => {
               onSubmitEditing={Keyboard.dismiss}
               value={recipeDescription}
             />
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <View style={{ alignItems: "center" }}>
-                <AddFoodButton onPress={() => setFoodModalVisible(true)} />
-                <Text style={{ fontFamily: "Montserrat_700Bold" }}>
-                  Add Food
-                </Text>
+                <IconButton iconName="plus" onPress={() => setFoodModalVisible(true)} />
+                <Text style={{ fontFamily: "Montserrat_700Bold" }}>Add Food</Text>
               </View>
               <View style={{ alignItems: "center" }}>
-                <AddImageButton onPress={handleImagePick} />
-                <Text style={{ fontFamily: "Montserrat_700Bold" }}>
-                  Add Image
-                </Text>
+                <IconButton iconName="image" onPress={handleImagePick} />
+                <Text style={{ fontFamily: "Montserrat_700Bold" }}>Add Image</Text>
               </View>
               <View style={{ alignItems: "center" }}>
-                <AddCommunityButton
-                  onPress={() => {
-                    handleAddCommunityPress();
-                  }}
-                />
-                <Text style={{ fontFamily: "Montserrat_700Bold" }}>
-                  Add Community
-                </Text>
+                <IconButton iconName="users" onPress={handleAddCommunityPress} />
+                <Text style={{ fontFamily: "Montserrat_700Bold" }}>Add Community</Text>
               </View>
             </View>
+
             <Modal
               animationType="slide"
               transparent={true}
