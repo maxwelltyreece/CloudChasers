@@ -164,6 +164,11 @@ const logWater = async (data) => {
 const logManualMacro = async (data) => {
 	await foodLogService.logManualMacro(data);
 };
+
+const deleteRecipe = async (data) => {
+  await foodLogService.deleteRecipe(data);
+}; 
+
   const value = useMemo(
     () => ({
       latestLoggedFood,
@@ -185,6 +190,7 @@ const logManualMacro = async (data) => {
       getPictureURL,
       logWater,
       logManualMacro,
+      deleteRecipe,
     }),
     [
       latestLoggedFood,
@@ -206,6 +212,7 @@ const logManualMacro = async (data) => {
       getPictureURL,
       logWater,
       logManualMacro,
+      deleteRecipe,
     ]
   );
 

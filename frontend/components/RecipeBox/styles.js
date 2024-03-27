@@ -102,4 +102,9 @@ export const styles = StyleSheet.create({
         fontFamily: "Montserrat_400Regular",
         textAlign: "left",
     },
+    trashIconContainer: {
+        position: 'absolute',
+        top: 15,
+        right: 15,
+    },
 });
