@@ -25,7 +25,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useFoodLog } from "../../../../../contexts/FoodLogContext";
 import { useCommunity } from "../../../../../contexts/CommunityContext";
 import { getUserCommunities } from "../../../../../services/CommunityService";
-import { addRecipeToCommunity } from "../../../../../services/CommunityService";
+import { uploadImage, pickImage } from "../../../../../services/ImageService";
 
 /**
  * @description Renders the NewRecipe component allowing users to create a new recipe by adding details and selected foods.
@@ -45,10 +45,10 @@ const NewRecipe = ({}) => {
   const [shouldRenderScrollView, setRenderScrollView] = useState(true);
   const [foodModalVisible, setFoodModalVisible] = useState(false);
   const [recipeCommunity, setRecipeCommunity] = useState("");
-  const [selectedCommunity, setSelectedCommunity] = useState(null);
+  const [selectedCommunity, setSelectedCommunity] = useState(null)
   const [selectedCommunityName, setSelectedCommunityName] = useState("");
   const [communityModalVisible, setCommunityModalVisible] = useState(false);
-
+  const { addRecipeToCommunity } = useCommunity();
   const [userCommunities, setUserCommunities] = useState([]);
 
   useEffect(() => {
@@ -101,25 +101,12 @@ const NewRecipe = ({}) => {
     );
   }
 
-  function getFileName(image) {
-    const fileName = image.split("/").pop();
-    console.log(fileName);
-    return fileName;
-  }
-
-  const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    if (!result.canceled && result.assets) {
-      setImage(result.assets[0].uri);
-      getFileName(result.assets[0].uri);
-    }
-  };
+    const handleImagePick = async () => {
+        const result = await pickImage();
+        if (result) {
+            setImage(result);
+        }
+    };
 
   const fetchUserCommunities = async () => {
     try {
@@ -137,7 +124,8 @@ const NewRecipe = ({}) => {
     fetchUserCommunities();
   }, []);
 
-  useEffect(() => {}, [userCommunities]); // This effect runs whenever `userCommunities` changes
+  useEffect(() => {
+  }, [userCommunities]); // This effect runs whenever `userCommunities` changes
 
   const handleAddCommunityPress = async () => {
     await fetchUserCommunities();
@@ -150,8 +138,6 @@ const NewRecipe = ({}) => {
     setSelectedCommunity(community.id);
     setSelectedCommunityName(community.name); // Store the name for display
     console.log("Selected community:", community.name); // Optionally log the name
-    // You may not want to immediately close the modal upon selection depending on your UX
-    // setCommunityModalVisible(false);
   };
 
   const addItem = () => {
@@ -214,124 +200,81 @@ const NewRecipe = ({}) => {
     setSelectedFoods(selectedFoods.filter((item) => item._id !== id));
   };
 
-  /**
-   * Adds selected foods to a recipe.
-   * @param {string} recipeID - The ID of the recipe.
-   * @param {string} token - The authentication token.
-   * @returns {Promise<void>} - A promise that resolves when all items have been added to the recipe.
-   */
-  const addItemsToRecipe = async (recipeID, token) => {
-    for (const food of selectedFoods) {
-      const payload = {
-        recipeID: recipeID,
-        foodID: food._id,
-        weight: food.weight,
-      };
-      console.log("Payload:", payload);
+	/**
+	 * Adds selected foods to a recipe.
+	 * @param {string} recipeID - The ID of the recipe.
+	 * @param {string} token - The authentication token.
+	 * @returns {Promise<void>} - A promise that resolves when all items have been added to the recipe.
+	 */
+	const addItemsToRecipe = async (recipeID, token) => {
+		for (const food of selectedFoods) {
+			const payload = {
+				recipeID: recipeID,
+				foodID: food._id,
+				weight: food.weight,
+			};
+			console.log("Payload:", payload);
 
-      try {
-        await axios.put(
-          `http://${LocalIP}:3000/food/addItemToRecipe`,
-          payload,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-      } catch (error) {
-        console.error("Error adding item to recipe:", error);
-      }
-    }
-  };
+			try {
+				await axios.put(
+					`http://${LocalIP}:3000/food/addItemToRecipe`,
+					payload,
+					{
+						headers: { Authorization: `Bearer ${token}` },
+					}
+				);
+			} catch (error) {
+				console.error("Error adding item to recipe:", error);
+			}
+		}
+	};
 
-  useEffect(() => {
-    if (searchQuery.length >= 3) {
-      searchFood();
-    }
-  }, [searchQuery]);
+	useEffect(() => {
+		if (searchQuery.length >= 3) {
+			searchFood();
+		}
+	}, [searchQuery]);
 
   const handleSubmit = async () => {
     if (!recipeName.trim()) {
       Alert.alert("Error", "Recipe name is required");
       return;
     }
-
     const token = await AsyncStorage.getItem("token");
     const recipeData = {
-      name: recipeName,
-      description: recipeDescription,
-      community: recipeCommunity,
-      foods: selectedFoods,
+        name: recipeName,
+        description: recipeDescription,
+        communityThatOwnsRecipe: recipeCommunity,
     };
 
     try {
-      const response = await axios.post(
-        `http://${LocalIP}:3000/food/createNewRecipeByUser`,
-        recipeData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
+        const response = await axios.post(
+            `http://${LocalIP}:3000/food/createNewRecipeByUser`,
+            recipeData,
+            {
+                headers: { Authorization: `Bearer ${token}` },
+            }
+        );
+        console.log("Recipe created:", response.data.data._id);
+        console.log("ALL DATA:", recipeData);
+        const recipeID = response.data.data._id;
+        await addItemsToRecipe(recipeID, token);
+
+        if (image) {
+            await uploadImage(recipeID, image, "Recipe_Pictures");
         }
-      );
-      console.log("Recipe created:", response.data.data._id);
-      console.log("DATA:", recipeData);
-      const recipeID = response.data.data._id;
 
-      await addItemsToRecipe(recipeID, token);
-
-      if (image) {
-        const formData = new FormData();
-        formData.append("objectID", recipeID);
-        formData.append("folderName", "Recipe_Pictures");
-        formData.append("file", {
-          uri: image,
-          name: getFileName(image),
-          type: "image/jpeg",
-        });
-
-        await axios.post(
-          `http://${LocalIP}:3000/image/uploadPicture`,
-          formData,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-      }
-
-      console.log("Selected community:", selectedCommunity);
-      const addRecipeToCommunityResult = await addRecipeToCommunity(
-        recipeID,
-        selectedCommunity
-      );
-      if (addRecipeToCommunityResult.success) {
-		console.log("Recipe added to community");
-        Alert.alert(
-          "Success",
-          "Recipe created and added to community successfully"
-        );
-      } else {
-        console.error(
-          "Failed to add recipe to community:",
-          addRecipeToCommunityResult.message
-        );
-        Alert.alert("Error", "Failed to add recipe to community");
-      }
-
+      Alert.alert("Success", "Recipe created successfully");
       setRecipeName("");
       setRecipeDescription("");
-      setSelectedFoods([]);
+      setRecipeCommunity("");
       setImage(null);
-      setSelectedCommunity(null);
       navigation.goBack();
     } catch (error) {
-      console.error("Error:", error);
-      Alert.alert("Error", error.message || "Failed to create recipe");
+      console.error("Error creating recipe or uploading image:", error);
+      Alert.alert("Error", "Failed to create recipe");
     }
   };
-
-  
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container} keyboardShouldPersistTaps="handled">
@@ -364,7 +307,7 @@ const NewRecipe = ({}) => {
                 </Text>
               </View>
               <View style={{ alignItems: "center" }}>
-                <AddImageButton onPress={pickImage} />
+                <AddImageButton onPress={handleImagePick} />
                 <Text style={{ fontFamily: "Montserrat_700Bold" }}>
                   Add Image
                 </Text>

@@ -1,52 +1,32 @@
 import React from 'react';
-import { TouchableOpacity, Animated, Platform, Text, View } from 'react-native';
+import { TouchableOpacity, Animated, Text } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import TabBarIcon from '../../components/TabBarIcon';
-import { NavigationContainer } from '@react-navigation/native';
 
-// Mocking Animated.Value
-jest.mock('react-native/Libraries/Animated/src/NativeAnimatedHelper', () => {
-	const NativeAnimatedHelper = jest.requireActual(
-		'react-native/Libraries/Animated/src/NativeAnimatedHelper',
-	);
-	return {
-		...NativeAnimatedHelper,
-		shouldUseNativeDriver: () => true,
-	};
-});
+jest.mock('@react-navigation/native', () => ({
+	useNavigation: () => ({ navigate: jest.fn() }),
+}));
 
-describe('TabBarIcon', () => {
-	it('renders a FontAwesome5 icon when name is not "+"', () => {
+describe('TabBarIcon component', () => {
+	it('renders FontAwesome5 icon if name is not "+"', () => {
 		const { getByTestId } = render(
-			<TabBarIcon name="home" color="black" size={30} />,
+			<TabBarIcon name="home" color="black" size={20} animation={new Animated.Value(1)} onPress={() => {}} navigation={{ navigate: () => {} }} />
 		);
-		expect(getByTestId('fontawesome-icon')).toBeTruthy();
+		expect(getByTestId('fontawesome-icon')).toBeDefined();
 	});
 
-	it('calls onPress and navigation.navigate when name is "+" and TouchableOpacity is pressed', () => {
-		const mockOnPress = jest.fn();
-		const mockNavigation = {
-			navigate: jest.fn(),
-		};
-
+	it('renders custom icon with animation if name is "+"', () => {
+		const onPressMock = jest.fn();
+		const navigateMock = jest.fn();
+		const animationValue = new Animated.Value(1);
 		const { getByTestId } = render(
-			<NavigationContainer>
-				<TabBarIcon
-					name="+"
-					color="blue"
-					size={30}
-					animation={new Animated.Value(1)}
-					onPress={mockOnPress}
-					navigation={mockNavigation}
-				/>
-			</NavigationContainer>,
+			<TabBarIcon name="+" color="black" size={20} animation={animationValue} onPress={onPressMock} navigation={{ navigate: navigateMock }} />
 		);
 
 		const touchableOpacity = getByTestId('touchable-opacity');
 		fireEvent.press(touchableOpacity);
 
-		expect(mockOnPress).toHaveBeenCalledTimes(1);
-		expect(mockNavigation.navigate).toHaveBeenCalledWith('+');
+		expect(onPressMock).toHaveBeenCalled();
+		expect(navigateMock).toHaveBeenCalledWith('+');
 	});
 });

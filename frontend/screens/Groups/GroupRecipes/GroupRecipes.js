@@ -18,14 +18,12 @@ function GroupRecipes({ route }) {
 	useEffect(() => {
 		const fetchRecipes = async () => {
 			const fetchedRecipes = await getCommunityRecipes(community.id);
-			// console.log("ID: ", community.id);
-			// console.log('Fetched recipes:', fetchedRecipes);
         
 			if (Array.isArray(fetchedRecipes.data)) {
 				const mappedRecipes = fetchedRecipes.data.map(recipe => ({
 					id: recipe._id,
 					title: recipe.name,
-					image: recipe.image,
+                    description: recipe.description,
 				}));
             
 				setRecipes(mappedRecipes);
@@ -66,7 +64,7 @@ function GroupRecipes({ route }) {
 			{filteredRecipes.length > 0 ? (
 				<FlatList
 					data={filteredRecipes}
-					renderItem={({ item }) => <RecipeBox title={item.title} image={item.image} style={styles.box} />}
+                    renderItem={({ item }) => <RecipeBox id={item.id} title={item.title} description={item.description} style={styles.box} />}
 					keyExtractor={item => item.id}
 					numColumns={2}
 					columnWrapperStyle={styles.row}
