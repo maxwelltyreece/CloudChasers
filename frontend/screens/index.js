@@ -4,3 +4,4 @@ export { default as Groups } from './Groups/Groups';
 export { default as DataEntry } from './DataEntry/DataEntry';
 export {default as FoodEntry} from './DataEntry/FoodEntry';
 export {default as WaterEntry} from './DataEntry/WaterEntry';
+export {default as RecipeEntry} from './DataEntry/RecipeEntry';

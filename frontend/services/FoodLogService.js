@@ -108,11 +108,15 @@ export const getAllUserRecipes = async () => {
 
 /**
  * Get the ingredients of a recipe.
+ * @param {string} recipeID - The ID of the recipe.
  * @returns {Promise} Axios Response Promise with the recipe ingredients.
  */
-export const getRecipeIngredients = async () => {
-	const token = await AsyncStorage.getItem('token');
-	return await axios.get(`http://api.gobl-up.me:80/food/getRecipeIngredients`, { headers: { Authorization: `Bearer ${token}` } });
+export const getRecipeIngredients = async (recipeID) => {
+    const token = await AsyncStorage.getItem('token');
+    return await axios.get(`http://api.gobl-up.me:80/food/getRecipeIngredients`, {
+        headers: { Authorization: `Bearer ${token}` },
+        params: { recipeID }
+    });
 }
 
 /**
