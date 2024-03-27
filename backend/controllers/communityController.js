@@ -7,6 +7,20 @@ const CommunityUser = require('../models/communityUser');
 const CommunityPost = require('../models/communityPost');
 const JoinRequest = require('../models/request');
 
+/**
+ * Handles the POST /create request to create a new community.
+ *
+ * @async
+ * @function createCommunity
+ * @param {Object} req - Express request object, containing the details of the community to be created in the body.
+ * @param {string} req.body.name - The name of the community.
+ * @param {string} req.body.description - The description of the community.
+ * @param {string} req.body.recipePrivacy - The privacy setting for recipes in the community.
+ * @param {string} req.body.joinPrivacy - The privacy setting for joining the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the created community data.
+ * @throws {Error} Will throw an error if saving the community or community user fails.
+ */
 exports.createCommunity = async (req, res) => {
 	const { name, description, recipePrivacy, joinPrivacy } = req.body;
 	try {
@@ -38,6 +52,20 @@ exports.createCommunity = async (req, res) => {
 	}
 };
 
+/**
+ * Handles the POST /join request to join a community.
+ * If community is public then user is added to the community directly.
+ * If community is private then a join request is created.
+ *
+ * @async
+ * @function joinCommunity
+ * @param {Object} req - Express request object, containing the user and the ID of the community to join in the body.
+ * @param {Object} req.user - The user who wants to join the community.
+ * @param {string} req.body.communityId - The ID of the community to join.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the data of the new community user or the join request.
+ * @throws {Error} Will throw an error if saving the new community user or the join request fails.
+ */
 exports.joinCommunity = async (req, res) => {
 	const { communityId } = req.body;
 	try {
@@ -78,7 +106,19 @@ exports.joinCommunity = async (req, res) => {
 	}
 };
 
-
+/**
+ * Handles the GET /requests request to retrieve all pending join requests for a community.
+ * Only admins of the community can retrieve the pending requests.
+ *
+ * @async
+ * @function getPendingRequests
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the query.
+ * @param {Object} req.user - The user making the request.
+ * @param {string} req.query.communityId - The ID of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the data of the pending requests.
+ * @throws {Error} Will throw an error if retrieving the community, the admin status, the join requests, or the usernames fails.
+ */
 exports.getPendingRequests = async (req, res) => {
 	const { communityId } = req.query;
 	try {
@@ -103,7 +143,19 @@ exports.getPendingRequests = async (req, res) => {
 	}
 };
 
-
+/**
+ * Handles the POST /acceptRequest request to accept a join request to a community.
+ * Only admins of the community can accept join requests.
+ *
+ * @async
+ * @function acceptRequest
+ * @param {Object} req - Express request object, containing the user and the ID of the join request in the body.
+ * @param {Object} req.user - The user who is accepting the request.
+ * @param {string} req.body.requestId - The ID of the join request.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns a success flag and a message indicating that the request has been accepted.
+ * @throws {Error} Will throw an error if retrieving the join request, the community, the admin status, updating the join request, or saving the new community user fails.
+ */
 exports.acceptRequest = async (req, res) => {
 	const { requestId } = req.body;
 	try {
@@ -138,6 +190,19 @@ exports.acceptRequest = async (req, res) => {
 	}
 };
 
+/**
+ * Handles the POST /denyRequest request to deny a join request to a community.
+ * Only admins of the community can deny join requests.
+ *
+ * @async
+ * @function denyRequest
+ * @param {Object} req - Express request object, containing the user and the ID of the join request in the body.
+ * @param {Object} req.user - The user who is denying the request.
+ * @param {string} req.body.requestId - The ID of the join request.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns a success flag and a message indicating that the request has been denied.
+ * @throws {Error} Will throw an error if retrieving the join request, the community, the admin status, or updating the join request fails.
+ */
 
 exports.denyRequest = async (req, res) => {
 	const { requestId } = req.body;
@@ -433,7 +498,7 @@ exports.getCommunityPosts = async (req, res) => {
 			return { _id: post._id, username: username.username, recipeID: post.recipeID, user_profile_pic: user_profile_pic.profilePictureLink, title: post.title, text: post.text, date: post.date };
 		}
 		));
-		
+
 		return res.status(200).json({ success: true, data: postsMapped });
 	}
 	catch (error) {
