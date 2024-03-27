@@ -67,23 +67,18 @@ export function CommunityProvider({ children }) {
 	};
 
 	const deleteCommunity = async (communityId, navigation) => {
-		// console.log('Deleting community with ID:', communityId);
 		const response = await communityService.deleteCommunity(communityId);
 		if (response && response.success) {
-			// console.log('Successfully deleted community:', response);
 			getUserCommunities();
 			navigation.navigate('Groups');
 		} else {
 			console.error('Failed to delete community:', response);
-			// Handle error
 		}
 	};
 
 	const leaveCommunity = async (communityId, navigation) => {
-		// console.log('Leaving community with ID:', communityId);
 		const response = await communityService.leaveCommunity(communityId);
 		if (response && response.success) {
-			// console.log('Successfully left community:', response);
 			getUserCommunities();
 			navigation.navigate('Groups');
 		} else {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor, act } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import FoodEntry from '../../../screens/DataEntry/FoodEntry';
 
 jest.mock('../../../contexts/FoodLogContext', () => ({
@@ -38,7 +38,7 @@ describe('FoodEntry Component', () => {
 	});
 
 	it('logs food entry when submitted', async () => {
-		const { getByPlaceholderText, getByText, getByTestId, findByText } = render(<FoodEntry />);
+		const { getByPlaceholderText, getByTestId, findByText } = render(<FoodEntry />);
 		const searchInput = getByPlaceholderText('Search...');
 		fireEvent.changeText(searchInput, 'example food');
 		const submitButton = getByTestId('submit-button');
