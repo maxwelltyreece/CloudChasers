@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Alert, TextInput, Button, View, Text, Image, Pressable, Modal, TouchableWithoutFeedback, ScrollView } from "react-native";
 import PropTypes from 'prop-types';
-import { LocalIP } from "../../../IPIndex";
 import axios from "axios";
 import { StyleSheet } from 'react-native';
 import { getImageLink } from '../../../../services/ImageService';
