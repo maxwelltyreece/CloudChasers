@@ -9,68 +9,107 @@ import { useFoodLog } from "../../../../contexts/FoodLogContext";
 
 
 export const styles = StyleSheet.create({
-    box: {
-        backgroundColor: "white",
-        borderRadius: 10,
-        overflow: "hidden",
-        width: "45%",
-        aspectRatio: 1,
-        margin: 8,
+  box: {
+    backgroundColor: "white",
+    borderRadius: 10,
+    overflow: "hidden",
+    width: "45%",
+    aspectRatio: 1,
+    margin: 8,
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+  },
+  titleContainer: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: "transparent",
+    padding: 10,
+  },
+  title: {
+    fontSize: 16,
+    fontFamily: "Montserrat_700Bold",
+    color: "white",
+    textShadowColor: "rgba(0, 0, 0, 0.75)",
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
     },
-    image: {
-        width: '100%',
-        height: '100%',
-    },
-    titleContainer: {
-        position: 'absolute',
-        bottom: 0,
-        width: '100%',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        padding: 10,
-    },
-    title: {
-        color: '#fff',
-        fontSize: 18,
-    },
-    modalView: {
-        margin: 20,
-        width: '80%',
-        height: '60%',
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22
-    },
-    modalTitle: {
-        color: '#000',
-        fontSize: 18,
-    },
-    modalTitle: {
-        color: '#000',
-        fontSize: 18,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginTop: 10,
-        marginBottom: 10,
-        paddingLeft: 10,
-    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: 300,
+    height: "70%",
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalImage: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 20,
+    marginBottom: 15,
+    textAlign: "center",
+    fontFamily: "Montserrat_700Bold",
+  },
+  input: {
+    height: 40,
+    backgroundColor: "#F0F0F0",
+    borderWidth: 1,
+    borderRadius: 10,
+    width: '50%',
+    marginTop: 10,
+    marginBottom: 10,
+    paddingLeft: 10,
+  },
+  button: {
+    borderRadius: 20,
+    
+    padding: 10,
+    elevation: 2,
+  },
+  buttonClose: {
+    backgroundColor: "#FF815E",
+  },
+  logButton: {
+    backgroundColor: "#FF815E",
+    padding: 10,
+    width: 100,
+    borderRadius: 20,
+    marginTop: 10,
+  },
+  logButtonText: {
+    color: "white",
+    textAlign: "center",
+    fontFamily: "Montserrat_700Bold",
+    fontSize: 16,
+  },
+  ingredientsTitle:{
+    fontSize: 20,
+    fontFamily: "Montserrat_700Bold",
+    marginBottom: 10,
+  },
+  
 });
 
 function SelectableRecipe({ id, title, description }) {
@@ -115,7 +154,7 @@ function SelectableRecipe({ id, title, description }) {
             return;
         }
 
-        try {x
+        try {
             const response = await logRecipeFood({
                 mealType: title,
                 recipeID: id,
@@ -132,52 +171,55 @@ function SelectableRecipe({ id, title, description }) {
     };
     
     return (
-        <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
-            <Image source={{ uri: imageUrl }} style={styles.image} />
-            <View style={styles.titleContainer}>
-                <Text style={styles.title}>{title}</Text>
+      <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
+        <Image source={{ uri: imageUrl }} style={styles.image} />
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+            <View style={styles.centeredView}>
+              <TouchableWithoutFeedback onPress={() => {}}>
+                <View style={styles.modalView}>
+                  <Image source={{ uri: imageUrl }} style={styles.modalImage} />
+                  <Text style={styles.modalTitle}>{title}</Text>
+                  <Text style={styles.description}>{description}</Text>
+                  <Text style={styles.ingredientsTitle}>Ingredients</Text>
+                  <ScrollView style={styles.dropdown}>
+                    {ingredients.map((ingredient) => (
+                      <Text
+                        key={`${ingredient.name}:${ingredient.weight}`}
+                        style={styles.ingredient}
+                      >
+                        {ingredient.weight}g of {ingredient.name}
+                      </Text>
+                    ))}
+                  </ScrollView>
+                  <TextInput
+                    style={styles.input}
+                    keyboardType="numeric"
+                    value={inputWeight}
+                    onChangeText={setInputWeight}
+                    placeholder="Weight (g)"
+                    placeholderTextColor="darkgrey"
+                    returnKeyType="done"
+                  />
+                  <Pressable style={styles.logButton} onPress={logRecipe}>
+                    <Text style={styles.logButtonText}>Log</Text>
+                  </Pressable>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
-            >
-                <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-                    <View style={styles.centeredView}>
-                        <TouchableWithoutFeedback onPress={() => {}}>
-                            <View style={styles.modalView}>
-                                <Image source={{ uri: imageUrl }} style={styles.modalImage} />
-                                <Text style={styles.modalTitle}>{title}</Text>
-                                <Text style={styles.description}>{description}</Text>
-                                <Text style={styles.ingredientsTitle}>Ingredients</Text>
-                                <ScrollView style={styles.dropdown} maxHeight={180}>
-                                    {ingredients.map((ingredient, index) => (
-                                        <Text
-                                            key={`${ingredient.name}:${ingredient.weight}`}
-                                            style={styles.ingredient}
-                                        >
-                                            {ingredient.name}
-                                        </Text>
-                                    ))}
-                                </ScrollView>
-                                <TextInput 
-                                    style={styles.input} 
-                                    keyboardType="numeric" 
-                                    value={inputWeight} 
-                                    onChangeText={setInputWeight} 
-                                    placeholder="Weight (g)" 
-                                    returnKeyType="done"
-                                />
-                                <Button title="Log" onPress={logRecipe} />
-                            </View>
-                        </TouchableWithoutFeedback>
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
-        </Pressable>
+          </TouchableWithoutFeedback>
+        </Modal>
+      </Pressable>
     );
 }
 
