@@ -1,5 +1,7 @@
 module.exports = {
 	preset: 'jest-expo',
+	testEnvironment: 'node',
+	testSequencer: "@jest/test-sequencer",
 	setupFilesAfterEnv: [
 		'@testing-library/jest-native/extend-expect',
 		"../../jest.setup.js",
@@ -17,6 +19,10 @@ module.exports = {
 	transform: {
 		"^.+\\.[jt]sx?$": ["babel-jest", { configFile: "./babel.config.js" }],
 	},
+	testMatch: [
+        "**/__tests__/**/*.[jt]s?(x)",
+        "**/?(*.)+(spec|test).[tj]s?(x)"
+     ],
 	// collectCoverage: true,
 	// "collectCoverageFrom": [
 	// 	"**/*.{js,jsx}",

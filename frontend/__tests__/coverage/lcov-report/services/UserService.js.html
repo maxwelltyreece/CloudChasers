@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">11.11% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/18</span>
+                <span class='fraction'>2/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.88% </span>
+                <span class="strong">11.11% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>16/18</span>
+                <span class='fraction'>2/18</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line low'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -121,40 +121,40 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -168,24 +168,24 @@ import { LocalIP } from '../screens/IPIndex';
  * @param {string} token - The user's authentication token.
  * @returns {Promise&lt;Object&gt;} Promise that resolves to the user's details.
  */
-export const fetchUserDetails = async (token) =&gt; {
-	try {
-		const response = await axios.get(`http://${LocalIP}:3000/userDetails`, {
+export const fetchUserDetails = <span class="fstat-no" title="function not covered" >as</span>ync (token) =&gt; {
+<span class="cstat-no" title="statement not covered" >	try {</span>
+		const response = <span class="cstat-no" title="statement not covered" >await axios.get(`http://${LocalIP}:3000/userDetails`, {</span>
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		return response.data;
+<span class="cstat-no" title="statement not covered" >		return response.data;</span>
 	} catch (error) {
-		if (error.response) {
-			console.error(error.response.data);
-		} else if (error.request) {
-			console.error(error.request);
+<span class="cstat-no" title="statement not covered" >		if (error.response) {</span>
+<span class="cstat-no" title="statement not covered" >			console.error(error.response.data);</span>
+		} else <span class="cstat-no" title="statement not covered" >if (error.request) {</span>
+<span class="cstat-no" title="statement not covered" >			console.error(error.request);</span>
 		} else {
-			console.error('Error', error.message);
+<span class="cstat-no" title="statement not covered" >			console.error('Error', error.message);</span>
 		}
-		console.log(error.config);
-		return null;
+<span class="cstat-no" title="statement not covered" >		console.log(error.config);</span>
+<span class="cstat-no" title="statement not covered" >		return null;</span>
 	}
 };
 &nbsp;
@@ -194,15 +194,15 @@ export const fetchUserDetails = async (token) =&gt; {
  * @param {Object} newValues - The new values for the user's details.
  * @returns {Promise&lt;Object&gt;} Promise that resolves to the updated user's details.
  */
-export const editUserDetails = async (newValues) =&gt; {
-	try {
-		const token = await AsyncStorage.getItem('token');
-		const response = await axios.put(`http://${LocalIP}:3000/updateProfile`, newValues, {
+export const editUserDetails = <span class="fstat-no" title="function not covered" >as</span>ync (newValues) =&gt; {
+<span class="cstat-no" title="statement not covered" >	try {</span>
+		const token = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem('token');</span>
+		const response = <span class="cstat-no" title="statement not covered" >await axios.put(`http://${LocalIP}:3000/updateProfile`, newValues, {</span>
 			headers: {
 				Authorization: `Bearer ${token}`,
 			},
 		});
-		return response.data;
+<span class="cstat-no" title="statement not covered" >		return response.data;</span>
 	} catch (error) {
 <span class="cstat-no" title="statement not covered" >		console.error(error);</span>
 <span class="cstat-no" title="statement not covered" >		throw error;</span>
@@ -214,7 +214,7 @@ export const editUserDetails = async (newValues) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-27T17:29:51.726Z
+                at 2024-03-27T17:57:23.030Z
             </div>
         <script src="../prettify.js"></script>
         <script>

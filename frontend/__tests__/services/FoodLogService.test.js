@@ -139,15 +139,18 @@ describe('FoodLogService', () => {
 		it('should fetch recipe ingredients successfully', async () => {
 			const mockIngredients = [{ id: '1', name: 'Tomato', amount: '2 cups' }];
 			axios.get.mockResolvedValue({ data: mockIngredients });
-
-			const result = await FoodLogService.getRecipeIngredients();
-
+			const recipeID = '123';
+	
+			const result = await FoodLogService.getRecipeIngredients(recipeID);
+	
 			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getRecipeIngredients`, {
 				headers: { Authorization: `Bearer ${token}` },
+				params: { recipeID }
 			});
 			expect(result.data).toEqual(mockIngredients);
 		});
 	});
+	
 
 	describe('getAllUserRecipes', () => {
 		it('should fetch all user recipes successfully', async () => {

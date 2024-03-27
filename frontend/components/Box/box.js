@@ -15,7 +15,7 @@ import { styles } from './styles';
 function Box({ title, image }) {
     return (
         <View style={styles.box}>
-            {image && <Image source={{ uri: image }} style={styles.image} />}
+            {image && <Image source={{ uri: image }} style={styles.image} testID='image'/>}
             <Text style={styles.title}>{title}</Text>
         </View>
     );
