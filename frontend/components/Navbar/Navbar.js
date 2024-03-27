@@ -28,7 +28,7 @@ const screens = [
 const screenOptions = {
 	headerShown: false,
 	tabBarStyle: {
-		...navbarStyles.tabBarStyle,
+		...styles.tabBarStyle,
 		backgroundColor: globalStyles.backgroundColor.backgroundColor,
 		height: Platform.OS === 'android' ? 70 : 90, // Apply only on Android
 		paddingBottom: Platform.OS === 'android' ? 10 : 30, // Apply only on Android
@@ -79,7 +79,7 @@ export default function MainTabNavigator() {
 	}, [animation]);
 
 	return (
-		<View style={navbarStyles.container}>
+		<View style={styles.container}>
 			<Tab.Navigator
 				initialRouteName="Home"
 				screenOptions={screenOptions}
