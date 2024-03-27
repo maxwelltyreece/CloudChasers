@@ -1,4 +1,3 @@
-// UserContext.js
 import React, {
 	createContext, useState, useContext, useMemo,
 } from 'react';
@@ -8,11 +7,19 @@ import { useCommunity } from './CommunityContext';
 import PropTypes from 'prop-types';
 
 const UserContext = createContext();
-
+/**
+ * Provides the UserContext to its children.
+ * @param {Object} props The props of the component.
+ * @param {React.ReactNode} props.children The children nodes.
+ */
 export function UserProvider({ children }) {
 	const [userDetails, setUserDetails] = useState(null);
 	const { resetUserCommunities } = useCommunity();
 
+	
+    /**
+     * Fetches and sets the user details from the server.
+     */
 	const getUserDetails = async () => {
 		const token = await AsyncStorage.getItem('token');
 		if (!token) {
@@ -21,9 +28,11 @@ export function UserProvider({ children }) {
 		}
 		const details = await userService.fetchUserDetails(token);
 		setUserDetails(details.data);
-		// console.log('User details:', details.data);
 	}
-
+  
+	/**
+     * Updates the user details from the server.
+     */
 	const updateUserDetails = async () => {
 		const token = await AsyncStorage.getItem('token');
 		if (!token) {
@@ -33,9 +42,11 @@ export function UserProvider({ children }) {
 		setUserDetails(details.data);
 	};
 
+	/**
+     * Edits the user details on the server and updates the local state.
+     * @param {Object} newValues The new values for the user details.
+     */
 	const editUserDetails = async (newValues) => {
-		// console.log("New Values", newValues)
-		// console.log("STARTING")
 		try {
 			await userService.editUserDetails(newValues);
 			updateUserDetails();
@@ -44,10 +55,13 @@ export function UserProvider({ children }) {
 		}
 	};
 
+	 /**
+     * Logs out the user, removes the token from AsyncStorage, and resets the navigation.
+     * @param {Object} navigation The navigation object.
+     */
 	const logout = async (navigation) => {
 		try {
 			await AsyncStorage.removeItem('token');
-			// console.log('Token removed!');
 			navigation.reset({
 				index: 0,
 				routes: [{ name: 'Auth' }],
@@ -70,6 +84,10 @@ export function UserProvider({ children }) {
 	);
 }
 
+/**
+ * Custom hook to use the UserContext.
+ * @returns {Object} The user state and its setter functions.
+ */
 export const useUser = () => useContext(UserContext);
 
 UserProvider.propTypes = {

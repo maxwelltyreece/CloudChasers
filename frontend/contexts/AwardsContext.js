@@ -1,6 +1,5 @@
-// Import necessary libraries
 import React, { createContext, useState, useContext, useMemo } from 'react';
-import awardsService from '../services/AwardsService'; // Make sure to import your AwardsService correctly
+import awardsService from '../services/AwardsService'; 
 import propTypes from 'prop-types';
 
 const AwardsContext = createContext();
@@ -9,10 +8,7 @@ const AwardsContext = createContext();
  * Provides a context for managing awards, including fetching, creating, and retrieving awards given to a user.
  */
 export function AwardsProvider({ children }) {
-	// State for all awards
 	const [awards, setAwards] = useState([]);
-
-	// State for awards assigned to the user
 	const [userAwards, setUserAwards] = useState([]);
 
 	/**
@@ -37,7 +33,7 @@ export function AwardsProvider({ children }) {
 		try {
 			const response = await awardsService.createAward(awardData);
 			if (response && response.data) {
-				fetchAwards(); // Refresh the awards list
+				fetchAwards(); 
 			}
 			return response;
 		} catch (error) {
@@ -66,8 +62,6 @@ export function AwardsProvider({ children }) {
 		try {
 			const response = await awardsService.getAward(awardId);
 			if (response && response.data) {
-				// Assuming you want to do something with the single award data,
-				// like setting it in state or returning it for immediate use.
 				return response.data.award;
 			}
 		} catch (error) {
@@ -83,7 +77,6 @@ export function AwardsProvider({ children }) {
 		try {
 			const response = await awardsService.awardUser(awardData);
 			if (response && response.data) {
-				// Post-award action, such as refreshing user awards.
 				fetchUserAwards();
 				return response.data;
 			}
@@ -99,7 +92,6 @@ export function AwardsProvider({ children }) {
 		try {
 			const response = await awardsService.getAwardsToBeIssued();
 			if (response && response.data) {
-				// Handle the data, possibly set it to state or return it.
 				return response.data;
 			}
 		} catch (error) {
@@ -114,7 +106,6 @@ export function AwardsProvider({ children }) {
 		try {
 			const response = await awardsService.getNumberOfCompletedAwards();
 			if (response && response.data) {
-				// Assuming you might want to use this information in the UI
 				return response.data;
 			}
 		} catch (error) {
@@ -122,17 +113,16 @@ export function AwardsProvider({ children }) {
 		}
 	};
 
-	// Add the new functions to the useMemo hook
 	const value = useMemo(() => ({
 		awards,
 		userAwards,
 		fetchAwards,
 		createAward,
 		fetchUserAwards,
-		fetchAward, // New function
-		awardUser, // New function
-		fetchAwardsToBeIssued, // New function
-		fetchNumberOfCompletedAwards, // New function
+		fetchAward,
+		awardUser, 
+		fetchAwardsToBeIssued, 
+		fetchNumberOfCompletedAwards,
 	}), [awards, userAwards]);
 
 	return (
@@ -147,7 +137,6 @@ export function AwardsProvider({ children }) {
  * @returns The context with all awards, user awards, and functions to manage awards.
  */
 export const useAwards = () => useContext(AwardsContext);
-
 AwardsProvider.propTypes = {
 	children: propTypes.node.isRequired,
 };
