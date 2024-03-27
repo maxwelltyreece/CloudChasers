@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
 import Modal from 'react-native-modal';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { useFoodLog } from '../../../contexts/FoodLogContext';
 
 /**
@@ -42,10 +42,10 @@ const FoodInput = ({ label, value, onChangeText }) => {
  */
 const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 
-    FoodInput.propTypes = {
-        label: proptypes.string.isRequired,
-        value: proptypes.string.isRequired,
-        onChangeText: proptypes.func.isRequired,
+    FoodInput.PropTypes = {
+        label: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
+        onChangeText: PropTypes.func.isRequired,
     };
 
     const { logManualMacro } = useFoodLog();
@@ -59,7 +59,22 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
      * Logs the food data to the context.
      */
     const handleLogFood = async () => {
-        // Log the food data
+        if (!foodItem || !calories || !protein || !fat || !carbs) {
+            Alert.alert('Error', 'Please fill all fields');
+            return;
+        }
+        if (isNaN(calories) || isNaN(protein) || isNaN(fat) || isNaN(carbs)) {
+            Alert.alert('Error', 'Weight must be valid numbers');
+            return;
+        }
+        if (calories <= 0 || protein <= 0 || fat <= 0 || carbs <= 0) {
+            Alert.alert('Error', 'Weight must be more than 0g');
+            return;
+        }
+        if (calories >= 100 || protein >= 100 || fat >= 100 || carbs >= 100) {
+            Alert.alert('Error', 'Weight must be less than 100g');
+            return;
+        }
         const data = {
             mealType: foodItem,
             calories: Number(calories),
@@ -164,10 +179,10 @@ const styles = StyleSheet.create({
     },
 });
 
-NewFoodModal.propTypes = {
-    isVisible: proptypes.bool.isRequired,
-    onBackdropPress: proptypes.func.isRequired,
-    toggleModal: proptypes.func.isRequired,
+NewFoodModal.PropTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    onBackdropPress: PropTypes.func.isRequired,
+    toggleModal: PropTypes.func.isRequired,
 };
 
 export default NewFoodModal;

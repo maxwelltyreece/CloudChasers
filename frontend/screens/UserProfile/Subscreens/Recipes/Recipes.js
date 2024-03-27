@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState } from "react";
 import { View, FlatList, Text, Pressable } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
@@ -6,6 +6,7 @@ import RecipeBox from "../../../../components/RecipeBox/RecipeBox";
 import { styles } from "./styles";
 import { useFoodLog } from "../../../../contexts/FoodLogContext";
 import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from "@react-navigation/native";
 
 /**
  * Button for creating a new recipe
@@ -41,25 +42,28 @@ function Recipes() {
 		setSearch(search);
 	};
 
-	// Fetch recipes when the component mounts
-	useEffect(() => {
-		const fetchRecipes = async () => {
-			const fetchedRecipes = await getAllUserRecipes();
+    useFocusEffect(
+        React.useCallback(() => {
+            const fetchData = async () => {
+                const fetchedRecipes = await getAllUserRecipes();
 
-			const mappedRecipes = fetchedRecipes.map((recipe) => ({
-				id: recipe._id,
-				title: recipe.name,
-				description: recipe.description,
-				image: recipe.image,
-			}));
+                const mappedRecipes = fetchedRecipes.map((recipe) => ({
+                    id: recipe._id,
+                    title: recipe.name,
+                    description: recipe.description,
+                    createdBy: recipe.createdBy,
+                    image: recipe.image,
+                }));
 
-			setRecipes(mappedRecipes);
-		};
+                setRecipes(mappedRecipes);
+            };
 
-		fetchRecipes();
-	}, [getAllUserRecipes]);
+            fetchData();
 
-	// Filter recipes based on the search string
+            // return a cleanup function if needed
+        }, [getAllUserRecipes])
+    );
+
 	const filteredRecipes = recipes.filter(
 		(recipe) =>
 			recipe.title && recipe.title.toLowerCase().includes(search.toLowerCase())
@@ -92,15 +96,19 @@ function Recipes() {
 			{filteredRecipes.length > 0 ? (
 				<FlatList
 					data={filteredRecipes}
-					renderItem={({ item }) => (
-						<RecipeBox
-							id = {item.id}
-							title={item.title}
-							description={item.description}
-							image={item.image}
-							style={styles.box}
-						/>
-					)}
+					renderItem={({ item }) => {
+                        console.log(item);
+                        return (
+                            <RecipeBox
+                                id={item.id}
+                                title={item.title}
+                                description={item.description}
+                                creatorId={item.createdBy}
+                                image={item.image}
+                                style={styles.box}
+                            />
+                        );
+                    }}
 					keyExtractor={(item) => item.id}
 					numColumns={2}
 					columnWrapperStyle={styles.row}

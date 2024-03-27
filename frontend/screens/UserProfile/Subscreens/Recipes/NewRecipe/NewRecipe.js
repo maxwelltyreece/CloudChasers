@@ -15,16 +15,14 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { useFoodLog } from "../../../../../contexts/FoodLogContext";
-import { useCommunity } from "../../../../../contexts/CommunityContext";
 import { getUserCommunities } from "../../../../../services/CommunityService";
 import { uploadImage, pickImage } from "../../../../../services/ImageService";
+import IconButton from "./NewRecipeComponents/IconButton";
 
 /**
  * @description Renders the NewRecipe component allowing users to create a new recipe by adding details and selected foods.
@@ -47,7 +45,6 @@ const NewRecipe = ({}) => {
   const [selectedCommunity, setSelectedCommunity] = useState(null)
   const [selectedCommunityName, setSelectedCommunityName] = useState("");
   const [communityModalVisible, setCommunityModalVisible] = useState(false);
-  const { addRecipeToCommunity } = useCommunity();
   const [userCommunities, setUserCommunities] = useState([]);
 
   useEffect(() => {
@@ -60,46 +57,13 @@ const NewRecipe = ({}) => {
 
     fetchUserCommunities();
   }, []);
-
-  function AddFoodButton({ onPress }) {
-    return (
-      <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
-        <Pressable
-          onPress={onPress}
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-        >
-          <Feather name="plus" size={40} color="black" />
-        </Pressable>
-      </View>
-    );
-  }
-
-  function AddImageButton({ onPress }) {
-    return (
-      <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
-        <Pressable
-          onPress={onPress}
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-        >
-          <Feather name="image" size={40} color="black" />
-        </Pressable>
-      </View>
-    );
-  }
-
-  function AddCommunityButton({ onPress }) {
-    return (
-      <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
-        <Pressable
-          onPress={onPress}
-          style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-        >
-          <Feather name="users" size={40} color="black" />
-        </Pressable>
-      </View>
-    );
-  }
-
+/**
+ * Initiates the image picking process by calling an external service, then sets
+ * the chosen image in the component state.
+ * @async
+ * @function handleImagePick
+ * @returns {Promise<void>} A promise that resolves once an image has been picked and set in state.
+ */
     const handleImagePick = async () => {
         const result = await pickImage();
         if (result) {
@@ -124,30 +88,54 @@ const NewRecipe = ({}) => {
   }, []);
 
   useEffect(() => {
-  }, [userCommunities]); // This effect runs whenever `userCommunities` changes
+  }, [userCommunities]); 
 
+  /**
+ * Opens the modal to allow users to add a food item to their recipe. Before opening,
+ * it fetches the current list of user communities to ensure the selection is up to date.
+ * @async
+ * @function handleAddCommunityPress
+ * @returns {Promise<void>} A promise that resolves once the communities have been fetched and the modal is visible.
+ */
   const handleAddCommunityPress = async () => {
     await fetchUserCommunities();
-    setSelectedCommunity(null); // Reset selected community ID
-    setSelectedCommunityName(""); // Reset selected community name
+    setSelectedCommunity(null); 
+    setSelectedCommunityName(""); 
     setCommunityModalVisible(true);
   };
-
+/**
+ * Handles selection of a community from the list. It updates the component state
+ * with the selected community's ID and name.
+ * @function handleCommunitySelection
+ * @param {Object} community The selected community object.
+ */
   const handleCommunitySelection = (community) => {
     setSelectedCommunity(community.id);
-    setSelectedCommunityName(community.name); // Store the name for display
-    console.log("Selected community:", community.name); // Optionally log the name
+    setSelectedCommunityName(community.name); 
+    console.log("Selected community:", community.name);
   };
 
+  /**
+ * Adds the selected food item to the recipe. Validates the input weight and checks
+ * if the food item is already added. Updates the selected foods in the component state.
+ * @function addItem
+ */
   const addItem = () => {
     if (!selectedItem) {
-      Alert.alert("Error", "You must select a food");
-      return;
+        Alert.alert("Error", "You must select a food");
+        return;
     }
-
     if (!inputWeight.trim()) {
-      Alert.alert("Error", "Weight is required");
-      return;
+        Alert.alert("Error", "Weight is required");
+        return;
+    }
+    if (isNaN(inputWeight)) {
+        Alert.alert('Error', 'Please enter a valid number for weight');
+        return;
+    }
+    if (Number(inputWeight) <= 0) {
+        Alert.alert('Error', 'Weight must be more than 0');
+        return;
     }
 
     if (!selectedFoods.some((food) => food._id === selectedItem._id)) {
@@ -234,17 +222,29 @@ const NewRecipe = ({}) => {
 		}
 	}, [searchQuery]);
 
+  /**
+ * Submits the new recipe to the backend. Validates required fields, constructs the
+ * recipe data payload, and makes an asynchronous call to create the new recipe.
+ * Upon success, it navigates back to the previous screen.
+ * @async
+ * @function handleSubmit
+ * @returns {Promise<void>} A promise that resolves once the new recipe has been successfully created.
+ */
   const handleSubmit = async () => {
     if (!recipeName.trim()) {
       Alert.alert("Error", "Recipe name is required");
       return;
     }
     const token = await AsyncStorage.getItem("token");
-    const recipeData = {
+
+    let recipeData = {
         name: recipeName,
         description: recipeDescription,
-        communityThatOwnsRecipe: recipeCommunity,
     };
+
+    if (recipeCommunity) {
+        recipeData.communityThatOwnsRecipe = recipeCommunity;
+    }
 
     try {
         const response = await axios.post(
@@ -274,6 +274,7 @@ const NewRecipe = ({}) => {
       Alert.alert("Error", "Failed to create recipe");
     }
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container} keyboardShouldPersistTaps="handled">
@@ -296,32 +297,21 @@ const NewRecipe = ({}) => {
               onSubmitEditing={Keyboard.dismiss}
               value={recipeDescription}
             />
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
               <View style={{ alignItems: "center" }}>
-                <AddFoodButton onPress={() => setFoodModalVisible(true)} />
-                <Text style={{ fontFamily: "Montserrat_700Bold" }}>
-                  Add Food
-                </Text>
+                <IconButton iconName="plus" onPress={() => setFoodModalVisible(true)} />
+                <Text style={{ fontFamily: "Montserrat_700Bold" }}>Add Food</Text>
               </View>
               <View style={{ alignItems: "center" }}>
-                <AddImageButton onPress={handleImagePick} />
-                <Text style={{ fontFamily: "Montserrat_700Bold" }}>
-                  Add Image
-                </Text>
+                <IconButton iconName="image" onPress={handleImagePick} />
+                <Text style={{ fontFamily: "Montserrat_700Bold" }}>Add Image</Text>
               </View>
               <View style={{ alignItems: "center" }}>
-                <AddCommunityButton
-                  onPress={() => {
-                    handleAddCommunityPress();
-                  }}
-                />
-                <Text style={{ fontFamily: "Montserrat_700Bold" }}>
-                  Add Community
-                </Text>
+                <IconButton iconName="users" onPress={handleAddCommunityPress} />
+                <Text style={{ fontFamily: "Montserrat_700Bold" }}>Add Community</Text>
               </View>
             </View>
+
             <Modal
               animationType="slide"
               transparent={true}

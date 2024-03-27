@@ -1,4 +1,3 @@
-// FoodContext.js
 import React, {
 	createContext, useState, useContext, useMemo,
 } from 'react';
@@ -9,126 +8,221 @@ import PropTypes from 'prop-types';
 const FoodLogContext = createContext();
 
 export function FoodLogProvider({ children }) {
+  const [latestLoggedFood, setLatestLoggedFood] = useState(null);
 
-	const [latestLoggedFood, setLatestLoggedFood] = useState(null);
+  /**
+   * Retrieves the latest food item logged by the user.
+   * Requires authentication token to be stored in AsyncStorage.
+   */
+  const getLatestLoggedFood = async () => {
+    const token = await AsyncStorage.getItem("token");
+    if (!token) {
+      console.error("Token not available");
+      return;
+    }
+    const food = await foodLogService.getLatestLoggedFood();
+    setLatestLoggedFood(food.data);
+    console.log("Latest logged food:", food.data);
+  };
 
-	const getLatestLoggedFood = async () => {
+  /**
+   * Logs a food item into the database.
+   * @param {Object} data - Data for the food item to be logged.
+   */
+  const logDatabaseFood = async (data) => {
+    console.log("Logging food CONTEXT:", data);
+    await foodLogService.logDatabaseFood(data);
+    console.log("Food logged response given");
+  };
 
-		const token = await AsyncStorage.getItem('token');
-		if (!token) {
-			console.error('Token not available');
-			return;
-		}
-		const food = await foodLogService.getLatestLoggedFood();
-		setLatestLoggedFood(food.data);
-		console.log('Latest logged food:', food.data);
-	}
+/**
+ * Creates a new recipe by user.
+ * @param {Object} data - The data for the new recipe.
+ */
+const createNewRecipeByUser = async (data) => {
+	await foodLogService.createNewRecipeByUser(data);
+};
 
-	const logDatabaseFood = async (data) => {
-		console.log('Logging food CONTEXT:', data);
-		await foodLogService.logDatabaseFood(data);
-		console.log('Food logged response given');
-	}
+/**
+ * Logs recipe food.
+ * @param {Object} data - The data for the recipe food.
+ */
+const logRecipeFood = async (data) => {
+	await foodLogService.logRecipeFood(data);
+};
 
-	const createNewRecipeByUser = async (data) => {
-		await foodLogService.createNewRecipeByUser(data);
-	}
+/**
+ * Duplicates a recipe to user.
+ * @param {Object} data - The data for the recipe to duplicate.
+ */
+const duplicateRecipeToUser = async (data) => {
+	await foodLogService.duplicateRecipeToUser(data);
+};
 
-	const logRecipeFood = async (data) => {
-		await foodLogService.logRecipeFood(data);
-	}
+/**
+ * Gets food.
+ * @returns {Promise} The response from the food log service.
+ */
+const getFood = async () => {
+	const response = await foodLogService.getFood();
+	return response;
+};
 
-	const duplicateRecipeToUser = async (data) => {
-		await foodLogService.duplicateRecipeToUser(data);
-	}
+/**
+ * Searches foods.
+ * @param {Object} [params={}] - The search parameters.
+ * @returns {Promise} The response from the food log service.
+ */
+const searchFoods = async (params = {}) => {
+	return await foodLogService.searchFoods(params);
+};
 
-	const getFood = async () => {
-		const response = await foodLogService.getFood();
-		return response;
-	}
+/**
+ * Gets a recipe.
+ */
+const getRecipe = async () => {
+	await foodLogService.getRecipe();
+};
 
-	const searchFoods = async (params = {}) => {
-		return await foodLogService.searchFoods(params);
-	}
+/**
+ * Gets a recipe weight.
+ */
+const getRecipeWeight = async () => {
+	await foodLogService.getRecipeWeight();
+};
 
-	const getRecipe = async () => {
-		await foodLogService.getRecipe();
-	}
+/**
+ * Gets a recipe macro.
+ */
+const getRecipeMacro = async () => {
+	await foodLogService.getRecipeMacro();
+};
 
-	const getRecipeWeight = async () => {
-		await foodLogService.getRecipeWeight();
-	}
+/**
+ * Gets all user recipes.
+ * @returns {Promise} The data from the food log service.
+ */
+const getAllUserRecipes = async () => {
+	const response = await foodLogService.getAllUserRecipes();
+	return response.data.data;
+};
 
-	const getRecipeMacro = async () => {
-		await foodLogService.getRecipeMacro();
-	}
+/**
+ * Gets recipe ingredients.
+ * @param {string} id - The ID of the recipe.
+ * @returns {Promise} The data from the food log service.
+ */
+const getRecipeIngredients = async (id) => {
+	const response = await foodLogService.getRecipeIngredients(id);
+	return response.data.data;
+};
 
-	const getAllUserRecipes = async () => {
-		const response = await foodLogService.getAllUserRecipes();
-		return response.data.data;
-	}
+/**
+ * Gets community recipes.
+ */
+const getCommunityRecipes = async () => {
+	await foodLogService.getCommunityRecipes();
+};
 
-	const getRecipeIngredients = async (id) => {
-		const response = await foodLogService.getRecipeIngredients(id);
-        return response.data.data;
-	}
+/**
+ * Adds an item to a recipe.
+ * @param {Object} data - The data for the item to add.
+ */
+const addItemToRecipe = async (data) => {
+	await foodLogService.addItemToRecipe(data);
+};
 
-	const getCommunityRecipes = async () => {
-		await foodLogService.getCommunityRecipes();
-	}
+/**
+ * Deletes an ingredient from a recipe.
+ * @param {Object} data - The data for the ingredient to delete.
+ */
+const deleteIngredientFromRecipe = async (data) => {
+	await foodLogService.deleteIngredientFromRecipe(data);
+};
 
-	const addItemToRecipe = async (data) => {
-		await foodLogService.addItemToRecipe(data);
-	}
+/**
+ * Gets a picture URL.
+ * @param {Object} data - The data for the picture.
+ * @returns {Promise} The URL from the food log service.
+ */
+const getPictureURL = async (data) => {
+	return await foodLogService.getPictureURL(data);
+};
 
-	const deleteIngredientFromRecipe = async (data) => {
-		await foodLogService.deleteIngredientFromRecipe(data);
-	}
+/**
+ * Logs water.
+ * @param {Object} data - The data for the water to log.
+ */
+const logWater = async (data) => {
+	await foodLogService.logWater(data);
+};
 
-	const getPictureURL = async (data) => {
-		console.log('IMAGE:' + data);
-		return await foodLogService.getPictureURL(data);
-	}
+/**
+ * Logs manual macro.
+ * @param {Object} data - The data for the manual macro to log.
+ */
+const logManualMacro = async (data) => {
+	await foodLogService.logManualMacro(data);
+};
 
-	const logWater = async (data) => {
-		await foodLogService.logWater(data);
-	}
+const deleteRecipe = async (data) => {
+  await foodLogService.deleteRecipe(data);
+}; 
 
-	const logManualMacro = async (data) => {
-		await foodLogService.logManualMacro(data);
-	}
+  const value = useMemo(
+    () => ({
+      latestLoggedFood,
+      getLatestLoggedFood,
+      logDatabaseFood,
+      createNewRecipeByUser,
+      logRecipeFood,
+      duplicateRecipeToUser,
+      getFood,
+      searchFoods,
+      getRecipe,
+      getRecipeWeight,
+      getRecipeMacro,
+      getAllUserRecipes,
+      getRecipeIngredients,
+      getCommunityRecipes,
+      addItemToRecipe,
+      deleteIngredientFromRecipe,
+      getPictureURL,
+      logWater,
+      logManualMacro,
+      deleteRecipe,
+    }),
+    [
+      latestLoggedFood,
+      getLatestLoggedFood,
+      logDatabaseFood,
+      createNewRecipeByUser,
+      logRecipeFood,
+      duplicateRecipeToUser,
+      getFood,
+      searchFoods,
+      getRecipe,
+      getRecipeWeight,
+      getRecipeMacro,
+      getAllUserRecipes,
+      getRecipeIngredients,
+      getCommunityRecipes,
+      addItemToRecipe,
+      deleteIngredientFromRecipe,
+      getPictureURL,
+      logWater,
+      logManualMacro,
+      deleteRecipe,
+    ]
+  );
 
-	const value = useMemo(() => ({
-		latestLoggedFood,
-		getLatestLoggedFood,
-		logDatabaseFood,
-		createNewRecipeByUser,
-		logRecipeFood,
-		duplicateRecipeToUser,
-		getFood,
-		searchFoods,
-		getRecipe,
-		getRecipeWeight,
-		getRecipeMacro,
-		getAllUserRecipes,
-		getRecipeIngredients,
-		getCommunityRecipes,
-		addItemToRecipe,
-		deleteIngredientFromRecipe,
-		getPictureURL,
-		logWater,
-		logManualMacro,
-	}), [latestLoggedFood, getLatestLoggedFood, logDatabaseFood, createNewRecipeByUser, logRecipeFood, duplicateRecipeToUser, getFood, searchFoods, getRecipe, getRecipeWeight, getRecipeMacro, getAllUserRecipes, getRecipeIngredients, getCommunityRecipes, addItemToRecipe, deleteIngredientFromRecipe, getPictureURL, logWater, logManualMacro]);
-
-	return (
-		<FoodLogContext.Provider value={value}>
-			{children}
-		</FoodLogContext.Provider>
-	);
+  return (
+    <FoodLogContext.Provider value={value}>{children}</FoodLogContext.Provider>
+  );
 }
 
 export const useFoodLog = () => useContext(FoodLogContext);
 
-FoodLogProvider.propTypes = {
+FoodLogProvider.PropTypes = {
 	children: PropTypes.node.isRequired,
 };

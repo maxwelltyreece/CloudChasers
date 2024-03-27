@@ -1,8 +1,7 @@
-// AuthNavigator.js
-import React from 'react'; // import React
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Feather } from '@expo/vector-icons'; // import Feather
-import { View } from 'react-native'; // import View
+import { Feather } from '@expo/vector-icons';
+import { View } from 'react-native'; 
 import Landing from '../screens/Landing/Landing';
 import Login from '../screens/Login/Login';
 import Register from '../screens/Register/Register';

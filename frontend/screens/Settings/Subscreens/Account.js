@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { useUser } from '../../../contexts/UserContext';
 import globalStyles from '../../../styles/global';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useFocusEffect } from '@react-navigation/native';
 import { requestImagePermissions, pickImage, uploadImage, getImageLink } from '../../../services/ImageService';
@@ -108,8 +108,8 @@ function Account({ navigation }) {
 		</View>
 	);
 }
-Account.propTypes = {
-	navigation: proptypes.object.isRequired,
+Account.PropTypes = {
+	navigation: PropTypes.object.isRequired,
 };
 
 export default Account;

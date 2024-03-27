@@ -1,7 +1,7 @@
-// FOR BACKEND
-require('dotenv').config({ path: './backend/.env.test' });
+// // FOR BACKEND
+// require('dotenv').config({ path: './backend/.env.test' });
 
-console.log('JEST SETUP FILE HAS RUN');
+// console.log('JEST SETUP FILE HAS RUN');
 
 
 
@@ -14,3 +14,6 @@ jest.mock('@react-native-async-storage/async-storage', () => jest.requireActual(
 jest.mock('@expo-google-fonts/montserrat', () => ({
 	useFonts: jest.fn().mockReturnValue([true]),
 }));
+
+//Mocking react-native-gesture-handler
+import 'react-native-gesture-handler/jestSetup';

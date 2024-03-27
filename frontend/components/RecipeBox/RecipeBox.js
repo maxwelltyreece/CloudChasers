@@ -15,13 +15,59 @@ import PropTypes from "prop-types";
 
 import axios from "axios";
 import { styles } from "./styles";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import { useUser } from "../../contexts/UserContext";
+import { useFoodLog } from "../../contexts/FoodLogContext";
 
-function RecipeBox({ id, title, description, }) {
+/**
+ * Displays a recipe box with an image, title, and description. On press, it displays a modal with more details including ingredients.
+ * 
+ * @component
+ * @param {Object} props The component props.
+ * @param {number} props.id The unique identifier for the recipe.
+ * @param {string} props.title The title of the recipe.
+ * @param {string} [props.description] The description of the recipe.
+ * @returns {React.ReactElement} A RecipeBox component.
+ */
+function RecipeBox({ id, title, description, creatorId}) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [ingredients, setIngredients] = useState([]);
 	const [imageUrl, setImageUrl] = useState(null);
+    const { deleteRecipe } = useFoodLog();
+    const { userDetails } = useUser();
+
+    console.log('creatorId:', creatorId);
+    console.log('userDetails:', userDetails._id);
+    console.log(userDetails._id === creatorId);
+
+    const handleDeletePress = async () => {
+        Alert.alert(
+            "Delete Recipe",
+            `Are you sure you want to delete "${title}"?`,
+            [
+                {
+                    text: "No",
+                    style: "cancel"
+                },
+                {
+                    text: "Yes",
+                    onPress: () => {
+                        deleteRecipe({ recipeID: id })
+                            .then(() => {
+                                setModalVisible(false);
+                            })
+                            .catch((error) => console.error("Failed to delete recipe", error));
+                    }
+                }
+            ]
+        );
+    };
 
 	useEffect(() => {
+
+		/**
+		 * Fetches the image URL for the recipe from the server and updates the state.
+		 */
 		const handleImageRetrieval = () => {
 			axios
 				.get(
@@ -34,7 +80,9 @@ function RecipeBox({ id, title, description, }) {
 		};
 
 		handleImageRetrieval();
-
+		/**
+		 * Fetches the ingredients for the recipe from the server and updates the state.
+		 */
 		const getIngredients = async () => {
 			try {
 				const response = await axios.get(
@@ -78,7 +126,7 @@ function RecipeBox({ id, title, description, }) {
 								<Text style={styles.description}>{description}</Text>
 								<Text style={styles.ingredientsTitle}>Ingredients</Text>
 								<ScrollView style={styles.dropdown} maxHeight={180}>
-									{ingredients.map((ingredient, index) => (
+									{ingredients.map((ingredient) => (
 										<Text
 											key={`${ingredient.name}:${ingredient.weight}`}
 											style={styles.ingredient}
@@ -87,6 +135,11 @@ function RecipeBox({ id, title, description, }) {
 										</Text>
 									))}
 								</ScrollView>
+                                {String(creatorId) === String(userDetails._id) && (
+                                    <TouchableOpacity style={styles.trashIconContainer} onPress={handleDeletePress}>
+                                        <Icon name="trash" size={24} color='black' />
+                                    </TouchableOpacity>
+                                )}
 							</View>
 						</TouchableWithoutFeedback>
 					</View>

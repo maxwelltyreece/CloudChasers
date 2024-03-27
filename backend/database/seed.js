@@ -20,6 +20,7 @@ const Community_Awards = require('../models/communityAward');
 const Communties = require('../models/community');
 const Community_Users = require('../models/communityUser');
 const Recipe_Quantities = require('../models/recipeQuantity');
+const Community_Posts = require('../models/communityPost');
 
 const userDayMeal = require('../models/userDayMeal');
 
@@ -50,6 +51,7 @@ async function seed() {
 	await Communties.collection.drop();
 	await Community_Users.collection.drop();
 	await Recipe_Quantities.collection.drop();
+	await Community_Posts.collection.drop();
     
 
 	// User Seeding
@@ -89,7 +91,7 @@ async function seed() {
 	console.log('User_Day_Meals Seeded');
 
 	// Goal Seeding
-	const Macrolist = ['Calories', 'Protein', 'Carbs', 'Fat', 'Sugar', 'Salt', 'Fibre'];
+	const Macrolist = ['calories', 'water', 'protein', 'carbs', 'fat', 'sugar', 'sodium', 'fibre'];
 	for (let i = 0; i < 10; i++) {
 		if (i % 2 == 0) {
 			var newGoal = new Goals({
@@ -103,7 +105,6 @@ async function seed() {
 		} else {
 			var newGoal = new Goals({
 				name: `Goal${i}`,
-				description: `This a ${Macrolist[i]} goal`,
 				measurement: Macrolist[i],
 				minTargetMass: null,
 				maxTargetMass: 200,
@@ -125,25 +126,42 @@ async function seed() {
 	console.log('Goal_Items Seeded');
 
 	// Personal_Awards Seeding
-	for (let i = 0; i < 10; i++) {
-		var newPersonalAward = new Personal_Awards({
-			name: `Award${i}`,
-			description: `personal award ${i}`,
-		});
-		await newPersonalAward.save();
-	}
+	var makeAPostAward = new Personal_Awards({
+		name: `Make a Post`,
+		description: `Get this award by making a post`,
+	});
+	await makeAPostAward.save();
+	var make5PostAwards = new Personal_Awards({
+		name: `Make 5 Posts`,
+		description: `Get this award by making 5 posts`,
+	});
+	await make5PostAwards.save();
+	var make10PostAwards = new Personal_Awards({
+		name: `Make 10 Posts`,
+		description: `Get this award by making 10 posts`,
+	});
+	await make10PostAwards.save();
+	var joinCommunityAward = new Personal_Awards({
+		name: `Join Community`,
+		description: `Get this award by joining a community`,
+	});
+	await joinCommunityAward.save();
+	var streak5Award = new Personal_Awards({
+		name: `5 Day Streak`,
+		description: `Get this award by having a 5 day streak`,
+	});
+	await streak5Award.save();
+	var streak10Award = new Personal_Awards({
+		name: `10 Day Streak`,
+		description: `Get this award by having a 10 day streak`,
+	});
+	await streak10Award.save();
+	var streak25Award = new Personal_Awards({
+		name: `25 Day Streak`,
+		description: `Get this award by having a 25 day streak`,
+	});
+	await streak25Award.save();
 	console.log('Personal_Awards Seeded');
-
-	// Personal_Award_Items Seeding
-	for (let i = 0; i < 10; i++) {
-		const newPersonalAwardItem = new Personal_Award_Items({
-			personalAwardID: await newPersonalAward._id,
-			userID: await newUser._id,
-			date: new Date(2021, 1, 1 + i),
-		});
-		await newPersonalAwardItem.save();
-	}
-	console.log('Personal_Award_Items Seeded');
 
 	// Communites Seeding
 	for (let i = 0; i < 10; i++) {
@@ -183,15 +201,26 @@ async function seed() {
 	console.log('Community_Award_Items Seeded');
 
 	// Community_Users Seeding
+	const newCommunityUser = new Community_Users({
+		communityID: await newCommunity._id,
+		userID: await newUser._id,
+		role: 'member',
+	});
+	await newCommunityUser.save();
+console.log('Community_Users Seeded');
+
+	// Community_Posts Seeding
 	for (let i = 0; i < 10; i++) {
-		const newCommunityUser = new Community_Users({
+		const newCommunityPost = new Community_Posts({
 			communityID: await newCommunity._id,
 			userID: await newUser._id,
-			role: 'member',
+			recipeID: null,
+			title: `Post ${i}`,
+			text: `This a post, specifically post number ${i}`,
 		});
-		await newCommunityUser.save();
+		await newCommunityPost.save();
 	}
-	console.log('Community_Users Seeded');
+	console.log('Community_Posts Seeded');
 
 	const sampleFood = await Foods.findOne({ name: 'Butter, salted' });
 	const sampleFoodID = await sampleFood._id;
@@ -209,7 +238,7 @@ async function seed() {
 	for (let i = 0; i < 10; i++) {
 		var newRecipe = new Recipes({
 			name: `Recipe${i}`,
-			description: `Recipe ${i}`,
+			description: `This contains how to make Recipe ${i}`,
 			createdBy: await newUser._id,
 			communityThatOwnsRecipe: await newCommunity._id,
 		});

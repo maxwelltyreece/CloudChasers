@@ -95,6 +95,7 @@ exports.getSingleGoalItem = async (req, res) => {
 
 exports.deleteGoal = async (req, res) => {
 	try {
+		console.log("deleteGoal");
 		const { goalID } = req.body;
 		const user = req.user;
 		const goal = await Goal.findById(goalID);

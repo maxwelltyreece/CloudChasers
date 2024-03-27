@@ -149,7 +149,7 @@ function RecentLog({ streak, userLogStats }) {
 
 export default React.memo(RecentLog);
 
-RecentLog.propTypes = {
+RecentLog.PropTypes = {
 	streak: PropTypes.number,
 	userLogStats: PropTypes.shape({
 		latestUserDayMeal: PropTypes.shape({

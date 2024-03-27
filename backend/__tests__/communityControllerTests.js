@@ -4,8 +4,6 @@ if (process.env.NODE_ENV === "test") {
 
 const jwt = require("jsonwebtoken");
 
-// const token = jwt.sign({ userID: 'testUserID' }, process.env.SECRET_KEY);
-
 const request = require("supertest");
 const app = require("../server");
 const mongoose = require("mongoose");
@@ -14,22 +12,7 @@ const Community = require("../models/community");
 const CommunityUser = require('../models/communityUser');
 const CommunityPost = require('../models/communityPost');
 const JoinRequest = require('../models/request');
-//const { it } = require("node:test");
 
-
-// TODO
-//
-//
-// DONE
-// - Test that a user can join a public community
-// - Test that a user can request to join a private community
-// - Test that an admin can retrieve all pending join requests
-// - Test that an admin can accept a join request
-// - Test that an admin can deny a join request
-// - Test that a user can leave a community
-// - Test that an admin can remove a member from a community
-// - Test that a user can make a post in a community
-// - Test that a user can retrieve all posts in a community
 
 describe("Community Management", () => {
 	let user, community, token;
@@ -118,7 +101,6 @@ describe("Community Management", () => {
 	});
 
 	describe("Community Creation and Deletion", () => {
-		// Create new community
 		it("should create a new community and save it to the database", async () => {
 			const communityData = {
 				name: "Integration Test Community",
@@ -170,7 +152,6 @@ describe("Community Management", () => {
 			expect(response.body.message).toBe("Community already exists");
 		});
 		it("should return an error if community creation fails", async () => {
-			// Mock the save function to simulate a failure
 			const saveMock = jest.spyOn(Community.prototype, "save");
 			saveMock.mockImplementationOnce(() =>
 				Promise.reject(new Error("Failed to save community"))
@@ -233,7 +214,6 @@ describe("Community Management", () => {
 			expect(response.body).toHaveProperty("message", "User is not an admin of the community");
 		});
 		it("should handle errors during community deletion", async () => {
-			// Mock the deleteOne function to throw an error
 			jest.spyOn(Community, "deleteOne").mockImplementationOnce(() => {
 				throw new Error("Database error");
 			});
@@ -247,12 +227,10 @@ describe("Community Management", () => {
 			expect(response.body).toHaveProperty("error");
 			expect(response.body.error).toBe("Error: Database error");
 
-			// Restore the original implementation after the test
 			jest.restoreAllMocks();
 		});	
 	});
 	describe("Getting community details", () => {
-		// get community
 		it("should retrieve a community and its details", async () => {
 			const response = await request(app)
 				.get("/community/details")
@@ -463,7 +441,6 @@ describe("Community Management", () => {
 				const response = await request(app)
 					.get("/community/userCommunities")
 					.set("Authorization", `Bearer ${token}`);
-				// console.log(response.body);
 				expect(response.statusCode).toBe(200);
 				expect(response.body).toHaveProperty("success", true);
 				expect(response.body.data.length).toBe(1);
@@ -477,7 +454,6 @@ describe("Community Management", () => {
 				const response = await request(app)
 					.get("/community/userCommunities")
 					.set("Authorization", `Bearer ${token4}`);
-				// console.log(response.body);
 				expect(response.statusCode).toBe(200);
 				expect(response.body).toHaveProperty("success", true);
 				expect(response.body.data.length).toBe(0);
@@ -534,7 +510,6 @@ describe("Community Management", () => {
 			expect(response.body).toHaveProperty("message", "User is not an admin of the community");
 		});
 		it("should handle errors during community update", async () => {
-			// Mock the save function to simulate a failure
 			jest.spyOn(Community, "findById").mockImplementationOnce(() => {
 				throw new Error("Database error");
 			});
@@ -589,7 +564,6 @@ describe("Community Management", () => {
 			expect(response.body).toHaveProperty("message", "User is not an admin of the community");
 		});
 		it("should handle errors during community update", async () => {
-			// Mock the save function to simulate a failure
 			jest.spyOn(Community, "findById").mockImplementationOnce(() => {
 				throw new Error("Database error");
 			});
@@ -669,7 +643,6 @@ describe("Community Management", () => {
 				expect(response.body).toHaveProperty("message", "User is already a member of the community");
 			});
 			it("should handle errors during community join", async () => {
-				// Mock the save function to simulate a failure
 				jest.spyOn(CommunityUser.prototype, "save").mockImplementationOnce(() =>
 					Promise.reject(new Error("Database error"))
 				);
@@ -779,7 +752,6 @@ describe("Community Management", () => {
 						expect(response.body).toHaveProperty("message", "User is not an admin of the community");
 					});
 					it("should handle errors during request acceptance", async () => {
-						// Mock the save function to simulate a failure
 						jest.spyOn(CommunityUser.prototype, "save").mockImplementationOnce(() =>
 							Promise.reject(new Error("Database error"))
 						);
@@ -836,11 +808,6 @@ describe("Community Management", () => {
 						expect(deniedRequest.status).toBe('Rejected');
 						const communityUser = await CommunityUser.findOne({ communityID: newPrivateCommunity._id, userID: user._id });
 						expect(communityUser).toBeNull();
-
-
-						// const communityUser = await CommunityUser.findOne({ communityID: newPrivateCommunity._id, userID: user._id });
-						// expect(communityUser).toBeTruthy();
-						// expect(communityUser.role).toBe('member');
 					});
 					it("should return an error if the request does not exist", async () => {
 						const fakeRequestId = new mongoose.Types.ObjectId();
@@ -863,7 +830,6 @@ describe("Community Management", () => {
 						expect(response.body).toHaveProperty("message", "User is not an admin of the community");
 					});
 					it("should handle errors during request denial", async () => {
-						// Mock the updateOne function to simulate a failure
 						jest.spyOn(JoinRequest, "updateOne").mockImplementationOnce(() =>
 							Promise.reject(new Error("Database error"))
 						);
@@ -922,7 +888,6 @@ describe("Community Management", () => {
 							.get("/community/requests")
 							.set("Authorization", `Bearer ${token3}`)
 							.query({ communityId: newPrivateCommunity._id.toString() });
-						// console.log(response.body);
 						expect(response.statusCode).toBe(200);
 						expect(response.body).toHaveProperty("success", true);
 						expect(response.body.data.length).toBe(2);
@@ -1017,7 +982,6 @@ describe("Community Management", () => {
 			});
 
 			it("should handle errors during community leave", async () => {
-				// Mock the deleteOne function to throw an error
 				jest.spyOn(CommunityUser, "deleteOne").mockImplementationOnce(() => {
 					throw new Error("Database error");
 				});
@@ -1076,7 +1040,6 @@ describe("Community Management", () => {
 				expect(response.body).toHaveProperty("message", "Community not found");
 			});
 			it("should handle errors during member removal", async () => {
-				// Mock the deleteOne function to throw an error
 				jest.spyOn(CommunityUser, "deleteOne").mockImplementationOnce(() => {
 					throw new Error("Database error");
 				});
@@ -1133,7 +1096,6 @@ describe("Community Management", () => {
 				expect(response.body).toHaveProperty("message", "User is not a member of the community");
 			});
 			it("should handle errors during post creation", async () => {
-				// Mock the save function to simulate a failure
 				jest.spyOn(CommunityPost.prototype, "save").mockImplementationOnce(() =>
 					Promise.reject(new Error("Database error"))
 				);

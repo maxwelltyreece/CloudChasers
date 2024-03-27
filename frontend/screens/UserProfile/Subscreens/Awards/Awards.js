@@ -16,6 +16,8 @@ const Awards = () => {
 	/**
      * Fetches user awards and awards on component mount
      */
+	fetchAwardsToBeIssued();
+
 	useEffect(() => {
 		fetchUserAwards();
 		fetchAwards();
@@ -24,6 +26,8 @@ const Awards = () => {
 	/**
      * Fetches user awards and awards on component focus
      */
+	fetchAwardsToBeIssued();
+
 	useFocusEffect(
 		useCallback(() => {
 			fetchUserAwards();
@@ -66,7 +70,7 @@ const Awards = () => {
 	);
 };
 
-Awards.propTypes = {
+Awards.PropTypes = {
 	awards: PropTypes.array.isRequired,
 	addAward: PropTypes.func.isRequired,
 };

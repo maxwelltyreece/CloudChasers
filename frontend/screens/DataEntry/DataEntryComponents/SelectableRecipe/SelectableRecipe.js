@@ -152,6 +152,14 @@ function SelectableRecipe({ id, title, description }) {
             Alert.alert('Error', 'Please enter a weight');
             return;
         }
+        if (isNaN(inputWeight)) {
+            Alert.alert('Error', 'Please enter a valid number for weight');
+            return;
+        }
+        if (inputWeight <= 0) {
+            Alert.alert('Error', 'Weight must be more than 0g');
+            return;
+        }
 
         try {
             const response = await logRecipeFood({
@@ -225,7 +233,7 @@ function SelectableRecipe({ id, title, description }) {
 export default SelectableRecipe;
 
 
-SelectableRecipe.propTypes = {
+SelectableRecipe.PropTypes = {
     title: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
 };

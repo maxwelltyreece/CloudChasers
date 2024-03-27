@@ -47,7 +47,7 @@ export default function TabBarIcon({ name, color, size, animation, onPress, navi
  * These are the PropTypes for the TabBarIcon component.
  * They serve as a type checking mechanism for the props the component receives.
 */
-TabBarIcon.propTypes = {
+TabBarIcon.PropTypes = {
 	name: PropTypes.string.isRequired,
 	color: PropTypes.string,
 	size: PropTypes.number,
