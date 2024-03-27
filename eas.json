@@ -6,6 +6,7 @@
       },
       "ios": {
         "simulator": true
+      }
     },
     "preview2": {
       "android": {
