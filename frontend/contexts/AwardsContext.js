@@ -138,7 +138,7 @@ export function AwardsProvider({ children }) {
  */
 export const useAwards = () => useContext(AwardsContext);
 
-AwardsProvider.PropTypes = {
+AwardsProvider.propTypes = {
 	children: PropTypes.node.isRequired,
 };
 
