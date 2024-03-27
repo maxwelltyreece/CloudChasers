@@ -15,15 +15,12 @@ import {
   ScrollView,
   KeyboardAvoidingView,
 } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 import { LocalIP } from "../../../../IPIndex";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { useFoodLog } from "../../../../../contexts/FoodLogContext";
-import { useCommunity } from "../../../../../contexts/CommunityContext";
 import { getUserCommunities } from "../../../../../services/CommunityService";
 import { uploadImage, pickImage } from "../../../../../services/ImageService";
 import IconButton from "./NewRecipeComponents/IconButton";
@@ -49,7 +46,6 @@ const NewRecipe = ({}) => {
   const [selectedCommunity, setSelectedCommunity] = useState(null)
   const [selectedCommunityName, setSelectedCommunityName] = useState("");
   const [communityModalVisible, setCommunityModalVisible] = useState(false);
-  const { addRecipeToCommunity } = useCommunity();
   const [userCommunities, setUserCommunities] = useState([]);
 
   useEffect(() => {
@@ -62,46 +58,13 @@ const NewRecipe = ({}) => {
 
     fetchUserCommunities();
   }, []);
-
-  // function AddFoodButton({ onPress }) {
-  //   return (
-  //     <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
-  //       <Pressable
-  //         onPress={onPress}
-  //         style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-  //       >
-  //         <Feather name="plus" size={40} color="black" />
-  //       </Pressable>
-  //     </View>
-  //   );
-  // }
-
-  // function AddImageButton({ onPress }) {
-  //   return (
-  //     <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
-  //       <Pressable
-  //         onPress={onPress}
-  //         style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-  //       >
-  //         <Feather name="image" size={40} color="black" />
-  //       </Pressable>
-  //     </View>
-  //   );
-  // }
-
-  // function AddCommunityButton({ onPress }) {
-  //   return (
-  //     <View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
-  //       <Pressable
-  //         onPress={onPress}
-  //         style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}
-  //       >
-  //         <Feather name="users" size={40} color="black" />
-  //       </Pressable>
-  //     </View>
-  //   );
-  // }
-
+/**
+ * Initiates the image picking process by calling an external service, then sets
+ * the chosen image in the component state.
+ * @async
+ * @function handleImagePick
+ * @returns {Promise<void>} A promise that resolves once an image has been picked and set in state.
+ */
     const handleImagePick = async () => {
         const result = await pickImage();
         if (result) {
@@ -128,19 +91,36 @@ const NewRecipe = ({}) => {
   useEffect(() => {
   }, [userCommunities]); 
 
+  /**
+ * Opens the modal to allow users to add a food item to their recipe. Before opening,
+ * it fetches the current list of user communities to ensure the selection is up to date.
+ * @async
+ * @function handleAddCommunityPress
+ * @returns {Promise<void>} A promise that resolves once the communities have been fetched and the modal is visible.
+ */
   const handleAddCommunityPress = async () => {
     await fetchUserCommunities();
     setSelectedCommunity(null); 
     setSelectedCommunityName(""); 
     setCommunityModalVisible(true);
   };
-
+/**
+ * Handles selection of a community from the list. It updates the component state
+ * with the selected community's ID and name.
+ * @function handleCommunitySelection
+ * @param {Object} community The selected community object.
+ */
   const handleCommunitySelection = (community) => {
     setSelectedCommunity(community.id);
     setSelectedCommunityName(community.name); 
     console.log("Selected community:", community.name);
   };
 
+  /**
+ * Adds the selected food item to the recipe. Validates the input weight and checks
+ * if the food item is already added. Updates the selected foods in the component state.
+ * @function addItem
+ */
   const addItem = () => {
     if (!selectedItem) {
       Alert.alert("Error", "You must select a food");
@@ -236,6 +216,14 @@ const NewRecipe = ({}) => {
 		}
 	}, [searchQuery]);
 
+  /**
+ * Submits the new recipe to the backend. Validates required fields, constructs the
+ * recipe data payload, and makes an asynchronous call to create the new recipe.
+ * Upon success, it navigates back to the previous screen.
+ * @async
+ * @function handleSubmit
+ * @returns {Promise<void>} A promise that resolves once the new recipe has been successfully created.
+ */
   const handleSubmit = async () => {
     if (!recipeName.trim()) {
       Alert.alert("Error", "Recipe name is required");
@@ -276,6 +264,7 @@ const NewRecipe = ({}) => {
       Alert.alert("Error", "Failed to create recipe");
     }
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.container} keyboardShouldPersistTaps="handled">
