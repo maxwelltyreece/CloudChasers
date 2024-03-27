@@ -10,7 +10,7 @@ import GroupNavigator from './GroupNavigator';
 import UserNavigator from './UserNavigator';
 import { useUser } from '../contexts/UserContext';
 import { useCommunity } from '../contexts/CommunityContext';
-import { FoodEntry, WaterEntry } from '../screens';
+import { FoodEntry, WaterEntry, RecipeEntry } from '../screens';
 
 const Stack = createStackNavigator();
 
@@ -68,6 +68,11 @@ export default function MainNavigator() {
 				name='WaterEntry' 
 				component={WaterEntry} 
 				options={{...commonOptions, title:''}} />
+            <Stack.Screen
+                name='RecipeEntry'
+                component={RecipeEntry}
+                options={{...commonOptions, title: ''}}
+            />
 			<Stack.Screen
 				name="User"
 				component={UserNavigator}

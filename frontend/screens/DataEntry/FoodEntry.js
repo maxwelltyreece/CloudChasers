@@ -91,7 +91,7 @@ function FoodEntry() {
 						<FontAwesome5 name='plus' color='#c7c7c7' size={20}/>
 					</TouchableOpacity>
 
-					<TouchableOpacity style={{ ...styles.button, marginLeft: 5, alignSelf: 'flex-start', height: 40, paddingVertical: 8, backgroundColor: '#F0F0F0'}}>
+					<TouchableOpacity style={{ ...styles.button, marginLeft: 5, alignSelf: 'flex-start', height: 40, paddingVertical: 8, backgroundColor: '#F0F0F0'}} onPress = {() => navigation.navigate('RecipeEntry')}>
 						<FontAwesome5 name='utensils' color='#c7c7c7' size={20}/>
 					</TouchableOpacity>
 				</View>
