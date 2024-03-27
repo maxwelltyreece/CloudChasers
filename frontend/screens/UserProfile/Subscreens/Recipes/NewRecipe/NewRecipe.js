@@ -249,7 +249,7 @@ const NewRecipe = ({}) => {
 
     try {
         const response = await axios.post(
-            `http://${LocalIP}:3000/food/createNewRecipeByUser`,
+            `http://api.gobl-up.me:80/food/createNewRecipeByUser`,
             recipeData,
             {
                 headers: { Authorization: `Bearer ${token}` },
