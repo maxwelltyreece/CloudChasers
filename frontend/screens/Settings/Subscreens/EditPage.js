@@ -3,7 +3,7 @@ import {
 	View, Text, TextInput, Pressable, StyleSheet,
 } from 'react-native';
 import { useUser } from '../../../contexts/UserContext';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
 	container: {
@@ -88,10 +88,10 @@ function EditPage({ route }) {
 export default EditPage;
 
 EditPage.propTypes = {
-	route: proptypes.shape({
-		params: proptypes.shape({
-			field: proptypes.string,
-			realName: proptypes.string,
+	route: PropTypes.shape({
+		params: PropTypes.shape({
+			field: PropTypes.string,
+			realName: PropTypes.string,
 		}),
 	}).isRequired,
 };

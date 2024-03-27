@@ -6,6 +6,10 @@ import NewFoodModal from './DataEntryComponents/NewFoodModal';
 import { useFoodLog } from '../../contexts/FoodLogContext';
 import { useNavigation } from '@react-navigation/native';
 
+/**
+ * Component for entering food information.
+ * @returns {JSX.Element} FoodEntry component.
+ */
 function FoodEntry() {
 	const [isModalVisible, setModalVisible] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
@@ -17,12 +21,18 @@ function FoodEntry() {
 	const [mealName, setMealName] = useState('');
 	const navigation = useNavigation();
 
+	/**
+     * Effect hook to trigger food search when the search query changes.
+     */
 	useEffect(() => {
 		if (searchQuery.length >= 3) {
 			searchFood();
 		}
 	}, [searchQuery]);
 
+	/**
+     * Effect hook to control rendering of scroll view based on the number of foods.
+     */
 	useEffect(() => {
 		if (foods.length === 1) {
 			setRenderScrollView(false);
@@ -31,15 +41,25 @@ function FoodEntry() {
 		}
 	}, [foods]);
 
+	/**
+     * Toggles the visibility of the new food modal.
+     */
 	const toggleModal = () => {
 		setModalVisible(!isModalVisible);
 	};
 
+	/**
+     * Searches for foods based on the provided query.
+     */
 	const searchFood = async () => {
 		const response = await searchFoods({ name: searchQuery });
 		setFoods(response.data.foods);
 	};
 
+	/**
+     * Renders an individual food item.
+     * @param {Object} item - Food item to render.
+     */
 	const renderItem = (item) => (
 		<TouchableOpacity 
 			style={styles.item} 

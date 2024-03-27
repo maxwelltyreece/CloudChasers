@@ -118,8 +118,6 @@ export const styles = StyleSheet.create({
 	},
 	dropdownContainer: {
 		paddingBottom: 10,
-
-
 	},
 	modalInput: {
 		height: 40,

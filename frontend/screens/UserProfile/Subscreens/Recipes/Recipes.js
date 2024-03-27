@@ -2,15 +2,18 @@ import React, { useState, useEffect  } from "react";
 import { View, FlatList, Text, Pressable } from "react-native";
 import { SearchBar } from "react-native-elements";
 import { Feather } from "@expo/vector-icons";
-import RecipeBox from "../../../../components/RecipeBox";
+import RecipeBox from "../../../../components/RecipeBox/RecipeBox";
 import { styles } from "./styles";
 import { useFoodLog } from "../../../../contexts/FoodLogContext";
-import NewRecipe from "./NewRecipe/NewRecipe";
 import { useNavigation } from '@react-navigation/native';
 
-
+/**
+ * Button for creating a new recipe
+ * @param {Object} props - The props object
+ * @param {Function} props.onPress - The function to call when the button is pressed
+ * @returns {JSX.Element} The rendered button
+ */
 function NewRecipeButton({ onPress }) {
-  
 	return (
 		<View style={{ padding: 10, borderRadius: 50 }}>
 			<Pressable onPress={onPress} style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1 }]}>
@@ -20,23 +23,28 @@ function NewRecipeButton({ onPress }) {
 	);
 }
 
-
+/**
+ * Screen for displaying and searching recipes
+ * @returns {JSX.Element} The rendered screen
+ */
 function Recipes() {
 	const { getAllUserRecipes } = useFoodLog();
 	const [search, setSearch] = useState("");
 	const [recipes, setRecipes] = useState([]);
 	const navigation = useNavigation();
 
+	/**
+   * Updates the search state
+   * @param {string} search - The new search string
+   */
 	const updateSearch = (search) => {
 		setSearch(search);
 	};
 
-
+	// Fetch recipes when the component mounts
 	useEffect(() => {
 		const fetchRecipes = async () => {
-
 			const fetchedRecipes = await getAllUserRecipes();
-			// console.log("fetchedRecipes:", fetchedRecipes);
 
 			const mappedRecipes = fetchedRecipes.map((recipe) => ({
 				id: recipe._id,
@@ -44,20 +52,18 @@ function Recipes() {
 				description: recipe.description,
 				image: recipe.image,
 			}));
-			// console.log("RECIPEID" + mappedRecipes[0].id);
+
 			setRecipes(mappedRecipes);
 		};
 
 		fetchRecipes();
 	}, [getAllUserRecipes]);
 
-
+	// Filter recipes based on the search string
 	const filteredRecipes = recipes.filter(
 		(recipe) =>
 			recipe.title && recipe.title.toLowerCase().includes(search.toLowerCase())
 	);
-
- 
 
 	return (
 		<View style={styles.container}>
@@ -81,7 +87,6 @@ function Recipes() {
 					}}
 				/>
 				<NewRecipeButton onPress={() => navigation.navigate('NewRecipe')} />
-
 			</View>
 
 			{filteredRecipes.length > 0 ? (

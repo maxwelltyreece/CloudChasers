@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import {
 	View, Text, ScrollView, KeyboardAvoidingView, Modal, 
@@ -9,8 +8,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { styles } from './styles';
 
-const frequencyOptions = ['Daily', 'Weekly']; // Options for the segmented control
-
+const FREQUENCY_OPTIONS = ['Daily', 'Weekly'];
+const STORAGE_KEY = 'REMINDERS';
 
 /**
  * Reminders is a screen component designed for displaying and managing the users created reminders.
@@ -25,30 +24,35 @@ function Reminders() {
 		description: '',
 		time: '',
 		date: '',
-		frequency: 'Daily', // Default frequency
+		frequency: FREQUENCY_OPTIONS[0],
 	});
 	const [date, setDate] = useState(new Date());
 	const [showTimePicker, setShowTimePicker] = useState(Platform.OS === 'ios'); // iOS will always show, Android controlled by state
 	const [selectedFrequencyIndex, setSelectedFrequencyIndex] = useState(0);
 
-
+	/**
+     * Toggles the visibility of action buttons for a reminder.
+     *
+     * @param {number} id - The id of the reminder.
+     */
 	const toggleActionButtonsVisibility = (id) => {
 		const updatedReminders = reminders.map((reminder) => 
 			reminder.id === id ? { ...reminder, showActions: !reminder.showActions } : reminder
 		);
 		setReminders(updatedReminders);
 	};
-
-	// Function to open the modal and reset the new reminder details
+  
+	/**
+     * Opens the modal and resets the new reminder details.
+     */
 	const openModalAndResetFields = () => {
 		setIsModalVisible(true);
-		// Resetting newReminder fields to their default values
 		setNewReminder({
 			id: null,
 			description: '',
 			time: '',
 			date: '',
-			frequency: 'Daily',
+			frequency: FREQUENCY_OPTIONS[0],
 		});
 		setDate(new Date());
 
@@ -57,32 +61,40 @@ function Reminders() {
 		}
 	};
 
-
+	/**
+     * Loads reminders from storage.
+     */
 	useEffect(() => {
 		const loadReminders = async () => {
 			try {
-				const storedReminders = await AsyncStorage.getItem('REMINDERS');
+				const storedReminders = await AsyncStorage.getItem(STORAGE_KEY);
 				if (storedReminders) setReminders(JSON.parse(storedReminders));
 			} catch (error) {
-				// Alert.alert('Error', 'Failed to load the reminders.');
+				Alert.alert('Error', 'Failed to load the reminders.');
 			}
 		};
 
 		loadReminders();
 	}, []);
 
+	/**
+     * Saves reminders to storage.
+     */
 	useEffect(() => {
 		const saveReminders = async () => {
 			try {
-				await AsyncStorage.setItem('REMINDERS', JSON.stringify(reminders));
+				await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(reminders));
 			} catch (error) {
-				// Alert.alert('Error', 'Failed to save the reminders.');
+				Alert.alert('Error', 'Failed to save the reminders.');
 			}
 		};
 
 		saveReminders();
 	}, [reminders]);
 
+	/**
+     * Adds a new reminder or updates an existing one.
+     */
 	const handleAddReminder = () => {
 		if (!newReminder.description.trim() || !newReminder.time) {
 			Alert.alert('Missing Information', 'You cannot add a reminder without a description and a time.');
@@ -91,21 +103,31 @@ function Reminders() {
 
 		const updatedReminders = newReminder.id
 			? reminders.map((reminder) => (reminder.id === newReminder.id ? newReminder : reminder))
-			: [...reminders, { ...newReminder, id: Date.now() }]; // Use Date.now() for a unique id
+			: [...reminders, { ...newReminder, id: Date.now() }];
 
 		setReminders(updatedReminders);
 		setIsModalVisible(false);
 		setNewReminder({
-			id: null, description: '', time: '', date: '', frequency: 'Daily',
+			id: null, description: '', time: '', date: '', frequency: FREQUENCY_OPTIONS[0],
 		});
 		setShowTimePicker(false);
 	};
 
+	/**
+     * Deletes a reminder.
+     *
+     * @param {number} id - The id of the reminder to delete.
+     */
 	const deleteReminder = (id) => {
 		const filteredReminders = reminders.filter((reminder) => reminder.id !== id);
 		setReminders(filteredReminders);
 	};
 
+	/**
+     * Edits a reminder.
+     *
+     * @param {number} id - The id of the reminder to edit.
+     */
 	const editReminder = (id) => {
 		const reminderToEdit = reminders.find((reminder) => reminder.id === id);
 		if (reminderToEdit) {
@@ -115,6 +137,12 @@ function Reminders() {
 		}
 	};
 
+	/**
+     * Handles the change of time.
+     *
+     * @param {Event} event - The event object.
+     * @param {Date} selectedDate - The selected date.
+     */
 	const onChangeTime = (event, selectedDate) => {
 		const currentDate = selectedDate || date;
 		if (Platform.OS === 'android') {
@@ -128,11 +156,27 @@ function Reminders() {
 		setNewReminder({ ...newReminder, time: formattedTime });
 	};
 
+	/**
+     * Handles the change of frequency.
+     *
+     * @param {number} index - The index of the selected frequency.
+     */
 	const handleFrequencyChange = (index) => {
 		setSelectedFrequencyIndex(index);
-		const selectedFrequency = frequencyOptions[index];
+		const selectedFrequency = FREQUENCY_OPTIONS[index];
 		setNewReminder({ ...newReminder, frequency: selectedFrequency });
 	};
+
+	const IOS = 'ios';
+	const DONE = 'done';
+	const TIME = 'time';
+	const SPINNER = 'spinner';
+	const SLIDE = 'slide';
+	const HEIGHT = 'height';
+	const PADDING = 'padding';
+	const BOLD = 'bold';
+	const INLINE = 'inline';
+	const { description, time } = newReminder;
 
 	return (
 		<View style={styles.container}>
@@ -161,33 +205,26 @@ function Reminders() {
 								<Pressable onPress={() => deleteReminder(reminder.id)} style={styles.deleteButton}>
 									<Text style={styles.actionButtonText}>Delete</Text>
 								</Pressable>
-								{/* <Pressable onPress={() => toggleActionButtonsVisibility(reminder.id)} style={styles.backButton}>
-								<Text style={styles.backButtonText}>Back</Text>
-							</Pressable> */}
 							</View>
 						)}
 					</View>
 				))}
 			</ScrollView>
 
-			{/* <View style={styles.semiCircle}></View> */}
-
 			<Pressable style={styles.addReminderButton} onPress={openModalAndResetFields}>
-				<Text style={styles.addReminderButtonText}>
-						Add Reminder
-				</Text>
+				<Text style={styles.addReminderButtonText}>Add Reminder</Text>
 			</Pressable>
 
 			<Modal
-				animationType="slide"
+				animationType={SLIDE}
 				transparent
 				visible={isModalVisible}
 				onRequestClose={() => setIsModalVisible(false)}
 			>
 				<KeyboardAvoidingView
-					behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+					behavior={Platform.OS === IOS ? PADDING : HEIGHT}
 					style={{ flex: 1 }}
-					keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 50}
+					keyboardVerticalOffset={Platform.OS === IOS ? 0 : 50}
 				>
 					<ScrollView>
 						<View style={styles.modalView}>
@@ -195,23 +232,22 @@ function Reminders() {
 								style={[styles.descriptionInput]}
 								placeholder="Description"
 								onChangeText={(text) => setNewReminder({ ...newReminder, description: text })}
-								value={newReminder.description}
+								value={description}
 								blurOnSubmit
-								returnKeyType='done'
+								returnKeyType={DONE}
 							/>
 
-							<Text style={{ fontSize: 16, fontWeight: 'bold' }}>Current Time Selected:</Text>
+							<Text style={{ fontSize: 16, fontWeight: BOLD }}>Current Time Selected:</Text>
 
-							{(Platform.OS != 'ios' || !newReminder.time) && (
-								<Text style={styles.currentTimeSelectedText}>{newReminder.time || '(Choose Time)'}</Text>
-							)
-							}
+							{(Platform.OS != IOS || !time) && (
+								<Text style={styles.currentTimeSelectedText}>{time || '(Choose Time)'}</Text>
+							)}
 
-							{Platform.OS === 'ios' || showTimePicker ? (
+							{Platform.OS === IOS || showTimePicker ? (
 								<DateTimePicker
 									value={date}
-									mode="time"
-									display={Platform.OS === 'ios' ? 'inline' : 'spinner'}
+									mode={TIME}
+									display={Platform.OS === IOS ? INLINE : SPINNER}
 									onChange={onChangeTime}
 									is24Hour={false}
 								/>
@@ -224,7 +260,7 @@ function Reminders() {
 							<Text style={styles.selectFreqTitle}>Select Frequency: </Text>
 
 							<View style={styles.frequencySelector}>
-								{frequencyOptions.map((option, index) => (
+								{FREQUENCY_OPTIONS.map((option, index) => (
 									<Pressable
 										key={option}
 										style={[
@@ -244,14 +280,14 @@ function Reminders() {
 								<Pressable style={styles.cancelButton} onPress={() => setIsModalVisible(false)}>
 									{({ pressed }) => (
 										<Text style={[styles.cancelButtonText, pressed ? styles.pressedText : {}]}>
-											Cancel
+                                            Cancel
 										</Text>
 									)}
 								</Pressable>
 								<Pressable style={styles.addButton} onPress={handleAddReminder}>
 									{({ pressed }) => (
 										<Text style={[styles.addButtonText, pressed ? styles.pressedText : {}]}>
-											Done
+                                            Done
 										</Text>
 									)}
 								</Pressable>

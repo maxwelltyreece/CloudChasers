@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
-import Box from '../../components/box';
+import Box from '../../components/Box/box';
 import { useCommunity } from '../../contexts/CommunityContext';
 import { styles } from './styles';
 

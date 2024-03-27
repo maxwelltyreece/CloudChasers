@@ -22,6 +22,10 @@ import { styles } from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import { useFoodLog } from "../../../../../contexts/FoodLogContext";
 
+/**
+ * @description Renders the NewRecipe component allowing users to create a new recipe by adding details and selected foods.
+ * @returns {JSX.Element} The NewRecipe component.
+ */
 const NewRecipe = ({}) => {
 	const navigation = useNavigation();
 	const [image, setImage] = useState(null);
@@ -48,7 +52,11 @@ const NewRecipe = ({}) => {
 			</View>
 		);
 	}
-
+	/**
+   * @description Button component for adding an image to the recipe.
+   * @param {Function} onPress - Function to execute on button press.
+   * @returns {JSX.Element} A stylized pressable component for adding an image.
+   */
 	function AddImageButton({ onPress }) {
 		return (
 			<View style={{ paddingHorizontal: 40, borderRadius: 50 }}>
@@ -61,13 +69,19 @@ const NewRecipe = ({}) => {
 			</View>
 		);
 	}
-
+	/**
+   * @description Extracts and returns the file name from a given file path or URL.
+   * @param {string} image - The path or URL of the image.
+   * @returns {string} The file name extracted from the path or URL.
+   */
 	function getFileName(image) {
 		const fileName = image.split("/").pop();
 		console.log(fileName);
 		return fileName;
 	}
-
+	/**
+   * @description Launches the image picker library to allow the user to select an image.
+   */
 	const pickImage = async () => {
 		let result = await ImagePicker.launchImageLibraryAsync({
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -81,12 +95,9 @@ const NewRecipe = ({}) => {
 			getFileName(result.assets[0].uri);
 		}
 	};
-
-	const addFood = () => {
-		const newFood = { name: "New Food" };
-		setFoods([...foods, newFood]);
-	};
-
+	/**
+	 * @description Handles adding a selected food item to the recipe, including validation.
+	 */
 	const addItem = () => {
 		if (!selectedItem) {
 			Alert.alert("Error", "You must select a food");
@@ -112,6 +123,12 @@ const NewRecipe = ({}) => {
 		}
 	};
 
+	/**
+	 * Renders an item in the list.
+	 *
+	 * @param {Object} item - The item to render.
+	 * @returns {JSX.Element} The rendered item.
+	 */
 	const renderItem = (item) => (
 		<TouchableOpacity
 			style={[
@@ -127,15 +144,29 @@ const NewRecipe = ({}) => {
 		</TouchableOpacity>
 	);
 
+	/**
+	 * Searches for foods based on the provided search query.
+	 * @returns {Promise<void>} A promise that resolves when the search is complete.
+	 */
 	const searchFood = async () => {
 		const response = await searchFoods({ name: searchQuery });
 		setFoods(response.data.foods);
 	};
 
+	/**
+	 * Removes an item from the selected foods array based on its id.
+	 * @param {string} id - The id of the item to be removed.
+	 */
 	const removeItem = (id) => {
 		setSelectedFoods(selectedFoods.filter((item) => item._id !== id));
 	};
 
+	/**
+	 * Adds selected foods to a recipe.
+	 * @param {string} recipeID - The ID of the recipe.
+	 * @param {string} token - The authentication token.
+	 * @returns {Promise<void>} - A promise that resolves when all items have been added to the recipe.
+	 */
 	const addItemsToRecipe = async (recipeID, token) => {
 		for (const food of selectedFoods) {
 			const payload = {
@@ -165,6 +196,11 @@ const NewRecipe = ({}) => {
 		}
 	}, [searchQuery]);
 
+	/**
+	 * Handles the submission of a new recipe.
+	 * 
+	 * @returns {Promise<void>} A Promise that resolves when the submission is complete.
+	 */
 	const handleSubmit = async () => {
 		if (!recipeName.trim()) {
 			Alert.alert("Error", "Recipe name is required");
@@ -246,20 +282,14 @@ const NewRecipe = ({}) => {
 							onSubmitEditing={Keyboard.dismiss}
 							value={recipeDescription}
 						/>
-						<View
-							style={{ flexDirection: "row", justifyContent: "space-between" }}
-						>
+						<View style={{ flexDirection: "row", justifyContent: "space-between" }}>
 							<View style={{ alignItems: "center" }}>
 								<AddFoodButton onPress={() => setModalVisible(true)} />
-								<Text style={{ fontFamily: "Montserrat_700Bold" }}>
-                  Add Food
-								</Text>
+								<Text style={{ fontFamily: "Montserrat_700Bold" }}>Add Food</Text>
 							</View>
 							<View style={{ alignItems: "center" }}>
 								<AddImageButton onPress={pickImage} />
-								<Text style={{ fontFamily: "Montserrat_700Bold" }}>
-                  Add Image
-								</Text>
+								<Text style={{ fontFamily: "Montserrat_700Bold" }}>Add Image</Text>
 							</View>
 						</View>
 						<Modal
@@ -302,7 +332,7 @@ const NewRecipe = ({}) => {
 												value={inputWeight}
 												onChangeText={setInputWeight}
 												blurOnSubmit
-												returnKeyType="done" // Add this line
+												returnKeyType="done"
 											/>
 											<Pressable
 												style={[styles.button, styles.buttonClose]}
@@ -331,7 +361,7 @@ const NewRecipe = ({}) => {
 												justifyContent: "space-between",
 												alignItems: "center",
 												marginBottom: 5,
-												paddingHorizontal: 10, 
+												paddingHorizontal: 10,
 											}}
 										>
 											<View style={{ flex: 0.8 }}>
@@ -344,7 +374,7 @@ const NewRecipe = ({}) => {
 											</Pressable>
 										</View>
 									)}
-									contentContainerStyle={{ paddingBottom: 20 }} 
+									contentContainerStyle={{ paddingBottom: 20 }}
 								/>
 							</ScrollView>
 						) : (
@@ -354,7 +384,7 @@ const NewRecipe = ({}) => {
 									fontFamily: "Montserrat_400Regular",
 								}}
 							>
-                No foods added
+								No foods added
 							</Text>
 						)}
 					</View>

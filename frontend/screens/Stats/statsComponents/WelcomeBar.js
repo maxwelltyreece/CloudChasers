@@ -1,14 +1,9 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-
-const WelcomeBar = () => (
-	<View style={styles.welcomeContainer}>
-		<Text style={styles.title}>Today&apos;s Statistics</Text>
-	</View>
-);
-
-
+/**
+ * Styles for the WelcomeBar component
+ */
 const styles = StyleSheet.create({
 	welcomeContainer: {
 		alignItems: 'flex-start',
@@ -17,19 +12,20 @@ const styles = StyleSheet.create({
 		borderRadius: 15,
 		padding: 10,
 	},
-	welcomeText: {
-		fontFamily: 'Montserrat_700Bold',
-		fontSize: 35,
-		fontWeight: 'bold',
-		color: '#333',
-	},
-
 	title: {
 		fontFamily: 'Montserrat_700Bold',
 		fontSize: 24,
 		marginBottom: 10,
-	}
-
+	},
 });
 
+/**
+ * WelcomeBar component
+ * This component displays a welcome message with today's statistics.
+ */
+const WelcomeBar = () => (
+	<View style={styles.welcomeContainer}>
+		<Text style={styles.title}>Today&apos;s Statistics</Text>
+	</View>
+);
 export default WelcomeBar;

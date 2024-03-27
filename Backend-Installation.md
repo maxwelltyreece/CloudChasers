@@ -16,7 +16,7 @@ To run the Node.js server, use the following commands:
 
 ```bash
   cd .\CloudChasers\backend
-  node .\server.js
+  node .\startServer.js
 ```
 
 For managing the DB I recommend using [MongoDBCompass](https://www.mongodb.com/products/tools/compass)

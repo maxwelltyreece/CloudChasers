@@ -2,7 +2,11 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-
+/**
+ * Get the user's streaks.
+ * @param {string} date - The date to get the streaks for.
+ * @returns {Promise} Axios Response Promise with the streaks data.
+ */
 const getStreaks = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
@@ -16,7 +20,11 @@ const getStreaks = async (date) => {
 	}
 };
 
-
+/**
+ * Get the user's daily caloric intake.
+ * @param {string} date - The date to get the caloric intake for.
+ * @returns {Promise} Axios Response Promise with the daily caloric intake data.
+ */
 const getDailyCaloricIntake = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
@@ -29,6 +37,11 @@ const getDailyCaloricIntake = async (date) => {
 	}
 };
 
+/**
+ * Get the user's daily water intake.
+ * @param {string} date - The date to get the water intake for.
+ * @returns {Promise} Axios Response Promise with the daily water intake data.
+ */
 const getDailyWaterIntake = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
@@ -39,6 +52,11 @@ const getDailyWaterIntake = async (date) => {
 	}
 };
 
+/**
+ * Get the user's daily protein intake.
+ * @param {string} date - The date to get the protein intake for.
+ * @returns {Promise} Axios Response Promise with the daily protein intake data.
+ */
 const getDailyProteinIntake = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
@@ -49,6 +67,11 @@ const getDailyProteinIntake = async (date) => {
 	}
 };
 
+/**
+ * Get the user's daily carb intake.
+ * @param {string} date - The date to get the carb intake for.
+ * @returns {Promise} Axios Response Promise with the daily carb intake data.
+ */
 const getDailyCarbIntake = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
@@ -59,6 +82,11 @@ const getDailyCarbIntake = async (date) => {
 	}
 };
 
+/**
+ * Get the user's daily fat intake.
+ * @param {string} date - The date to get the fat intake for.
+ * @returns {Promise} Axios Response Promise with the daily fat intake data.
+ */
 const getDailyFatIntake = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
@@ -69,6 +97,11 @@ const getDailyFatIntake = async (date) => {
 	}
 };
 
+/**
+ * Get the user's daily sugar intake.
+ * @param {string} date - The date to get the sugar intake for.
+ * @returns {Promise} Axios Response Promise with the daily sugar intake data.
+ */
 const getDailySugarIntake = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
@@ -79,6 +112,11 @@ const getDailySugarIntake = async (date) => {
 	}
 };
 
+/**
+ * Get the user's daily sodium intake.
+ * @param {string} date - The date to get the sodium intake for.
+ * @returns {Promise} Axios Response Promise with the daily sodium intake data.
+ */
 const getDailySodiumIntake = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
@@ -89,6 +127,11 @@ const getDailySodiumIntake = async (date) => {
 	}
 };
 
+/**
+ * Get the user's daily fibre intake.
+ * @param {string} date - The date to get the fibre intake for.
+ * @returns {Promise} Axios Response Promise with the daily fibre intake data.
+ */
 const getDailyFibreIntake = async (date) => {
 	try {
 		const token = await AsyncStorage.getItem('token');

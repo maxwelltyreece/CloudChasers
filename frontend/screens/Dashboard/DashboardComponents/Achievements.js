@@ -53,7 +53,7 @@ const getMotivationalMessage = (percentage) => {
 	if (percentage >= 100) return "Incredible!";
 	else if (percentage >= 85) return "Almost there, keep pushing!";
 	else if (percentage >= 65) return "You're doing great!";
-	else if (percentage >= 50) return "Halfway, keep it up!";
+	else if (percentage >= 50) return "Keep it up!";
 	else if (percentage >= 30) return "Making good progress!";
 	else if (percentage >= 20) return "On your way!";
 	else if (percentage >= 10) return "Off to a good start!";

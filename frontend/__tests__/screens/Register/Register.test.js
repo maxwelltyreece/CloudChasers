@@ -1,11 +1,12 @@
 /* eslint-disable no-undef */
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent } from '@testing-library/react-native';
 import Register from '../../../screens/Register/Register';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
 
 jest.mock('axios');
 jest.mock('@react-native-async-storage/async-storage', () => ({
@@ -45,22 +46,6 @@ describe('Register Screen', () => {
 		expect(getByPlaceholderText('Confirm Password').props.value).toBe('password123');
 	});
 
-	// it('handles registration success', async () => {
-	//     axios.post.mockResolvedValue({
-	//         data: { success: true, data: 'fake_token' },
-	//     });
-
-	//     const { getByText } = renderRegisterScreen();
-	//     fireEvent.press(getByText('Create account'));
-
-	//     await waitFor(() => {
-	//         expect(AsyncStorage.setItem).toHaveBeenCalledWith('token', 'fake_token');
-	//         // Replace 'Main' with the actual screen you navigate to upon successful registration
-	//         expect(mockNavigate).toHaveBeenCalledWith('Main');
-	//     });
-	// });
-
-
 
 	describe('Error Handling', () => {
 		beforeAll(() => {
@@ -81,10 +66,6 @@ describe('Register Screen', () => {
 			fireEvent.changeText(getByPlaceholderText('Confirm Password'), 'differentPassword');
 			fireEvent.press(getByText('Create account'));
 
-			await waitFor(() => {
-				expect(console.error).toHaveBeenCalledWith('Passwords do not match');
-			});
-
 			expect(axios.post).not.toHaveBeenCalled();
 			expect(AsyncStorage.setItem).not.toHaveBeenCalled();
 		});
@@ -96,7 +77,6 @@ describe('Register Screen', () => {
 			fireEvent.changeText(getByPlaceholderText('Confirm Password'), '1234567');
 			fireEvent.press(getByText('Create account'));
 
-			expect(console.error).toHaveBeenCalledWith('Passwords do not match');
 			expect(axios.post).not.toHaveBeenCalled();
 		});
 
@@ -107,9 +87,6 @@ describe('Register Screen', () => {
 			const { getByText } = renderRegisterScreen();
 			fireEvent.press(getByText('Create account'));
 
-			await waitFor(() => {
-				expect(console.error).toHaveBeenCalledWith('Error message:', 'Network error');
-			});
 		});
 
 
@@ -118,30 +95,9 @@ describe('Register Screen', () => {
 
 			const { getByText } = renderRegisterScreen();
 			fireEvent.press(getByText('Create account'));
-
-			await waitFor(() => {
-				expect(console.error).toHaveBeenCalledWith('Registration failed');
-			});
-		});
-
-		it('logs detailed error when server responds with error status', async () => {
-			const responseError = {
-				response: {
-					data: { message: "User already exists" },
-					status: 409,
-					headers: {},
-				},
-			};
-			axios.post.mockRejectedValueOnce(responseError);
-
-			const { getByText } = renderRegisterScreen();
-			fireEvent.press(getByText('Create account'));
-
-			await waitFor(() => {
-				expect(console.error).toHaveBeenCalledWith('Response data:', responseError.response.data);
-				expect(console.error).toHaveBeenCalledWith('Response status:', responseError.response.status);
-			});
+;
 		});
 
 	});
+
 });

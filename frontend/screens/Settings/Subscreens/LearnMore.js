@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
 		marginBottom: 12,
 		color: '#FF815E',
 		left: '4%',
-		alignSelf: 'left',
+		alignSelf: 'flex-start',
 	},
 	textContainer: {
 		height: 'auto',
@@ -72,9 +72,9 @@ function LearnMore() {
 					{/* Calories */}
 					<Text style={styles.subheaderText}>Calories (kcal):</Text>
 					<Text style={styles.contentText}>
-					Calories are units of energy that measure how much energy food provides
-					to the body. They are essential for daily activities and bodily
-					functions.
+						Calories are units of energy that measure how much energy food provides
+						to the body. They are essential for daily activities and bodily
+						functions.
 					</Text>
 				</View>
 
@@ -82,17 +82,17 @@ function LearnMore() {
 					{/* Carbohydrates */}
 					<Text style={styles.subheaderText}>Carbohydrates (g):</Text>
 					<Text style={styles.contentText}>
-					The body&apos;s main source of energy, broken down into glucose.
-					Found in fruits, vegetables, breads, and cereals.
+						The body&apos;s main source of energy, broken down into glucose.
+						Found in fruits, vegetables, breads, and cereals.
 					</Text>
 				</View>
 
 				<View style={styles.textContainer}>
-					{/* Proteins */}
-					<Text style={styles.subheaderText}>Proteins (g):</Text>
+					{/* Protein */}
+					<Text style={styles.subheaderText}>Protein (g):</Text>
 					<Text style={styles.contentText}>
-					Essential for building tissues, making enzymes, and supporting immune
-					function. Good sources include meat, fish, dairy, legumes, and nuts.
+						Essential for building tissues, making enzymes, and supporting immune
+						function. Good sources include meat, fish, dairy, legumes, and nuts.
 					</Text>
 				</View>
 
@@ -100,9 +100,9 @@ function LearnMore() {
 					{/* Fats */}
 					<Text style={styles.subheaderText}>Fats (g):</Text>
 					<Text style={styles.contentText}>
-					Important for cell growth, organ protection, and nutrient absorption.
-					Includes saturated and unsaturated fats, found in oils, butter, avocado,
-					and fish.
+						Important for cell growth, organ protection, and nutrient absorption.
+						Includes saturated and unsaturated fats, found in oils, butter, avocado,
+						and fish.
 					</Text>
 				</View>
 
@@ -110,9 +110,9 @@ function LearnMore() {
 					{/* Fibre */}
 					<Text style={styles.subheaderText}>Fibre (g):</Text>
 					<Text style={styles.contentText}>
-					A type of carbohydrate that the body can&apos;t digest. It helps
-					regulate the body&apos;s use of sugars, helping to keep hunger
-					and blood sugar in check.
+						A type of carbohydrate that the body can&apos;t digest. It helps
+						regulate the body&apos;s use of sugars, helping to keep hunger
+						and blood sugar in check.
 					</Text>
 				</View>
 
@@ -120,9 +120,27 @@ function LearnMore() {
 					{/* Water */}
 					<Text style={styles.subheaderText}>Water (ml):</Text>
 					<Text style={styles.contentText}>
-					Crucial for life, water aids in digestion, absorption,
-					circulation, and excretion. It regulates body temperature and
-					maintains electrolyte balance.
+						Crucial for life, water aids in digestion, absorption,
+						circulation, and excretion. It regulates body temperature and
+						maintains electrolyte balance.
+					</Text>
+				</View>
+
+				<View style={styles.textContainer}>
+					{/* Sugars */}
+					<Text style={styles.subheaderText}>Sugars (g):</Text>
+					<Text style={styles.contentText}>
+						Simple carbohydrates that provide a quick source of energy.
+						Found in fruits, vegetables, and dairy products.
+					</Text>
+				</View>
+
+				<View style={styles.textContainer}>
+					{/* Sodium */}
+					<Text style={styles.subheaderText}>Sodium (mg):</Text>
+					<Text style={styles.contentText}>
+						An essential mineral that helps maintain the body&apos;s fluid balance.
+						Found in salt, processed foods, and condiments.
 					</Text>
 				</View>
 
@@ -134,9 +152,9 @@ function LearnMore() {
 						(Vitamins & Minerals):
 					</Text>
 					<Text style={styles.contentText}>
-					Vital for health, development, and disease prevention. Vitamins
-					support immune function and energy production, while minerals
-					are important for growth, bone health, and fluid balance.
+						Vital for health, development, and disease prevention. Vitamins
+						support immune function and energy production, while minerals
+						are important for growth, bone health, and fluid balance.
 					</Text>
 				</View>
 

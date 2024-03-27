@@ -1,137 +1,39 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, Pressable, StyleSheet, TextInput, KeyboardAvoidingView, Platform, Keyboard, } from 'react-native';
+import { View, Text, Pressable, TextInput, KeyboardAvoidingView, Platform, Keyboard, } from 'react-native';
 import proptypes from 'prop-types';
 import { useFocusEffect } from '@react-navigation/native';
 import { useGoals } from '../../../../contexts/GoalsContext';
+import { styles } from './styles';
 
-const styles = StyleSheet.create({
-	container: {
-		backgroundColor: '#F0F0F0',
-		alignItems: 'center',
-	},
-	goalsContainer: {
-		width: '100%',
-		height: '100%',
-		paddingTop: '11%',
-		paddingBottom: '7%',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	goalsListContainer: {
-		width: '100%',
-		paddingTop: 20,
-		marginBottom: 20,
-	},
-	listItem: {
-		height: '10%',
-		padding: 5,
-		backgroundColor: 'white',
-		borderBottomWidth: 1,
-		borderRadius: 12,
-		borderColor: '#eee',
-		width: '90%',
-		alignSelf: 'center',
-		marginBottom: '5%',
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	infoSection: {
-		justifyContent: 'center',
-		alignContent: 'center',
-		width: '60%',
-		height: '100%',
-		padding: 10,
-	},
-	buttonSection: {
-		justifyContent: 'center',
-		alignContent: 'center',
-		alignItems: 'center',
-		width: '40%',
-		height: '100%',
-	},
-	currentGoalInfoSection: {
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		alignContent: 'center',
-		alignItems: 'center',
-	},
-	currentGoalInfoTitle: {
-		fontFamily: 'Montserrat_700Bold',
-		fontSize: 18,
-		fontWeight: 'bold',
-	},
-	currentGoalInfoText: {
-		fontFamily: 'Montserrat_400Regular',
-		fontSize: 18,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	text: {
-		fontFamily: 'Montserrat_400Regular',
-		fontSize: 18,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	goalSection: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignContent: 'center',
-	},
-	input: {
-		fontFamily: 'Montserrat_400Regular',
-		height: '82%',
-		width: '50%',
-		borderColor: 'gray',
-		borderWidth: 1,
-		borderRadius: 8,
-		padding: 10,
-		paddingHorizontal: 10,
-		fontSize: 18,
-		alignSelf: 'center',
-	},
-	button: {
-		height: '85%',
-		width: 'auto',
-		backgroundColor: '#FF815E',
-		paddingHorizontal: 20,
-		paddingVertical: 10,
-		borderRadius: 15,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	intialiseButton: {
-		backgroundColor: '#FF815E',
-		paddingHorizontal: 20,
-		paddingVertical: 15,
-		borderRadius: 15,
-		justifyContent: 'center',
-		alignItems: 'center',
-		marginTop: 60,
-		marginBottom: 20,
-	},
-	initialiseButtonText: {
-		fontFamily: 'Montserrat_600SemiBold',
-		textAlign: 'center',
-		color: 'white',
-		fontSize: 22,
-		alignSelf: 'center',
-	},
-	initialiseInfoText: {
-		fontFamily: 'Montserrat_500Medium',
-		textAlign: 'center',
-		fontSize: 14,
-		alignSelf: 'center',
-	},
-	buttonText: {
-		fontFamily: 'Montserrat_500Medium',
-		textAlign: 'center',
-		color: 'white',
-		fontSize: 15,
-		alignSelf: 'center',
-	},
-});
+const defaultMacroGoals = {
+	calories: { value: 2000, unit: 'kcal' },
+	protein: { value: 50, unit: 'g' },
+	carbs: { value: 300, unit: 'g' },
+	fat: { value: 70, unit: 'g' },
+	fibre: { value: 30, unit: 'g' },
+	sugar: { value: 25, unit: 'g' },
+	sodium: { value: 2300, unit: 'mg' },
+	water: { value: 3700, unit: 'ml' },
+};
 
+const nutrientUnits = {
+	calories: 'kcal',
+	protein: 'g',
+	carbs: 'g',
+	fat: 'g',
+	fibre: 'g',
+	sugar: 'g',
+	sodium: 'mg',
+	water: 'ml',
+};
 
+/**
+ * GoalItem component
+ * @param {Object} props - Component props
+ * @param {string} props.nutrient - The nutrient for the goal
+ * @param {Object} props.currentGoal - The current goal
+ * @param {Function} props.onUpdate - Function to call when the goal is updated
+ */
 const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
 	const [goalValue, setGoalValue] = useState('');
 	const [isEditing, setIsEditing] = useState(false);
@@ -206,35 +108,17 @@ GoalItem.propTypes = {
 };
 
 
-
+/**
+ * Goals component
+ */
 const Goals = () => {
 	const { goals, updateGoal, createGoal, fetchGoals } = useGoals();
 	const [isGoalsFetched, setIsGoalsFetched] = useState(false);
 	const [fetchedGoals, setFetchedGoals] = useState([]);
 
-	// Default nutrient goals based on recommended daily amount for each nutrient (unisex).
-	const defaultMacroGoals = {
-		calories: { value: 2000, unit: 'kcal' },
-		protein: { value: 50, unit: 'g' },
-		carbs: { value: 300, unit: 'g' },
-		fat: { value: 70, unit: 'g' },
-		fibre: { value: 30, unit: 'g' },
-		sugar: { value: 25, unit: 'g' },
-		sodium: { value: 2300, unit: 'mg' },
-		water: { value: 3700, unit: 'ml' },
-	};
-
-	const nutrientUnits = {
-		calories: 'kcal',
-		protein: 'g',
-		carbs: 'g',
-		fat: 'g',
-		fibre: 'g',
-		sugar: 'g',
-		sodium: 'mg',
-		water: 'ml',
-	};
-
+	/**
+   * Fetches goals from the server
+   */
 	useEffect(() => {
 		const fetchData = async () => {
 			await fetchGoals();
@@ -252,6 +136,9 @@ const Goals = () => {
 
 	}, [fetchGoals, isGoalsFetched, goals.goals]);
 
+	/**
+     * Fetches goals from the server when the component is focused
+     */
 	useFocusEffect(
 		useCallback(() => {
 			const fetchData = async () => {
@@ -267,7 +154,11 @@ const Goals = () => {
 		}, [fetchGoals, goals])
 	);
 
-
+	/**
+     * Updates a goal
+     * @param {string} nutrient - The nutrient for the goal
+     * @param {string} newMaxValue - The new maximum value for the goal
+     */
 	const handleUpdateGoal = async (nutrient, newMaxValue) => {
 
 		const goalToUpdate = fetchedGoals.find(goal => goal.measurement === nutrient);
@@ -297,7 +188,9 @@ const Goals = () => {
 		}
 	};
 
-
+	/**
+     * Initializes the goals
+     */
 	const handleInitializeGoals = () => {
 		Object.entries(defaultMacroGoals).forEach(([nutrient, goal]) => {
 			createGoal({
@@ -343,4 +236,3 @@ const Goals = () => {
 };
 
 export default Goals;
-

@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, SafeAreaView, ActivityIndicator } from 'react-native';
 
-// import globalStyles from '../../styles/global';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -14,82 +13,102 @@ import { useStats } from '../../contexts/StatsContext';
 import { useGoals } from '../../contexts/GoalsContext';
 
 import { styles } from './styles';
-import SettingsButton from '../../components/SettingsButton.js';
-
 
 const Stats = () => {
-	const navigation = useNavigation();
-	const [loading, setLoading] = useState(false);
-	const { todayStats, updateTodayStats } = useStats();
-	const { goals, fetchGoals } = useGoals();
+  const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
+  const { todayStats, updateTodayStats } = useStats();
+  const { goals, fetchGoals } = useGoals();
 
-  	const checkUserLogin = async () => {
-		try {
-			const token = await AsyncStorage.getItem('token');
-			if (!token) {
-				console.error("No token found");
-				navigation.navigate('Login');
-				return;
-			}
-			return token;
-		} catch (error) {
-			console.error("Error accessing AsyncStorage:", error);
-			navigation.navigate('Login');
-		}
-  	};
+  const checkUserLogin = async () => {
+    try {
+      const token = await AsyncStorage.getItem('token');
+      if (!token) {
+        console.error("No token found");
+        navigation.navigate('Login'); // Redirect to login if no token
+        return;
+      }
+      return token;
+    } catch (error) {
+      console.error("Error accessing AsyncStorage:", error);
+      navigation.navigate('Login'); // Redirect to login if error
+    }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+
+    const fetchData = async () => {
+      try {
+        await checkUserLogin();
+
+        await Promise.all([
+
+          updateTodayStats(),
+          fetchGoals(),
+
+        ]);
+
+      } catch (error) {
+        console.error("Error fetching data for stat page:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
 	const updateStatPageData = async () => {
-		try {
-			await checkUserLogin();
+        try {
+            await checkUserLogin();
 
-			await Promise.all([
-				updateTodayStats(),
-				fetchGoals(),
-			]);
-		} catch (error) {
-			console.error("Error fetching data for state page:", error);
-		} finally {
-			setLoading(false);
-		}
-	};
-
+            await Promise.all([
+                updateTodayStats(),
+                fetchGoals(),
+            ]);
+        } catch (error) {
+            console.error("Error fetching data for state page:", error);
+        }
+    };
+	
 	useFocusEffect(
-		useCallback(() => {
-			setLoading(true);
-			updateStatPageData();
-		}, [])
-	); 
+        useCallback(() => {
+          updateStatPageData();
+        }, [])
+    ); 
 
 
-	if (loading) {
-		return (
-			<View style={styles.loadingContainer}>
-				<ActivityIndicator testID='loading-indicator' size="large" />
-			</View>
-		);
-	}
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator testID='loading-indicator' size="large" />
+      </View>
+    );
+  }
 
 
-	return (
-		<SafeAreaView style={styles.statsContainer}>
+  return (
+    <SafeAreaView style={styles.statsContainer}>
 
-			<View style={styles.statsHeader}>
-				<WelcomeBar />
-			</View>
+      <View style={styles.statsHeader}>
+        <WelcomeBar />
+      </View>
       
-			<View style={styles.ringCompContainer}>
-				<View style={styles.ringComp}>
-					<CircularProgressComponent todayStats={todayStats} goals={goals} />
-				</View>
-			</View>
+      <View style={styles.ringCompContainer}>
+        <View style={styles.ringComp}>
+          <CircularProgressComponent todayStats={todayStats} goals={goals} />
+        </View>
+      </View>
 
-			<View style={styles.progressBarContainer}>
-				<NutritionProgress todayStats={todayStats} goals={goals} />
-			</View>
+      <View style={styles.progressBarContainer}>
+        <NutritionProgress todayStats={todayStats} goals={goals} />
+      </View>
 
 
-		</SafeAreaView>
-	);
+    </SafeAreaView>
+  );
 };
 
 export default Stats; 
