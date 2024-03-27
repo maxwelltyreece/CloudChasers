@@ -226,7 +226,7 @@ function SelectableRecipe({ id, title, description }) {
 export default SelectableRecipe;
 
 
-SelectableRecipe.propTypes = {
+SelectableRecipe.PropTypes = {
     title: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
 };

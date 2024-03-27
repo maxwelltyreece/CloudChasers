@@ -34,6 +34,6 @@ function Landing({ navigation }) {
 
 export default Landing;
 
-Landing.propTypes = {
+Landing.PropTypes = {
 	navigation: PropTypes.objectOf(PropTypes.any).isRequired,
 };

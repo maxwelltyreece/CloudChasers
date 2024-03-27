@@ -17,19 +17,19 @@ module.exports = {
 	transform: {
 		"^.+\\.[jt]sx?$": ["babel-jest", { configFile: "./babel.config.js" }],
 	},
-	collectCoverage: true,
-	"collectCoverageFrom": [
-		"**/*.{js,jsx}",
-		"**/frontend/**",
-		"!**/backend/**",
-		"!**/node_modules/**",
-		"!**/jest.setup.js",
-		"!**/AppEntry.js",
-		"!**/jest.config.js",
-		"!**/babel.config.js",
-		"!**/coverage/**",
-		"!**/__snapshots__/**",
-		"!**/eslintrc.js",
-		"!**/logger.js"
-	],
+	// collectCoverage: true,
+	// "collectCoverageFrom": [
+	// 	"**/*.{js,jsx}",
+	// 	"**/frontend/**",
+	// 	"!**/backend/**",
+	// 	"!**/node_modules/**",
+	// 	"!**/jest.setup.js",
+	// 	"!**/AppEntry.js",
+	// 	"!**/jest.config.js",
+	// 	"!**/babel.config.js",
+	// 	"!**/coverage/**",
+	// 	"!**/__snapshots__/**",
+	// 	"!**/eslintrc.js",
+	// 	"!**/logger.js"
+	// ],
 };

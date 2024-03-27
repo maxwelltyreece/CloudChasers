@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, Pressable, TextInput, KeyboardAvoidingView, Platform, Keyboard, } from 'react-native';
-import proptypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { useFocusEffect } from '@react-navigation/native';
 import { useGoals } from '../../../../contexts/GoalsContext';
 import { styles } from './styles';
@@ -101,10 +101,10 @@ const GoalItem = ({ nutrient, currentGoal, onUpdate }) => {
 	);
 };
 
-GoalItem.propTypes = {
-	nutrient: proptypes.string.isRequired,
-	currentGoal: proptypes.object.isRequired,
-	onUpdate: proptypes.func.isRequired,
+GoalItem.PropTypes = {
+	nutrient: PropTypes.string.isRequired,
+	currentGoal: PropTypes.object.isRequired,
+	onUpdate: PropTypes.func.isRequired,
 };
 
 

@@ -158,18 +158,18 @@ function GroupPage({ route, navigation }) {
 export default GroupPage;
 
 
-IconButton.propTypes = {
+IconButton.PropTypes = {
 	iconName: PropTypes.string.isRequired,
 	onPress: PropTypes.func.isRequired,
 };
 
-Message.propTypes = {
+Message.PropTypes = {
 	title: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
 	sender: PropTypes.string.isRequired,
 };
 
-GroupPage.propTypes = {
+GroupPage.PropTypes = {
 	route: PropTypes.shape({
 		params: PropTypes.shape({
 			community: PropTypes.shape({

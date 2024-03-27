@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext, useMemo } from 'react';
 import goalsService from '../services/GoalsService';
-import propTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 const GoalsContext = createContext();
 
@@ -119,6 +119,6 @@ export function GoalsProvider({ children }) {
  */
 export const useGoals = () => useContext(GoalsContext);
 
-GoalsProvider.propTypes = {
-	children: propTypes.node.isRequired,
+GoalsProvider.PropTypes = {
+	children: PropTypes.node.isRequired,
 };

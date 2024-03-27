@@ -3,7 +3,7 @@ module.exports = {
 	globalTeardown: './jest.global-teardown.js',
 	testEnvironment: "node",
 	testMatch: ["**/__tests__/**/*.js?(x)", "**/?(*.)+(spec|test).js?(x)"],
-	setupFilesAfterEnv: ["../../jest.setup.js"],
+	setupFilesAfterEnv: ["../../backend-Jest.setup.js"],
 	// collectCoverage: true,
 	// "collectCoverageFrom": [
 	// 	"**/*.{js,jsx}",

@@ -70,7 +70,7 @@ const Awards = () => {
 	);
 };
 
-Awards.propTypes = {
+Awards.PropTypes = {
 	awards: PropTypes.array.isRequired,
 	addAward: PropTypes.func.isRequired,
 };

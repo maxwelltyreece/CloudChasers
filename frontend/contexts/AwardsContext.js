@@ -137,8 +137,9 @@ export function AwardsProvider({ children }) {
  * @returns The context with all awards, user awards, and functions to manage awards.
  */
 export const useAwards = () => useContext(AwardsContext);
-AwardsProvider.propTypes = {
-	children: propTypes.node.isRequired,
+
+AwardsProvider.PropTypes = {
+	children: PropTypes.node.isRequired,
 };
 
 export default AwardsContext;

@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext, useMemo } from "react";
-import statsService from "../services/StatsService";
-import propTypes from "prop-types";
+import React, { createContext, useState, useContext, useMemo } from 'react';
+import statsService from '../services/StatsService';
+import PropTypes from 'prop-types';
 
 const StatsContext = createContext();
 /**
@@ -145,6 +145,6 @@ export function StatsProvider({ children }) {
  */
 export const useStats = () => useContext(StatsContext);
 
-StatsProvider.propTypes = {
-  children: propTypes.node.isRequired,
+StatsProvider.PropTypes = {
+	children: PropTypes.node.isRequired,
 };

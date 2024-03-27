@@ -301,7 +301,7 @@ describe('Award Controller Tests', () => {
             console.log(newlyCreatedGoalID);
 
             const res = await request(app)
-                .post('/goals/deleteGoal')
+                .get('/goals/deleteGoal')
                 .set('Authorization', `Bearer ${token}`)
                 .send({
                     goalID: newlyCreatedGoalID,
