@@ -23,7 +23,7 @@ function GroupRecipes({ route }) {
 				const mappedRecipes = fetchedRecipes.data.map(recipe => ({
 					id: recipe._id,
 					title: recipe.name,
-                    description: recipe.description,
+					description: recipe.description,
 				}));
             
 				setRecipes(mappedRecipes);
@@ -64,7 +64,7 @@ function GroupRecipes({ route }) {
 			{filteredRecipes.length > 0 ? (
 				<FlatList
 					data={filteredRecipes}
-                    renderItem={({ item }) => <RecipeBox id={item.id} title={item.title} description={item.description} style={styles.box} />}
+					renderItem={({ item }) => <RecipeBox id={item.id} title={item.title} description={item.description} style={styles.box} />}
 					keyExtractor={item => item.id}
 					numColumns={2}
 					columnWrapperStyle={styles.row}

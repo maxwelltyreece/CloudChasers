@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 	text: {
 		fontSize: 16,
 		fontFamily: 'Montserrat_600SemiBold',
-        marginBottom: 16,
+		marginBottom: 16,
 	},
 	input: {
 		height: 50,
@@ -51,31 +51,31 @@ const styles = StyleSheet.create({
 function EditPage({ route }) {
 	const { field, realName } = route.params;
 	const { userDetails, editUserDetails } = useUser();
-    console.log('userDetails:', userDetails);
-    console.log(realName);
+	console.log('userDetails:', userDetails);
+	console.log(realName);
 	const fieldValue = userDetails && userDetails ? userDetails[realName] : '';
 	const [newValue, setNewValue] = useState('');
-    const navigation = useNavigation();
+	const navigation = useNavigation();
 
 	const handlePress = async () => {
-        if (!newValue.trim()) {
-            Alert.alert('Error', 'Please enter a valid value.');
-            return;
-        }
-        try {
-            await editUserDetails({ [realName]: newValue });
-            Alert.alert(
-                'Success', 
-                'Your changes have been saved.', 
-                [
-                    {text: 'OK', onPress: () => navigation.goBack()}
-                ]
-            );
-        } catch (error) {
-            console.error('Failed to save changes:', error);
-            Alert.alert('Error', 'Failed to save changes. Please try again.');
-        }
-    };
+		if (!newValue.trim()) {
+			Alert.alert('Error', 'Please enter a valid value.');
+			return;
+		}
+		try {
+			await editUserDetails({ [realName]: newValue });
+			Alert.alert(
+				'Success', 
+				'Your changes have been saved.', 
+				[
+					{text: 'OK', onPress: () => navigation.goBack()}
+				]
+			);
+		} catch (error) {
+			console.error('Failed to save changes:', error);
+			Alert.alert('Error', 'Failed to save changes. Please try again.');
+		}
+	};
 
 	return (
 		<View style={styles.container}>

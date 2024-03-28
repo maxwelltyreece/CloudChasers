@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    View, Text, Image,
+	View, Text, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { styles } from './styles';
@@ -13,17 +13,17 @@ import { styles } from './styles';
  * @param {string} [props.image] - The URL of the image to display in the box
  */
 function Box({ title, image }) {
-    return (
-        <View style={styles.box}>
-            {image && <Image source={{ uri: image }} style={styles.image} />}
-            <Text style={styles.title}>{title}</Text>
-        </View>
-    );
+	return (
+		<View style={styles.box}>
+			{image && <Image source={{ uri: image }} style={styles.image} />}
+			<Text style={styles.title}>{title}</Text>
+		</View>
+	);
 }
 
 Box.PropTypes = {
-    title: PropTypes.string.isRequired,
-    image: PropTypes.string,
+	title: PropTypes.string.isRequired,
+	image: PropTypes.string,
 };
 
 export default Box;

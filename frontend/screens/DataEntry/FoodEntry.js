@@ -73,7 +73,7 @@ function FoodEntry() {
 		</TouchableOpacity>
 	);
 
-    /**
+	/**
      * Asynchronously handles the submission of food entry.
      * 
      * This function performs several checks on the input fields:
@@ -86,49 +86,49 @@ function FoodEntry() {
      * @async
      * @function
      */    
-    const handleSubmit = async () => {
-        if (!selectedFood || !weight || !mealName) { 
-            Alert.alert('Error', 'Please fill in all fields');
-            return;
-        }
-        if (isNaN(weight)) {
-            Alert.alert('Error', 'Please enter a valid number for weight');
-            return;
-        }
-        if (weight <= 0) {
-            Alert.alert('Error', 'Weight must be more than 0g');
-            return;
-        }
-        await logDatabaseFood({
-            mealType: mealName,
-            foodID: selectedFood._id,
-            weight: parseInt(weight, 10)
-        });
-        Alert.alert(
-            'Food Logged',
-            'Want to add more?',
-            [
-                {
-                    text: 'Yes', 
-                    onPress: () => {
-                        setSelectedFood(null);
-                        setWeight('');
-                        setSearchQuery('');
-                    }
-                },
-                {
-                    text: 'No', 
-                    onPress: () => {
-                        setSelectedFood(null);
-                        setWeight('');
-                        setSearchQuery('');
-                        navigation.goBack();
-                    }
-                },
-            ],
-            {cancelable: false},
-        );
-    };
+	const handleSubmit = async () => {
+		if (!selectedFood || !weight || !mealName) { 
+			Alert.alert('Error', 'Please fill in all fields');
+			return;
+		}
+		if (isNaN(weight)) {
+			Alert.alert('Error', 'Please enter a valid number for weight');
+			return;
+		}
+		if (weight <= 0) {
+			Alert.alert('Error', 'Weight must be more than 0g');
+			return;
+		}
+		await logDatabaseFood({
+			mealType: mealName,
+			foodID: selectedFood._id,
+			weight: parseInt(weight, 10)
+		});
+		Alert.alert(
+			'Food Logged',
+			'Want to add more?',
+			[
+				{
+					text: 'Yes', 
+					onPress: () => {
+						setSelectedFood(null);
+						setWeight('');
+						setSearchQuery('');
+					}
+				},
+				{
+					text: 'No', 
+					onPress: () => {
+						setSelectedFood(null);
+						setWeight('');
+						setSearchQuery('');
+						navigation.goBack();
+					}
+				},
+			],
+			{cancelable: false},
+		);
+	};
 
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
