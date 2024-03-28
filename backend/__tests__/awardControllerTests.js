@@ -22,6 +22,10 @@ const Goal = require('../models/goal');
 const GoalItem = require('../models/goalItem');
 const PersonalAward = require('../models/personalAward');
 const PersonalAwardItem = require('../models/personalAwardItem');
+const Community = require('../models/community');
+const CommunityUser = require('../models/communityUser');
+const CommmunityPost = require('../models/communityPost');
+const communityPost = require('../models/communityPost');
 
 
 
@@ -43,6 +47,9 @@ describe('Award Controller Tests', () => {
         await GoalItem.deleteMany({});
         await PersonalAward.deleteMany({});
         await PersonalAwardItem.deleteMany({});
+        await Community.deleteMany({});
+        await CommunityUser.deleteMany({});
+        await CommmunityPost.deleteMany({});
 
 
 		community = new mongoose.Types.ObjectId();
@@ -71,11 +78,15 @@ describe('Award Controller Tests', () => {
         await GoalItem.deleteMany({});
         await PersonalAward.deleteMany({});
         await PersonalAwardItem.deleteMany({});
+        await CommmunityPost.deleteMany({});
     });
 
     afterEach(async () => {
         await PersonalAward.deleteMany({});
         await PersonalAwardItem.deleteMany({});
+        await Community.deleteMany({});
+        await CommunityUser.deleteMany({});
+        await CommmunityPost.deleteMany({});
     });
 
     describe('get award controller', () => {
@@ -175,7 +186,6 @@ describe('Award Controller Tests', () => {
                 .send({
                     awardID: '60b1b4b3b3b3b3b3b3b3b3b3',
                 });
-            console.log(response.error);
             expect(response.statusCode).toBe(400);
             expect(response.body.message).toBe('Award does not exist');
         });
@@ -226,5 +236,82 @@ describe('Award Controller Tests', () => {
                 .set('Authorization', `Bearer ${token}`);
             expect(response.statusCode).toBe(200);
         });
+
+        it('get awards to be issued after making streaks', async () => {
+            const award1 = await PersonalAward.create({
+                name: '5 Day Streak',
+                description: 'Award for reaching a streak of 5 days',
+            });
+
+            const award2 = await PersonalAward.create({
+                name : '10 Day Streak',
+                description: 'Award for reaching a streak of 10 days',
+            });
+
+            const award3 = await PersonalAward.create({
+                name: '25 Day Streak',
+                description: 'Award for reaching a streak of 25 days',
+            });
+
+            const award4 = await PersonalAward.create({
+                name: 'Make a Post',
+                description: 'Award for making a post',
+            });
+
+            const award5 = await PersonalAward.create({
+                name: 'Make 5 Posts',
+                description: 'Award for making 5 posts',
+            });
+
+            const award6 = await PersonalAward.create({
+                name: 'Make 10 Posts',
+                description: 'Award for making 10 posts',
+            });
+
+            const award7 = await PersonalAward.create({
+                name : 'Join Community',
+                description: 'Award for joining a community',
+            });
+
+            const community = await Community.create({
+                name: 'Test Community',
+                description: 'This is a test community',
+                recipePrivacy: 'public',
+                joinPrivacy: 'public',
+            });
+
+            const communityUser = await CommunityUser.create({
+                communityID: community._id,
+                userID: user._id,
+                role : 'member',
+            });
+
+            for (let i = 0; i < 10; i++) {
+                await communityPost.create({
+                    communityID: community._id,
+                    userID: user._id,
+                    text : 'This is a test post',
+                    date : new Date(),
+                    title: 'Test Post',
+                });
+            }           
+
+            user.streak = 25;
+            user.save();
+            const response = await request(app)
+                .get('/awards/getAwardsToBeIssued')
+                .set('Authorization', `Bearer ${token}`);
+            console.log(response.error);
+            expect(response.statusCode).toBe(200);
+        });
     }); 
+
+    describe("get number of completed awards", () => {
+        it("get number of completed awards", async () => {
+            const response = await request(app)
+                .get("/awards/getNumberOfCompletedAwards")
+                .set("Authorization", `Bearer ${token}`);
+            expect(response.statusCode).toBe(200);
+        });
+    });
 });

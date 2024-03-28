@@ -63,7 +63,6 @@ exports.getPictureURL = async (req, res) => {
 		if (error.code === 404) {
 			return res.status(404).json({ error: "Image at " + path + " not found." });
 		} else {
-			console.error(error);
 			return res.status(500).json({ error: "Internal server error." });
 		}
 	}
