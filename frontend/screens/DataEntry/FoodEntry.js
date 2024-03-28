@@ -188,6 +188,7 @@ function FoodEntry() {
 				<NewFoodModal
 					isVisible={isModalVisible}
 					toggleModal={toggleModal}
+					onBackdropPress={toggleModal}
 				/>
 			</View>
 		</TouchableWithoutFeedback>
