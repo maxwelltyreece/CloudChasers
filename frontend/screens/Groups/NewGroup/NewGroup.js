@@ -54,26 +54,6 @@ function NewGroup() {
 				if (response && response.success) {
 					const communityID = response.data._id;
 
-					if (image) {
-						const formData = new FormData();
-						formData.append('objectID', communityID);
-						formData.append('folderName', 'Community_Pictures');
-						formData.append('file', {
-							uri: image,
-							name: getFileName(image),
-							type: 'image/jpeg',
-						});
-                  
-						const token = await AsyncStorage.getItem('token');
-						await axios.post(`http://api.gobl-up.me:80/image/uploadPicture`, formData, {
-							headers: {
-								Authorization: `Bearer ${token}`,
-								'Content-Type': 'multipart/form-data',
-							},
-						}).catch(error => {
-							console.error('Error uploading image:', error);
-						});
-					}
                   
 					setRecipeName(''); 
 					setImage(null); 
@@ -93,24 +73,6 @@ function NewGroup() {
 	const [recipeName, setRecipeName] = useState('');
 	var recipeID = '';
 
-	const pickImage = async () => {
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			allowsEditing: true,
-			aspect: [4, 3],
-			quality: 1,
-		});
-    
-		if (!result.canceled) {
-			setImage(result.assets[0].uri);
-		}
-		getFileName(result.assets[0].uri);
-	};
-
-	function getFileName(image){
-		const fileName = image.split('/').pop();
-		return fileName;
-	}
 
 	return (
 		<View style={styles.container}>
@@ -133,21 +95,6 @@ function NewGroup() {
 					isChecked={isPrivateCommunity}
 					onCheck={() => setIsPrivateCommunity(!isPrivateCommunity)}
 				/>
-				<CustomCheckbox
-					label="Make Recipes Private"
-					isChecked={areRecipesPrivate}
-					onCheck={() => setAreRecipesPrivate(!areRecipesPrivate)}
-				/>
-			</View>
-
-			<View style={[styles.button]}>
-				<Button title="Pick Recipe Image" onPress={pickImage} />
-				{image && (
-					<Image
-						source={{ uri: image }}
-						style={{ width: 200, height: 200 }}
-					/>
-				)}
 			</View>
 
 			<Pressable style={styles.buttonContainer} onPress={handleButtonPress}>
