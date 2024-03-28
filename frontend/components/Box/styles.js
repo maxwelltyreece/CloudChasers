@@ -7,14 +7,14 @@ export const styles = StyleSheet.create({
 		borderRadius: 10,
 		justifyContent: 'flex-end',
 		padding: 10,
+        overflow: 'hidden',
 	},
 	text: {
 		fontSize: 20,
 	},
 	image: {
 		width: '100%',
-		height: '70%',
-		resizeMode: 'cover',
+		height: '90%',
 	},
 	title: {
 		fontSize: 16,

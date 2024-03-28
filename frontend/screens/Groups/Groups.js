@@ -69,7 +69,7 @@ function Groups() {
 					renderItem={({ item }) => (
 						<View style={styles.itemContainer}>
 							<TouchableOpacity style={{ flex: 1 }} onPress={() => handlePress(item)}>
-								<Box title={item.name} />
+								<Box title={item.name} id={item.id} />
 							</TouchableOpacity>
 						</View>
 					)}

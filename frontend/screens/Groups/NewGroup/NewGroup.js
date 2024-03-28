@@ -7,9 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import PropTypes from 'prop-types';
 import { styles } from './styles';
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
-import { LocalIP } from '../../IPIndex';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { uploadImage } from '../../../services/ImageService';
 
 /**
  * CustomCheckbox component
@@ -38,7 +36,6 @@ function NewGroup() {
 	const [communityName, setCommunityName] = useState('');
 	const [communityDescription, setCommunityDescription] = useState('');
 	const [isPrivateCommunity, setIsPrivateCommunity] = useState(false);
-	const [areRecipesPrivate, setAreRecipesPrivate] = useState(false);
 	const { createCommunity, getUserCommunities } = useCommunity();
 	const navigation = useNavigation();
 
@@ -47,7 +44,6 @@ function NewGroup() {
 			name: communityName,
 			description: communityDescription,
 			joinPrivacy: isPrivateCommunity ? 'private' : 'public',
-			recipePrivacy: areRecipesPrivate ? 'private' : 'public',
 		};
 		createCommunity(communityData)
 			.then(async (response) => {
@@ -55,27 +51,9 @@ function NewGroup() {
 					const communityID = response.data._id;
 
 					if (image) {
-						const formData = new FormData();
-						formData.append('objectID', communityID);
-						formData.append('folderName', 'Community_Pictures');
-						formData.append('file', {
-							uri: image,
-							name: getFileName(image),
-							type: 'image/jpeg',
-						});
-                  
-						const token = await AsyncStorage.getItem('token');
-						await axios.post(`http://${LocalIP}:3000/image/uploadPicture`, formData, {
-							headers: {
-								Authorization: `Bearer ${token}`,
-								'Content-Type': 'multipart/form-data',
-							},
-						}).catch(error => {
-							console.error('Error uploading image:', error);
-						});
+						await uploadImage(communityID, image, 'Community_Pictures')
 					}
                   
-					setRecipeName(''); 
 					setImage(null); 
 
 					getUserCommunities();
@@ -90,7 +68,6 @@ function NewGroup() {
 	};
 
 	const [image, setImage] = useState(null);
-	const [recipeName, setRecipeName] = useState('');
 	var recipeID = '';
 
 	const pickImage = async () => {
@@ -133,15 +110,10 @@ function NewGroup() {
 					isChecked={isPrivateCommunity}
 					onCheck={() => setIsPrivateCommunity(!isPrivateCommunity)}
 				/>
-				<CustomCheckbox
-					label="Make Recipes Private"
-					isChecked={areRecipesPrivate}
-					onCheck={() => setAreRecipesPrivate(!areRecipesPrivate)}
-				/>
 			</View>
 
 			<View style={[styles.button]}>
-				<Button title="Pick Recipe Image" onPress={pickImage} />
+				<Button title="Pick Community Image" onPress={pickImage} />
 				{image && (
 					<Image
 						source={{ uri: image }}
