@@ -13,23 +13,23 @@ const RecipeQuantity = require("../models/recipeQuantity");
 const mongoose = require("mongoose");
 
 async function createUserDay(userID, date) {
-	// console.log("createUserDay called with userID:", userID, "and date:", date);
+
 	let newUserDay;
 	try {
 		const existingUserDay = await UserDay.findOne({ userID, date });
-		// console.log("existingUserDay:", existingUserDay);
+
 		if (!existingUserDay) {
 			newUserDay = new UserDay({
 				date,
 				userID,
 			});
 			await newUserDay.save();
-			// console.log("newUserDay saved:", newUserDay);
+			
 		} else {
 			return existingUserDay;
 		}
 	} catch (error) {
-		// console.log("Error in createUserDay:", error);
+	
 		throw new Error("Failed to create UserDay: " + error.toString());
 	}
 	return newUserDay;
@@ -39,14 +39,10 @@ async function createUserDay(userID, date) {
 async function createUserDayMeal(mealType, userDay) {
 	let newUserDayMeal;
 	try {
-		// console.log("mealType:", mealType);
-		// console.log("userDay._id:", userDay._id);
-
 		const existingUserDayMeal = await UserDayMeal.findOne({
 			name: mealType,
 			userDayID: userDay._id,
 		});
-		// console.log("existingUserDayMeal:", existingUserDayMeal);
 
 		const order = (await UserDayMeal.countDocuments({ userDayID: userDay._id })) + 1;
 
@@ -57,12 +53,12 @@ async function createUserDayMeal(mealType, userDay) {
 				order,
 			});
 			await newUserDayMeal.save();
-			// console.log("newUserDayMeal:", newUserDayMeal);
+
 		} else {
 			return existingUserDayMeal;
 		}
 	} catch (error) {
-		// console.log("Error in createUserDayMeal:", error);
+		
 		throw new Error("Failed to create UserDayMeal: " + error.toString());
 	}
 	return newUserDayMeal;
@@ -83,37 +79,28 @@ exports.logDatabaseFood = async (req, res) => {
 	let session;
 	try {
 		const user = req.user;
-		// console.log("User:", user);
 
 		session = await mongoose.startSession();
-		// console.log("Session started");
 
 		session.startTransaction();
-		// console.log("Transaction started");
 
 		const food = await Food.findById(foodID);
 		if (!food) {
 			return res.status(404).send({ error: "Food not found" });
 		}
-		// console.log("Food:", food);
 
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 
-		// Check if user day exists, if not create it
 		const newUserDay = await createUserDay(user._id, today);
-		// console.log("User Day:", newUserDay);
 
-		// Check if user day meal exists, if not create it
 		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
-		// console.log("User Day Meal:", newUserDayMeal);
 
 		const newFoodItem = new FoodItem({
 			foodID: food._id,
 			weight,
 		});
 		await newFoodItem.save();
-		// console.log("New Food Item saved");
 
 		const mealItem = new MealItem({
 			name: food.name,
@@ -122,23 +109,18 @@ exports.logDatabaseFood = async (req, res) => {
 			userDayMealID: newUserDayMeal._id,
 		});
 		await mealItem.save();
-		// console.log("Meal Item saved");
 
 		await session.commitTransaction();
-		// console.log("Transaction committed");
 
 		session.endSession();
-		// console.log("Session ended");
 
 		return res.status(200).send({ message: "Food logged" });
 	} catch (error) {
-		// console.log("Error:", error);
+
 		if (session) {
 			session.abortTransaction();
-			// console.log("Transaction aborted");
 
 			session.endSession();
-			// console.log("Session ended");
 		}
 		return res.status(501).send({ error: "test" + error.toString() });
 	}
@@ -149,37 +131,28 @@ exports.logDatabaseWater = async (req, res) => {
 	let session;
 	try {
 		const user = req.user;
-		// console.log("User:", user);
 
 		session = await mongoose.startSession();
-		// console.log("Session started");
 
 		session.startTransaction();
-		// console.log("Transaction started");
 
 		const food = await Food.find({ name: "Water" });
 		if (food.length === 0) {
 			return res.status(404).send({ error: "Water not found" });
 		}
-		// console.log("Food:", food);
 
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
 
-		// Check if user day exists, if not create it
 		const newUserDay = await createUserDay(user._id, today);
-		// console.log("User Day:", newUserDay);
 
-		// Check if user day meal exists, if not create it
 		const newUserDayMeal = await createUserDayMeal(mealType, newUserDay);
-		// console.log("User Day Meal:", newUserDayMeal);
 
 		const newFoodItem = new FoodItem({
 			foodID: food[0]._id,
 			weight,
 		});
 		await newFoodItem.save();
-		// console.log("New Water Item saved");
 
 		const mealItem = new MealItem({
 			name: food[0].name,
@@ -188,23 +161,19 @@ exports.logDatabaseWater = async (req, res) => {
 			userDayMealID: newUserDayMeal._id,
 		});
 		await mealItem.save();
-		// console.log("Meal Item saved");
 
 		await session.commitTransaction();
-		// console.log("Transaction committed");
 
 		session.endSession();
-		// console.log("Session ended");
+	
 
 		return res.status(200).send({ message: "Water logged" });
 	} catch (error) {
-		// console.log("Error:", error);
+
 		if (session) {
 			session.abortTransaction();
-			// console.log("Transaction aborted");
 
 			session.endSession();
-			// console.log("Session ended");
 		}
 		return res.status(501).send({ error: "test" + error.toString() });
 	}
@@ -289,7 +258,6 @@ exports.searchFoods = async (req, res) => {
 			.send({ error: `Invalid field(s): ${invalidFields.join(", ")}` });
 	}
 
-	// Create a query object with regex for each search parameter
 	const query = Object.entries(searchParams).reduce((acc, [key, value]) => {
 		if (numericFields.includes(key)) {
 			if (typeof value === "object") {
@@ -506,7 +474,6 @@ exports.addIngredientToDatabase = async (req, res) => {
 	}
 };
 
-//TODO: saerch recipes
 //exporting createUserDayMeal
 exports.createUserDayMeal = createUserDayMeal;
 //exporting createUserDay

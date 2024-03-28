@@ -103,9 +103,7 @@ exports.getUsers = async (req, res) => {
  * @returns {Object} res.data - The user object.
  */
 exports.getUserDetail =  async (req, res) => {
-	// console.log('Getting user details'); 
 	try {
-		// console.log('Getting user details2'); 
 		return res.status(200).json({data: req.user});
 
 	} catch (error) {
@@ -122,14 +120,12 @@ exports.getUserDetail =  async (req, res) => {
  * @returns {string} res.message - A message indicating the result of the operation.
  */
 exports.updateProfile = async (req, res) => {
-	//TODO: Add guard for updating fields that are not allowed to be updated
+	
 	const { ...updates } = req.body;
 	const user = req.user;
-	// console.log('User', user);
-	// console.log('Updates', updates);
+
 	try {
-		// console.log('Updating user');
-		// Loop over the updates object and update the user
+		
 		Object.keys(updates).forEach((update) => {
 			user[update] = updates[update];
 		});

@@ -21,9 +21,9 @@ function CommunityUpdates({ communities }) {
 	const { getCommunityPosts } = useCommunity();
 	const [communityPostCounts, setCommunityPostCounts] = useState({});
 	const hasCommunities = communities && communities.length > 0;
-    /**
-     * Fetches the number of posts in each community and stores them in state.
-     */
+	/**
+	 * Fetches the number of posts in each community and stores them in state.
+	 */
 	const fetchPostsCounts = async () => {
 		const counts = {};
 		for (const community of communities) {
@@ -42,10 +42,10 @@ function CommunityUpdates({ communities }) {
 		}, [communities])
 	);
 
-    /**
-     * Handles the press event on a community.
-     * @param {Object} community - The community that was pressed.
-     */
+	/**
+	 * Handles the press event on a community.
+	 * @param {Object} community - The community that was pressed.
+	 */
 	const handlePress = (community) => {
 		navigation.navigate('Group', { screen: 'GroupPage', params: { community: community } });
 	};

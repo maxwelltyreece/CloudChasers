@@ -4,10 +4,18 @@ export const styles = StyleSheet.create({
 	modal: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: '#FFFFFF',
 		borderRadius: 30,
 		paddingHorizontal: 25,
 	},
+	modalContainer: {
+		height: '80%',
+		width: '100%',
+		backgroundColor: '#F0F0F0',
+		borderRadius: 30,
+		padding: 25,
+
+	},
+
 	inputContainer: {
 		marginBottom: 20,
 		fontFamily: 'Montserrat_600SemiBold',
@@ -19,11 +27,10 @@ export const styles = StyleSheet.create({
 	},
 	input: {
 		height: 40,
-		borderWidth: 1,
-		borderColor: '#ccc',
 		borderRadius: 5,
 		paddingHorizontal: 10,
 		marginBottom: 10,
+		backgroundColor: '#FFFFFF'
 	},
 	button: {
 		backgroundColor: '#FF815E',

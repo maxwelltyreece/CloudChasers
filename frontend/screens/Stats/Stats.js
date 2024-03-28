@@ -19,22 +19,22 @@ const Stats = () => {
 	const { todayStats, updateTodayStats } = useStats();
 	const { goals, fetchGoals } = useGoals();
 
-    /**
-     * Checks if the user is logged in by checking for a token in AsyncStorage
-     * @returns {Promise<string>} The token, if it exists
-     */
+	/**
+	 * Checks if the user is logged in by checking for a token in AsyncStorage
+	 * @returns {Promise<string>} The token, if it exists
+	 */
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
 			if (!token) {
 				console.error("No token found");
-				navigation.navigate('Login'); 
+				navigation.navigate('Login');
 				return;
 			}
 			return token;
 		} catch (error) {
 			console.error("Error accessing AsyncStorage:", error);
-			navigation.navigate('Login'); 
+			navigation.navigate('Login');
 		}
 	};
 
@@ -56,9 +56,9 @@ const Stats = () => {
 		fetchData();
 	}, []);
 
-    /**
-     * Updates the data for the stats page
-     */
+	/**
+	 * Updates the data for the stats page
+	 */
 	const updateStatPageData = async () => {
 		try {
 			await checkUserLogin();
