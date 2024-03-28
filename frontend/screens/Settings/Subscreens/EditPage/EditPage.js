@@ -67,7 +67,7 @@ function EditPage({ route }) {
 
 export default EditPage;
 
-EditPage.PropTypes = {
+EditPage.propTypes = {
 	route: PropTypes.shape({
 		params: PropTypes.shape({
 			field: PropTypes.string,

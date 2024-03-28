@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import Modal from 'react-native-modal';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import PropTypes from 'prop-types';
@@ -43,7 +43,7 @@ const FoodInput = ({ label, value, onChangeText }) => {
  */
 const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 
-	FoodInput.PropTypes = {
+	FoodInput.propTypes = {
 		label: PropTypes.string.isRequired,
 		value: PropTypes.string.isRequired,
 		onChangeText: PropTypes.func.isRequired,
@@ -136,7 +136,7 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 	);
 };
 
-NewFoodModal.PropTypes = {
+NewFoodModal.propTypes = {
 	isVisible: PropTypes.bool.isRequired,
 	onBackdropPress: PropTypes.func.isRequired,
 	toggleModal: PropTypes.func.isRequired,

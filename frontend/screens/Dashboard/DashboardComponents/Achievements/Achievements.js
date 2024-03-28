@@ -73,7 +73,7 @@ const AchievementsFeature = ({ userAwards, allAwards }) => {
   );
 };
 
-AchievementsFeature.PropTypes = {
+AchievementsFeature.propTypes = {
   userAwards: PropTypes.array.isRequired,
   allAwards: PropTypes.array.isRequired,
 };

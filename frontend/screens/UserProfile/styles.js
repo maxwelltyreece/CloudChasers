@@ -1,15 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
 
-
-// import globalStyles from '../../styles/global';
-/**
- * UserProfile is a screen component designed for displaying user profile information.
- * It includes a SettingsButton component and uses styles from both the global styles
- * and its own styles.
- *
- * @returns {React.Element} The rendered UserProfile screen.
- */
-
 const { width } = Dimensions.get('window');
 
 export const styles = StyleSheet.create({

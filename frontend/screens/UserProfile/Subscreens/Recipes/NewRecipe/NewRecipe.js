@@ -29,7 +29,7 @@ import IconButton from "./NewRecipeComponents/IconButton";
  * @description Renders the NewRecipe component allowing users to create a new recipe by adding details and selected foods.
  * @returns {JSX.Element} The NewRecipe component.
  */
-const NewRecipe = ({}) => {
+const NewRecipe = ({ }) => {
 	const navigation = useNavigation();
 	const [image, setImage] = useState(null);
 	const [recipeName, setRecipeName] = useState("");
@@ -53,7 +53,9 @@ const NewRecipe = ({}) => {
 			try {
 				const communities = await getUserCommunities();
 				setUserCommunities(communities);
-			} catch (error) {}
+			} catch (error) {
+				console.log("Failed to fetch user communities for new recipe:", error);
+			}
 		};
 
 		fetchUserCommunities();
@@ -89,7 +91,7 @@ const NewRecipe = ({}) => {
 	}, []);
 
 	useEffect(() => {
-	}, [userCommunities]); 
+	}, [userCommunities]);
 
 	/**
  * Opens the modal to allow users to add a food item to their recipe. Before opening,
@@ -100,8 +102,8 @@ const NewRecipe = ({}) => {
  */
 	const handleAddCommunityPress = async () => {
 		await fetchUserCommunities();
-		setSelectedCommunity(null); 
-		setSelectedCommunityName(""); 
+		setSelectedCommunity(null);
+		setSelectedCommunityName("");
 		setCommunityModalVisible(true);
 	};
 	/**
@@ -110,10 +112,10 @@ const NewRecipe = ({}) => {
  * @function handleCommunitySelection
  * @param {Object} community The selected community object.
  */
-  const handleCommunitySelection = (community) => {
-    setSelectedCommunity(community.id);
-    setSelectedCommunityName(community.name); 
-  };
+	const handleCommunitySelection = (community) => {
+		setSelectedCommunity(community.id);
+		setSelectedCommunityName(community.name);
+	};
 
 	/**
  * Adds the selected food item to the recipe. Validates the input weight and checks
@@ -164,7 +166,7 @@ const NewRecipe = ({}) => {
 				styles.item,
 				{
 					backgroundColor:
-            item._id === selectedItem?._id ? "#FF815E" : "#F0F0F0",
+						item._id === selectedItem?._id ? "#FF815E" : "#F0F0F0",
 				},
 			]}
 			onPress={() => setSelectedItem(item)}
@@ -245,17 +247,17 @@ const NewRecipe = ({}) => {
 			recipeData.communityThatOwnsRecipe = recipeCommunity;
 		}
 
-    try {
-        const response = await axios.post(
-            `http://${LocalIP}:3000/food/createNewRecipeByUser`,
-            recipeData,
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            }
-        );
+		try {
+			const response = await axios.post(
+				`http://${LocalIP}:3000/food/createNewRecipeByUser`,
+				recipeData,
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
 
-        const recipeID = response.data.data._id;
-        await addItemsToRecipe(recipeID, token);
+			const recipeID = response.data.data._id;
+			await addItemsToRecipe(recipeID, token);
 
 			if (image) {
 				await uploadImage(recipeID, image, "Recipe_Pictures");
@@ -394,9 +396,9 @@ const NewRecipe = ({}) => {
 													style={{
 														padding: 10,
 														backgroundColor:
-                              item.id === selectedCommunity
-                              	? "#FF815E"
-                              	: "transparent",
+															item.id === selectedCommunity
+																? "#FF815E"
+																: "transparent",
 														borderRadius: 20,
 													}}
 												>
@@ -421,7 +423,7 @@ const NewRecipe = ({}) => {
 						</Modal>
 					</View>
 					<View style={{ marginVertical: 20 }}>
-						<Text style={styles.text}>Selected Community: </Text>
+						<Text style={[styles.text, {marginTop: 22, marginBottom: 4 }]}>Selected Community: </Text>
 						<Text
 							style={{
 								fontFamily: "Montserrat_400Regular",
@@ -431,7 +433,7 @@ const NewRecipe = ({}) => {
 						</Text>
 					</View>
 					<View style={{ height: 100 }}>
-						<Text style={styles.text}>Selected Foods:</Text>
+						<Text style={[styles.text, {marginBottom: 4 }]}>Selected Foods:</Text>
 						{selectedFoods.length > 0 ? (
 							<ScrollView
 								style={{ backgroundColor: "#F0F0F0", borderRadius: 20 }}
@@ -468,7 +470,7 @@ const NewRecipe = ({}) => {
 									fontFamily: "Montserrat_400Regular",
 								}}
 							>
-                No foods added
+								No foods added
 							</Text>
 						)}
 					</View>

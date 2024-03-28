@@ -51,6 +51,6 @@ function LogoutButton({ onPress }) {
 }
 
 export default LogoutButton;
-LogoutButton.PropTypes = {
+LogoutButton.propTypes = {
 	onPress: PropTypes.func.isRequired,
 };

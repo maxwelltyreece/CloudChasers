@@ -3,8 +3,7 @@ import { View, Text } from 'react-native';
 import { styles } from './styles';
 
 /**
- * About is a screen component designed for displaying information about the app.
- * It uses styles from both the global styles and its own styles.
+ * About is a screen component designed for displaying information about the app and welcoming the user.
  *
  * @returns {React.Element} The rendered About screen.
  */

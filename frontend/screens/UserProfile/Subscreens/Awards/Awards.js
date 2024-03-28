@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
 import { View, Text, ScrollView, } from 'react-native';
-import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Feather';
 import { useFocusEffect } from '@react-navigation/native';
 import { useAwards } from '../../../../contexts/AwardsContext';
