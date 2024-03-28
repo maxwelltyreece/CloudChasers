@@ -90,6 +90,6 @@ export function UserProvider({ children }) {
  */
 export const useUser = () => useContext(UserContext);
 
-UserProvider.PropTypes = {
+UserProvider.propTypes = {
 	children: PropTypes.node.isRequired,
 };

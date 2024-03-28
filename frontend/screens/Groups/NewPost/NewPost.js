@@ -69,13 +69,13 @@ function NewPostPage({ navigation, route }) {
 
 export default NewPostPage;
 
-NewPostPage.PropTypes = {
-	navigation: PropTypes.shape({
-		goBack: PropTypes.func.isRequired,
-	}).isRequired,
-	route: PropTypes.shape({
-		params: PropTypes.shape({
-			communityId: PropTypes.string.isRequired,
-		}),
-	}).isRequired,
+NewPostPage.propTypes = {
+    navigation: PropTypes.shape({
+        goBack: PropTypes.func.isRequired,
+    }).isRequired,
+    route: PropTypes.shape({
+        params: PropTypes.shape({
+            communityId: PropTypes.string.isRequired,
+        }),
+    }).isRequired,
 };

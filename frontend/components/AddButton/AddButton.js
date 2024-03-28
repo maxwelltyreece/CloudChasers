@@ -49,10 +49,10 @@ const CustomIcon = ({ width = 80, height = 82, startAnimation }) => {
 	);
 };
 
-CustomIcon.PropTypes = {
-	width: PropTypes.number,
-	height: PropTypes.number,
-	startAnimation: PropTypes.func.isRequired, 
+CustomIcon.propTypes = {
+    width: PropTypes.number,
+    height: PropTypes.number,
+    startAnimation: PropTypes.func.isRequired, 
 };
 
 export default CustomIcon;

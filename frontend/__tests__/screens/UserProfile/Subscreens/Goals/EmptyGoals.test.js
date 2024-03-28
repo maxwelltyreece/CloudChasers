@@ -31,7 +31,7 @@ jest.mock('@react-navigation/native', () => {
 	};
 });
 
-// Mock useNavigation just in case you use it in the component
+// Mock useNavigation
 jest.mock('@react-navigation/core', () => ({
 	...jest.requireActual('@react-navigation/core'),
 	useNavigation: () => ({

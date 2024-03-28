@@ -1,11 +1,8 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import NewFoodModal from '../../../../screens/DataEntry/DataEntryComponents/NewFoodModal';
-import styles from '../../../../screens/DataEntry/DataEntryComponents/styles'
 
-import { StyleSheet } from 'react-native';
 
-// Mocking specific modules from react-native
 jest.mock('react-native/Libraries/Components/TextInput/TextInput', () => 'TextInput');
 jest.mock('react-native/Libraries/Components/Touchable/TouchableOpacity', () => 'TouchableOpacity');
 

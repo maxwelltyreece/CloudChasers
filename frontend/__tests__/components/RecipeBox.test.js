@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import axios from 'axios';
-import RecipeBox from '../../components/RecipeBox';
+import RecipeBox from '../../components/RecipeBox/RecipeBox';
 
 jest.mock('axios');
 

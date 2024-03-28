@@ -73,16 +73,13 @@ describe('Community Service', () => {
 		expect(response.id).toBe(communityId);
 	});
 
-	// Add more tests for other functions in your community service
-
-	// Example test for handling errors
 	it('handles errors correctly', async () => {
 		axios.post.mockRejectedValue(new Error('An error occurred'));
 
 		const response = await createCommunity(communityData);
 
 		expect(axios.post).toHaveBeenCalled();
-		expect(response).toBe(false); // Assuming that your function returns false in case of errors
+		expect(response).toBe(false);
 	});
 
 	it('getCommunityMembers retrieves community members successfully', async () => {
@@ -127,7 +124,6 @@ describe('Community Service', () => {
 		expect(response).toEqual(mockCommunities);
 	});
 
-	// Continuing from the previous tests...
 
 	it('deleteCommunity deletes a community successfully', async () => {
 		axios.put.mockResolvedValue({ data: { success: true, message: 'Community deleted' } });

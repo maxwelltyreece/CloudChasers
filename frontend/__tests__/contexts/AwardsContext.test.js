@@ -28,17 +28,15 @@ function TestConsumer() {
 		fetchNumberOfCompletedAwards,
 	} = useAwards();
 
-	// Helper function to simulate creating a new award
 	const handleCreateAward = () => {
 		createAward({ title: 'New Award' }).then(() => {
 			fetchAwards();
 		});
 	};
 
-	// Helper function to simulate awarding a user
 	const handleAwardUser = () => {
 		awardUser({ userId: 'user1', awardId: 'award1' }).then(() => {
-			fetchUserAwards(); // Refetch user awards to see the update
+			fetchUserAwards();
 		});
 	};
 
@@ -66,6 +64,11 @@ describe('AwardsContext functionality', () => {
 	beforeEach(() => {
 		jest.resetAllMocks();
 	});
+
+	afterEach(() => {
+		jest.clearAllMocks();
+	  });
+	  
 
 	it('fetches and displays all awards', async () => {
 		const mockAwards = [{ title: 'Award 1' }, { title: 'Award 2' }];
@@ -209,7 +212,6 @@ describe('AwardsContext functionality', () => {
 		});
 	});
 
-	// Testing error handling for getNumberOfCompletedAwards
 	it('handles errors gracefully when fetching number of completed awards fails', async () => {
 
 		jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -232,5 +234,139 @@ describe('AwardsContext functionality', () => {
 		});
 	});
 
+
+	it('handles error when fetching all awards fails', async () => {
+		const mockError = new Error('Failed to fetch awards');
+		const fetchAwards = async () => {
+			try {
+				await awardsService.getAllAwards();
+			} catch (error) {
+				console.error('Error fetching awards:', error);
+			}
+		};
+
+		awardsService.getAllAwards.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
+
+		await act(async () => {
+			await fetchAwards();
+		});
+
+		expect(consoleSpy).toHaveBeenCalledWith('Error fetching awards:', mockError);
+	  });
+
+
+	  it('handles error when creating award fails', async () => {
+		const mockError = new Error('Failed to create award');
+		const createAward = async (awardData) => {
+			try {
+				await awardsService.createAward(awardData);
+			} catch (error) {
+				console.error('Error creating award:', error);
+			}
+		};
+
+		awardsService.createAward.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
+
+		await act(async () => {
+			await createAward({ title: 'New Award' });
+		});
+
+		expect(consoleSpy).toHaveBeenCalledWith('Error creating award:', mockError);
+	  });
+	  
+
+	  it('handles error when fetching user awards fails', async () => {
+		const mockError = new Error('Failed to fetch user awards');
+		const fetchUserAwards = async () => {
+			try {
+				await awardsService.getUserAwards();
+			} catch (error) {
+				console.error('Error fetching user awards:', error);
+			}
+		};
+
+		awardsService.getUserAwards.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
+
+		await act(async () => {
+			await fetchUserAwards();
+		});
+
+		expect(consoleSpy).toHaveBeenCalledWith('Error fetching user awards:', mockError);
+	  });
+	  
+	  it('handles error when fetching a single award fails', async () => {
+		const mockError = new Error('Failed to fetch award');
+		const fetchAward = async (awardId) => {
+			try {
+				await awardsService.getAward(awardId);
+			} catch (error) {
+				console.error('Error fetching award:', error);
+			}
+		};
+
+		awardsService.getAward.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
+
+		await act(async () => {
+			await fetchAward('award1');
+		});
+
+		expect(consoleSpy).toHaveBeenCalledWith('Error fetching award:', mockError);
+	  });
+	  
+
+	  it('handles error when awarding user fails', async () => {
+		const mockError = new Error('Failed to award user');
+		const awardUser = async (awardData) => {
+			try {
+				await awardsService.awardUser(awardData);
+			} catch (error) {
+				console.error('Error awarding user:', error);
+			}
+		};
+
+		awardsService.awardUser.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		render(
+			<AwardsProvider>
+				<TestConsumer />
+			</AwardsProvider>
+		);
+
+		await act(async () => {
+			await awardUser({ userId: 'user1', awardId: 'award1' });
+		});
+
+		expect(consoleSpy).toHaveBeenCalledWith('Error awarding user:', mockError);
+	  });
+	  
 
 });

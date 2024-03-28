@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import WaterEntry from '../../../screens/DataEntry/WaterEntry';
-import { Alert } from 'react-native'; // Import Alert from react-native
+import { Alert } from 'react-native';
 
 jest.mock('../../../contexts/FoodLogContext', () => ({
 	useFoodLog: () => ({

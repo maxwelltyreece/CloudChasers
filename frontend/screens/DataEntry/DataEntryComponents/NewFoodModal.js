@@ -42,11 +42,11 @@ const FoodInput = ({ label, value, onChangeText }) => {
  */
 const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 
-	FoodInput.PropTypes = {
-		label: PropTypes.string.isRequired,
-		value: PropTypes.string.isRequired,
-		onChangeText: PropTypes.func.isRequired,
-	};
+    FoodInput.propTypes = {
+        label: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
+        onChangeText: PropTypes.func.isRequired,
+    };
 
 	const { logManualMacro } = useFoodLog();
 	const [foodItem, setFoodItem] = useState('');
@@ -179,10 +179,10 @@ const styles = StyleSheet.create({
 	},
 });
 
-NewFoodModal.PropTypes = {
-	isVisible: PropTypes.bool.isRequired,
-	onBackdropPress: PropTypes.func.isRequired,
-	toggleModal: PropTypes.func.isRequired,
+NewFoodModal.propTypes = {
+    isVisible: PropTypes.bool.isRequired,
+    onBackdropPress: PropTypes.func.isRequired,
+    toggleModal: PropTypes.func.isRequired,
 };
 
 export default NewFoodModal;
