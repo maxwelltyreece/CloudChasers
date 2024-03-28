@@ -7,25 +7,20 @@ const CommunityUser = require('../models/communityUser');
 const CommunityPost = require('../models/communityPost');
 const JoinRequest = require('../models/request');
 
-// TODO:
-//    ٩(^‿^)۶ 
-//
-// DONE:
-// - Get community members
-// - Get admin status
-// - Get member status
-// - Get list of user communities
-// - Get list of communities
-// - Delete community
-// - Leave community
-// - Update community description
-// - Update community privacy settings
-// - Admin can remove members
-// - Get community posts/recipes
-// - Join private community
-// - Get pending requests
-// - Accept/deny requests
-
+/**
+ * Handles the POST /create request to create a new community.
+ *
+ * @async
+ * @function createCommunity
+ * @param {Object} req - Express request object, containing the details of the community to be created in the body.
+ * @param {string} req.body.name - The name of the community.
+ * @param {string} req.body.description - The description of the community.
+ * @param {string} req.body.recipePrivacy - The privacy setting for recipes in the community.
+ * @param {string} req.body.joinPrivacy - The privacy setting for joining the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the created community data.
+ * @throws {Error} Will throw an error if saving the community or community user fails.
+ */
 exports.createCommunity = async (req, res) => {
 	const { name, description, recipePrivacy, joinPrivacy } = req.body;
 	try {
@@ -34,7 +29,6 @@ exports.createCommunity = async (req, res) => {
 		if (community) {
 			return res.status(400).send({ message: 'Community already exists' });
 		}
-		// console.log('Creating community');
 		const newCommunity = new Community({
 			name,
 			description,
@@ -44,14 +38,11 @@ exports.createCommunity = async (req, res) => {
 		});
        
 		await newCommunity.save();
-		// console.log('Community created', newCommunity);
-		// Create CommunityUser to join community
 		const newCommunityUser = new CommunityUser({
 			communityID: newCommunity._id,
 			userID: user._id,
 			role: 'admin',
 		});
-		// console.log('Community joined', newCommunityUser);
 
 		await newCommunityUser.save();
 		return res.status(200).json({ success: true, message: 'Community created', data: newCommunity });
@@ -61,27 +52,36 @@ exports.createCommunity = async (req, res) => {
 	}
 };
 
+/**
+ * Handles the POST /join request to join a community.
+ * If community is public then user is added to the community directly.
+ * If community is private then a join request is created.
+ *
+ * @async
+ * @function joinCommunity
+ * @param {Object} req - Express request object, containing the user and the ID of the community to join in the body.
+ * @param {Object} req.user - The user who wants to join the community.
+ * @param {string} req.body.communityId - The ID of the community to join.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the data of the new community user or the join request.
+ * @throws {Error} Will throw an error if saving the new community user or the join request fails.
+ */
 exports.joinCommunity = async (req, res) => {
 	const { communityId } = req.body;
 	try {
-		// Get user from token
 		const user = req.user; 
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is already in community
 		const isMember = await CommunityUser.findOne({ communityID: communityId, userID: user._id });
 		if (isMember) {
 			return res.status(400).send({ message: 'User is already a member of the community' });
 		}
-		// Check if user has already requested to join community
 		const hasRequested = await JoinRequest.findOne({ communityID: communityId, userID: user._id });
 		if (hasRequested) {
 			return res.status(400).send({ message: 'User has already requested to join the community' });
 		}
-		// Check if community is private
 		if (community.joinPrivacy === 'private') {
 			const joinRequest = new JoinRequest({
 				status: 'Pending',
@@ -92,18 +92,13 @@ exports.joinCommunity = async (req, res) => {
 			return res.status(200).json({ success: true, message: 'Request to join sent' });
 		}
 		else {
-			// console.log('Joining community');
-			// Create CommunityUser to join community
 			const newCommunityUser = new CommunityUser({
 				communityID: community._id,
 				userID: user._id,
 				role: 'member',
 			});
 			await newCommunityUser.save();
-
-			// console.log('Community joined');
 			return res.status(200).json({ success: true, message: 'Community joined', data: newCommunityUser });
-            
 		}
 	}
 	catch (error) {
@@ -111,24 +106,32 @@ exports.joinCommunity = async (req, res) => {
 	}
 };
 
-// Get pending join requests
+/**
+ * Handles the GET /requests request to retrieve all pending join requests for a community.
+ * Only admins of the community can retrieve the pending requests.
+ *
+ * @async
+ * @function getPendingRequests
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the query.
+ * @param {Object} req.user - The user making the request.
+ * @param {string} req.query.communityId - The ID of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the data of the pending requests.
+ * @throws {Error} Will throw an error if retrieving the community, the admin status, the join requests, or the usernames fails.
+ */
 exports.getPendingRequests = async (req, res) => {
 	const { communityId } = req.query;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is an admin of the community
 		const isAdmin = await CommunityUser.findOne({ communityID: communityId, userID: user._id, role: 'admin' });
 		if (!isAdmin) {
 			return res.status(400).send({ message: 'User is not an admin of the community' });
 		}
-		// Get pending requests
 		const requests = await JoinRequest.find({ communityID: communityId, status: 'Pending' });
-		// Map user IDs to usernames
 		const requestsMapped = await Promise.all(requests.map(async (request) => {
 			const username = await User.findById(request.userID).select('username');
 			return { _id: request._id, username: username.username };
@@ -140,22 +143,31 @@ exports.getPendingRequests = async (req, res) => {
 	}
 };
 
-// Accept join request
+/**
+ * Handles the POST /acceptRequest request to accept a join request to a community.
+ * Only admins of the community can accept join requests.
+ *
+ * @async
+ * @function acceptRequest
+ * @param {Object} req - Express request object, containing the user and the ID of the join request in the body.
+ * @param {Object} req.user - The user who is accepting the request.
+ * @param {string} req.body.requestId - The ID of the join request.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns a success flag and a message indicating that the request has been accepted.
+ * @throws {Error} Will throw an error if retrieving the join request, the community, the admin status, updating the join request, or saving the new community user fails.
+ */
 exports.acceptRequest = async (req, res) => {
 	const { requestId } = req.body;
 	try {
 		const user = req.user;
-		// Get request
 		const request = await JoinRequest.findById(requestId);
 		if (!request) {
 			return res.status(404).send({ message: 'Request not found' });
 		}
-		// Get community
 		const community = await Community.findById(request.communityID);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is an admin of the community
 		const isAdmin = await CommunityUser.findOne({ communityID: request.communityID, userID: user._id, role: 'admin' });
 		if (!isAdmin) {
 			return res.status(400).send({ message: 'User is not an admin of the community' });
@@ -163,9 +175,8 @@ exports.acceptRequest = async (req, res) => {
 		if (request.status !== 'Pending') {
 			return res.status(400).send({ message: 'Request has already been accepted or denied' });
 		}
-		// Accept request
 		await JoinRequest.updateOne({ _id: requestId }, { status: 'Approved' });
-		// Create CommunityUser to join community
+		
 		const newCommunityUser = new CommunityUser({
 			communityID: community._id,
 			userID: request.userID,
@@ -179,22 +190,32 @@ exports.acceptRequest = async (req, res) => {
 	}
 };
 
-// Deny join request
+/**
+ * Handles the POST /denyRequest request to deny a join request to a community.
+ * Only admins of the community can deny join requests.
+ *
+ * @async
+ * @function denyRequest
+ * @param {Object} req - Express request object, containing the user and the ID of the join request in the body.
+ * @param {Object} req.user - The user who is denying the request.
+ * @param {string} req.body.requestId - The ID of the join request.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns a success flag and a message indicating that the request has been denied.
+ * @throws {Error} Will throw an error if retrieving the join request, the community, the admin status, or updating the join request fails.
+ */
+
 exports.denyRequest = async (req, res) => {
 	const { requestId } = req.body;
 	try {
 		const user = req.user;
-		// Get request
 		const request = await JoinRequest.findById(requestId);
 		if (!request) {
 			return res.status(404).send({ message: 'Request not found' });
 		}
-		// Get community
 		const community = await Community.findById(request.communityID);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is an admin of the community
 		const isAdmin = await CommunityUser.findOne({ communityID: request.communityID, userID: user._id, role: 'admin' });
 		if (!isAdmin) {
 			return res.status(400).send({ message: 'User is not an admin of the community' });
@@ -202,7 +223,6 @@ exports.denyRequest = async (req, res) => {
 		if (request.status !== 'Pending') {
 			return res.status(400).send({ message: 'Request has already been accepted or denied' });
 		}
-		// Deny request
 		await JoinRequest.updateOne({ _id: requestId }, { status: 'Rejected' });
 		return res.status(200).json({ success: true, message: 'Request denied' });
 	}
@@ -210,17 +230,27 @@ exports.denyRequest = async (req, res) => {
 		return res.status(400).json({ error: error.toString() });
 	}
 };
-// Should this be restricted to community members?
+
+/**
+ * Handles the GET /details request to retrieve the details of a community.
+ * Takes a community ID as a query parameter and returns the community details and the number of its members.
+ * @async
+ * @function getCommunityDetails
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the query.
+ * @param {Object} req.user - The user making the request.
+ * @param {string} req.query.communityId - The ID of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the data of the community and the number of its members.
+ * @throws {Error} Will throw an error if retrieving the community or counting the community users fails.
+ */
 exports.getCommunityDetails = async (req, res) => {
 	const { communityId } = req.query;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Get member count
 		const count = await CommunityUser.countDocuments({ communityID: communityId });
 		return res.status(200).json({ success: true, data: { community, members: count }});
 	}
@@ -229,48 +259,66 @@ exports.getCommunityDetails = async (req, res) => {
 	}
 };
 
+/**
+ * Handles the GET /members request to retrieve the members of a community.
+ * Only members of the community can retrieve the members.
+ * 
+ * @async
+ * @function getCommunityMembers
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the query.
+ * @param {Object} req.user - The user making the request.
+ * @param {string} req.query.communityId - The ID of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the data of the community members, including their IDs, usernames, profile picture links, and roles.
+ * @throws {Error} Will throw an error if retrieving the community, the community user, the community members, or the user details fails.
+ */
 exports.getCommunityMembers = async (req, res) => {
 	const { communityId } = req.query;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is a member of the community
 		const isMember = await CommunityUser.findOne({ communityID: communityId, userID: user._id });
 		if (!isMember) {
 			return res.status(400).send({ message: 'User is not a member of the community' });
 		}
-		// Get members
 		const members = await CommunityUser.find({ communityID: communityId });
-		// Map member IDs to usernames + pic URLs
+	
 		const users = await Promise.all(members.map(async (member) => {
 			const communitymember = await User.findById(member.userID).select('username');
 			const profilePictureLink = await User.findById(member.userID).select('profilePictureLink');
 			const role = member.role;
 			return { _id: communitymember._id, username: communitymember.username, profilePictureLink: profilePictureLink.profilePictureLink, role };
 		}));
-        
 		return res.status(200).json({ success: true, data: users });
-        
 	}
 	catch (error) {
 		return res.status(400).json({ error: error.toString() });
 	}
 };
 
+/**
+ * Handles the GET /role request to retrieve the role of a user in a community.
+ *
+ * @async
+ * @function getUserRole
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the query.
+ * @param {Object} req.user - The user whose role is to be retrieved.
+ * @param {string} req.query.communityId - The ID of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns the role of the user in the community. If the user is not a member of the community, it returns 'none'.
+ * @throws {Error} Will throw an error if retrieving the community or the community user fails.
+ */
 exports.getUserRole = async (req, res) => {
 	const { communityId } = req.query;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Get user role
 		const role = await CommunityUser.findOne({ communityID: communityId, userID: user._id }).select('role');
 		if (!role) {
 			return res.status(400).send({ success: true, data: { role: 'none' }});
@@ -282,7 +330,16 @@ exports.getUserRole = async (req, res) => {
 	}
 }
 
-// Exclude communities that user is already a member of?
+/**
+ * Handles the GET /all request to retrieve a list of all communities.
+ *
+ * @async
+ * @function getAllCommunities
+ * @param {Object} req - Express request object.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns an array of all communities, each represented by an object containing its ID, name, and description.
+ * @throws {Error} Will throw an error if retrieving the communities fails.
+ */
 exports.getAllCommunities = async (req, res) => {
 	try {
 		const communities = await Community.find();
@@ -298,7 +355,17 @@ exports.getAllCommunities = async (req, res) => {
 	}
 }
 
-// Get all communities that the user is a member/admin of
+/**
+ * Handles the GET /userCommunities request to retrieve all communities that a user is a member of.
+ *
+ * @async
+ * @function getUserCommunities
+ * @param {Object} req - Express request object, containing the user.
+ * @param {Object} req.user - The user whose communities are to be retrieved.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it also returns an array of all communities the user is a member of, each represented by an object containing its ID, name, and description.
+ * @throws {Error} Will throw an error if retrieving the communities fails.
+ */
 exports.getUserCommunities = async (req, res) => {
 	try {
 		const user = req.user;
@@ -317,24 +384,20 @@ exports.getUserCommunities = async (req, res) => {
 	}
 }
 
-// Delete community
+
 exports.deleteCommunity = async (req, res) => {
 	const { communityId } = req.body;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is admin
 		const isAdmin = await CommunityUser.findOne({ communityID: communityId, userID: user._id, role: 'admin' });
 		if (!isAdmin) {
 			return res.status(400).send({ message: 'User is not an admin of the community' });
 		}
-		// Delete community object
 		await Community.deleteOne({ _id: communityId });
-		// Delete all CommunityUser objects for the community
 		await CommunityUser.deleteMany({ communityID: communityId });
     
 		return res.status(200).json({ success: true, message: 'Community deleted' });
@@ -344,26 +407,23 @@ exports.deleteCommunity = async (req, res) => {
 	}
 }
 
-// Leave community
+
 exports.leaveCommunity = async (req, res) => {
 	const { communityId } = req.body;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is a member
 		const isMember = await CommunityUser.findOne({ communityID: communityId, userID: user._id });
 		if (!isMember) {
 			return res.status(400).send({ message: 'User is not a member of the community' });
 		}
-		// If user is admin then they cannot leave community
+		// Admins can't leave community
 		if (isMember.role === 'admin') {
 			return res.status(400).send({ message: 'User is an admin of the community' });
 		}
-		// Leave community
 		await CommunityUser.deleteOne({ communityID: communityId, userID: user._id });
     
 		return res.status(200).json({ success: true, message: 'Community left' });
@@ -373,22 +433,19 @@ exports.leaveCommunity = async (req, res) => {
 	}
 }
 
-// Remove member from community
+
 exports.removeMember = async (req, res) => {
 	const { communityId, userId } = req.body;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is admin
 		const isAdmin = await CommunityUser.findOne({ communityID: communityId, userID: user._id, role: 'admin' });
 		if (!isAdmin) {
 			return res.status(400).send({ message: 'User is not an admin of the community' });
 		}
-		// Remove member
 		const member = await CommunityUser.findOne({ communityID: communityId, userID: userId });
 		if (!member) {
 			return res.status(404).send({ message: 'Member not found' });
@@ -402,22 +459,19 @@ exports.removeMember = async (req, res) => {
 	}
 }
 
-// Update group description
+n
 exports.updateCommunityDesc = async (req, res) => {
 	const { communityId, description } = req.body;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is admin
 		const isAdmin = await CommunityUser.findOne({ communityID: communityId, userID: user._id, role: 'admin' });
 		if (!isAdmin) {
 			return res.status(400).send({ message: 'User is not an admin of the community' });
 		}
-		// Update community
 		await Community.updateOne({ _id: communityId }, { description });
     
 		return res.status(200).json({ success: true, message: 'Community updated' });
@@ -427,24 +481,20 @@ exports.updateCommunityDesc = async (req, res) => {
 	}
 }
 
-// Update join privacy settings
+
 exports.updateJoinPrivacy = async (req, res) => {
 	const { communityId, joinPrivacy } = req.body;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is admin
 		const isAdmin = await CommunityUser.findOne({ communityID: communityId, userID: user._id, role: 'admin' });
 		if (!isAdmin) {
 			return res.status(400).send({ message: 'User is not an admin of the community' });
 		}
-		// Update community
 		await Community.updateOne({ _id: communityId }, { joinPrivacy }, { runValidators: true });
-
     
 		return res.status(200).json({ success: true, message: 'Community updated' });
 	}
@@ -457,17 +507,15 @@ exports.makePost = async (req, res) => {
 	const { communityId, title, text, recipeID } = req.body;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is a member of the community
 		const isMember = await CommunityUser.findOne({ communityID: communityId, userID: user._id });
 		if (!isMember) {
 			return res.status(400).send({ message: 'User is not a member of the community' });
 		}
-		// Create post
+		
 		const newPost = new CommunityPost({
 			communityID: communityId,
 			userID: user._id,
@@ -488,19 +536,17 @@ exports.getCommunityPosts = async (req, res) => {
 	const { communityId } = req.query;
 	try {
 		const user = req.user;
-		// Get community
 		const community = await Community.findById(communityId);
 		if (!community) {
 			return res.status(404).send({ message: 'Community not found' });
 		}
-		// Check if user is a member of the community
 		const isMember = await CommunityUser.findOne({ communityID: communityId, userID: user._id });
 		if (!isMember) {
 			return res.status(400).send({ message: 'User is not a member of the community' });
 		}
-		// Get posts
+		
 		const posts = await CommunityPost.find({ communityID: communityId });
-		// Map user IDs to usernames + pic URLs
+		// Map user IDs to usernames + profile pic URLs
 		const postsMapped = await Promise.all(posts.map(async (post) => {
 			const username = await User.findById(post.userID).select('username');
 			const user_profile_pic = await User.findById(post.userID).select('profilePictureLink');
@@ -509,7 +555,6 @@ exports.getCommunityPosts = async (req, res) => {
 		));
 
 		return res.status(200).json({ success: true, data: postsMapped });
-
 	}
 	catch (error) {
 		return res.status(400).json({ error: error.toString() });

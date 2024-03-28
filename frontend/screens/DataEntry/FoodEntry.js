@@ -73,6 +73,63 @@ function FoodEntry() {
 		</TouchableOpacity>
 	);
 
+	/**
+     * Asynchronously handles the submission of food entry.
+     * 
+     * This function performs several checks on the input fields:
+     * - Checks if all fields are filled. If not, it shows an alert and returns early.
+     * - Checks if the weight is a valid number. If not, it shows an alert and returns early.
+     * - Checks if the weight is greater than 0. If not, it shows an alert and returns early.
+     * 
+     * If all checks pass, it logs the food to the database and shows an alert asking if the user wants to add more food.
+     * 
+     * @async
+     * @function
+     */    
+	const handleSubmit = async () => {
+		if (!selectedFood || !weight || !mealName) { 
+			Alert.alert('Error', 'Please fill in all fields');
+			return;
+		}
+		if (isNaN(weight)) {
+			Alert.alert('Error', 'Please enter a valid number for weight');
+			return;
+		}
+		if (weight <= 0) {
+			Alert.alert('Error', 'Weight must be more than 0g');
+			return;
+		}
+		await logDatabaseFood({
+			mealType: mealName,
+			foodID: selectedFood._id,
+			weight: parseInt(weight, 10)
+		});
+		Alert.alert(
+			'Food Logged',
+			'Want to add more?',
+			[
+				{
+					text: 'Yes', 
+					onPress: () => {
+						setSelectedFood(null);
+						setWeight('');
+						setSearchQuery('');
+					}
+				},
+				{
+					text: 'No', 
+					onPress: () => {
+						setSelectedFood(null);
+						setWeight('');
+						setSearchQuery('');
+						navigation.goBack();
+					}
+				},
+			],
+			{cancelable: false},
+		);
+	};
+
 	return (
 		<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 			<View style={styles.container}>
@@ -122,41 +179,7 @@ function FoodEntry() {
 					<TouchableOpacity 
 						style={styles.button}
 						testID='submit-button' 
-						onPress={async () => {
-							if (!selectedFood || !weight || !mealName) { 
-								Alert.alert('Error', 'Please fill in all fields');
-								return;
-							}
-							await logDatabaseFood({
-								mealType: mealName,
-								foodID: selectedFood._id,
-								weight: parseInt(weight, 10)
-							});
-							Alert.alert(
-								'Food Logged',
-								'Want to add more?',
-								[
-									{
-										text: 'Yes', 
-										onPress: () => {
-											setSelectedFood(null);
-											setWeight('');
-											setSearchQuery('');
-										}
-									},
-									{
-										text: 'No', 
-										onPress: () => {
-											setSelectedFood(null);
-											setWeight('');
-											setSearchQuery('');
-											navigation.goBack();
-										}
-									},
-								],
-								{cancelable: false},
-							);
-						}}
+						onPress={handleSubmit}
 					>
 						<Text style={styles.buttonText}>Submit</Text>
 					</TouchableOpacity>

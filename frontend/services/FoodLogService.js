@@ -112,11 +112,11 @@ export const getAllUserRecipes = async () => {
  * @returns {Promise} Axios Response Promise with the recipe ingredients.
  */
 export const getRecipeIngredients = async (recipeID) => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getRecipeIngredients`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { recipeID }
-    });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/getRecipeIngredients`, {
+		headers: { Authorization: `Bearer ${token}` },
+		params: { recipeID }
+	});
 }
 
 /**
@@ -167,6 +167,11 @@ export const logWater = async (data) => {
 	return await axios.post(`http://${LocalIP}:3000/food/logWater`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 
+/**
+ * Get the picture URL of a recipe.
+ * @param {string} RecipeId - The ID of the recipe.
+ * @returns {Promise} Axios Response Promise with the picture URL.
+ */
 export const getPictureURL = async (RecipeId) => {
 	console.log('RecipeID:' + RecipeId);
 	const token = await AsyncStorage.getItem('token');
@@ -175,6 +180,11 @@ export const getPictureURL = async (RecipeId) => {
 	return url;
 }
 
+/**
+ * Log a manual macro.
+ * @param {Object} data - The data of the manual macro to log.
+ * @returns {Promise} Axios Response Promise with the log operation result.
+ */
 export const logManualMacro = async (data) => {
 	try {
 		const token = await AsyncStorage.getItem('token');
@@ -184,4 +194,14 @@ export const logManualMacro = async (data) => {
 		console.error('Error logging manual macro:', error);
 		throw error; // re-throw the error so it can be handled by the calling function
 	}
+}
+
+/**
+ * Delete a recipe.
+ * @param {Object} data - The data of the recipe to delete.
+ * @returns {Promise} Axios Response Promise with the delete operation result.
+ */
+export const deleteRecipe = async (data) => {
+	const token = await AsyncStorage.getItem('token');
+	return await axios.delete(`http://${LocalIP}:3000/food/deleteRecipe`, { headers: { Authorization: `Bearer ${token}` }, data });
 }

@@ -21,6 +21,14 @@ function WaterEntry() {
 			Alert.alert('Error', 'Please fill all fields');
 			return;
 		}
+		if (isNaN(waterAmount)) {
+			Alert.alert('Error', 'Weight must be a number');
+			return;
+		}
+		if (waterAmount <= 0) {
+			Alert.alert('Error', 'Weight must be more than 0');
+			return;
+		}
 		logWater({ weight: waterAmount });
 		Alert.alert(
 			'Water Logged',
