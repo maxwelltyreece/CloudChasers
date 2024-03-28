@@ -1,4 +1,4 @@
-# Gobl
+# Gobl by Cloudchasers
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]   
 
@@ -19,6 +19,19 @@ Ian Li,
 Emily Lazenby,  
 Maxwell Martin,  
 Sam Thomas
+
+---
+
+Software can be accessed at:
+
+
+Login as: 
+username : JohnDoe
+password : password123
+
+All Seeded accounts can be accessed as:
+username: User[x]Seed (Where X is any number from 1-50)
+password: password123
 
 ---
 
