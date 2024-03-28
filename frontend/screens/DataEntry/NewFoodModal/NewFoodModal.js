@@ -16,20 +16,20 @@ import { styles } from './styles';
  * @returns {JSX.Element} The rendered component.
  */
 const FoodInput = ({ label, value, onChangeText }) => {
-    return (
-        <View style={styles.inputContainer}>
-            <Text style={styles.label}>{label}</Text>
-            <TextInput
-                style={styles.input}
-                value={value}
-                onChangeText={onChangeText}
-                keyboardType={'numeric'}
-                placeholder={`...`}
-                placeholderTextColor='#c7c7c7'
-                returnKeyType='done'
-            />
-        </View>
-    )
+	return (
+		<View style={styles.inputContainer}>
+			<Text style={styles.label}>{label}</Text>
+			<TextInput
+				style={styles.input}
+				value={value}
+				onChangeText={onChangeText}
+				keyboardType={'numeric'}
+				placeholder={`...`}
+				placeholderTextColor='#c7c7c7'
+				returnKeyType='done'
+			/>
+		</View>
+	)
 }
 
 /**
@@ -43,104 +43,104 @@ const FoodInput = ({ label, value, onChangeText }) => {
  */
 const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 
-    FoodInput.PropTypes = {
-        label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
-        onChangeText: PropTypes.func.isRequired,
-    };
+	FoodInput.PropTypes = {
+		label: PropTypes.string.isRequired,
+		value: PropTypes.string.isRequired,
+		onChangeText: PropTypes.func.isRequired,
+	};
 
-    const { logManualMacro } = useFoodLog();
-    const [foodItem, setFoodItem] = useState('');
-    const [calories, setCalories] = useState('');
-    const [protein, setProtein] = useState('');
-    const [fat, setFat] = useState('');
-    const [carbs, setCarbs] = useState('');
+	const { logManualMacro } = useFoodLog();
+	const [foodItem, setFoodItem] = useState('');
+	const [calories, setCalories] = useState('');
+	const [protein, setProtein] = useState('');
+	const [fat, setFat] = useState('');
+	const [carbs, setCarbs] = useState('');
 
-    /**
-     * Logs the food data to the context.
-     */
-    const handleLogFood = async () => {
-        if (!foodItem || !calories || !protein || !fat || !carbs) {
-            Alert.alert('Error', 'Please fill all fields');
-            return;
-        }
-        if (isNaN(calories) || isNaN(protein) || isNaN(fat) || isNaN(carbs)) {
-            Alert.alert('Error', 'Weight must be valid numbers');
-            return;
-        }
-        if (calories <= 0 || protein <= 0 || fat <= 0 || carbs <= 0) {
-            Alert.alert('Error', 'Weight must be more than 0g');
-            return;
-        }
-        if ( protein >= 100 || fat >= 100 || carbs >= 100) {
-            Alert.alert('Error', 'Weight must be less than 100g');
-            return;
-        }
-        const data = {
-            mealType: foodItem,
-            calories: Number(calories),
-            protein: Number(protein),
-            fat: Number(fat),
-            carbs: Number(carbs),
-        };
+	/**
+	 * Logs the food data to the context.
+	 */
+	const handleLogFood = async () => {
+		if (!foodItem || !calories || !protein || !fat || !carbs) {
+			Alert.alert('Error', 'Please fill all fields');
+			return;
+		}
+		if (isNaN(calories) || isNaN(protein) || isNaN(fat) || isNaN(carbs)) {
+			Alert.alert('Error', 'Weight must be valid numbers');
+			return;
+		}
+		if (calories <= 0 || protein <= 0 || fat <= 0 || carbs <= 0) {
+			Alert.alert('Error', 'Weight must be more than 0g');
+			return;
+		}
+		if (protein >= 100 || fat >= 100 || carbs >= 100) {
+			Alert.alert('Error', 'Weight must be less than 100g');
+			return;
+		}
+		const data = {
+			mealType: foodItem,
+			calories: Number(calories),
+			protein: Number(protein),
+			fat: Number(fat),
+			carbs: Number(carbs),
+		};
 
-        try {
-            await logManualMacro(data);
-            console.log('Manual macro logged successfully');
-        } catch (error) {
-            console.error('Error logging manual macro:', error);
-        }
+		try {
+			await logManualMacro(data);
+			console.log('Manual macro logged successfully');
+		} catch (error) {
+			console.error('Error logging manual macro:', error);
+		}
 
-        toggleModal();
-    };
+		toggleModal();
+	};
 
-    return (
-        <Modal
-            isVisible={isVisible}
-            onBackdropPress={onBackdropPress}
-            backdropTransitionOutTiming={0}
-            animationIn="pulse"
-            animationOut="fadeOut"
-            backdropColor="rgba(0,0,0,0.5)"
-            animationInTiming={300}
-            animationOutTiming={200}
-            style={styles.modal}
-        >
-            <View style={styles.inputContainer}>
-                <Text style={styles.label}>Name of Food:</Text>
-                <TextInput
-                    style={styles.input}
-                    value={foodItem}
-                    onChangeText={setFoodItem}
-                    placeholder="..."
-                    placeholderTextColor='#c7c7c7'
-                    returnKeyType='done'
-                />
-            </View>
+	return (
+		<Modal
+			isVisible={isVisible}
+			onBackdropPress={onBackdropPress}
+			backdropTransitionOutTiming={0}
+			animationIn="pulse"
+			animationOut="fadeOut"
+			backdropColor="rgba(0,0,0,0.5)"
+			animationInTiming={300}
+			animationOutTiming={200}
+			style={styles.modal}
+		>
+			<View style={styles.inputContainer}>
+				<Text style={styles.label}>Name of Food:</Text>
+				<TextInput
+					style={styles.input}
+					value={foodItem}
+					onChangeText={setFoodItem}
+					placeholder="..."
+					placeholderTextColor='#c7c7c7'
+					returnKeyType='done'
+				/>
+			</View>
 
-            <FoodInput label="Calories" value={calories} onChangeText={setCalories} />
-            <FoodInput label="Protein (g)" value={protein} onChangeText={setProtein} />
-            <FoodInput label="Fat (g)" value={fat} onChangeText={setFat} />
-            <FoodInput label="Carbs (g)" value={carbs} onChangeText={setCarbs} />
+			<FoodInput label="Calories" value={calories} onChangeText={setCalories} />
+			<FoodInput label="Protein (g)" value={protein} onChangeText={setProtein} />
+			<FoodInput label="Fat (g)" value={fat} onChangeText={setFat} />
+			<FoodInput label="Carbs (g)" value={carbs} onChangeText={setCarbs} />
 
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity style={{ ...styles.button, padding: 8 }} onPress={toggleModal}>
-                    <FontAwesome5 name='times' color='white' size={27} />
-                </TouchableOpacity>
+			<View style={styles.buttonContainer}>
+				<TouchableOpacity style={{ ...styles.button, padding: 8 }} onPress={toggleModal}>
+					<FontAwesome5 name='times' color='white' size={27} />
+				</TouchableOpacity>
 
-                <TouchableOpacity style={styles.button} onPress={handleLogFood}>
-                    <Text style={styles.buttonText}>Submit</Text>
-                </TouchableOpacity>
+				<TouchableOpacity style={styles.button} onPress={handleLogFood}>
+					<Text style={styles.buttonText}>Submit</Text>
+				</TouchableOpacity>
 
-            </View>
-        </Modal>
-    );
+			</View>
+		</Modal>
+	);
 };
 
 NewFoodModal.PropTypes = {
-    isVisible: PropTypes.bool.isRequired,
-    onBackdropPress: PropTypes.func.isRequired,
-    toggleModal: PropTypes.func.isRequired,
+	isVisible: PropTypes.bool.isRequired,
+	onBackdropPress: PropTypes.func.isRequired,
+	toggleModal: PropTypes.func.isRequired,
 };
 
 export default NewFoodModal;
