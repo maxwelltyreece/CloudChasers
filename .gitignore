@@ -34,3 +34,13 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
+# vscode
+.vscode/
+
+# jest
+coverage/
+nutrients.json
+error.log
+combined.log
+frontend/screens/IPIndex.js
+node_modules
