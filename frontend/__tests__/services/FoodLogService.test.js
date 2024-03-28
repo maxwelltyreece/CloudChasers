@@ -231,7 +231,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.addItemToRecipe(mockData);
 
-			expect(axios.put).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/addItemToRecipe`, mockData, {
+			expect(axios.put).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/addItemToRecipe`, mockData, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data).toEqual(mockResponse.data);
@@ -242,14 +242,14 @@ describe('FoodLogService', () => {
 	describe('deleteIngredientFromRecipe', () => {
 		it('should delete an ingredient from a recipe successfully', async () => {
 			const mockData = { };
-			axios.delete(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, {
+			axios.delete(`http://api.gobl-up.me:80/food/deleteItemFromRecipe`, {
 				data: mockData,
 				headers: { Authorization: `Bearer ${token}` },
 			});
 
 			const result = await FoodLogService.deleteIngredientFromRecipe(mockData);
 
-			expect(axios.delete).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, {
+			expect(axios.delete).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/deleteItemFromRecipe`, {
 				data: mockData,
 				headers: { Authorization: `Bearer ${token}` },
 			});
@@ -263,7 +263,7 @@ describe('FoodLogService', () => {
 
 			const result = await FoodLogService.logWater(mockData);
 
-			expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/logWater`, mockData, {
+			expect(axios.post).toHaveBeenCalledWith(`http://api.gobl-up.me:80/food/logWater`, mockData, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(result.data.success).toBe(true);
@@ -279,7 +279,7 @@ describe('FoodLogService', () => {
 
 			const url = await FoodLogService.getPictureURL(mockRecipeId);
 
-			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/image/getPictureURL?id=${mockRecipeId}&folderName=Recipe_Pictures`, {
+			expect(axios.get).toHaveBeenCalledWith(`http://api.gobl-up.me:80/image/getPictureURL?id=${mockRecipeId}&folderName=Recipe_Pictures`, {
 				headers: { Authorization: `Bearer ${token}` },
 			});
 			expect(url).toBe(mockResponse.data.url);
