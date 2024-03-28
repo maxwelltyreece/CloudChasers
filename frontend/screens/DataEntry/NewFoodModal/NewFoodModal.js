@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import Modal from 'react-native-modal';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import PropTypes from 'prop-types';
 import { useFoodLog } from '../../../contexts/FoodLogContext';
+import { styles } from './styles';
 
 /**
  * A functional component that renders an input field for food data.
@@ -71,7 +72,7 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
             Alert.alert('Error', 'Weight must be more than 0g');
             return;
         }
-        if (calories >= 100 || protein >= 100 || fat >= 100 || carbs >= 100) {
+        if ( protein >= 100 || fat >= 100 || carbs >= 100) {
             Alert.alert('Error', 'Weight must be less than 100g');
             return;
         }
