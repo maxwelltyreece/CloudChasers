@@ -86,14 +86,14 @@ function Settings() {
 
 export default Settings;
 
-SettingsItem.PropTypes = {
+SettingsItem.propTypes = {
 	item: PropTypes.shape({
 		name: PropTypes.string,
 		handler: PropTypes.func,
 	}).isRequired,
 };
 
-SettingsFooter.PropTypes = {
+SettingsFooter.propTypes = {
 	userEmail: PropTypes.string.isRequired,
 	navigation: PropTypes.shape({
 		navigate: PropTypes.func,

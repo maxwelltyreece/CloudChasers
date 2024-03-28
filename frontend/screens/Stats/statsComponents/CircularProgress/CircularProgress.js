@@ -123,7 +123,7 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
 	);
 };
 
-CircularProgressComponent.PropTypes = {
+CircularProgressComponent.propTypes = {
 	todayStats: PropTypes.object,
 	goals: PropTypes.object,
 };

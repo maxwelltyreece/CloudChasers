@@ -159,7 +159,7 @@ function NewGroup() {
 
 export default NewGroup;
 
-CustomCheckbox.PropTypes = {
+CustomCheckbox.propTypes = {
 	label: PropTypes.string.isRequired,
 	isChecked: PropTypes.bool.isRequired,
 	onCheck: PropTypes.func.isRequired,

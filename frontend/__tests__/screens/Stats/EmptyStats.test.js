@@ -32,10 +32,9 @@ jest.mock('@react-navigation/native', () => {
 			navigate: jest.fn(),
 			addListener: jest.fn((event, callback) => {
 				if (event === 'focus') {
-					// Trigger the focus effect callback immediately for testing
 					callback();
 				}
-				return jest.fn(); // Return an unsubscribe function
+				return jest.fn();
 			}),
 		}),
 		useFocusEffect: (callback) => callback(),
@@ -45,7 +44,7 @@ jest.mock('@react-navigation/native', () => {
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
-	getItem: jest.fn(() => Promise.resolve('token')), // Simulate a token present
+	getItem: jest.fn(() => Promise.resolve('token')),
 }));
 
 // Mock navigation

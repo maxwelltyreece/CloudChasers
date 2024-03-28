@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import SettingsButton from '../../components/SettingsButton';
+import SettingsButton from '../../components/SettingsButton/SettingsButton';
 import { useNavigation } from '@react-navigation/native';
 
 jest.mock('@react-navigation/native', () => ({

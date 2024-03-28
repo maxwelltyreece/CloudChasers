@@ -80,13 +80,13 @@ function GroupMembers({ route }) {
 
 export default GroupMembers;
 
-MemberItem.PropTypes = {
+MemberItem.propTypes = {
 	item: PropTypes.shape({
 		username: PropTypes.string,
 		role: PropTypes.string,
 	}).isRequired,
 };
 
-GroupMembers.PropTypes = {
+GroupMembers.propTypes = {
 	route: PropTypes.object.isRequired,
 };

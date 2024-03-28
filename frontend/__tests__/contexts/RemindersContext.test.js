@@ -12,7 +12,6 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 	setItem: jest.fn(),
 }));
 
-// A utility component to consume our context
 function TestConsumer() {
 	const { reminders } = useReminders();
 
@@ -68,22 +67,18 @@ describe('RemindersContext', () => {
 			</RemindersProvider>
 		);
 
-		// Initially, "Reminder 1" should be rendered
 		expect(await findByText('Reminder 1')).toBeTruthy();
 
-		// Update reminders using the captured setReminders function
 		act(() => {
 			setRemindersFunc([{ title: 'Updated Reminder 1' }, { title: 'Reminder 2' }]);
 		});
 
-		// Rerender the consumer to reflect the updated context value
 		rerender(
 			<RemindersProvider>
 				<TestUpdateConsumer />
 			</RemindersProvider>
 		);
 
-		// Verifying the updated reminders are rendered
 		expect(await findByText('Updated Reminder 1')).toBeTruthy();
 		expect(await findByText('Reminder 2')).toBeTruthy();
 	});

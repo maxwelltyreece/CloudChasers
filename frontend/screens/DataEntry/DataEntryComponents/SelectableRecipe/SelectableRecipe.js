@@ -14,10 +14,10 @@ import { styles } from "./styles";
  * @returns {JSX.Element} The SelectableRecipe component
  */
 function SelectableRecipe({ id, title, description }) {
-    const [imageUrl, setImageUrl] = useState(null);
-    const [ingredients, setIngredients] = useState([]);
-    const [modalVisible, setModalVisible] = useState(false);
-    const { getRecipeIngredients, logRecipeFood } = useFoodLog();
+	const [imageUrl, setImageUrl] = useState(null);
+	const [ingredients, setIngredients] = useState([]);
+	const [modalVisible, setModalVisible] = useState(false);
+	const { getRecipeIngredients, logRecipeFood } = useFoodLog();
 
     useEffect(() => {
 
@@ -50,8 +50,8 @@ function SelectableRecipe({ id, title, description }) {
             }
         };
 
-        getIngredients();
-    }, [id]);
+		getIngredients();
+	}, [id]);
 
     const [inputWeight, setInputWeight] = useState('');
     /**
@@ -81,67 +81,67 @@ function SelectableRecipe({ id, title, description }) {
             console.error("Failed to log recipe", error);
         }
 
-        setInputWeight('');
-        setModalVisible(false);
-    };
+		setInputWeight('');
+		setModalVisible(false);
+	};
     
-    return (
-      <Pressable style={styles.box} onPress={() => setModalVisible(true)}>
-        <Image source={{ uri: imageUrl }} style={styles.image} />
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{title}</Text>
-        </View>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-            <View style={styles.centeredView}>
-              <TouchableWithoutFeedback onPress={() => {}}>
-                <View style={styles.modalView}>
-                  <Image source={{ uri: imageUrl }} style={styles.modalImage} />
-                  <Text style={styles.modalTitle}>{title}</Text>
-                  <Text style={styles.description}>{description}</Text>
-                  <Text style={styles.ingredientsTitle}>Ingredients</Text>
-                  <ScrollView style={styles.dropdown}>
-                    {ingredients.map((ingredient) => (
-                      <Text
-                        key={`${ingredient.name}:${ingredient.weight}`}
-                        style={styles.ingredient}
-                      >
-                        {ingredient.weight}g of {ingredient.name}
-                      </Text>
-                    ))}
-                  </ScrollView>
-                  <TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                    value={inputWeight}
-                    onChangeText={setInputWeight}
-                    placeholder="Weight (g)"
-                    placeholderTextColor="darkgrey"
-                    returnKeyType="done"
-                  />
-                  <Pressable style={styles.logButton} onPress={logRecipe}>
-                    <Text style={styles.logButtonText}>Log</Text>
-                  </Pressable>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-      </Pressable>
-    );
+	return (
+		<Pressable style={styles.box} onPress={() => setModalVisible(true)}>
+			<Image source={{ uri: imageUrl }} style={styles.image} />
+			<View style={styles.titleContainer}>
+				<Text style={styles.title}>{title}</Text>
+			</View>
+			<Modal
+				animationType="slide"
+				transparent={true}
+				visible={modalVisible}
+				onRequestClose={() => {
+					setModalVisible(!modalVisible);
+				}}
+			>
+				<TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+					<View style={styles.centeredView}>
+						<TouchableWithoutFeedback onPress={() => {}}>
+							<View style={styles.modalView}>
+								<Image source={{ uri: imageUrl }} style={styles.modalImage} />
+								<Text style={styles.modalTitle}>{title}</Text>
+								<Text style={styles.description}>{description}</Text>
+								<Text style={styles.ingredientsTitle}>Ingredients</Text>
+								<ScrollView style={styles.dropdown}>
+									{ingredients.map((ingredient) => (
+										<Text
+											key={`${ingredient.name}:${ingredient.weight}`}
+											style={styles.ingredient}
+										>
+											{ingredient.weight}g of {ingredient.name}
+										</Text>
+									))}
+								</ScrollView>
+								<TextInput
+									style={styles.input}
+									keyboardType="numeric"
+									value={inputWeight}
+									onChangeText={setInputWeight}
+									placeholder="Weight (g)"
+									placeholderTextColor="darkgrey"
+									returnKeyType="done"
+								/>
+								<Pressable style={styles.logButton} onPress={logRecipe}>
+									<Text style={styles.logButtonText}>Log</Text>
+								</Pressable>
+							</View>
+						</TouchableWithoutFeedback>
+					</View>
+				</TouchableWithoutFeedback>
+			</Modal>
+		</Pressable>
+	);
 }
 
 export default SelectableRecipe;
 
 
-SelectableRecipe.PropTypes = {
+SelectableRecipe.propTypes = {
     title: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
 };

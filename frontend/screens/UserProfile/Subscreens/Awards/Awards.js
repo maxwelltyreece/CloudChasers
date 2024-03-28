@@ -56,7 +56,7 @@ const Awards = () => {
 				{awards.map((award) => (
 					<View key={award._id} style={styles.awardItem}>
 						<Text style={styles.awardName} numberOfLines={1}>{award.name}</Text>
-						<View style={styles.doneCheckSection}  testID='icon-section'>
+						<View style={styles.doneCheckSection} testID='icon-section'>
 							{isAwardCompleted(award._id) ? (
 								<Icon name="check-circle" size={24} color="green" testID='completed-icon'/>
 							) : (
@@ -68,11 +68,6 @@ const Awards = () => {
 			</View>
 		</ScrollView>
 	);
-};
-
-Awards.PropTypes = {
-	awards: PropTypes.array.isRequired,
-	addAward: PropTypes.func.isRequired,
 };
 
 export default Awards;

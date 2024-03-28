@@ -41,6 +41,6 @@ export const RemindersProvider = ({ children }) => {
 	);
 };
 
-RemindersProvider.PropTypes = {
+RemindersProvider.propTypes = {
 	children: PropTypes.node.isRequired,
 };

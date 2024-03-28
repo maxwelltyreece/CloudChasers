@@ -68,7 +68,7 @@ const ProgressBar = ({ label, progress, max, unit }) => {
 	);
 };
 
-ProgressBar.PropTypes = {
+ProgressBar.propTypes = {
 	label: PropTypes.string.isRequired,
 	progress: PropTypes.number.isRequired,
 	max: PropTypes.number.isRequired,
@@ -149,7 +149,7 @@ const NutritionProgress = ({ todayStats, goals }) => {
 	);
 };
 
-NutritionProgress.PropTypes = {
+NutritionProgress.propTypes = {
 	todayStats: PropTypes.object.isRequired,
 	goals: PropTypes.object,
 };

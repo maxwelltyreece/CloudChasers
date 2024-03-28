@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    View, Text, Image,
+	View, Text, Image,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import { styles } from './styles';
@@ -15,13 +15,13 @@ import { styles } from './styles';
 function Box({ title, image }) {
     return (
         <View style={styles.box}>
-            {image && <Image source={{ uri: image }} style={styles.image} />}
+            {image && <Image source={{ uri: image }} style={styles.image} testID='image'/>}
             <Text style={styles.title}>{title}</Text>
         </View>
     );
 }
 
-Box.PropTypes = {
+Box.propTypes = {
     title: PropTypes.string.isRequired,
     image: PropTypes.string,
 };

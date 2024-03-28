@@ -33,31 +33,31 @@ function RecipeBox({ id, title, description, creatorId}) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [ingredients, setIngredients] = useState([]);
 	const [imageUrl, setImageUrl] = useState(null);
-    const { deleteRecipe } = useFoodLog();
-    const { userDetails } = useUser();
+	const { deleteRecipe } = useFoodLog();
+	const { userDetails } = useUser();;
 
-    const handleDeletePress = async () => {
-        Alert.alert(
-            "Delete Recipe",
-            `Are you sure you want to delete "${title}"?`,
-            [
-                {
-                    text: "No",
-                    style: "cancel"
-                },
-                {
-                    text: "Yes",
-                    onPress: () => {
-                        deleteRecipe({ recipeID: id })
-                            .then(() => {
-                                setModalVisible(false);
-                            })
-                            .catch((error) => console.error("Failed to delete recipe", error));
-                    }
-                }
-            ]
-        );
-    };
+	const handleDeletePress = async () => {
+		Alert.alert(
+			"Delete Recipe",
+			`Are you sure you want to delete "${title}"?`,
+			[
+				{
+					text: "No",
+					style: "cancel"
+				},
+				{
+					text: "Yes",
+					onPress: () => {
+						deleteRecipe({ recipeID: id })
+							.then(() => {
+								setModalVisible(false);
+							})
+							.catch((error) => console.error("Failed to delete recipe", error));
+					}
+				}
+			]
+		);
+	};
 
 	useEffect(() => {
 
@@ -131,11 +131,11 @@ function RecipeBox({ id, title, description, creatorId}) {
 										</Text>
 									))}
 								</ScrollView>
-                                {String(creatorId) === String(userDetails._id) && (
-                                    <TouchableOpacity style={styles.trashIconContainer} onPress={handleDeletePress}>
-                                        <Icon name="trash" size={24} color='black' />
-                                    </TouchableOpacity>
-                                )}
+								{String(creatorId) === String(userDetails._id) && (
+									<TouchableOpacity style={styles.trashIconContainer} onPress={handleDeletePress}>
+										<Icon name="trash" size={24} color='black' />
+									</TouchableOpacity>
+								)}
 							</View>
 						</TouchableWithoutFeedback>
 					</View>
@@ -147,7 +147,7 @@ function RecipeBox({ id, title, description, creatorId}) {
 
 export default RecipeBox;
 
-RecipeBox.PropTypes = {
+RecipeBox.propTypes = {
 	title: PropTypes.string.isRequired,
 	description: PropTypes.string,
 	image: PropTypes.string,
