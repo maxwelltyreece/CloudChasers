@@ -55,6 +55,20 @@ async function seed() {
     
 
 	// User Seeding
+	var johnDoe = new User({
+		forename: "John",
+		surname : "Doe",
+		username : "JohnDoe",
+		email : "johnDoeSeed@example.com",
+		password: await bcrypt.hash("password123", 10),
+		dateOfBirth : new Date(1990, 1, 1),
+		lastLogin : new Date(),
+		streak : 0
+	});
+	await johnDoe.save();
+
+
+	var userList = []
 	for (let i = 0; i < 50; i++) {
 		var newUser = new User({
 			forename: "User" + i,
@@ -67,6 +81,7 @@ async function seed() {
 			streak : 0
 		});
 		await newUser.save();
+		userList.push(newUser);
 	}
 	console.log("Users Seeded");
 
@@ -163,6 +178,7 @@ async function seed() {
 	console.log('Personal_Awards Seeded');
 
 	// Communites Seeding
+	var communityList = [];
 	for (let i = 0; i < 20; i++) {
 		var newCommunity = new Communties({
 			name: `Community${i}`,
@@ -171,33 +187,57 @@ async function seed() {
 			recipePrivacy: 'public',
 		});
 		await newCommunity.save();
+		communityList.push(newCommunity);
 	}
 	console.log('Communities Seeded');
 
-	// Community_Users Seeding
-	const newCommunityUser = new Community_Users({
-		communityID: await newCommunity._id,
-		userID: await newUser._id,
-		role: 'member',
-	});
-	await newCommunityUser.save();
+	for (let i = 0; i < 20; i++) {
+		for(let j = 0; j < 10; j++){
+			var newCommunityUser = new Community_Users({
+				communityID: await communityList[i]._id,
+				userID: await userList[j]._id,
+				role: 'member',
+			});
+			await newCommunityUser.save();
+		}
+	}
+
+	for (let i = 0; i < 10; i++) {
+		var newCommunityUser = new Community_Users({
+			communityID: await communityList[i]._id,
+			userID: await johnDoe._id,
+			role: 'leader',
+		});
+		await newCommunityUser.save();
+	}
+
 console.log('Community_Users Seeded');
 
 	// Community_Posts Seeding
 	for (let i = 0; i < 10; i++) {
-		const newCommunityPost = new Community_Posts({
-			communityID: await newCommunity._id,
-			userID: await newUser._id,
-			recipeID: null,
-			title: `Post ${i}`,
-			text: `This a post, specifically post number ${i}`,
+		for (let j = 0; j < 10; j++) {
+			var newCommunityPost = new Community_Posts({
+				communityID: await communityList[i]._id,
+				userID: await userList[j]._id,
+				text: `This is a post from User ${j} in Community ${i}`,
+				title: `Post ${j} in Community ${i}`,
+			});
+			await newCommunityPost.save();
+		}
+		var johnDoePost = new Community_Posts({
+			communityID: await communityList[i]._id,
+			userID: await johnDoe._id,
+			text: `This is a post from John Doe in Community ${i}`,
+			title: `Post from John Doe in Community ${i}`,
 		});
-		await newCommunityPost.save();
+		await johnDoePost.save();
+
 	}
 	console.log('Community_Posts Seeded');
 
 	const sampleFood = await Foods.findOne({ name: 'Butter, salted' });
 	const sampleFoodID = await sampleFood._id;
+
 	// Food_Items Seeding
 	for (let i = 0; i < 10; i++) {
 		var newFoodItem = new Food_Items({
