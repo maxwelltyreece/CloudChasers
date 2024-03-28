@@ -1,4 +1,4 @@
-# Gobl
+# Gobl by Cloudchasers
 [![Contributors][contributors-shield]][contributors-url]
 [![Issues][issues-shield]][issues-url]   
 
@@ -22,6 +22,23 @@ Sam Thomas
 
 ---
 
+### Software can be accessed at:   
+api.gobl-up.me/android
+
+### Login as:   
+username : JohnDoe    
+password : password123   
+
+### All Seeded accounts can be accessed as:  
+username: User[X]Seed (Where X is any number from 1-50)  
+password: password123   
+
+---
+
+### Reference List:
+Use of React Native library components to handle image compression and certain components.
+
+---
 ### Built With:
 [![React][React.js]][React-url]
 [![NodeJS][Node.js]][Node-url]
