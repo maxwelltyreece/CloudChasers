@@ -23,7 +23,9 @@ Sam Thomas
 ---
 
 ### Software can be accessed at:   
-api.gobl-up.me/android
+http://api.gobl-up.me/android
+http://api.gobl-up.me/ios
+
 
 ### Login as:   
 username : JohnDoe    
