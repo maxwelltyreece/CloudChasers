@@ -57,8 +57,8 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 	const [carbs, setCarbs] = useState('');
 
 	/**
-	 * Logs the food data to the context.
-	 */
+     * Logs the food data to the context.
+     */
 	const handleLogFood = async () => {
 		if (!foodItem || !calories || !protein || !fat || !carbs) {
 			Alert.alert('Error', 'Please fill all fields');
@@ -72,7 +72,7 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 			Alert.alert('Error', 'Weight must be more than 0g');
 			return;
 		}
-		if (protein >= 100 || fat >= 100 || carbs >= 100) {
+		if ( protein >= 100 || fat >= 100 || carbs >= 100) {
 			Alert.alert('Error', 'Weight must be less than 100g');
 			return;
 		}
@@ -106,32 +106,31 @@ const NewFoodModal = ({ isVisible, onBackdropPress, toggleModal }) => {
 			animationOutTiming={200}
 			style={styles.modal}
 		>
-			<View style={styles.inputContainer}>
-				<Text style={styles.label}>Name of Food:</Text>
-				<TextInput
-					style={styles.input}
-					value={foodItem}
-					onChangeText={setFoodItem}
-					placeholder="..."
-					placeholderTextColor='#c7c7c7'
-					returnKeyType='done'
-				/>
-			</View>
+			<View style={styles.modalContainer}>
+				<View style={styles.inputContainer}>
+					<Text style={styles.label}>Name of Food:</Text>
+					<TextInput
+						style={styles.input}
+						value={foodItem}
+						onChangeText={setFoodItem}
+						placeholder="..."
+						placeholderTextColor='#c7c7c7'
+						returnKeyType='done'
+					/>
+				</View>
 
-			<FoodInput label="Calories" value={calories} onChangeText={setCalories} />
-			<FoodInput label="Protein (g)" value={protein} onChangeText={setProtein} />
-			<FoodInput label="Fat (g)" value={fat} onChangeText={setFat} />
-			<FoodInput label="Carbs (g)" value={carbs} onChangeText={setCarbs} />
+				<FoodInput label="Calories" value={calories} onChangeText={setCalories} />
+				<FoodInput label="Protein (g)" value={protein} onChangeText={setProtein} />
+				<FoodInput label="Fat (g)" value={fat} onChangeText={setFat} />
+				<FoodInput label="Carbs (g)" value={carbs} onChangeText={setCarbs} />
 
-			<View style={styles.buttonContainer}>
-				<TouchableOpacity style={{ ...styles.button, padding: 8 }} onPress={toggleModal}>
-					<FontAwesome5 name='times' color='white' size={27} />
-				</TouchableOpacity>
+				<View style={styles.buttonContainer}>
 
-				<TouchableOpacity style={styles.button} onPress={handleLogFood}>
-					<Text style={styles.buttonText}>Submit</Text>
-				</TouchableOpacity>
+					<TouchableOpacity style={styles.button} onPress={handleLogFood}>
+						<Text style={styles.buttonText}>Submit</Text>
+					</TouchableOpacity>
 
+				</View>
 			</View>
 		</Modal>
 	);

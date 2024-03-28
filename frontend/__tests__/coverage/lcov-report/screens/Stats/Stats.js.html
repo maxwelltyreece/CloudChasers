@@ -168,16 +168,7 @@
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a>
-<a name='L107'></a><a href='#L107'>107</a>
-<a name='L108'></a><a href='#L108'>108</a>
-<a name='L109'></a><a href='#L109'>109</a>
-<a name='L110'></a><a href='#L110'>110</a>
-<a name='L111'></a><a href='#L111'>111</a>
-<a name='L112'></a><a href='#L112'>112</a>
-<a name='L113'></a><a href='#L113'>113</a>
-<a name='L114'></a><a href='#L114'>114</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -197,6 +188,10 @@
 <span class="cline-any cline-yes">32x</span>
 <span class="cline-any cline-yes">30x</span>
 <span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">30x</span>
 <span class="cline-any cline-yes">28x</span>
@@ -215,15 +210,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">30x</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -233,8 +223,9 @@
 <span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,10 +248,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">30x</span>
 <span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -284,73 +273,67 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect, useCallback } from 'react';
 import { View, SafeAreaView, ActivityIndicator } from 'react-native';
-&nbsp;
-&nbsp;
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-&nbsp;
-import WelcomeBar from './statsComponents/WelcomeBar';
-import CircularProgressComponent from './statsComponents/CircularProgress.js';
-import NutritionProgress from './statsComponents/NutritionProgress.js';
-&nbsp;
+import WelcomeBar from './statsComponents/WelcomeBar/WelcomeBar.js';
+import CircularProgressComponent from './statsComponents/CircularProgress/CircularProgress.js';
+import NutritionProgress from './statsComponents/NutritionProgress/NutritionProgress.js';
 import { useStats } from '../../contexts/StatsContext';
 import { useGoals } from '../../contexts/GoalsContext';
-&nbsp;
 import { styles } from './styles';
 &nbsp;
+/**
+ * Stats component
+ * @returns {JSX.Element} The rendered Stats component
+ */
 const Stats = () =&gt; {
 	const navigation = useNavigation();
 	const [loading, setLoading] = useState(false);
 	const { todayStats, updateTodayStats } = useStats();
 	const { goals, fetchGoals } = useGoals();
 &nbsp;
+    /**
+     * Checks if the user is logged in by checking for a token in AsyncStorage
+     * @returns {Promise&lt;string&gt;} The token, if it exists
+     */
 	const checkUserLogin = async () =&gt; {
 		try {
 			const token = await AsyncStorage.getItem('token');
 			if (!token) {
 				console.error("No token found");
-				navigation.navigate('Login'); // Redirect to login if no token
+				navigation.navigate('Login'); 
 				return;
 			}
 			return token;
 		} catch (error) {
 <span class="cstat-no" title="statement not covered" >			console.error("Error accessing AsyncStorage:", error);</span>
-<span class="cstat-no" title="statement not covered" >			navigation.navigate('Login'); </span>// Redirect to login if error
+<span class="cstat-no" title="statement not covered" >			navigation.navigate('Login'); </span>
 		}
 	};
 &nbsp;
 	useEffect(() =&gt; {
 		setLoading(true);
-&nbsp;
 		const fetchData = async () =&gt; {
 			try {
 				await checkUserLogin();
-&nbsp;
 				await Promise.all([
-&nbsp;
 					updateTodayStats(),
 					fetchGoals(),
-&nbsp;
 				]);
-&nbsp;
 			} catch (error) {
 <span class="cstat-no" title="statement not covered" >				console.error("Error fetching data for stat page:", error);</span>
 			} finally {
 				setLoading(false);
 			}
 		};
-&nbsp;
 		fetchData();
 	}, []);
 &nbsp;
-&nbsp;
+    /**
+     * Updates the data for the stats page
+     */
 	const updateStatPageData = async () =&gt; {
 		try {
 			await checkUserLogin();
@@ -370,7 +353,6 @@ const Stats = () =&gt; {
 		}, [])
 	);
 &nbsp;
-&nbsp;
 	if (loading) {
 		return (
 			&lt;View style={styles.loadingContainer}&gt;
@@ -379,25 +361,19 @@ const Stats = () =&gt; {
 		);
 	}
 &nbsp;
-&nbsp;
 	return (
 		&lt;SafeAreaView style={styles.statsContainer}&gt;
-&nbsp;
 			&lt;View style={styles.statsHeader}&gt;
 				&lt;WelcomeBar /&gt;
 			&lt;/View&gt;
-&nbsp;
 			&lt;View style={styles.ringCompContainer}&gt;
 				&lt;View style={styles.ringComp}&gt;
 					&lt;CircularProgressComponent todayStats={todayStats} goals={goals} /&gt;
 				&lt;/View&gt;
 			&lt;/View&gt;
-&nbsp;
 			&lt;View style={styles.progressBarContainer}&gt;
 				&lt;NutritionProgress todayStats={todayStats} goals={goals} /&gt;
 			&lt;/View&gt;
-&nbsp;
-&nbsp;
 		&lt;/SafeAreaView&gt;
 	);
 };
@@ -409,7 +385,7 @@ export default Stats; </pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-27T17:29:51.726Z
+                at 2024-03-28T10:40:01.681Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
