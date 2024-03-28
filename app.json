@@ -15,7 +15,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.benjyd.CloudChasers"
     },
     "android": {
       "softwareKeyboardLayoutMode": "pan",
@@ -34,12 +35,14 @@
       }
     },
     "plugins": [
-      ["expo-build-properties", {
-        "android": {
-          "usesCleartextTraffic": true
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
         }
-      }
-    ]
+      ]
     ]
   }
 }
