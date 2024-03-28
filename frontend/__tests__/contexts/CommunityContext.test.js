@@ -19,8 +19,6 @@ const ConsumerComponent = () => {
             <button onPress={() => getUserCommunities()}>Get User Communities</button>
             <button onPress={() => getAvailableCommunities()}>Get Available Communities</button>
             <button onPress={() => getCommunityDetails('community1')}>Get Community Details</button>
-
-            {/* other buttons */}
         </>
     );
 };
@@ -45,7 +43,6 @@ export const TestCommunityConsumer = () => {
         <>
             <Button title="Create Community" onPress={handleCreateCommunity} />
             <Button title="Delete Community" onPress={handleDeleteCommunity} />
-            {/* Add more buttons for other actions */}
             <Text testID="result">{result}</Text>
         </>
     );
@@ -54,15 +51,15 @@ export const TestCommunityConsumer = () => {
 describe('CommunityContext', () => {
 
     beforeEach(() => {
-        // Clears all instances and calls to constructor and all methods of the mock (jest.fn())
+       
         jest.clearAllMocks();
 
-        // Setting default mock implementations
+       
         CommunityService.getUserCommunities.mockResolvedValue([]);
         CommunityService.getCommunityDetails.mockResolvedValue({});
         CommunityService.joinCommunity.mockResolvedValue({ success: true });
         CommunityService.getAllCommunities.mockResolvedValue([]);
-        // Add more default mock implementations as needed
+     
     });
 
     it('fetches and provides details for a specific community', async () => {
@@ -164,7 +161,7 @@ describe('CommunityContext', () => {
 
         await waitFor(() => {
             expect(CommunityService.getAllCommunities).toHaveBeenCalledTimes(1);
-            expect(CommunityService.getAllCommunities).toHaveBeenCalledWith(); // No arguments expected
+            expect(CommunityService.getAllCommunities).toHaveBeenCalledWith();
         });
     });
 

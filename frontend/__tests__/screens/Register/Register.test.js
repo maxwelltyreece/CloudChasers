@@ -95,7 +95,7 @@ describe('Register Screen', () => {
 
 			const { getByText } = renderRegisterScreen();
 			fireEvent.press(getByText('Create account'));
-;
+
 		});
 
 	});

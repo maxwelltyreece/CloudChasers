@@ -108,7 +108,7 @@ function Account({ navigation }) {
 		</View>
 	);
 }
-Account.PropTypes = {
+Account.propTypes = {
 	navigation: PropTypes.object.isRequired,
 };
 

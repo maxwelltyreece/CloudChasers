@@ -1,7 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Animated, Text } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
-import TabBarIcon from '../../components/TabBarIcon';
+import TabBarIcon from '../../components/TabBarIcon/TabBarIcon';
 
 jest.mock('@react-navigation/native', () => ({
 	useNavigation: () => ({ navigate: jest.fn() }),

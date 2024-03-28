@@ -16,12 +16,10 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
 jest.mock('axios');
 
 describe('userService', () => {
-	// Assuming LocalIP is defined within your userService or environment. Otherwise, mock it as needed.
 
 	const token = 'test-token';
 
 	beforeEach(() => {
-		// Clear all mocks
 		AsyncStorage.getItem.mockClear();
 		axios.get.mockClear();
 		axios.put.mockClear();
@@ -43,7 +41,6 @@ describe('userService', () => {
 			expect(result).toEqual(data);
 		});
 
-		// Additional tests for error cases can be added here
 	});
 
 	describe('userService › editUserDetails', () => {

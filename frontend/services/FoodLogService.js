@@ -112,11 +112,11 @@ export const getAllUserRecipes = async () => {
  * @returns {Promise} Axios Response Promise with the recipe ingredients.
  */
 export const getRecipeIngredients = async (recipeID) => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.get(`http://${LocalIP}:3000/food/getRecipeIngredients`, {
-        headers: { Authorization: `Bearer ${token}` },
-        params: { recipeID }
-    });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.get(`http://${LocalIP}:3000/food/getRecipeIngredients`, {
+		headers: { Authorization: `Bearer ${token}` },
+		params: { recipeID }
+	});
 }
 
 /**
@@ -202,6 +202,6 @@ export const logManualMacro = async (data) => {
  * @returns {Promise} Axios Response Promise with the delete operation result.
  */
 export const deleteRecipe = async (data) => {
-    const token = await AsyncStorage.getItem('token');
-    return await axios.delete(`http://${LocalIP}:3000/food/deleteRecipe`, { headers: { Authorization: `Bearer ${token}` }, data });
+	const token = await AsyncStorage.getItem('token');
+	return await axios.delete(`http://${LocalIP}:3000/food/deleteRecipe`, { headers: { Authorization: `Bearer ${token}` }, data });
 }

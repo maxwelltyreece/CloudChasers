@@ -29,7 +29,7 @@ function WelcomeBar({ name }) {
 	);
 }
 
-WelcomeBar.PropTypes = {
+WelcomeBar.propTypes = {
 	name: PropTypes.string,
 };
 

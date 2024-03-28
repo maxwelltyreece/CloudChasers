@@ -17,7 +17,7 @@ export function UserProvider({ children }) {
 	const { resetUserCommunities } = useCommunity();
 
 	
-    /**
+	/**
      * Fetches and sets the user details from the server.
      */
 	const getUserDetails = async () => {
@@ -90,6 +90,6 @@ export function UserProvider({ children }) {
  */
 export const useUser = () => useContext(UserContext);
 
-UserProvider.PropTypes = {
+UserProvider.propTypes = {
 	children: PropTypes.node.isRequired,
 };

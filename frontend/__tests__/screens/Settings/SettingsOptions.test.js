@@ -8,15 +8,12 @@ describe('SettingsOptions', () => {
 
 		expect(options).toEqual([
 			{ name: 'Account', handler: expect.any(Function) },
-			{ name: 'Privacy', handler: expect.any(Function) },
-			{ name: 'Help & Support', handler: expect.any(Function) },
 			{ name: 'About', handler: expect.any(Function) },
 			{ name: 'Learn More', handler: expect.any(Function) },
 		]);
 
-		// Test that the handler functions call navigate with the expected arguments
 		options.forEach((option, index) => {
-			const expectedRoutes = ['Account', 'Privacy', 'HelpAndSupport', 'About', 'LearnMore'];
+			const expectedRoutes = ['Account', 'About', 'LearnMore'];
 			option.handler();
 			expect(mockNavigate).toHaveBeenCalledWith(expectedRoutes[index]);
 		});

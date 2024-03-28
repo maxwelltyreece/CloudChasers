@@ -3,13 +3,13 @@ import { View, Pressable, StyleSheet, Text } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 export const styles = StyleSheet.create({ 
-  iconButton: {
-    paddingHorizontal: 40,
-    borderRadius: 50,
-  },
-  buttonText: {
-    fontFamily: 'Montserrat_700Bold',
-  },
+	iconButton: {
+		paddingHorizontal: 40,
+		borderRadius: 50,
+	},
+	buttonText: {
+		fontFamily: 'Montserrat_700Bold',
+	},
 });
 
 /**
@@ -24,18 +24,18 @@ export const styles = StyleSheet.create({
  * @returns {React.Element} The rendered IconButton component.
  */
 const IconButton = ({ iconName, onPress, style, title }) => {
-    return (
-        <View style={[styles.iconButton, style]}>
-            <Pressable 
-                onPress={onPress} 
-                style={({ pressed }) => [
-                    { opacity: pressed ? 0.5 : 1, flexDirection: 'row', justifyContent: 'space-between' }
-                ]}
-            >
-                <Feather name={iconName} size={35} color="black" />
-                <Text style={styles.buttonText}>{title}</Text>
-            </Pressable>
-        </View>
-    );
+	return (
+		<View style={[styles.iconButton, style]}>
+			<Pressable 
+				onPress={onPress} 
+				style={({ pressed }) => [
+					{ opacity: pressed ? 0.5 : 1, flexDirection: 'row', justifyContent: 'space-between' }
+				]}
+			>
+				<Feather name={iconName} size={35} color="black" />
+				<Text style={styles.buttonText}>{title}</Text>
+			</Pressable>
+		</View>
+	);
 };
 export default IconButton;

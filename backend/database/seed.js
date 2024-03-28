@@ -207,7 +207,7 @@ async function seed() {
 		role: 'member',
 	});
 	await newCommunityUser.save();
-console.log('Community_Users Seeded');
+	console.log('Community_Users Seeded');
 
 	// Community_Posts Seeding
 	for (let i = 0; i < 10; i++) {

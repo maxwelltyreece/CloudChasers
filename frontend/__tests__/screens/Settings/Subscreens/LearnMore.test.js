@@ -24,7 +24,7 @@ jest.mock('@react-navigation/native', () => {
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
-	getItem: jest.fn(() => Promise.resolve('token')), // Simulate a token present
+	getItem: jest.fn(() => Promise.resolve('token')),
 }));
 
 describe('Learn More Subscreen', () => {

@@ -108,7 +108,7 @@ describe('goalsService', () => {
 	});
 
 	describe('updateGoal', () => {
-		const updateData = { maxTargetValue: 2000 }; // Define updateData here if it's the same for both tests
+		const updateData = { maxTargetValue: 2000 };
     
 		it('should update a goal successfully', async () => {
 			axios.post.mockResolvedValue({ data: { success: true, message: 'Goal updated successfully' } });
