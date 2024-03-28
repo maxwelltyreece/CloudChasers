@@ -22,14 +22,14 @@ Sam Thomas
 
 ---
 
-Software can be accessed at:   
+### Software can be accessed at:   
 
 
-Login as:   
+### Login as:   
 username : JohnDoe    
 password : password123   
 
-All Seeded accounts can be accessed as:  
+### All Seeded accounts can be accessed as:  
 username: User[x]Seed (Where X is any number from 1-50)  
 password: password123   
 
