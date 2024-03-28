@@ -36,8 +36,15 @@ function TestConsumer() {
 }
 
 describe('GoalsContext functionality', () => {
+
+	let consoleSpy;
 	beforeEach(() => {
+		consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
 		jest.resetAllMocks();
+	});
+
+	afterEach(() => {
+		consoleSpy.mockRestore();
 	});
 
 	it('fetches and displays goals', async () => {
@@ -84,23 +91,23 @@ describe('GoalsContext functionality', () => {
 		const mockMacroGoals = { calories: 2000 };
 		goalsService.getMacroGoals.mockResolvedValue({ data: mockMacroGoals });
 		goalsService.updateMacroGoals.mockResolvedValue({});
-    
+
 		const { getByTestId, findByText } = render(
 			<GoalsProvider>
 				<TestConsumer />
 			</GoalsProvider>
 		);
-    
+
 		fireEvent.press(getByTestId('fetch-macro-goals'));
 		expect(await findByText(`calories: ${mockMacroGoals.calories}`)).toBeTruthy();
-    
+
 		act(() => {
 			fireEvent.press(getByTestId('update-macro-goal'));
 		});
-    
-		expect(goalsService.updateMacroGoals).toHaveBeenCalledWith({'nutrient': 'calories', 'value': 2000 });
+
+		expect(goalsService.updateMacroGoals).toHaveBeenCalledWith({ 'nutrient': 'calories', 'value': 2000 });
 	});
-    
+
 
 
 
@@ -108,73 +115,73 @@ describe('GoalsContext functionality', () => {
 		const goalData = { name: 'New Goal', description: 'Test Description' };
 		goalsService.createGoal.mockResolvedValue({ data: goalData });
 		goalsService.getAllGoalsOfUser.mockResolvedValue({ data: [goalData] });
-    
+
 		const { findByText, getByTestId } = render(
 			<GoalsProvider>
 				<TestConsumer />
 			</GoalsProvider>
 		);
-    
+
 		await act(async () => {
 			await goalsService.createGoal(goalData);
 		});
-    
+
 		fireEvent.press(getByTestId('fetch-goals'));
-    
+
 		expect(await findByText('New Goal')).toBeTruthy();
 	});
-    
+
 	it('updates a goal and fetches updated list', async () => {
 		const updatedGoal = { name: 'Updated Goal', description: 'Updated Description' };
 		goalsService.updateGoal.mockResolvedValue({ data: updatedGoal });
 		goalsService.getAllGoalsOfUser.mockResolvedValue({ data: [updatedGoal] });
-    
+
 		const { findByText, getByTestId } = render(
 			<GoalsProvider>
 				<TestConsumer />
 			</GoalsProvider>
 		);
-    
+
 		await act(async () => {
 			await goalsService.updateGoal('1', updatedGoal);
 		});
-    
+
 		fireEvent.press(getByTestId('fetch-goals'));
-    
+
 		expect(await findByText('Updated Goal')).toBeTruthy();
 	});
-    
+
 	it('deletes a goal and fetches the remaining goals', async () => {
 		goalsService.deleteGoal.mockResolvedValue({ success: true });
 		goalsService.getAllGoalsOfUser.mockResolvedValue({ data: [] });
-    
+
 		const { queryByText, getByTestId } = render(
 			<GoalsProvider>
 				<TestConsumer />
 			</GoalsProvider>
 		);
-    
+
 		await act(async () => {
 			await goalsService.deleteGoal('1');
 		});
-    
+
 		fireEvent.press(getByTestId('fetch-goals'));
-    
+
 		expect(queryByText('Goal 1')).toBeNull();
 	});
-    
+
 	it('fetches and displays macro goals', async () => {
 		const macroGoals = { calories: 2000, protein: 150 };
 		goalsService.getMacroGoals.mockResolvedValue({ data: macroGoals });
-    
+
 		const { findByText, getByTestId } = render(
 			<GoalsProvider>
 				<TestConsumer />
 			</GoalsProvider>
 		);
-    
+
 		fireEvent.press(getByTestId('fetch-macro-goals'));
-    
+
 		await act(async () => {
 			await waitFor(() => {
 				expect(findByText('2000 calories')).toBeTruthy();
@@ -182,4 +189,107 @@ describe('GoalsContext functionality', () => {
 			});
 		});
 	});
+
+
+	it('handles error when creating a goal fails', async () => {
+		const mockError = new Error('Failed to create goal');
+
+		goalsService.createGoal.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		const { getByTestId } = render(
+			<GoalsProvider>
+				<TestConsumer />
+			</GoalsProvider>
+		);
+
+		fireEvent.press(getByTestId('create-goal'));
+
+		await waitFor(() => {
+			expect(consoleSpy).toHaveBeenCalledWith('Error creating goal:', mockError);
+		});
+	});
+
+
+	it('handles error when updating a goal fails', async () => {
+		const mockError = new Error('Failed to update goal');
+
+		goalsService.updateGoal.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		const { getByTestId } = render(
+			<GoalsProvider>
+				<TestConsumer />
+			</GoalsProvider>
+		);
+
+		fireEvent.press(getByTestId('update-goal'));
+
+		await waitFor(() => {
+			expect(consoleSpy).toHaveBeenCalledWith('Error updating goal CONTEXT:', mockError);
+		});
+	});
+
+
+	it('handles error when deleting a goal fails', async () => {
+		const mockError = new Error('Failed to delete goal');
+		goalsService.deleteGoal.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		const { getByTestId } = render(
+			<GoalsProvider>
+				<TestConsumer />
+			</GoalsProvider>
+		);
+
+		fireEvent.press(getByTestId('delete-goal'));
+
+		await waitFor(() => {
+			expect(consoleSpy).toHaveBeenCalledWith('Error deleting goal:', mockError);
+		});
+	});
+
+
+	it('handles error when fetching macro goals fails', async () => {
+		const mockError = new Error('Failed to fetch macro goals');
+		goalsService.getMacroGoals.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		const { getByTestId } = render(
+			<GoalsProvider>
+				<TestConsumer />
+			</GoalsProvider>
+		);
+
+		fireEvent.press(getByTestId('fetch-macro-goals'));
+
+		await waitFor(() => {
+			expect(consoleSpy).toHaveBeenCalledWith('Error fetching macro goals:', mockError);
+		});
+	});
+
+
+	it('handles error when updating macro goals fails', async () => {
+		const mockError = new Error('Failed to update macro goal');
+		goalsService.updateMacroGoals.mockRejectedValue(mockError);
+		const consoleSpy = jest.spyOn(console, 'error');
+
+		const { getByTestId } = render(
+			<GoalsProvider>
+				<TestConsumer />
+			</GoalsProvider>
+		);
+
+		fireEvent.press(getByTestId('update-macro-goal'));
+
+		await waitFor(() => {
+			expect(consoleSpy).toHaveBeenCalledWith('Error updating macro goal in context:', mockError);
+		});
+	});
+
+
+
+
+
+
 });

@@ -22,7 +22,7 @@ const Goal = require('../models/goal');
 const GoalItem = require('../models/goalItem');
 
 
-describe('Award Controller Tests', () => {
+describe('Goal Controller Tests', () => {
     let user, community, token, food, recipe;
 
 	beforeAll(async () => {
@@ -298,7 +298,6 @@ describe('Award Controller Tests', () => {
                 );
             expect(createGoalRes.statusCode).toEqual(200);
             const newlyCreatedGoalID = await createGoalRes.body.goal._id;
-            console.log(newlyCreatedGoalID);
 
             const res = await request(app)
                 .get('/goals/deleteGoal')
@@ -306,9 +305,187 @@ describe('Award Controller Tests', () => {
                 .send({
                     goalID: newlyCreatedGoalID,
                 });
-            console.log(res);
             expect(res.statusCode).toEqual(200);
             expect(res.body.message).toEqual('Goal deleted');
+        });
+    });
+
+    describe('Update goal', () => {
+        it('should update a goal', async () => {
+            const awardToSend = {
+                goalName: 'Test Award',
+                measurement: 'protein',
+                minTargetMass: 0,
+                maxTargetMass: 100,
+            };
+            const createGoalRes = await request(app)
+                .post('/goals/createGoal')
+                .set('Authorization', `Bearer ${token}`)
+                .send(
+                    awardToSend
+                );
+            expect(createGoalRes.statusCode).toEqual(200);
+            const newlyCreatedGoalID = await createGoalRes.body.goal._id;
+
+            const res = await request(app)
+                .post('/goals/updateGoal')
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    goalID: newlyCreatedGoalID,
+                    goalName: 'Updated Test Award',
+                    measurement: 'protein',
+                    minTargetMass: 10,
+                    maxTargetMass: 100,
+                });
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.message).toEqual('Goal updated');
+        });
+
+        it('should fail to update a goal with an invalid goalID', async () => {
+            const res = await request(app)
+                .post('/goals/updateGoal')
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    goalID: '60b1b4b3b3b3b3b3b3b3b3b3',
+                    goalName: 'Updated Test Award',
+                    measurement: 'protein',
+                    minTargetMass: 10,
+                    maxTargetMass: 100,
+                });
+            expect(res.statusCode).toEqual(404);
+            expect(res.body.message).toEqual('Goal not found');
+        });
+    });
+
+    describe('Get macro goal', () => {
+        it('should get a macro goal', async () => {
+            const awardToSend = {
+                goalName: 'Test Award',
+                measurement: 'protein',
+                minTargetMass: 0,
+                maxTargetMass: 100,
+            };
+            const createGoalRes = await request(app)
+                .post('/goals/createGoal')
+                .set('Authorization', `Bearer ${token}`)
+                .send(
+                    awardToSend
+                );
+            expect(createGoalRes.statusCode).toEqual(200);
+            const newlyCreatedGoalID = await createGoalRes.body.goal._id;
+
+            const res = await request(app)
+                .get('/goals/getMacroGoal')
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    macro: 'protein',
+                });
+            expect(res.statusCode).toEqual(200);
+        });
+
+        it('should fail to get a macro goal with an invalid macro', async () => {
+            const res = await request(app)
+                .get('/goals/getMacroGoal')
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    macro: 'invalidMacro',
+                });
+            expect(res.statusCode).toEqual(404);
+            expect(res.body.message).toEqual('No goal for this macro');
+        });
+    });
+
+    describe('Get untracket Macros', () => {
+        it('should get untracked macros', async () => {
+            const awardToSend = {
+                goalName: 'Test Award',
+                measurement: 'protein',
+                minTargetMass: 0,
+                maxTargetMass: 100,
+            };
+            const createGoalRes = await request(app)
+                .post('/goals/createGoal')
+                .set('Authorization', `Bearer ${token}`)
+                .send(
+                    awardToSend
+                );
+            expect(createGoalRes.statusCode).toEqual(200);
+
+            const res = await request(app)
+                .get('/goals/getUntrackedMacroGoals')
+                .set('Authorization', `Bearer ${token}`);
+            expect(res.statusCode).toEqual(200);
+        });
+    });
+
+    describe('Change goal macro value', () => {
+        it('should change a goal macro value', async () => {
+            const awardToSend = {
+                goalName: 'Test Award',
+                measurement: 'protein',
+                minTargetMass: 0,
+                maxTargetMass: 100,
+            };
+            const createGoalRes = await request(app)
+                .post('/goals/createGoal')
+                .set('Authorization', `Bearer ${token}`)
+                .send(
+                    awardToSend
+                );
+            expect(createGoalRes.statusCode).toEqual(200);
+            const newlyCreatedGoalID = await createGoalRes.body.goal._id;
+
+            const res = await request(app)
+                .post('/goals/changeGoalMacroValue')
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    macro: 'protein',
+                    newMinValue: 10,
+                    newMaxValue: 100,
+                });
+            console.log(res.error);
+            expect(res.statusCode).toEqual(200);
+            expect(res.body.message).toEqual('Macro value changed');
+        });
+
+        it('should fail to change a goal macro value with an invalid macro', async () => {
+            const res = await request(app)
+                .post('/goals/changeGoalMacroValue')
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    macro: 'invalidMacro',
+                    newMinValue: 10,
+                    newMaxValue: 100,
+                });
+            expect(res.statusCode).toEqual(400);
+            expect(res.body.message).toEqual('Macro not found');
+        });
+
+        it('should fail to change a goal macro value with invalid min and max values', async () => {
+            const awardToSend = {
+                goalName: 'Test Award',
+                measurement: 'protein',
+                minTargetMass: 0,
+                maxTargetMass: 100,
+            };
+            const createGoalRes = await request(app)
+                .post('/goals/createGoal')
+                .set('Authorization', `Bearer ${token}`)
+                .send(
+                    awardToSend
+                );
+            expect(createGoalRes.statusCode).toEqual(200);
+
+            const res = await request(app)
+                .post('/goals/changeGoalMacroValue')
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    macro: 'protein',
+                    newMinValue: -1,
+                    newMaxValue: 100,
+                });
+            expect(res.statusCode).toEqual(400);
+            expect(res.body.message).toEqual('Invalid min or max values');
         });
     });
 });

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
 	View, SafeAreaView, ActivityIndicator
 } from 'react-native';
@@ -13,14 +13,14 @@ import { useStats } from '../../contexts/StatsContext';
 import { useGoals } from '../../contexts/GoalsContext';
 import { useFoodLog } from '../../contexts/FoodLogContext';
 import { useAwards } from '../../contexts/AwardsContext';
-
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { styles } from './styles';
 
-
-// Dashboard screen
+/**
+ * Dashboard component
+ * @returns {JSX.Element} The Dashboard component
+ */
 function Dashboard() {
 	const navigation = useNavigation();
 	const [loading, setLoading] = useState(false);
@@ -31,10 +31,13 @@ function Dashboard() {
 	const { latestLoggedFood, getLatestLoggedFood } = useFoodLog();
 	const { userAwards, awards, fetchUserAwards, fetchAwards, fetchAwardsToBeIssued } = useAwards();
 
+	/**
+	 * Check if the user is logged in
+	 * @returns {Promise<string>} The token of the user
+	 */
 	const checkUserLogin = async () => {
 		try {
 			const token = await AsyncStorage.getItem('token');
-			// console.log('Token:', token);
 			if (!token) {
 				console.error("No token found");
 				navigation.navigate('Login');
@@ -47,34 +50,9 @@ function Dashboard() {
 		}
 	};
 
-	// useEffect(() => {
-	// 	setLoading(true);
-	// 	const fetchData = async () => {
-	// 		try {
-	// 			await checkUserLogin();
-
-	// 			await Promise.all([
-	// 				updateUserDetails(),
-	// 				updateTodayStats(),
-	// 				getUserCommunities(),
-	// 				getLatestLoggedFood(),
-	// 				fetchGoals(),
-	// 				fetchUserAwards(),
-	// 				fetchAwards(),
-	// 				// fetchAwardsToBeIssued()
-	// 			]);
-	// 		} catch (error) {
-	// 			if (latestLoggedFood != undefined) {
-	// 				console.error("Error fetching data for dashboard:", error);
-	// 			}
-	// 		} finally {
-	// 			setLoading(false);
-	// 		}
-	// 	};
-
-	// 	fetchData();
-	// }, []);
-
+	/**
+	 * Update the data for the dashboard
+	 */
 	const updateDashboardData = async () => {
 		try {
 			await checkUserLogin();
@@ -99,13 +77,10 @@ function Dashboard() {
 
 	useFocusEffect(
 		useCallback(() => {
-			console.log('DASHBOARD FOCUSED');
 			setLoading(true);
 			updateDashboardData().finally(() => setLoading(false));
 		}, [])
 	);
-
-
 
 	if (loading) {
 		return (

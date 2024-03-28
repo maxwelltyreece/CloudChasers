@@ -73,7 +73,6 @@ exports.getUserAwards = async (req, res) => {
 }
 
 exports.getAwardsToBeIssued = async (req, res) => {
-	// console.log('Issuing awards');
 	try {
 		const user = req.user;
 		newAwards = [];
@@ -99,7 +98,6 @@ exports.getAwardsToBeIssued = async (req, res) => {
 			newAwards.push('Make 10 Posts');
 		}
 		var newlyIssuedAwards = {};
-		// console.log('New awards:', newAwards);
 		for (awardName of newAwards) {
 			const award = await personalAward.findOne({name: awardName });
 			const newAwardID = await createAwardItem(await award._id, await user._id);
@@ -189,7 +187,6 @@ async function checkIfUserHasAward(awardID, userID) {
 function checkIfAwardByNameExists(name, awards) {
 	for (award of awards) {
 		if (award.name === name) {
-			// console.log('Award:', award.name, 'Name:', name);
 			return true;
 		}
 	}

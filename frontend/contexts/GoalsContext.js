@@ -119,6 +119,6 @@ export function GoalsProvider({ children }) {
  */
 export const useGoals = () => useContext(GoalsContext);
 
-GoalsProvider.PropTypes = {
+GoalsProvider.propTypes = {
 	children: PropTypes.node.isRequired,
 };

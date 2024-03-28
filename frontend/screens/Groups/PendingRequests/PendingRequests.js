@@ -5,6 +5,14 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { styles } from './styles';
 
+/**
+ * PendingRequests component
+ * @param {Object} props - The properties passed to the component
+ * @param {Object} props.route - The route object
+ * @param {Object} props.route.params - The route parameters
+ * @param {Object} props.route.params.community - The community data
+ * @returns {JSX.Element} The PendingRequests component
+ */
 function PendingRequests({ route }) {
 	const { community } = route.params;
 	const { getPendingRequests, acceptRequest, denyRequest } = useCommunity();

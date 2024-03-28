@@ -100,7 +100,6 @@ const LegacygetNutrientIntake = async (req, res, nutrient) => {
 					totalNutrient += food[nutrient] * (foodItem.weight / 100);
 				} else {
 
-					
 					const recipeQuantity = await RecipeQuantity.findById(mealItem.recipeQuantityID);
 					const recipe = await Recipe.findById(recipeQuantity.recipeID);
 					const allRecipeItems = await RecipeItem.find({ recipeID: recipe._id });
@@ -131,26 +130,20 @@ const getNutrientIntake = async (req, res, nutrient) => {
 		const user = req.user;
 		const userDay = await UserDay.findOne({ userID: user._id, date: date });
 		if (!userDay) {
-			// console.log("No userDay found");
+			
 			return res.status(200).send({ [`total${nutrient}`]: 0 });
 		}
 
 		const userDayMeals = await UserDayMeal.find({ userDayID: userDay._id });
-		// console.log(`Found ${userDayMeals.length} userDayMeals`);
 
-		// Batch fetch all MealItems for the day
 		const mealItems = await MealItem.find({ userDayMealID: { $in: userDayMeals.map(meal => meal._id) } });
-		// console.log(`Found ${mealItems.length} mealItems`);
 
-		// Prepare for recipe processing
 		const recipeQuantityIds = mealItems.filter(item => item.recipeQuantityID).map(item => item.recipeQuantityID);
 		const recipeQuantities = await RecipeQuantity.find({ _id: { $in: recipeQuantityIds } });
 		const recipeIds = recipeQuantities.map(rq => rq.recipeID);
 		const recipes = await Recipe.find({ _id: { $in: recipeIds } });
 		const allRecipeItems = await RecipeItem.find({ recipeID: { $in: recipeIds } });
-		// console.log(`Fetched ${recipeQuantities.length} recipeQuantities, ${recipes.length} recipes, and ${allRecipeItems.length} recipeItems`);
 
-		// Get all FoodItem IDs including those from recipes
 		const foodItemIds = [
 			...mealItems.filter(item => item.foodItemID).map(item => item.foodItemID),
 			...allRecipeItems.map(item => item.foodItemID)
@@ -158,11 +151,9 @@ const getNutrientIntake = async (req, res, nutrient) => {
 
 		const foodItems = await FoodItem.find({ _id: { $in: foodItemIds } });
 		const foods = await Food.find({ _id: { $in: foodItems.map(fi => fi.foodID) } });
-		// console.log(`Fetched ${foodItems.length} foodItems and ${foods.length} foods`);
 
 		let totalNutrient = 0;
 
-		// Process meals
 		for (const meal of userDayMeals) {
 			const items = mealItems.filter(item => item.userDayMealID.toString() === meal._id.toString());
 
@@ -193,7 +184,6 @@ const getNutrientIntake = async (req, res, nutrient) => {
 			}
 		}
 
-		// console.log(`Total ${nutrient} intake: ${totalNutrient}`);
 		return res.status(200).send({ [`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`]: Math.round(totalNutrient * 10) / 10 });
 	} catch (error) {
 		console.error("Error in getNutrientIntake: ", error);

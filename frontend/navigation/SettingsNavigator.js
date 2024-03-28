@@ -5,7 +5,7 @@ import { Feather } from '@expo/vector-icons';
 import { createStackNavigator } from '@react-navigation/stack';
 import Settings from '../screens/Settings/Settings';
 import {
-	About, Account, HelpAndSupport, Privacy, EditPage, LearnMore,
+	About, Account, EditPage, LearnMore,
 } from '../screens/Settings/Subscreens';
 
 const Stack = createStackNavigator();
@@ -41,8 +41,6 @@ export default function SettingsNavigator() {
 			<Stack.Screen name="About" component={About} options={{ ...commonOptions, title: 'About' }} />
 			<Stack.Screen name="LearnMore" component={LearnMore} options={{ ...commonOptions, title: 'Learn More' }} />
 			<Stack.Screen name="Account" component={Account} options={{ ...commonOptions, title: 'Account' }} />
-			<Stack.Screen name="HelpAndSupport" component={HelpAndSupport} options={{ ...commonOptions, title: 'Help & Support' }} />
-			<Stack.Screen name="Privacy" component={Privacy} options={{ ...commonOptions, title: 'Privacy' }} />
 			<Stack.Screen name="EditPage" component={EditPage} options={{ ...commonOptions, title: '' }} />
 		</Stack.Navigator>
 	);

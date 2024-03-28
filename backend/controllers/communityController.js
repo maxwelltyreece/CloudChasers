@@ -384,7 +384,19 @@ exports.getUserCommunities = async (req, res) => {
 	}
 }
 
-
+/**
+ * Handles the PUT /delete request to delete a community.
+ * Only admins of the community can delete it.
+ *
+ * @async
+ * @function deleteCommunity
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the body.
+ * @param {Object} req.user - The user who is attempting to delete the community.
+ * @param {string} req.body.communityId - The ID of the community to be deleted.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it returns a success flag and a message indicating that the community has been deleted. If the community does not exist or the user is not an admin of the community, it returns an appropriate message.
+ * @throws {Error} Will throw an error if retrieving the community, the admin status, or deleting the community or the community users fails.
+ */
 exports.deleteCommunity = async (req, res) => {
 	const { communityId } = req.body;
 	try {
@@ -407,7 +419,18 @@ exports.deleteCommunity = async (req, res) => {
 	}
 }
 
-
+/**
+ * Handles the PUT /leave request to leave a community.
+ *
+ * @async
+ * @function leaveCommunity
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the body.
+ * @param {Object} req.user - The user who is attempting to leave the community.
+ * @param {string} req.body.communityId - The ID of the community to be left.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it returns a success flag and a message indicating that the user has left the community. If the community does not exist, the user is not a member of the community, or the user is an admin of the community, it returns an appropriate message.
+ * @throws {Error} Will throw an error if retrieving the community, the community user, or deleting the community user fails.
+ */
 exports.leaveCommunity = async (req, res) => {
 	const { communityId } = req.body;
 	try {
@@ -433,7 +456,20 @@ exports.leaveCommunity = async (req, res) => {
 	}
 }
 
-
+/**
+ * Handles the PUT /removeMember request to remove a member from a community.
+ * Only admins of the community can remove members.
+ * 
+ * @async
+ * @function removeMember
+ * @param {Object} req - Express request object, containing the user and the IDs of the community and the member in the body.
+ * @param {Object} req.user - The user who is attempting to remove the member.
+ * @param {string} req.body.communityId - The ID of the community.
+ * @param {string} req.body.userId - The ID of the member to be removed.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it returns a success flag and a message indicating that the member has been removed. If the community does not exist, the user is not an admin of the community, or the member is not a member of the community, it returns an appropriate message.
+ * @throws {Error} Will throw an error if retrieving the community, the admin status, the member, or deleting the member fails.
+ */
 exports.removeMember = async (req, res) => {
 	const { communityId, userId } = req.body;
 	try {
@@ -459,7 +495,19 @@ exports.removeMember = async (req, res) => {
 	}
 }
 
-n
+/**
+ * Handles the PUT /updateDesc request to update the description of a community.
+ *
+ * @async
+ * @function updateCommunityDesc
+ * @param {Object} req - Express request object, containing the user and the ID of the community and the new description in the body.
+ * @param {Object} req.user - The user who is attempting to update the community description.
+ * @param {string} req.body.communityId - The ID of the community.
+ * @param {string} req.body.description - The new description of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it returns a success flag and a message indicating that the community has been updated. If the community does not exist or the user is not an admin of the community, it returns an appropriate message.
+ * @throws {Error} Will throw an error if retrieving the community, the admin status, or updating the community fails.
+ */
 exports.updateCommunityDesc = async (req, res) => {
 	const { communityId, description } = req.body;
 	try {
@@ -481,7 +529,20 @@ exports.updateCommunityDesc = async (req, res) => {
 	}
 }
 
-
+/**
+ * Handles the PUT /updateJoinPrivacy request to update the join privacy setting of a community.
+ * Only admins of the community can update the join privacy setting.
+ *
+ * @async
+ * @function updateJoinPrivacy
+ * @param {Object} req - Express request object, containing the user and the ID of the community and the new join privacy setting in the body.
+ * @param {Object} req.user - The user who is attempting to update the community join privacy setting.
+ * @param {string} req.body.communityId - The ID of the community.
+ * @param {string} req.body.joinPrivacy - The new join privacy setting of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it returns a success flag and a message indicating that the community has been updated. If the community does not exist or the user is not an admin of the community, it returns an appropriate message.
+ * @throws {Error} Will throw an error if retrieving the community, the admin status, or updating the community fails.
+ */
 exports.updateJoinPrivacy = async (req, res) => {
 	const { communityId, joinPrivacy } = req.body;
 	try {
@@ -503,6 +564,22 @@ exports.updateJoinPrivacy = async (req, res) => {
 	}
 }
 
+/**
+ * Handles the POST /makePost request to create a new post in a community.
+ * Only members of the community can create posts.
+ *
+ * @async
+ * @function makePost
+ * @param {Object} req - Express request object, containing the user and the details of the post in the body.
+ * @param {Object} req.user - The user who is attempting to make the post.
+ * @param {string} req.body.communityId - The ID of the community where the post is to be made.
+ * @param {string} req.body.title - The title of the post.
+ * @param {string} req.body.text - The text of the post.
+ * @param {string} req.body.recipeID - The ID of the recipe associated with the post.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it returns a success flag, a message indicating that the post has been created, and the details of the new post. If the community does not exist or the user is not a member of the community, it returns an appropriate message.
+ * @throws {Error} Will throw an error if retrieving the community, the community user, or creating the post fails.
+ */
 exports.makePost = async (req, res) => {
 	const { communityId, title, text, recipeID } = req.body;
 	try {
@@ -532,6 +609,19 @@ exports.makePost = async (req, res) => {
 	}
 }
 
+/**
+ * Handles the GET /posts request to retrieve all posts from a community.
+ * Only members of the community can retrieve the posts.
+ *
+ * @async
+ * @function getCommunityPosts
+ * @param {Object} req - Express request object, containing the user and the ID of the community in the query.
+ * @param {Object} req.user - The user who is attempting to retrieve the posts.
+ * @param {string} req.query.communityId - The ID of the community.
+ * @param {Object} res - Express response object.
+ * @returns {Object} Returns a response object with a status and a message. If successful, it returns a success flag and the details of the posts. If the community does not exist or the user is not a member of the community, it returns an appropriate message.
+ * @throws {Error} Will throw an error if retrieving the community, the community user, the posts, or the post users fails.
+ */
 exports.getCommunityPosts = async (req, res) => {
 	const { communityId } = req.query;
 	try {

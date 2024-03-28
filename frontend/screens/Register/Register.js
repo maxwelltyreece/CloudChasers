@@ -1,9 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Alert, View, TextInput, TouchableOpacity, Text, Pressable } from 'react-native';
-import axios from 'axios';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { styles } from './styles';
 
 function Register({ navigation }) {

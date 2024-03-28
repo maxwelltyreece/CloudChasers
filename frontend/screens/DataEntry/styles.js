@@ -2,7 +2,6 @@ import { StyleSheet, Dimensions } from 'react-native';
 
 const { width } = Dimensions.get('window');
 
-
 export const styles = StyleSheet.create({
 	container: {
 		flexGrow: 1,
@@ -98,4 +97,33 @@ export const styles = StyleSheet.create({
 		paddingHorizontal: 10,
 		fontFamily: 'Montserrat_600SemiBold',
 	},
+    recipeContainer: {
+        marginTop: 5,
+        flex: 1,
+        paddingHorizontal: 5,
+    },
+    list: {
+        flex: 1,
+    },
+    row: {
+        justifyContent: 'space-between',
+        paddingHorizontal: 8,
+    },
+    box: {
+        width: '45%',
+        aspectRatio: 1,
+        margin: 8,
+    },
+    emptyContainer: {
+        flex: 1,
+        alignItems: 'center',
+        paddingTop: 50,
+        paddingHorizontal: 20,
+    },
+    emptyText: {
+        fontSize: 18,
+        textAlign: 'center',
+        fontFamily: 'Montserrat_600SemiBold',
+        color: '#333',
+    },
 });

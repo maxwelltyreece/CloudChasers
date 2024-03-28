@@ -23,7 +23,6 @@ export const fetchUserDetails = async (token) => {
 		} else {
 			console.error('Error', error.message);
 		}
-		console.log(error.config);
 		return null;
 	}
 };

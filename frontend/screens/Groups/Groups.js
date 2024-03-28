@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
 	View, Text, FlatList, TextInput, TouchableOpacity, Pressable,
 } from 'react-native';
@@ -7,12 +7,20 @@ import { Feather } from '@expo/vector-icons';
 import Box from '../../components/Box/box';
 import { useCommunity } from '../../contexts/CommunityContext';
 import { styles } from './styles';
-
+ 
+/**
+ * Groups component
+ * @returns {JSX.Element} The Groups component
+ */
 function Groups() {
 	const [searchText, setSearchText] = useState('');
 	const navigation = useNavigation();
 	const { userCommunities, getUserRole, getCommunityPosts } = useCommunity();
 
+    /**
+     * NewGroupButton component
+     * @returns {JSX.Element} The NewGroupButton component
+     */
 	function NewGroupButton() {
 		return (
 			<Pressable onPress={() => navigation.navigate('Group', { screen: 'NewGroup' })}>
@@ -21,6 +29,10 @@ function Groups() {
 		);
 	}
 
+    /**
+     * JoinGroupButton component
+     * @returns {JSX.Element} The JoinGroupButton component
+     */
 	function JoinGroupButton() {
 		return (
 			<Pressable onPress={() => navigation.navigate('Group', { screen: 'JoinGroup' })}>
@@ -29,7 +41,6 @@ function Groups() {
 		);
 	}
 
-	// eslint-disable-next-line max-len
 	const filteredData = (userCommunities || []).filter((item) => item.name.toLowerCase().includes(searchText.toLowerCase()));
 
 	const handlePress = async (item) => {
@@ -62,9 +73,9 @@ function Groups() {
 							</TouchableOpacity>
 						</View>
 					)}
-					numColumns={2} // Two items per row
+					numColumns={2}
 					contentContainerStyle={{
-						paddingHorizontal: '2.5%', // Offset the item margin
+						paddingHorizontal: '2.5%',
 					}}
 				/>
 			) : (

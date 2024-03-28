@@ -1,19 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import { ImageBackground, Alert, View, TextInput, TouchableOpacity, Text, Image, Button } from 'react-native';
+import { ImageBackground, Alert, View, TextInput, TouchableOpacity, Text } from 'react-native';
 import axios from 'axios';
 
 import { styles } from './styles';
-import { useUser } from '../../contexts/UserContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { requestImagePermissions, pickImage, uploadImage } from '../../services/ImageService';
 
+/**
+ * RegisterDetails component
+ * @param {Object} props - The properties passed to the component
+ * @param {Object} props.navigation - The navigation object from react-navigation
+ * @param {Object} props.route - The route object
+ * @param {Object} props.route.params - The route parameters
+ * @param {string} props.route.params.username - The username
+ * @param {string} props.route.params.email - The email
+ * @param {string} props.route.params.password - The password
+ * @returns {JSX.Element} The RegisterDetails component
+ */
 function RegisterDetails({ navigation, route }) {
 	const { username, email, password } = route.params;
 	const [firstName, setFirstName] = useState('');
 	const [lastName, setLastName] = useState('');
 	const [profilePicture, setProfilePicture] = useState('');
-	const { editUserDetails } = useUser();
 
 	useEffect(() => {
 		requestImagePermissions();
@@ -49,7 +58,6 @@ function RegisterDetails({ navigation, route }) {
 				forename: firstName,
 				surname: lastName,
 			});
-			// console.log('User registered');
 			return response;
 		} catch (error) {
 			if (error.response && error.response.data.error) {

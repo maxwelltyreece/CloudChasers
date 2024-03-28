@@ -11,6 +11,13 @@ import { useCommunity } from '../../../contexts/CommunityContext';
 import { useFocusEffect } from '@react-navigation/native';
 import { styles } from './styles';
 
+/**
+ * IconButton component
+ * @param {Object} props - The properties passed to the component
+ * @param {string} props.iconName - The name of the icon
+ * @param {Function} props.onPress - The function to call when the button is pressed
+ * @returns {JSX.Element} The IconButton component
+ */
 const IconButton = ({ iconName, onPress }) => (
 	<Pressable
 		style={({ pressed }) => [
@@ -25,6 +32,14 @@ const IconButton = ({ iconName, onPress }) => (
 	</Pressable>
 );
 
+/**
+ * Message component
+ * @param {Object} props - The properties passed to the component
+ * @param {string} props.title - The title of the message
+ * @param {string} props.text - The text of the message
+ * @param {string} props.sender - The sender of the message
+ * @returns {JSX.Element} The Message component
+ */
 const Message = ({ title, text, sender }) => (
 	<View style={styles.messageContainer}>
 		<Text style={styles.title}>{title}</Text>
@@ -33,20 +48,16 @@ const Message = ({ title, text, sender }) => (
 	</View>
 );
 
-// function generateRandomWord() {
-//     const words = ['lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit'];
-//     return words[Math.floor(Math.random() * words.length)];
-// }
-
-// function generateRandomMessage() {
-//     const numWords = Math.max(1, Math.floor(Math.random() * Math.random() * 50));
-//     let message = '';
-//     for (let i = 0; i < numWords; i++) {
-//         message += generateRandomWord() + ' ';
-//     }
-//     return message.trim();
-// }
-
+/**
+ * GroupPage component
+ * @param {Object} props - The properties passed to the component
+ * @param {Object} props.route - The route object
+ * @param {Object} props.route.params - The route parameters
+ * @param {Object} props.route.params.community - The community data
+ * @param {boolean} props.route.params.isAdmin - Whether the user is an admin
+ * @param {Object} props.navigation - The navigation object
+ * @returns {JSX.Element} The GroupPage component
+ */
 function GroupPage({ route, navigation }) {
 	const { community, isAdmin } = route.params;
 	const { getCommunityPosts, getPendingRequests, getCommunityDetails } = useCommunity();
@@ -66,10 +77,8 @@ function GroupPage({ route, navigation }) {
 				const posts = await getCommunityPosts(community.id);
 				setMessages(posts);
 
-				// console.log('Community ID:', community.id);
 				try {
 					const communityDetails = await getCommunityDetails(community.id);
-					// console.log('Community details:', communityDetails.data.community);
 					setNewDescription(communityDetails.data.community.description);
 				} catch (error) {
 					console.error('Error fetching community details:', error);
@@ -82,7 +91,7 @@ function GroupPage({ route, navigation }) {
 
 			return () => {
 				setMessages([]);
-				setNewDescription(''); // Reset the description when the page is left
+				setNewDescription(''); 
 			};
 		}, [community.id, getPendingRequests, getCommunityPosts, isAdmin])
 	);
@@ -158,18 +167,18 @@ function GroupPage({ route, navigation }) {
 export default GroupPage;
 
 
-IconButton.PropTypes = {
+IconButton.propTypes = {
 	iconName: PropTypes.string.isRequired,
 	onPress: PropTypes.func.isRequired,
 };
 
-Message.PropTypes = {
+Message.propTypes = {
 	title: PropTypes.string.isRequired,
 	text: PropTypes.string.isRequired,
 	sender: PropTypes.string.isRequired,
 };
 
-GroupPage.PropTypes = {
+GroupPage.propTypes = {
 	route: PropTypes.shape({
 		params: PropTypes.shape({
 			community: PropTypes.shape({

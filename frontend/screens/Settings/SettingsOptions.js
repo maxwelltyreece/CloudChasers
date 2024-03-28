@@ -14,14 +14,6 @@ const SettingsOptions = (navigation) => [
 		handler: () => navigation.navigate('Account'),
 	},
 	{
-		name: 'Privacy',
-		handler: () => navigation.navigate('Privacy'),
-	},
-	{
-		name: 'Help & Support',
-		handler: () => navigation.navigate('HelpAndSupport'),
-	},
-	{
 		name: 'About',
 		handler: () => navigation.navigate('About'),
 	},

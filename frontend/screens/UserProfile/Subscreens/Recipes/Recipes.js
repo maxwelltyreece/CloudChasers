@@ -42,27 +42,27 @@ function Recipes() {
 		setSearch(search);
 	};
 
-    useFocusEffect(
-        React.useCallback(() => {
-            const fetchData = async () => {
-                const fetchedRecipes = await getAllUserRecipes();
+	useFocusEffect(
+		React.useCallback(() => {
+			const fetchData = async () => {
+				const fetchedRecipes = await getAllUserRecipes();
 
-                const mappedRecipes = fetchedRecipes.map((recipe) => ({
-                    id: recipe._id,
-                    title: recipe.name,
-                    description: recipe.description,
-                    createdBy: recipe.createdBy,
-                    image: recipe.image,
-                }));
+				const mappedRecipes = fetchedRecipes.map((recipe) => ({
+					id: recipe._id,
+					title: recipe.name,
+					description: recipe.description,
+					createdBy: recipe.createdBy,
+					image: recipe.image,
+				}));
 
-                setRecipes(mappedRecipes);
-            };
+				setRecipes(mappedRecipes);
+			};
 
-            fetchData();
+			fetchData();
 
-            // return a cleanup function if needed
-        }, [getAllUserRecipes])
-    );
+			// return a cleanup function if needed
+		}, [getAllUserRecipes])
+	);
 
 	const filteredRecipes = recipes.filter(
 		(recipe) =>
@@ -96,8 +96,7 @@ function Recipes() {
 			{filteredRecipes.length > 0 ? (
 				<FlatList
 					data={filteredRecipes}
-					renderItem={({ item }) => {
-                        console.log(item);
+					renderItem={({ item }) => {;
                         return (
                             <RecipeBox
                                 id={item.id}

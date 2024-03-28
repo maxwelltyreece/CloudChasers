@@ -55,7 +55,7 @@ async function seed() {
     
 
 	// User Seeding
-	for (let i = 0; i < 10; i++) {
+	for (let i = 0; i < 50; i++) {
 		var newUser = new User({
 			forename: "User" + i,
 			surname : "Test",
@@ -64,7 +64,6 @@ async function seed() {
 			password: await bcrypt.hash("password123", 10),
 			dateOfBirth : new Date(1990, 1, 1),
 			lastLogin : new Date(), //Date() returns the current date and time
-			profilePictureLink : null,
 			streak : 0
 		});
 		await newUser.save();
@@ -164,7 +163,7 @@ async function seed() {
 	console.log('Personal_Awards Seeded');
 
 	// Communites Seeding
-	for (let i = 0; i < 10; i++) {
+	for (let i = 0; i < 20; i++) {
 		var newCommunity = new Communties({
 			name: `Community${i}`,
 			description: `Community ${i}`,
@@ -174,31 +173,6 @@ async function seed() {
 		await newCommunity.save();
 	}
 	console.log('Communities Seeded');
-
-	// Community_Awards Seeding
-	for (let i = 0; i < 10; i++) {
-		var newCommunityAward = new Community_Awards({
-			name: `Award${i}`,
-			description: `Community award ${i}`,
-		});
-		await newCommunityAward.save();
-	}
-	console.log('Community_Awards Seeded');
-
-	let user1 = await User.findOne({ username: 'User0SEED' });
-	user1 = await user1._id;
-
-	// Community_Award_Items Seeding
-	for (let i = 0; i < 10; i++) {
-		const newCommunityAwardItem = new Community_Award_Items({
-			communityAwardID: await newCommunityAward._id,
-			communityID: await newCommunity._id,
-			userID: await newUser._id,
-			date: new Date(2021, 1, 1 + i),
-		});
-		await newCommunityAwardItem.save();
-	}
-	console.log('Community_Award_Items Seeded');
 
 	// Community_Users Seeding
 	const newCommunityUser = new Community_Users({

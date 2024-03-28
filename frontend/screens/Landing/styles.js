@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
 		fontSize: 32,
 		marginBottom: 10,
 		textAlign: 'center',
-		color: '#FF815E', // This makes the title the same color as the buttons
+		color: '#FF815E',
 	},
 	description: {
 		fontSize: 16,
@@ -30,14 +30,14 @@ export const styles = StyleSheet.create({
 		margin: 10,
 		alignItems: 'center',
 		justifyContent: 'center',
-		height: 50, // Set a fixed height
-		width: 160, // Set a fixed width
+		height: 50, 
+		width: 160,
 	},
 	loginButton: {
-		backgroundColor: '#FF815E', // This sets the color of the Login button
+		backgroundColor: '#FF815E', 
 	},
 	registerButton: {
-		backgroundColor: '#A9A9A9', // This sets the color of the Register button
+		backgroundColor: '#A9A9A9',
 	},
 	buttonText: {
 		color: '#fff',

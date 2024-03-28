@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 const fs = require('fs');
 const path = require('path');
 const express = require('express');
@@ -15,7 +14,6 @@ const awardRoutes = require('./routes/awardRoutes');
 
 
 require('dotenv').config();
-
 const app = express();
 app.use(express.json());
 
@@ -47,14 +45,5 @@ app.use('/awards', awardRoutes);
 const { login } = require('./controllers/userController');
 
 const networkInterfaces = os.networkInterfaces();
-
-
-
-// app.listen(3000, () => {
-// 	console.log(`Server is running on ${serverIP}`);
-
-// 	// Write the server IP to a file
-// 	fs.writeFileSync(path.join(__dirname, '../frontend/screens/IPIndex.js'), `export const LocalIP = '${serverIP}';\n`);
-// });
 
 module.exports = app;
