@@ -61,6 +61,7 @@ function TestConsumer() {
 
 
 describe('AwardsContext functionality', () => {
+
 	beforeEach(() => {
 		jest.resetAllMocks();
 	});

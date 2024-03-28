@@ -168,9 +168,19 @@
 <a name='L103'></a><a href='#L103'>103</a>
 <a name='L104'></a><a href='#L104'>104</a>
 <a name='L105'></a><a href='#L105'>105</a>
-<a name='L106'></a><a href='#L106'>106</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L106'></a><a href='#L106'>106</a>
+<a name='L107'></a><a href='#L107'>107</a>
+<a name='L108'></a><a href='#L108'>108</a>
+<a name='L109'></a><a href='#L109'>109</a>
+<a name='L110'></a><a href='#L110'>110</a>
+<a name='L111'></a><a href='#L111'>111</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -276,107 +286,112 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { StyleSheet } from "react-native";
 &nbsp;
 export const styles = StyleSheet.create({
-    box: {
-        backgroundColor: "white",
-        borderRadius: 10,
-        overflow: "hidden",
-        width: "45%",
-        aspectRatio: 1,
-        margin: 8,
-    },
-    image: {
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        resizeMode: "cover",
-    },
-    titleContainer: {
-        flex: 1,
-        justifyContent: "flex-end",
-        padding: 10,
-    },
-    title: {
-        fontSize: 16,
-        fontFamily: "Montserrat_700Bold",
-        color: "white",
-        textShadowColor: "rgba(0, 0, 0, 0.75)",
-        textShadowOffset: { width: -1, height: 1 },
-        textShadowRadius: 10,
-    },
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 10,
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-        width: 300,
-        height: "60%",
-    },
-    scrollViewContainer: {
-        flexGrow: 1,
-        justifyContent: 'flex-start',
-    },
-    ingredient: {
-        fontSize: 16,
-        fontFamily: "Montserrat_400Regular",
-        color: "#000",
-        marginBottom: 10,
-        textAlign: "left",
-    },
+	box: {
+		backgroundColor: "white",
+		borderRadius: 10,
+		overflow: "hidden",
+		width: "45%",
+		aspectRatio: 1,
+		margin: 8,
+	},
+	image: {
+		position: "absolute",
+		width: "100%",
+		height: "100%",
+		resizeMode: "cover",
+	},
+	titleContainer: {
+		flex: 1,
+		justifyContent: "flex-end",
+		padding: 10,
+	},
+	title: {
+		fontSize: 16,
+		fontFamily: "Montserrat_700Bold",
+		color: "white",
+		textShadowColor: "rgba(0, 0, 0, 0.75)",
+		textShadowOffset: { width: -1, height: 1 },
+		textShadowRadius: 10,
+	},
+	centeredView: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		marginTop: 10,
+	},
+	modalView: {
+		margin: 20,
+		backgroundColor: "white",
+		borderRadius: 20,
+		padding: 35,
+		alignItems: "center",
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
+		width: 300,
+		height: "60%",
+	},
+	scrollViewContainer: {
+		flexGrow: 1,
+		justifyContent: 'flex-start',
+	},
+	ingredient: {
+		fontSize: 16,
+		fontFamily: "Montserrat_400Regular",
+		color: "#000",
+		marginBottom: 10,
+		textAlign: "left",
+	},
 &nbsp;
-    modalImage: {
-        width: 200,
-        height: 200,
-        resizeMode: "contain",
-    },
-    modalText: {
-        fontSize: 20,
-        marginBottom: 15,
-        textAlign: "center",
-        fontFamily: "Montserrat_700Bold",
-    },
-    description: {
-        fontSize: 14,
-        fontFamily: "Montserrat_300Light",
-        color: "black",
-    },
-    closeButton: {
-        position: "absolute",
-        top: 3,
-        right: 2,
-        padding: 10,
-        zIndex: 1,
-    },
-    text: {
-        fontSize: 24,
-        fontFamily: "Montserrat_700Bold",
-        paddingBottom: 20
-    },
+	modalImage: {
+		width: 200,
+		height: 200,
+		resizeMode: "contain",
+	},
+	modalText: {
+		fontSize: 20,
+		marginBottom: 15,
+		textAlign: "center",
+		fontFamily: "Montserrat_700Bold",
+	},
+	description: {
+		fontSize: 14,
+		fontFamily: "Montserrat_300Light",
+		color: "black",
+	},
+	closeButton: {
+		position: "absolute",
+		top: 3,
+		right: 2,
+		padding: 10,
+		zIndex: 1,
+	},
+	text: {
+		fontSize: 24,
+		fontFamily: "Montserrat_700Bold",
+		paddingBottom: 20
+	},
 &nbsp;
-    ingredientsTitle: {
-        fontFamily: "Montserrat_700Bold",
+	ingredientsTitle: {
+		fontFamily: "Montserrat_700Bold",
 &nbsp;
-        textAlign: "center",
-        fontSize: 20,
-    },
-    ingredientText: {
-        fontFamily: "Montserrat_400Regular",
-        textAlign: "left",
-    },
+		textAlign: "center",
+		fontSize: 20,
+	},
+	ingredientText: {
+		fontFamily: "Montserrat_400Regular",
+		textAlign: "left",
+	},
+	trashIconContainer: {
+		position: 'absolute',
+		top: 15,
+		right: 15,
+	},
 });
 &nbsp;</pre></td></tr></table></pre>
 
@@ -385,7 +400,7 @@ export const styles = StyleSheet.create({
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-28T00:28:01.090Z
+                at 2024-03-28T01:09:23.436Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

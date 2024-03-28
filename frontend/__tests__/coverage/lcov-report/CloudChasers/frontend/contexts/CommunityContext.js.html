@@ -417,7 +417,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">9x</span>
@@ -748,15 +748,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">14x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, {
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  useEffect,
+	createContext,
+	useContext,
+	useMemo,
+	useState,
+	useEffect,
 } from "react";
 import * as communityService from "../services/CommunityService";
 import PropTypes from "prop-types";
@@ -764,162 +764,162 @@ import PropTypes from "prop-types";
 const CommunityContext = createContext();
 &nbsp;
 export function CommunityProvider({ children }) {
-  const [userCommunities, setUserCommunities] = useState([]);
+	const [userCommunities, setUserCommunities] = useState([]);
 &nbsp;
-  /**
+	/**
    * Fetches the communities associated with the current user and updates the state.
    */
-  const getUserCommunities = async () =&gt; {
-    const communities = await communityService.getUserCommunities();
-    setUserCommunities(communities.data);
-  };
+	const getUserCommunities = async () =&gt; {
+		const communities = await communityService.getUserCommunities();
+		setUserCommunities(communities.data);
+	};
 &nbsp;
-  useEffect(() =&gt; {
-    getUserCommunities();
-  }, []);
+	useEffect(() =&gt; {
+		getUserCommunities();
+	}, []);
 &nbsp;
-  /**
+	/**
    * Retrieves the list of communities available for the user to join, excluding those already joined.
    * @returns {Promise&lt;Array&gt;} The filtered list of available communities.
    */
-  const getAvailableCommunities = <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await getAllCommunities();</span>
-<span class="cstat-no" title="statement not covered" >    if (response.success) {</span>
-<span class="cstat-no" title="statement not covered" >      return response.data.filter(</span>
-<span class="fstat-no" title="function not covered" >        (c</span>ommunity) =&gt;
-<span class="cstat-no" title="statement not covered" >          !userCommunities.some(</span>
-<span class="fstat-no" title="function not covered" >            (u</span>serCommunity) =&gt; <span class="cstat-no" title="statement not covered" >userCommunity.id === community.id</span>
-          )
-      );
-    } else {
-<span class="cstat-no" title="statement not covered" >      console.error("Failed to get communities:", response);</span>
-<span class="cstat-no" title="statement not covered" >      return [];</span>
-    }
-  };
-  /**
+	const getAvailableCommunities = <span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await getAllCommunities();</span>
+<span class="cstat-no" title="statement not covered" >		if (response.success) {</span>
+<span class="cstat-no" title="statement not covered" >			return response.data.filter(</span>
+<span class="fstat-no" title="function not covered" >				(c</span>ommunity) =&gt;
+<span class="cstat-no" title="statement not covered" >					!userCommunities.some(</span>
+<span class="fstat-no" title="function not covered" >						(u</span>serCommunity) =&gt; <span class="cstat-no" title="statement not covered" >userCommunity.id === community.id</span>
+					)
+			);
+		} else {
+<span class="cstat-no" title="statement not covered" >			console.error("Failed to get communities:", response);</span>
+<span class="cstat-no" title="statement not covered" >			return [];</span>
+		}
+	};
+	/**
    * Fetches details for a specific community by its ID.
    * @param {number} communityId - The ID of the community.
    * @returns {Promise&lt;Object&gt;} The community details.
    */
-  const getCommunityDetails = async (communityId) =&gt;
-    communityService.getCommunityDetails(communityId);
+	const getCommunityDetails = async (communityId) =&gt;
+		communityService.getCommunityDetails(communityId);
 &nbsp;
-  /**
+	/**
    * Retrieves the members of a given community by the community ID.
    * @param {number} communityId - The ID of the community.
    * @returns {Promise&lt;Array&gt;} The list of community members.
    */
-  const getCommunityMembers = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt;
-<span class="cstat-no" title="statement not covered" >    communityService.getCommunityMembers(communityId);</span>
+	const getCommunityMembers = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt;
+<span class="cstat-no" title="statement not covered" >		communityService.getCommunityMembers(communityId);</span>
 &nbsp;
-  /**
+	/**
    * Gets the role of the current user within a specific community.
    * @param {number} communityId - The ID of the community.
    * @returns {Promise&lt;string&gt;} The user's role in the community.
    */
-  const getUserRole = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.getUserRole(communityId);</span>
-<span class="cstat-no" title="statement not covered" >    return response.data.role;</span>
-  };
+	const getUserRole = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.getUserRole(communityId);</span>
+<span class="cstat-no" title="statement not covered" >		return response.data.role;</span>
+	};
 &nbsp;
-  /**
+	/**
    * Fetches all communities.
    * @returns {Promise&lt;Array&gt;} The list of all communities.
    */
-  const getAllCommunities = async () =&gt; communityService.getAllCommunities();
+	const getAllCommunities = async () =&gt; communityService.getAllCommunities();
 &nbsp;
-  /**
+	/**
    * Creates a new community with the given data.
    * @param {Object} communityData - The data for creating a new community.
    * @returns {Promise&lt;Object&gt;} The response object from the create operation.
    */
-  const createCommunity = async (communityData) =&gt; {
-    // console.log('Community Data:', communityData);
-    return communityService.createCommunity(communityData);
-  };
+	const createCommunity = async (communityData) =&gt; {
+		// console.log('Community Data:', communityData);
+		return communityService.createCommunity(communityData);
+	};
 &nbsp;
-  /**
+	/**
    * Resets the list of communities associated with the user to an empty array.
    */
-  const resetUserCommunities = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >    setUserCommunities([]);</span>
-  };
+	const resetUserCommunities = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >		setUserCommunities([]);</span>
+	};
 &nbsp;
-  /**
+	/**
    * Joins the community with the given ID.
    * @param {number} communityId - The ID of the community to join.
    * @returns {Promise&lt;Object&gt;} The response object from the join operation.
    */
-  const joinCommunity = async (communityId) =&gt; {
-    try {
-      const response = await communityService.joinCommunity(communityId);
-      return response;
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.error("Error joining community:", error);</span>
-<span class="cstat-no" title="statement not covered" >      throw error;</span>
-    }
-  };
+	const joinCommunity = async (communityId) =&gt; {
+		try {
+			const response = await communityService.joinCommunity(communityId);
+			return response;
+		} catch (error) {
+<span class="cstat-no" title="statement not covered" >			console.error("Error joining community:", error);</span>
+<span class="cstat-no" title="statement not covered" >			throw error;</span>
+		}
+	};
 &nbsp;
-  /**
+	/**
    * Deletes the community with the given ID.
    * @param {number} communityId - The ID of the community to delete.
    * @param {Object} navigation - The navigation object to redirect after deletion.
    */
-  const deleteCommunity = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, navigation) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.deleteCommunity(communityId);</span>
-<span class="cstat-no" title="statement not covered" >    if (response &amp;&amp; response.success) {</span>
-<span class="cstat-no" title="statement not covered" >      getUserCommunities();</span>
-<span class="cstat-no" title="statement not covered" >      navigation.navigate("Groups");</span>
-    } else {
-<span class="cstat-no" title="statement not covered" >      console.error("Failed to delete community:", response);</span>
-    }
-  };
+	const deleteCommunity = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, navigation) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.deleteCommunity(communityId);</span>
+<span class="cstat-no" title="statement not covered" >		if (response &amp;&amp; response.success) {</span>
+<span class="cstat-no" title="statement not covered" >			getUserCommunities();</span>
+<span class="cstat-no" title="statement not covered" >			navigation.navigate("Groups");</span>
+		} else {
+<span class="cstat-no" title="statement not covered" >			console.error("Failed to delete community:", response);</span>
+		}
+	};
 &nbsp;
-  /**
+	/**
    * Leaves the community with the given ID.
    * @param {number} communityId - The ID of the community to leave.
    * @param {Object} navigation - The navigation object to redirect after leaving.
    */
-  const leaveCommunity = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, navigation) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.leaveCommunity(communityId);</span>
-<span class="cstat-no" title="statement not covered" >    if (response &amp;&amp; response.success) {</span>
-<span class="cstat-no" title="statement not covered" >      getUserCommunities();</span>
-<span class="cstat-no" title="statement not covered" >      navigation.navigate("Groups");</span>
-    } else {
-<span class="cstat-no" title="statement not covered" >      console.error("Failed to leave community:", response);</span>
-      // Handle error
-    }
-  };
+	const leaveCommunity = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, navigation) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.leaveCommunity(communityId);</span>
+<span class="cstat-no" title="statement not covered" >		if (response &amp;&amp; response.success) {</span>
+<span class="cstat-no" title="statement not covered" >			getUserCommunities();</span>
+<span class="cstat-no" title="statement not covered" >			navigation.navigate("Groups");</span>
+		} else {
+<span class="cstat-no" title="statement not covered" >			console.error("Failed to leave community:", response);</span>
+			// Handle error
+		}
+	};
 &nbsp;
-  /**
+	/**
    * Updates the description of the community with the given ID.
    * @param {number} communityId - The ID of the community.
    * @param {string} description - The new description for the community.
    * @returns {Promise&lt;Object&gt;} The response object from the update operation.
    */
-  const updateCommunityDesc = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, description) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.updateCommunityDesc(</span>
-      communityId,
-      description
-    );
-<span class="cstat-no" title="statement not covered" >    return response;</span>
-  };
+	const updateCommunityDesc = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, description) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.updateCommunityDesc(</span>
+			communityId,
+			description
+		);
+<span class="cstat-no" title="statement not covered" >		return response;</span>
+	};
 &nbsp;
-  /**
+	/**
    * Updates the join privacy setting of the community with the given ID.
    * @param {number} communityId - The ID of the community.
    * @param {boolean} joinPrivacy - The new join privacy setting.
    * @returns {Promise&lt;Object&gt;} The response object from the update operation.
    */
-  const updateJoinPrivacy = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, joinPrivacy) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.updateJoinPrivacy(</span>
-      communityId,
-      joinPrivacy
-    );
-<span class="cstat-no" title="statement not covered" >    return response;</span>
-  };
+	const updateJoinPrivacy = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, joinPrivacy) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.updateJoinPrivacy(</span>
+			communityId,
+			joinPrivacy
+		);
+<span class="cstat-no" title="statement not covered" >		return response;</span>
+	};
 &nbsp;
-  /**
+	/**
    * Fetches the image for a specified community by its ID and specified folder.
    *
    * @async
@@ -928,17 +928,17 @@ export function CommunityProvider({ children }) {
    * @param {string} folderName The folder name where the image is stored.
    * @returns {Promise&lt;Object&gt;} The response object containing either the community image data or an error message.
    */
-  const getCommunityImage = <span class="fstat-no" title="function not covered" >as</span>ync (Id, folderName) =&gt; {
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const response = <span class="cstat-no" title="statement not covered" >await communityService.getCommunityImage(Id, folderName);</span>
-<span class="cstat-no" title="statement not covered" >      return response;</span>
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.error(error);</span>
-<span class="cstat-no" title="statement not covered" >      return { status: error.message };</span>
-    }
-  };
+	const getCommunityImage = <span class="fstat-no" title="function not covered" >as</span>ync (Id, folderName) =&gt; {
+<span class="cstat-no" title="statement not covered" >		try {</span>
+			const response = <span class="cstat-no" title="statement not covered" >await communityService.getCommunityImage(Id, folderName);</span>
+<span class="cstat-no" title="statement not covered" >			return response;</span>
+		} catch (error) {
+<span class="cstat-no" title="statement not covered" >			console.error(error);</span>
+<span class="cstat-no" title="statement not covered" >			return { status: error.message };</span>
+		}
+	};
 &nbsp;
-  /**
+	/**
    * Submits a new post to a community.
    *
    * @async
@@ -946,12 +946,12 @@ export function CommunityProvider({ children }) {
    * @param {Object} postData The data for the post to be submitted.
    * @returns {Promise&lt;Object&gt;} The response from the post creation operation.
    */
-  const makePost = <span class="fstat-no" title="function not covered" >as</span>ync (postData) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.makePost(postData);</span>
-<span class="cstat-no" title="statement not covered" >    return response;</span>
-  };
+	const makePost = <span class="fstat-no" title="function not covered" >as</span>ync (postData) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.makePost(postData);</span>
+<span class="cstat-no" title="statement not covered" >		return response;</span>
+	};
 &nbsp;
-  /**
+	/**
    * Retrieves all posts made in a specific community identified by its ID.
    *
    * @async
@@ -959,12 +959,12 @@ export function CommunityProvider({ children }) {
    * @param {number} communityId The ID of the community for which to fetch posts.
    * @returns {Promise&lt;Array&gt;} A list of posts from the specified community.
    */
-  const getCommunityPosts = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.getCommunityPosts(communityId);</span>
-<span class="cstat-no" title="statement not covered" >    return response.data;</span>
-  };
+	const getCommunityPosts = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.getCommunityPosts(communityId);</span>
+<span class="cstat-no" title="statement not covered" >		return response.data;</span>
+	};
 &nbsp;
-  /**
+	/**
    * Removes a specified member from a community.
    *
    * @async
@@ -973,12 +973,12 @@ export function CommunityProvider({ children }) {
    * @param {number} memberId The ID of the member to remove.
    * @returns {Promise&lt;Object&gt;} The response from the member removal operation.
    */
-  const removeMember = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, memberId) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.removeMember(communityId, memberId);</span>
-<span class="cstat-no" title="statement not covered" >    return response;</span>
-  };
+	const removeMember = <span class="fstat-no" title="function not covered" >as</span>ync (communityId, memberId) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.removeMember(communityId, memberId);</span>
+<span class="cstat-no" title="statement not covered" >		return response;</span>
+	};
 &nbsp;
-  /**
+	/**
    * Accepts a membership request for a community.
    *
    * @async
@@ -986,12 +986,12 @@ export function CommunityProvider({ children }) {
    * @param {number} requestId The ID of the request to accept.
    * @returns {Promise&lt;Object&gt;} The response from the request acceptance operation.
    */
-  const acceptRequest = <span class="fstat-no" title="function not covered" >as</span>ync (requestId) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.acceptRequest(requestId);</span>
-<span class="cstat-no" title="statement not covered" >    return response;</span>
-  };
+	const acceptRequest = <span class="fstat-no" title="function not covered" >as</span>ync (requestId) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.acceptRequest(requestId);</span>
+<span class="cstat-no" title="statement not covered" >		return response;</span>
+	};
 &nbsp;
-  /**
+	/**
    * Denies a membership request for a community.
    *
    * @async
@@ -999,12 +999,12 @@ export function CommunityProvider({ children }) {
    * @param {number} requestId The ID of the request to deny.
    * @returns {Promise&lt;Object&gt;} The response from the request denial operation.
    */
-  const denyRequest = <span class="fstat-no" title="function not covered" >as</span>ync (requestId) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.denyRequest(requestId);</span>
-<span class="cstat-no" title="statement not covered" >    return response;</span>
-  };
+	const denyRequest = <span class="fstat-no" title="function not covered" >as</span>ync (requestId) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.denyRequest(requestId);</span>
+<span class="cstat-no" title="statement not covered" >		return response;</span>
+	};
 &nbsp;
-  /**
+	/**
    * Fetches pending membership requests for a specified community.
    *
    * @async
@@ -1012,12 +1012,12 @@ export function CommunityProvider({ children }) {
    * @param {number} communityId The ID of the community for which to fetch pending requests.
    * @returns {Promise&lt;Array&gt;} A list of pending membership requests for the community.
    */
-  const getPendingRequests = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.getPendingRequests(communityId);</span>
-<span class="cstat-no" title="statement not covered" >    return response;</span>
-  };
+	const getPendingRequests = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.getPendingRequests(communityId);</span>
+<span class="cstat-no" title="statement not covered" >		return response;</span>
+	};
 &nbsp;
-  /**
+	/**
    * Retrieves all recipes associated with a specific community identified by its ID.
    *
    * @async
@@ -1025,69 +1025,69 @@ export function CommunityProvider({ children }) {
    * @param {number} communityId The ID of the community for which to fetch recipes.
    * @returns {Promise&lt;Array&gt;} A list of recipes from the specified community.
    */
-  const getCommunityRecipes = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt; {
-    const response = <span class="cstat-no" title="statement not covered" >await communityService.getCommunityRecipes(communityId);</span>
-<span class="cstat-no" title="statement not covered" >    return response;</span>
-  };
+	const getCommunityRecipes = <span class="fstat-no" title="function not covered" >as</span>ync (communityId) =&gt; {
+		const response = <span class="cstat-no" title="statement not covered" >await communityService.getCommunityRecipes(communityId);</span>
+<span class="cstat-no" title="statement not covered" >		return response;</span>
+	};
 &nbsp;
-  const value = useMemo(
-    () =&gt; ({
-      deleteCommunity,
-      leaveCommunity,
-      updateCommunityDesc,
-      updateJoinPrivacy,
-      getCommunityImage,
-      getCommunityDetails,
-      getCommunityMembers,
-      getUserRole,
-      userCommunities,
-      setUserCommunities,
-      getAllCommunities,
-      createCommunity,
-      joinCommunity,
-      getAvailableCommunities,
-      resetUserCommunities,
-      getUserCommunities,
-      makePost,
-      getCommunityPosts,
-      removeMember,
-      acceptRequest,
-      denyRequest,
-      getPendingRequests,
-      getCommunityRecipes,
-    }),
-    [
-      getCommunityRecipes,
-      makePost,
-      getCommunityPosts,
-      removeMember,
-      getUserCommunities,
-      getCommunityDetails,
-      getAvailableCommunities,
-      resetUserCommunities,
-      userCommunities,
-      setUserCommunities,
-      getCommunityMembers,
-      getUserRole,
-      getAllCommunities,
-      createCommunity,
-      joinCommunity,
-      deleteCommunity,
-      leaveCommunity,
-      updateCommunityDesc,
-      updateJoinPrivacy,
-      getCommunityImage,
-      acceptRequest,
-      denyRequest,
-      getPendingRequests,
-    ]
-  );
+	const value = useMemo(
+		() =&gt; ({
+			deleteCommunity,
+			leaveCommunity,
+			updateCommunityDesc,
+			updateJoinPrivacy,
+			getCommunityImage,
+			getCommunityDetails,
+			getCommunityMembers,
+			getUserRole,
+			userCommunities,
+			setUserCommunities,
+			getAllCommunities,
+			createCommunity,
+			joinCommunity,
+			getAvailableCommunities,
+			resetUserCommunities,
+			getUserCommunities,
+			makePost,
+			getCommunityPosts,
+			removeMember,
+			acceptRequest,
+			denyRequest,
+			getPendingRequests,
+			getCommunityRecipes,
+		}),
+		[
+			getCommunityRecipes,
+			makePost,
+			getCommunityPosts,
+			removeMember,
+			getUserCommunities,
+			getCommunityDetails,
+			getAvailableCommunities,
+			resetUserCommunities,
+			userCommunities,
+			setUserCommunities,
+			getCommunityMembers,
+			getUserRole,
+			getAllCommunities,
+			createCommunity,
+			joinCommunity,
+			deleteCommunity,
+			leaveCommunity,
+			updateCommunityDesc,
+			updateJoinPrivacy,
+			getCommunityImage,
+			acceptRequest,
+			denyRequest,
+			getPendingRequests,
+		]
+	);
 &nbsp;
-  return (
-    &lt;CommunityContext.Provider value={value}&gt;
-      {children}
-    &lt;/CommunityContext.Provider&gt;
-  );
+	return (
+		&lt;CommunityContext.Provider value={value}&gt;
+			{children}
+		&lt;/CommunityContext.Provider&gt;
+	);
 }
 &nbsp;
 export const useCommunity = () =&gt; useContext(CommunityContext);
@@ -1102,7 +1102,7 @@ CommunityProvider.propTypes = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-28T00:28:01.090Z
+                at 2024-03-28T01:09:23.436Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

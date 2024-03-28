@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0.81% </span>
+                <span class="strong">0.78% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>1/122</span>
+                <span class='fraction'>1/128</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/31</span>
+                <span class='fraction'>0/35</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0.83% </span>
+                <span class="strong">0.79% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>1/120</span>
+                <span class='fraction'>1/126</span>
             </div>
         
             
@@ -545,7 +545,14 @@
 <a name='L480'></a><a href='#L480'>480</a>
 <a name='L481'></a><a href='#L481'>481</a>
 <a name='L482'></a><a href='#L482'>482</a>
-<a name='L483'></a><a href='#L483'>483</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L483'></a><a href='#L483'>483</a>
+<a name='L484'></a><a href='#L484'>484</a>
+<a name='L485'></a><a href='#L485'>485</a>
+<a name='L486'></a><a href='#L486'>486</a>
+<a name='L487'></a><a href='#L487'>487</a>
+<a name='L488'></a><a href='#L488'>488</a>
+<a name='L489'></a><a href='#L489'>489</a>
+<a name='L490'></a><a href='#L490'>490</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -673,6 +680,13 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -1029,20 +1043,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useState, useEffect } from "react";
 import {
-  Alert,
-  View,
-  Text,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TouchableOpacity,
-  FlatList,
-  TextInput,
-  Button,
-  Modal,
-  Image,
-  Pressable,
-  ScrollView,
-  KeyboardAvoidingView,
+	Alert,
+	View,
+	Text,
+	TouchableWithoutFeedback,
+	Keyboard,
+	TouchableOpacity,
+	FlatList,
+	TextInput,
+	Button,
+	Modal,
+	Image,
+	Pressable,
+	ScrollView,
+	KeyboardAvoidingView,
 } from "react-native";
 import { LocalIP } from "../../../../IPIndex";
 import axios from "axios";
@@ -1059,156 +1073,163 @@ import IconButton from "./NewRecipeComponents/IconButton";
  * @returns {JSX.Element} The NewRecipe component.
  */
 const NewRecipe = <span class="fstat-no" title="function not covered" >({</span>}) =&gt; {
-  const navigation = <span class="cstat-no" title="statement not covered" >useNavigation();</span>
-  const [image, setImage] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
-  const [recipeName, setRecipeName] = <span class="cstat-no" title="statement not covered" >useState("");</span>
-  const [recipeDescription, setRecipeDescription] = <span class="cstat-no" title="statement not covered" >useState("");</span>
-  const [foods, setFoods] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
-  const [searchQuery, setSearchQuery] = <span class="cstat-no" title="statement not covered" >useState("");</span>
-  const [selectedFoods, setSelectedFoods] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
-  const [selectedItem, setSelectedItem] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
-  const { searchFoods } = <span class="cstat-no" title="statement not covered" >useFoodLog();</span>
-  const [inputWeight, setInputWeight] = <span class="cstat-no" title="statement not covered" >useState("");</span>
-  const [shouldRenderScrollView, setRenderScrollView] = <span class="cstat-no" title="statement not covered" >useState(true);</span>
-  const [foodModalVisible, setFoodModalVisible] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
-  const [recipeCommunity, setRecipeCommunity] = <span class="cstat-no" title="statement not covered" >useState("");</span>
-  const [selectedCommunity, setSelectedCommunity] = <span class="cstat-no" title="statement not covered" >useState(null)</span>
-  const [selectedCommunityName, setSelectedCommunityName] = <span class="cstat-no" title="statement not covered" >useState("");</span>
-  const [communityModalVisible, setCommunityModalVisible] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
-  const [userCommunities, setUserCommunities] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
+	const navigation = <span class="cstat-no" title="statement not covered" >useNavigation();</span>
+	const [image, setImage] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
+	const [recipeName, setRecipeName] = <span class="cstat-no" title="statement not covered" >useState("");</span>
+	const [recipeDescription, setRecipeDescription] = <span class="cstat-no" title="statement not covered" >useState("");</span>
+	const [foods, setFoods] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
+	const [searchQuery, setSearchQuery] = <span class="cstat-no" title="statement not covered" >useState("");</span>
+	const [selectedFoods, setSelectedFoods] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
+	const [selectedItem, setSelectedItem] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
+	const { searchFoods } = <span class="cstat-no" title="statement not covered" >useFoodLog();</span>
+	const [inputWeight, setInputWeight] = <span class="cstat-no" title="statement not covered" >useState("");</span>
+	const [shouldRenderScrollView, setRenderScrollView] = <span class="cstat-no" title="statement not covered" >useState(true);</span>
+	const [foodModalVisible, setFoodModalVisible] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
+	const [recipeCommunity, setRecipeCommunity] = <span class="cstat-no" title="statement not covered" >useState("");</span>
+	const [selectedCommunity, setSelectedCommunity] = <span class="cstat-no" title="statement not covered" >useState(null)</span>
+	const [selectedCommunityName, setSelectedCommunityName] = <span class="cstat-no" title="statement not covered" >useState("");</span>
+	const [communityModalVisible, setCommunityModalVisible] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
+	const [userCommunities, setUserCommunities] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-    const fetchUserCommunities = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >      try {</span>
-        const communities = <span class="cstat-no" title="statement not covered" >await getUserCommunities();</span>
-<span class="cstat-no" title="statement not covered" >        setUserCommunities(communities);</span>
-      } catch (error) {}
-    };
+<span class="cstat-no" title="statement not covered" >	useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+		const fetchUserCommunities = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >			try {</span>
+				const communities = <span class="cstat-no" title="statement not covered" >await getUserCommunities();</span>
+<span class="cstat-no" title="statement not covered" >				setUserCommunities(communities);</span>
+			} catch (error) {}
+		};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    fetchUserCommunities();</span>
-  }, []);
-/**
+<span class="cstat-no" title="statement not covered" >		fetchUserCommunities();</span>
+	}, []);
+	/**
  * Initiates the image picking process by calling an external service, then sets
  * the chosen image in the component state.
  * @async
  * @function handleImagePick
  * @returns {Promise&lt;void&gt;} A promise that resolves once an image has been picked and set in state.
  */
-    const handleImagePick = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-        const result = <span class="cstat-no" title="statement not covered" >await pickImage();</span>
-<span class="cstat-no" title="statement not covered" >        if (result) {</span>
-<span class="cstat-no" title="statement not covered" >            setImage(result);</span>
-        }
-    };
+	const handleImagePick = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+		const result = <span class="cstat-no" title="statement not covered" >await pickImage();</span>
+<span class="cstat-no" title="statement not covered" >		if (result) {</span>
+<span class="cstat-no" title="statement not covered" >			setImage(result);</span>
+		}
+	};
 &nbsp;
-  const fetchUserCommunities = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    try {</span>
-      const communities = <span class="cstat-no" title="statement not covered" >await getUserCommunities();</span>
-<span class="cstat-no" title="statement not covered" >      setUserCommunities(communities.data);</span>
-      const communityNames = <span class="cstat-no" title="statement not covered" >communities.data.map(</span>
-<span class="fstat-no" title="function not covered" >        (c</span>ommunity) =&gt; <span class="cstat-no" title="statement not covered" >community.name</span>
-      );
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.error("Failed to fetch user communities:", error);</span>
-    }
-  };
+	const fetchUserCommunities = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >		try {</span>
+			const communities = <span class="cstat-no" title="statement not covered" >await getUserCommunities();</span>
+<span class="cstat-no" title="statement not covered" >			setUserCommunities(communities.data);</span>
+			const communityNames = <span class="cstat-no" title="statement not covered" >communities.data.map(</span>
+<span class="fstat-no" title="function not covered" >				(c</span>ommunity) =&gt; <span class="cstat-no" title="statement not covered" >community.name</span>
+			);
+		} catch (error) {
+<span class="cstat-no" title="statement not covered" >			console.error("Failed to fetch user communities:", error);</span>
+		}
+	};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    fetchUserCommunities();</span>
-  }, []);
+<span class="cstat-no" title="statement not covered" >	useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >		fetchUserCommunities();</span>
+	}, []);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-  }, [userCommunities]); 
+<span class="cstat-no" title="statement not covered" >	useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+	}, [userCommunities]); 
 &nbsp;
-  /**
+	/**
  * Opens the modal to allow users to add a food item to their recipe. Before opening,
  * it fetches the current list of user communities to ensure the selection is up to date.
  * @async
  * @function handleAddCommunityPress
  * @returns {Promise&lt;void&gt;} A promise that resolves once the communities have been fetched and the modal is visible.
  */
-  const handleAddCommunityPress = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    await fetchUserCommunities();</span>
-<span class="cstat-no" title="statement not covered" >    setSelectedCommunity(null); </span>
-<span class="cstat-no" title="statement not covered" >    setSelectedCommunityName(""); </span>
-<span class="cstat-no" title="statement not covered" >    setCommunityModalVisible(true);</span>
-  };
-/**
+	const handleAddCommunityPress = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >		await fetchUserCommunities();</span>
+<span class="cstat-no" title="statement not covered" >		setSelectedCommunity(null); </span>
+<span class="cstat-no" title="statement not covered" >		setSelectedCommunityName(""); </span>
+<span class="cstat-no" title="statement not covered" >		setCommunityModalVisible(true);</span>
+	};
+	/**
  * Handles selection of a community from the list. It updates the component state
  * with the selected community's ID and name.
  * @function handleCommunitySelection
  * @param {Object} community The selected community object.
  */
-  const handleCommunitySelection = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>ommunity) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setSelectedCommunity(community.id);</span>
-<span class="cstat-no" title="statement not covered" >    setSelectedCommunityName(community.name); </span>
-<span class="cstat-no" title="statement not covered" >    console.log("Selected community:", community.name);</span>
-  };
+	const handleCommunitySelection = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(c</span>ommunity) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >		setSelectedCommunity(community.id);</span>
+<span class="cstat-no" title="statement not covered" >		setSelectedCommunityName(community.name); </span>
+<span class="cstat-no" title="statement not covered" >		console.log("Selected community:", community.name);</span>
+	};
 &nbsp;
-  /**
+	/**
  * Adds the selected food item to the recipe. Validates the input weight and checks
  * if the food item is already added. Updates the selected foods in the component state.
  * @function addItem
  */
-  const addItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!selectedItem) {</span>
-<span class="cstat-no" title="statement not covered" >      Alert.alert("Error", "You must select a food");</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
+	const addItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >		if (!selectedItem) {</span>
+<span class="cstat-no" title="statement not covered" >			Alert.alert("Error", "You must select a food");</span>
+<span class="cstat-no" title="statement not covered" >			return;</span>
+		}
+<span class="cstat-no" title="statement not covered" >		if (!inputWeight.trim()) {</span>
+<span class="cstat-no" title="statement not covered" >			Alert.alert("Error", "Weight is required");</span>
+<span class="cstat-no" title="statement not covered" >			return;</span>
+		}
+<span class="cstat-no" title="statement not covered" >		if (isNaN(inputWeight)) {</span>
+<span class="cstat-no" title="statement not covered" >			Alert.alert('Error', 'Please enter a valid number for weight');</span>
+<span class="cstat-no" title="statement not covered" >			return;</span>
+		}
+<span class="cstat-no" title="statement not covered" >		if (Number(inputWeight) &lt;= 0) {</span>
+<span class="cstat-no" title="statement not covered" >			Alert.alert('Error', 'Weight must be more than 0');</span>
+<span class="cstat-no" title="statement not covered" >			return;</span>
+		}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!inputWeight.trim()) {</span>
-<span class="cstat-no" title="statement not covered" >      Alert.alert("Error", "Weight is required");</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
+<span class="cstat-no" title="statement not covered" >		if (!selectedFoods.some(<span class="fstat-no" title="function not covered" >(f</span>ood) =&gt; <span class="cstat-no" title="statement not covered" >food._id === selectedItem._id)</span>) {</span>
+<span class="cstat-no" title="statement not covered" >			setSelectedFoods([</span>
+				...selectedFoods,
+				{ ...selectedItem, weight: inputWeight },
+			]);
+<span class="cstat-no" title="statement not covered" >			setInputWeight("");</span>
+<span class="cstat-no" title="statement not covered" >			setFoodModalVisible(false);</span>
+<span class="cstat-no" title="statement not covered" >			setSelectedItem(null);</span>
+<span class="cstat-no" title="statement not covered" >			setSearchQuery("");</span>
+		} else {
+<span class="cstat-no" title="statement not covered" >			Alert.alert("Item already added");</span>
+		}
+	};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!selectedFoods.some(<span class="fstat-no" title="function not covered" >(f</span>ood) =&gt; <span class="cstat-no" title="statement not covered" >food._id === selectedItem._id)</span>) {</span>
-<span class="cstat-no" title="statement not covered" >      setSelectedFoods([</span>
-        ...selectedFoods,
-        { ...selectedItem, weight: inputWeight },
-      ]);
-<span class="cstat-no" title="statement not covered" >      setInputWeight("");</span>
-<span class="cstat-no" title="statement not covered" >      setFoodModalVisible(false);</span>
-<span class="cstat-no" title="statement not covered" >      setSelectedItem(null);</span>
-<span class="cstat-no" title="statement not covered" >      setSearchQuery("");</span>
-    } else {
-<span class="cstat-no" title="statement not covered" >      Alert.alert("Item already added");</span>
-    }
-  };
-&nbsp;
-  /**
+	/**
    * Renders an item in the list.
    *
    * @param {Object} item - The item to render.
    * @returns {JSX.Element} The rendered item.
    */
-  const renderItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; (</span>
-<span class="cstat-no" title="statement not covered" >    &lt;TouchableOpacity</span>
-      style={[
-        styles.item,
-        {
-          backgroundColor:
+	const renderItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; (</span>
+<span class="cstat-no" title="statement not covered" >		&lt;TouchableOpacity</span>
+			style={[
+				styles.item,
+				{
+					backgroundColor:
             item._id === selectedItem?._id ? "#FF815E" : "#F0F0F0",
-        },
-      ]}
-      onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setSelectedItem(item)}</span>
-      key={item._id}
-    &gt;
-      &lt;Text&gt;{item.name}&lt;/Text&gt;
-    &lt;/TouchableOpacity&gt;
-  );
+				},
+			]}
+			onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setSelectedItem(item)}</span>
+			key={item._id}
+		&gt;
+			&lt;Text&gt;{item.name}&lt;/Text&gt;
+		&lt;/TouchableOpacity&gt;
+	);
 &nbsp;
-  /**
+	/**
    * Searches for foods based on the provided search query.
    * @returns {Promise&lt;void&gt;} A promise that resolves when the search is complete.
    */
-  const searchFood = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-    const response = <span class="cstat-no" title="statement not covered" >await searchFoods({ name: searchQuery });</span>
-<span class="cstat-no" title="statement not covered" >    setFoods(response.data.foods);</span>
-  };
+	const searchFood = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+		const response = <span class="cstat-no" title="statement not covered" >await searchFoods({ name: searchQuery });</span>
+<span class="cstat-no" title="statement not covered" >		setFoods(response.data.foods);</span>
+	};
 &nbsp;
-  const removeItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>d) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    setSelectedFoods(selectedFoods.filter(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item._id !== id)</span>);</span>
-  };
+	const removeItem = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >(i</span>d) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >		setSelectedFoods(selectedFoods.filter(<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item._id !== id)</span>);</span>
+	};
 &nbsp;
 	/**
 	 * Adds selected foods to a recipe.
@@ -1245,7 +1266,7 @@ const NewRecipe = <span class="fstat-no" title="function not covered" >({</span>
 		}
 	}, [searchQuery]);
 &nbsp;
-  /**
+	/**
  * Submits the new recipe to the backend. Validates required fields, constructs the
  * recipe data payload, and makes an asynchronous call to create the new recipe.
  * Upon success, it navigates back to the previous screen.
@@ -1253,260 +1274,260 @@ const NewRecipe = <span class="fstat-no" title="function not covered" >({</span>
  * @function handleSubmit
  * @returns {Promise&lt;void&gt;} A promise that resolves once the new recipe has been successfully created.
  */
-  const handleSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >    if (!recipeName.trim()) {</span>
-<span class="cstat-no" title="statement not covered" >      Alert.alert("Error", "Recipe name is required");</span>
-<span class="cstat-no" title="statement not covered" >      return;</span>
-    }
-    const token = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem("token");</span>
-    
-    let recipeData = <span class="cstat-no" title="statement not covered" >{</span>
-        name: recipeName,
-        description: recipeDescription,
-    };
+	const handleSubmit = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >		if (!recipeName.trim()) {</span>
+<span class="cstat-no" title="statement not covered" >			Alert.alert("Error", "Recipe name is required");</span>
+<span class="cstat-no" title="statement not covered" >			return;</span>
+		}
+		const token = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem("token");</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (recipeCommunity) {</span>
-<span class="cstat-no" title="statement not covered" >        recipeData.communityThatOwnsRecipe = recipeCommunity;</span>
-    }
+		let recipeData = <span class="cstat-no" title="statement not covered" >{</span>
+			name: recipeName,
+			description: recipeDescription,
+		};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    try {</span>
-        const response = <span class="cstat-no" title="statement not covered" >await axios.post(</span>
-            `http://${LocalIP}:3000/food/createNewRecipeByUser`,
-            recipeData,
-            {
-                headers: { Authorization: `Bearer ${token}` },
-            }
-        );
-<span class="cstat-no" title="statement not covered" >        console.log("Recipe created:", response.data.data._id);</span>
-<span class="cstat-no" title="statement not covered" >        console.log("ALL DATA:", recipeData);</span>
-        const recipeID = <span class="cstat-no" title="statement not covered" >response.data.data._id;</span>
-<span class="cstat-no" title="statement not covered" >        await addItemsToRecipe(recipeID, token);</span>
+<span class="cstat-no" title="statement not covered" >		if (recipeCommunity) {</span>
+<span class="cstat-no" title="statement not covered" >			recipeData.communityThatOwnsRecipe = recipeCommunity;</span>
+		}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        if (image) {</span>
-<span class="cstat-no" title="statement not covered" >            await uploadImage(recipeID, image, "Recipe_Pictures");</span>
-        }
+<span class="cstat-no" title="statement not covered" >		try {</span>
+			const response = <span class="cstat-no" title="statement not covered" >await axios.post(</span>
+				`http://${LocalIP}:3000/food/createNewRecipeByUser`,
+				recipeData,
+				{
+					headers: { Authorization: `Bearer ${token}` },
+				}
+			);
+<span class="cstat-no" title="statement not covered" >			console.log("Recipe created:", response.data.data._id);</span>
+<span class="cstat-no" title="statement not covered" >			console.log("ALL DATA:", recipeData);</span>
+			const recipeID = <span class="cstat-no" title="statement not covered" >response.data.data._id;</span>
+<span class="cstat-no" title="statement not covered" >			await addItemsToRecipe(recipeID, token);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >      Alert.alert("Success", "Recipe created successfully");</span>
-<span class="cstat-no" title="statement not covered" >      setRecipeName("");</span>
-<span class="cstat-no" title="statement not covered" >      setRecipeDescription("");</span>
-<span class="cstat-no" title="statement not covered" >      setRecipeCommunity("");</span>
-<span class="cstat-no" title="statement not covered" >      setImage(null);</span>
-<span class="cstat-no" title="statement not covered" >      navigation.goBack();</span>
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.error("Error creating recipe or uploading image:", error);</span>
-<span class="cstat-no" title="statement not covered" >      Alert.alert("Error", "Failed to create recipe");</span>
-    }
-  };
+<span class="cstat-no" title="statement not covered" >			if (image) {</span>
+<span class="cstat-no" title="statement not covered" >				await uploadImage(recipeID, image, "Recipe_Pictures");</span>
+			}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >  return (</span>
-    &lt;TouchableWithoutFeedback onPress={Keyboard.dismiss}&gt;
-      &lt;View style={styles.container} keyboardShouldPersistTaps="handled"&gt;
-        &lt;View style={styles.semiCircle}&gt;&lt;/View&gt;
-        &lt;KeyboardAvoidingView behavior="position" enabled&gt;
-          &lt;View style={styles.formContainer}&gt;
-            &lt;Text style={styles.headerText}&gt;Add New Recipe&lt;/Text&gt;
-            &lt;TextInput
-              style={styles.input}
-              placeholder="Recipe Name"
-              onChangeText={setRecipeName}
-              returnKeyType="done"
-              value={recipeName}
-            /&gt;
-            &lt;TextInput
-              style={[styles.input, { height: 80 }]}
-              placeholder="Description"
-              multiline={true}
-              onChangeText={<span class="fstat-no" title="function not covered" >(t</span>ext) =&gt; <span class="cstat-no" title="statement not covered" >setRecipeDescription(text)}</span>
-              onSubmitEditing={Keyboard.dismiss}
-              value={recipeDescription}
-            /&gt;
-            &lt;View style={{ flexDirection: "row", justifyContent: "space-between" }}&gt;
-              &lt;View style={{ alignItems: "center" }}&gt;
-                &lt;IconButton iconName="plus" onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setFoodModalVisible(true)}</span> /&gt;
-                &lt;Text style={{ fontFamily: "Montserrat_700Bold" }}&gt;Add Food&lt;/Text&gt;
-              &lt;/View&gt;
-              &lt;View style={{ alignItems: "center" }}&gt;
-                &lt;IconButton iconName="image" onPress={handleImagePick} /&gt;
-                &lt;Text style={{ fontFamily: "Montserrat_700Bold" }}&gt;Add Image&lt;/Text&gt;
-              &lt;/View&gt;
-              &lt;View style={{ alignItems: "center" }}&gt;
-                &lt;IconButton iconName="users" onPress={handleAddCommunityPress} /&gt;
-                &lt;Text style={{ fontFamily: "Montserrat_700Bold" }}&gt;Add Community&lt;/Text&gt;
-              &lt;/View&gt;
-            &lt;/View&gt;
+<span class="cstat-no" title="statement not covered" >			Alert.alert("Success", "Recipe created successfully");</span>
+<span class="cstat-no" title="statement not covered" >			setRecipeName("");</span>
+<span class="cstat-no" title="statement not covered" >			setRecipeDescription("");</span>
+<span class="cstat-no" title="statement not covered" >			setRecipeCommunity("");</span>
+<span class="cstat-no" title="statement not covered" >			setImage(null);</span>
+<span class="cstat-no" title="statement not covered" >			navigation.goBack();</span>
+		} catch (error) {
+<span class="cstat-no" title="statement not covered" >			console.error("Error creating recipe or uploading image:", error);</span>
+<span class="cstat-no" title="statement not covered" >			Alert.alert("Error", "Failed to create recipe");</span>
+		}
+	};
 &nbsp;
-            &lt;Modal
-              animationType="slide"
-              transparent={true}
-              visible={foodModalVisible}
-              onRequestClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >                Alert.alert("Modal has been closed.");</span>
-<span class="cstat-no" title="statement not covered" >                setFoodModalVisible(!foodModalVisible);</span>
-              }}
-            &gt;
-              &lt;TouchableWithoutFeedback
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setFoodModalVisible(false)}</span>
-              &gt;
-                &lt;View style={styles.centeredView}&gt;
-                  &lt;TouchableWithoutFeedback&gt;
-                    &lt;View style={styles.modalView}&gt;
-                      &lt;Text style={styles.modalText}&gt;Add a New Food Item&lt;/Text&gt;
+<span class="cstat-no" title="statement not covered" >	return (</span>
+		&lt;TouchableWithoutFeedback onPress={Keyboard.dismiss}&gt;
+			&lt;View style={styles.container} keyboardShouldPersistTaps="handled"&gt;
+				&lt;View style={styles.semiCircle}&gt;&lt;/View&gt;
+				&lt;KeyboardAvoidingView behavior="position" enabled&gt;
+					&lt;View style={styles.formContainer}&gt;
+						&lt;Text style={styles.headerText}&gt;Add New Recipe&lt;/Text&gt;
+						&lt;TextInput
+							style={styles.input}
+							placeholder="Recipe Name"
+							onChangeText={setRecipeName}
+							returnKeyType="done"
+							value={recipeName}
+						/&gt;
+						&lt;TextInput
+							style={[styles.input, { height: 80 }]}
+							placeholder="Description"
+							multiline={true}
+							onChangeText={<span class="fstat-no" title="function not covered" >(t</span>ext) =&gt; <span class="cstat-no" title="statement not covered" >setRecipeDescription(text)}</span>
+							onSubmitEditing={Keyboard.dismiss}
+							value={recipeDescription}
+						/&gt;
+						&lt;View style={{ flexDirection: "row", justifyContent: "space-between" }}&gt;
+							&lt;View style={{ alignItems: "center" }}&gt;
+								&lt;IconButton iconName="plus" onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setFoodModalVisible(true)}</span> /&gt;
+								&lt;Text style={{ fontFamily: "Montserrat_700Bold" }}&gt;Add Food&lt;/Text&gt;
+							&lt;/View&gt;
+							&lt;View style={{ alignItems: "center" }}&gt;
+								&lt;IconButton iconName="image" onPress={handleImagePick} /&gt;
+								&lt;Text style={{ fontFamily: "Montserrat_700Bold" }}&gt;Add Image&lt;/Text&gt;
+							&lt;/View&gt;
+							&lt;View style={{ alignItems: "center" }}&gt;
+								&lt;IconButton iconName="users" onPress={handleAddCommunityPress} /&gt;
+								&lt;Text style={{ fontFamily: "Montserrat_700Bold" }}&gt;Add Community&lt;/Text&gt;
+							&lt;/View&gt;
+						&lt;/View&gt;
 &nbsp;
-                      &lt;TextInput
-                        style={styles.modalInput}
-                        placeholder="Search Food..."
-                        placeholderTextColor="darkgray"
-                        value={searchQuery}
-                        onChangeText={<span class="fstat-no" title="function not covered" >(t</span>ext) =&gt; <span class="cstat-no" title="statement not covered" >setSearchQuery(text)}</span>
-                        blurOnSubmit
-                        returnKeyType="search"
-                      /&gt;
+						&lt;Modal
+							animationType="slide"
+							transparent={true}
+							visible={foodModalVisible}
+							onRequestClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >								Alert.alert("Modal has been closed.");</span>
+<span class="cstat-no" title="statement not covered" >								setFoodModalVisible(!foodModalVisible);</span>
+							}}
+						&gt;
+							&lt;TouchableWithoutFeedback
+								onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setFoodModalVisible(false)}</span>
+							&gt;
+								&lt;View style={styles.centeredView}&gt;
+									&lt;TouchableWithoutFeedback&gt;
+										&lt;View style={styles.modalView}&gt;
+											&lt;Text style={styles.modalText}&gt;Add a New Food Item&lt;/Text&gt;
 &nbsp;
-                      {searchQuery.length &gt;= 3 &amp;&amp; shouldRenderScrollView &amp;&amp; (
-                        &lt;View style={styles.dropdownContainer}&gt;
-                          &lt;ScrollView style={styles.dropdown} maxHeight={180}&gt;
-                            {foods.map(renderItem)}
-                          &lt;/ScrollView&gt;
-                        &lt;/View&gt;
-                      )}
-                      &lt;TextInput
-                        style={styles.modalInput}
-                        placeholder="Weight in grams"
-                        placeholderTextColor="darkgray"
-                        keyboardType="numeric"
-                        value={inputWeight}
-                        onChangeText={setInputWeight}
-                        blurOnSubmit
-                        returnKeyType="done"
-                      /&gt;
-                      &lt;Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={addItem}
-                      &gt;
-                        &lt;Text style={styles.textStyle}&gt;Add Food&lt;/Text&gt;
-                      &lt;/Pressable&gt;
-                    &lt;/View&gt;
-                  &lt;/TouchableWithoutFeedback&gt;
-                &lt;/View&gt;
-              &lt;/TouchableWithoutFeedback&gt;
-            &lt;/Modal&gt;
+											&lt;TextInput
+												style={styles.modalInput}
+												placeholder="Search Food..."
+												placeholderTextColor="darkgray"
+												value={searchQuery}
+												onChangeText={<span class="fstat-no" title="function not covered" >(t</span>ext) =&gt; <span class="cstat-no" title="statement not covered" >setSearchQuery(text)}</span>
+												blurOnSubmit
+												returnKeyType="search"
+											/&gt;
 &nbsp;
-            &lt;Modal
-              visible={communityModalVisible}
-              onRequestClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setCommunityModalVisible(false)}</span>
-              animationType="slide"
-              transparent={true}
-            &gt;
-              &lt;TouchableWithoutFeedback
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setCommunityModalVisible(false)}</span>
-              &gt;
-                &lt;View style={styles.centeredView}&gt;
-                  &lt;View style={[styles.modalView, { height: 250 }]}&gt;
-                    &lt;Text style={styles.modalText}&gt;Select a Community&lt;/Text&gt;
-                    &lt;FlatList
-                      style={{
-                        backgroundColor: "#F0F0F0",
-                        borderRadius: 20,
-                        padding: 10,
-                        margin: 10,
-                        width: 250,
-                      }}
-                      data={userCommunities}
-                      keyExtractor={<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.id.toString()}</span>
-                      renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
-<span class="cstat-no" title="statement not covered" >                        &lt;TouchableOpacity</span>
-                          onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleCommunitySelection(item)}</span>
-                          style={{
-                            padding: 10,
-                            backgroundColor:
+											{searchQuery.length &gt;= 3 &amp;&amp; shouldRenderScrollView &amp;&amp; (
+												&lt;View style={styles.dropdownContainer}&gt;
+													&lt;ScrollView style={styles.dropdown} maxHeight={180}&gt;
+														{foods.map(renderItem)}
+													&lt;/ScrollView&gt;
+												&lt;/View&gt;
+											)}
+											&lt;TextInput
+												style={styles.modalInput}
+												placeholder="Weight in grams"
+												placeholderTextColor="darkgray"
+												keyboardType="numeric"
+												value={inputWeight}
+												onChangeText={setInputWeight}
+												blurOnSubmit
+												returnKeyType="done"
+											/&gt;
+											&lt;Pressable
+												style={[styles.button, styles.buttonClose]}
+												onPress={addItem}
+											&gt;
+												&lt;Text style={styles.textStyle}&gt;Add Food&lt;/Text&gt;
+											&lt;/Pressable&gt;
+										&lt;/View&gt;
+									&lt;/TouchableWithoutFeedback&gt;
+								&lt;/View&gt;
+							&lt;/TouchableWithoutFeedback&gt;
+						&lt;/Modal&gt;
+&nbsp;
+						&lt;Modal
+							visible={communityModalVisible}
+							onRequestClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setCommunityModalVisible(false)}</span>
+							animationType="slide"
+							transparent={true}
+						&gt;
+							&lt;TouchableWithoutFeedback
+								onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setCommunityModalVisible(false)}</span>
+							&gt;
+								&lt;View style={styles.centeredView}&gt;
+									&lt;View style={[styles.modalView, { height: 250 }]}&gt;
+										&lt;Text style={styles.modalText}&gt;Select a Community&lt;/Text&gt;
+										&lt;FlatList
+											style={{
+												backgroundColor: "#F0F0F0",
+												borderRadius: 20,
+												padding: 10,
+												margin: 10,
+												width: 250,
+											}}
+											data={userCommunities}
+											keyExtractor={<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item.id.toString()}</span>
+											renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
+<span class="cstat-no" title="statement not covered" >												&lt;TouchableOpacity</span>
+													onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleCommunitySelection(item)}</span>
+													style={{
+														padding: 10,
+														backgroundColor:
                               item.id === selectedCommunity
-                                ? "#FF815E"
-                                : "transparent",
-                            borderRadius: 20,
-                          }}
-                        &gt;
-                          &lt;Text style={styles.communityItem}&gt;{item.name}&lt;/Text&gt;
-                        &lt;/TouchableOpacity&gt;
-                      )}
-                    /&gt;
-                    {selectedCommunity &amp;&amp; (
-                      &lt;TouchableOpacity
-                        onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >                          setRecipeCommunity(selectedCommunity);</span>
-<span class="cstat-no" title="statement not covered" >                          setCommunityModalVisible(false);</span>
-                        }}
-                        style={[styles.button, styles.buttonClose]}
-                      &gt;
-                        &lt;Text style={styles.textStyle}&gt;Add to Community&lt;/Text&gt;
-                      &lt;/TouchableOpacity&gt;
-                    )}
-                  &lt;/View&gt;
-                &lt;/View&gt;
-              &lt;/TouchableWithoutFeedback&gt;
-            &lt;/Modal&gt;
-          &lt;/View&gt;
-          &lt;View style={{ marginVertical: 20 }}&gt;
-            &lt;Text style={styles.text}&gt;Selected Community: &lt;/Text&gt;
-            &lt;Text
-              style={{
-                fontFamily: "Montserrat_400Regular",
-              }}
-            &gt;
-              {selectedCommunityName || "No community selected"}
-            &lt;/Text&gt;
-          &lt;/View&gt;
-          &lt;View style={{ height: 100 }}&gt;
-            &lt;Text style={styles.text}&gt;Selected Foods:&lt;/Text&gt;
-            {selectedFoods.length &gt; 0 ? (
-              &lt;ScrollView
-                style={{ backgroundColor: "#F0F0F0", borderRadius: 20 }}
-              &gt;
-                &lt;FlatList
-                  data={selectedFoods}
-                  keyExtractor={<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item._id.toString()}</span>
-                  renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
-<span class="cstat-no" title="statement not covered" >                    &lt;View</span>
-                      style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        marginBottom: 5,
-                        paddingHorizontal: 10,
-                      }}
-                    &gt;
-                      &lt;View style={{ flex: 0.8 }}&gt;
-                        &lt;Text&gt;
-                          {item.weight}g {item.name}
-                        &lt;/Text&gt;
-                      &lt;/View&gt;
-                      &lt;Pressable onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >removeItem(item._id)}</span>&gt;
-                        &lt;Text style={{ color: "red" }}&gt;Remove&lt;/Text&gt;
-                      &lt;/Pressable&gt;
-                    &lt;/View&gt;
-                  )}
-                  contentContainerStyle={{ paddingBottom: 20 }}
-                /&gt;
-              &lt;/ScrollView&gt;
-            ) : (
-              &lt;Text
-                style={{
-                  fontFamily: "Montserrat_400Regular",
-                }}
-              &gt;
+                              	? "#FF815E"
+                              	: "transparent",
+														borderRadius: 20,
+													}}
+												&gt;
+													&lt;Text style={styles.communityItem}&gt;{item.name}&lt;/Text&gt;
+												&lt;/TouchableOpacity&gt;
+											)}
+										/&gt;
+										{selectedCommunity &amp;&amp; (
+											&lt;TouchableOpacity
+												onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >													setRecipeCommunity(selectedCommunity);</span>
+<span class="cstat-no" title="statement not covered" >													setCommunityModalVisible(false);</span>
+												}}
+												style={[styles.button, styles.buttonClose]}
+											&gt;
+												&lt;Text style={styles.textStyle}&gt;Add to Community&lt;/Text&gt;
+											&lt;/TouchableOpacity&gt;
+										)}
+									&lt;/View&gt;
+								&lt;/View&gt;
+							&lt;/TouchableWithoutFeedback&gt;
+						&lt;/Modal&gt;
+					&lt;/View&gt;
+					&lt;View style={{ marginVertical: 20 }}&gt;
+						&lt;Text style={styles.text}&gt;Selected Community: &lt;/Text&gt;
+						&lt;Text
+							style={{
+								fontFamily: "Montserrat_400Regular",
+							}}
+						&gt;
+							{selectedCommunityName || "No community selected"}
+						&lt;/Text&gt;
+					&lt;/View&gt;
+					&lt;View style={{ height: 100 }}&gt;
+						&lt;Text style={styles.text}&gt;Selected Foods:&lt;/Text&gt;
+						{selectedFoods.length &gt; 0 ? (
+							&lt;ScrollView
+								style={{ backgroundColor: "#F0F0F0", borderRadius: 20 }}
+							&gt;
+								&lt;FlatList
+									data={selectedFoods}
+									keyExtractor={<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item._id.toString()}</span>
+									renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
+<span class="cstat-no" title="statement not covered" >										&lt;View</span>
+											style={{
+												flexDirection: "row",
+												justifyContent: "space-between",
+												alignItems: "center",
+												marginBottom: 5,
+												paddingHorizontal: 10,
+											}}
+										&gt;
+											&lt;View style={{ flex: 0.8 }}&gt;
+												&lt;Text&gt;
+													{item.weight}g {item.name}
+												&lt;/Text&gt;
+											&lt;/View&gt;
+											&lt;Pressable onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >removeItem(item._id)}</span>&gt;
+												&lt;Text style={{ color: "red" }}&gt;Remove&lt;/Text&gt;
+											&lt;/Pressable&gt;
+										&lt;/View&gt;
+									)}
+									contentContainerStyle={{ paddingBottom: 20 }}
+								/&gt;
+							&lt;/ScrollView&gt;
+						) : (
+							&lt;Text
+								style={{
+									fontFamily: "Montserrat_400Regular",
+								}}
+							&gt;
                 No foods added
-              &lt;/Text&gt;
-            )}
-          &lt;/View&gt;
-        &lt;/KeyboardAvoidingView&gt;
+							&lt;/Text&gt;
+						)}
+					&lt;/View&gt;
+				&lt;/KeyboardAvoidingView&gt;
 &nbsp;
-        {image &amp;&amp; &lt;Image source={{ uri: image }} style={styles.imagePreview} /&gt;}
+				{image &amp;&amp; &lt;Image source={{ uri: image }} style={styles.imagePreview} /&gt;}
 &nbsp;
-        &lt;TouchableOpacity style={styles.submitButton} onPress={handleSubmit}&gt;
-          &lt;Text style={styles.submitButtonText}&gt;Submit Recipe&lt;/Text&gt;
-        &lt;/TouchableOpacity&gt;
-      &lt;/View&gt;
-    &lt;/TouchableWithoutFeedback&gt;
-  );
+				&lt;TouchableOpacity style={styles.submitButton} onPress={handleSubmit}&gt;
+					&lt;Text style={styles.submitButtonText}&gt;Submit Recipe&lt;/Text&gt;
+				&lt;/TouchableOpacity&gt;
+			&lt;/View&gt;
+		&lt;/TouchableWithoutFeedback&gt;
+	);
 };
 &nbsp;
 export default NewRecipe;</pre></td></tr></table></pre>
@@ -1516,7 +1537,7 @@ export default NewRecipe;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-28T00:28:01.090Z
+                at 2024-03-28T01:09:23.436Z
             </div>
         <script src="../../../../../../../prettify.js"></script>
         <script>

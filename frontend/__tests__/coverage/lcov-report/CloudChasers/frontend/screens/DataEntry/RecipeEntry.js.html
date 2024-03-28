@@ -30,9 +30,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>0/2</span>
             </div>
         
             
@@ -116,7 +116,25 @@
 <a name='L51'></a><a href='#L51'>51</a>
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -139,9 +157,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -150,6 +174,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -170,56 +206,74 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { useFoodLog } from '../../contexts/FoodLogContext';
 import SelectableRecipe from './DataEntryComponents/SelectableRecipe/SelectableRecipe';
 import { getImageLink } from '../../services/ImageService';
 &nbsp;
 const RecipeEntry = <span class="fstat-no" title="function not covered" >()</span> =&gt; {
-    const { getAllUserRecipes } = <span class="cstat-no" title="statement not covered" >useFoodLog();</span>
-    const [recipes, setRecipes] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
+	const { getAllUserRecipes } = <span class="cstat-no" title="statement not covered" >useFoodLog();</span>
+	const [recipes, setRecipes] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-        const fetchRecipes = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-            const fetchedRecipes = <span class="cstat-no" title="statement not covered" >await getAllUserRecipes();</span>
-<span class="cstat-no" title="statement not covered" >            setRecipes(fetchedRecipes);</span>
-        };
+<span class="cstat-no" title="statement not covered" >	useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+		const fetchRecipes = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+			const fetchedRecipes = <span class="cstat-no" title="statement not covered" >await getAllUserRecipes();</span>
+<span class="cstat-no" title="statement not covered" >			setRecipes(fetchedRecipes);</span>
+		};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        fetchRecipes();</span>
-    }, []);
+<span class="cstat-no" title="statement not covered" >		fetchRecipes();</span>
+	}, []);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return (</span>
-        &lt;FlatList
-            data={recipes}
-            renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
-<span class="cstat-no" title="statement not covered" >                &lt;SelectableRecipe style={styles.box} key={item._id} id={item._id} title={item.name} /&gt;</span>
-            )}
-            keyExtractor={<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item._id}</span>
-            numColumns={2}
-            columnWrapperStyle={styles.row}
-            style={styles.list}
-        /&gt;
-    );
+<span class="cstat-no" title="statement not covered" >	return (</span>
+		recipes.length &gt; 0 ? (
+			&lt;FlatList
+				data={recipes}
+				renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
+<span class="cstat-no" title="statement not covered" >					&lt;SelectableRecipe style={styles.box} key={item._id} id={item._id} title={item.name} /&gt;</span>
+				)}
+				keyExtractor={<span class="fstat-no" title="function not covered" >(i</span>tem) =&gt; <span class="cstat-no" title="statement not covered" >item._id}</span>
+				numColumns={2}
+				columnWrapperStyle={styles.row}
+				style={styles.list}
+			/&gt;
+		) : (
+			&lt;View style={styles.container}&gt;
+				&lt;Text&gt;No recipes found. Please add some.&lt;/Text&gt;
+			&lt;/View&gt;
+		)
+	);
 };
 &nbsp;
 const styles = StyleSheet.create({
-    container: {
-        marginTop: 5,
-        flex: 1,
-        paddingHorizontal: 5,
-    },
-    list: {
-        flex: 1,
-    },
-    row: {
-        justifyContent: 'space-between',
-        paddingHorizontal: 8,
-    },
-    box: {
-        width: '45%',
-        aspectRatio: 1,
-        margin: 8,
-    },
+	container: {
+		marginTop: 5,
+		flex: 1,
+		paddingHorizontal: 5,
+	},
+	list: {
+		flex: 1,
+	},
+	row: {
+		justifyContent: 'space-between',
+		paddingHorizontal: 8,
+	},
+	box: {
+		width: '45%',
+		aspectRatio: 1,
+		margin: 8,
+	},
+	emptyContainer: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
+		paddingHorizontal: 20,
+	},
+	emptyText: {
+		fontSize: 18,
+		textAlign: 'center',
+		fontFamily: 'Montserrat_600SemiBold',
+		color: '#333',
+	},
 });
 &nbsp;
 export default RecipeEntry;</pre></td></tr></table></pre>
@@ -229,7 +283,7 @@ export default RecipeEntry;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-28T00:28:01.090Z
+                at 2024-03-28T01:09:23.436Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

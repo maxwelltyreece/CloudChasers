@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.4% </span>
+                <span class="strong">4.65% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>2/37</span>
+                <span class='fraction'>2/43</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/4</span>
+                <span class='fraction'>0/8</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">5.4% </span>
+                <span class="strong">4.65% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>2/37</span>
+                <span class='fraction'>2/43</span>
             </div>
         
             
@@ -294,7 +294,15 @@
 <a name='L229'></a><a href='#L229'>229</a>
 <a name='L230'></a><a href='#L230'>230</a>
 <a name='L231'></a><a href='#L231'>231</a>
-<a name='L232'></a><a href='#L232'>232</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L232'></a><a href='#L232'>232</a>
+<a name='L233'></a><a href='#L233'>233</a>
+<a name='L234'></a><a href='#L234'>234</a>
+<a name='L235'></a><a href='#L235'>235</a>
+<a name='L236'></a><a href='#L236'>236</a>
+<a name='L237'></a><a href='#L237'>237</a>
+<a name='L238'></a><a href='#L238'>238</a>
+<a name='L239'></a><a href='#L239'>239</a>
+<a name='L240'></a><a href='#L240'>240</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -445,6 +453,14 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -536,218 +552,226 @@ import { useFoodLog } from "../../../../contexts/FoodLogContext";
 &nbsp;
 &nbsp;
 export const styles = StyleSheet.create({
-  box: {
-    backgroundColor: "white",
-    borderRadius: 10,
-    overflow: "hidden",
-    width: "45%",
-    aspectRatio: 1,
-    margin: 8,
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-  },
-  titleContainer: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    backgroundColor: "transparent",
-    padding: 10,
-  },
-  title: {
-    fontSize: 16,
-    fontFamily: "Montserrat_700Bold",
-    color: "white",
-    textShadowColor: "rgba(0, 0, 0, 0.75)",
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
-  },
-  modalView: {
-    margin: 20,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-    width: 300,
-    height: "70%",
-  },
+	box: {
+		backgroundColor: "white",
+		borderRadius: 10,
+		overflow: "hidden",
+		width: "45%",
+		aspectRatio: 1,
+		margin: 8,
+	},
+	image: {
+		width: "100%",
+		height: "100%",
+	},
+	titleContainer: {
+		position: "absolute",
+		bottom: 0,
+		width: "100%",
+		backgroundColor: "transparent",
+		padding: 10,
+	},
+	title: {
+		fontSize: 16,
+		fontFamily: "Montserrat_700Bold",
+		color: "white",
+		textShadowColor: "rgba(0, 0, 0, 0.75)",
+		textShadowOffset: { width: -1, height: 1 },
+		textShadowRadius: 10,
+	},
+	modalView: {
+		margin: 20,
+		backgroundColor: "white",
+		borderRadius: 20,
+		padding: 35,
+		alignItems: "center",
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5,
+		width: 300,
+		height: "70%",
+	},
 &nbsp;
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
-  modalImage: {
-    width: 200,
-    height: 200,
-    marginBottom: 20,
-    borderRadius: 10,
-  },
-  modalTitle: {
-    fontSize: 20,
-    marginBottom: 15,
-    textAlign: "center",
-    fontFamily: "Montserrat_700Bold",
-  },
-  input: {
-    height: 40,
-    backgroundColor: "#F0F0F0",
-    borderWidth: 1,
-    borderRadius: 10,
-    width: '50%',
-    marginTop: 10,
-    marginBottom: 10,
-    paddingLeft: 10,
-  },
-  button: {
-    borderRadius: 20,
+	centeredView: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		marginTop: 22,
+	},
+	modalImage: {
+		width: 200,
+		height: 200,
+		marginBottom: 20,
+		borderRadius: 10,
+	},
+	modalTitle: {
+		fontSize: 20,
+		marginBottom: 15,
+		textAlign: "center",
+		fontFamily: "Montserrat_700Bold",
+	},
+	input: {
+		height: 40,
+		backgroundColor: "#F0F0F0",
+		borderWidth: 1,
+		borderRadius: 10,
+		width: '50%',
+		marginTop: 10,
+		marginBottom: 10,
+		paddingLeft: 10,
+	},
+	button: {
+		borderRadius: 20,
     
-    padding: 10,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: "#FF815E",
-  },
-  logButton: {
-    backgroundColor: "#FF815E",
-    padding: 10,
-    width: 100,
-    borderRadius: 20,
-    marginTop: 10,
-  },
-  logButtonText: {
-    color: "white",
-    textAlign: "center",
-    fontFamily: "Montserrat_700Bold",
-    fontSize: 16,
-  },
-  ingredientsTitle:{
-    fontSize: 20,
-    fontFamily: "Montserrat_700Bold",
-    marginBottom: 10,
-  },
+		padding: 10,
+		elevation: 2,
+	},
+	buttonClose: {
+		backgroundColor: "#FF815E",
+	},
+	logButton: {
+		backgroundColor: "#FF815E",
+		padding: 10,
+		width: 100,
+		borderRadius: 20,
+		marginTop: 10,
+	},
+	logButtonText: {
+		color: "white",
+		textAlign: "center",
+		fontFamily: "Montserrat_700Bold",
+		fontSize: 16,
+	},
+	ingredientsTitle:{
+		fontSize: 20,
+		fontFamily: "Montserrat_700Bold",
+		marginBottom: 10,
+	},
   
 });
 &nbsp;
 function <span class="fstat-no" title="function not covered" >SelectableRecipe(</span>{ id, title, description }) {
-    const [imageUrl, setImageUrl] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
-    const [ingredients, setIngredients] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
-    const [modalVisible, setModalVisible] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
-    const { getRecipeIngredients, logRecipeFood } = <span class="cstat-no" title="statement not covered" >useFoodLog();</span>
+	const [imageUrl, setImageUrl] = <span class="cstat-no" title="statement not covered" >useState(null);</span>
+	const [ingredients, setIngredients] = <span class="cstat-no" title="statement not covered" >useState([]);</span>
+	const [modalVisible, setModalVisible] = <span class="cstat-no" title="statement not covered" >useState(false);</span>
+	const { getRecipeIngredients, logRecipeFood } = <span class="cstat-no" title="statement not covered" >useFoodLog();</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-        const handleImageRetrieval = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            try {</span>
-                const link = <span class="cstat-no" title="statement not covered" >await getImageLink('Recipe_Pictures', id);</span>
-<span class="cstat-no" title="statement not covered" >                setImageUrl(link);</span>
-            } catch (error) {
-<span class="cstat-no" title="statement not covered" >                console.error("Failed to fetch image URL", error);</span>
-            }
-        };
+<span class="cstat-no" title="statement not covered" >	useEffect(<span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
+		const handleImageRetrieval = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >			try {</span>
+				const link = <span class="cstat-no" title="statement not covered" >await getImageLink('Recipe_Pictures', id);</span>
+<span class="cstat-no" title="statement not covered" >				setImageUrl(link);</span>
+			} catch (error) {
+<span class="cstat-no" title="statement not covered" >				console.error("Failed to fetch image URL", error);</span>
+			}
+		};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        handleImageRetrieval();</span>
+<span class="cstat-no" title="statement not covered" >		handleImageRetrieval();</span>
 &nbsp;
-        const getIngredients = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >            try {</span>
-                const response = <span class="cstat-no" title="statement not covered" >await getRecipeIngredients(id);</span>
-<span class="cstat-no" title="statement not covered" >                if (Array.isArray(response)) {</span>
-<span class="cstat-no" title="statement not covered" >                    setIngredients(response);</span>
-                } else {
-<span class="cstat-no" title="statement not covered" >                    setIngredients([]);</span>
-                }
-            } catch (error) {
-<span class="cstat-no" title="statement not covered" >                console.error("Failed to fetch ingredients", error);</span>
-            }
-        };
+		const getIngredients = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >			try {</span>
+				const response = <span class="cstat-no" title="statement not covered" >await getRecipeIngredients(id);</span>
+<span class="cstat-no" title="statement not covered" >				if (Array.isArray(response)) {</span>
+<span class="cstat-no" title="statement not covered" >					setIngredients(response);</span>
+				} else {
+<span class="cstat-no" title="statement not covered" >					setIngredients([]);</span>
+				}
+			} catch (error) {
+<span class="cstat-no" title="statement not covered" >				console.error("Failed to fetch ingredients", error);</span>
+			}
+		};
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        getIngredients();</span>
-    }, [id]);
+<span class="cstat-no" title="statement not covered" >		getIngredients();</span>
+	}, [id]);
 &nbsp;
-    const [inputWeight, setInputWeight] = <span class="cstat-no" title="statement not covered" >useState('');</span>
+	const [inputWeight, setInputWeight] = <span class="cstat-no" title="statement not covered" >useState('');</span>
 &nbsp;
-    const logRecipe = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        if (!inputWeight) {</span>
-<span class="cstat-no" title="statement not covered" >            Alert.alert('Error', 'Please enter a weight');</span>
-<span class="cstat-no" title="statement not covered" >            return;</span>
-        }
+	const logRecipe = <span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >as</span>ync () =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >		if (!inputWeight) {</span>
+<span class="cstat-no" title="statement not covered" >			Alert.alert('Error', 'Please enter a weight');</span>
+<span class="cstat-no" title="statement not covered" >			return;</span>
+		}
+<span class="cstat-no" title="statement not covered" >		if (isNaN(inputWeight)) {</span>
+<span class="cstat-no" title="statement not covered" >			Alert.alert('Error', 'Please enter a valid number for weight');</span>
+<span class="cstat-no" title="statement not covered" >			return;</span>
+		}
+<span class="cstat-no" title="statement not covered" >		if (inputWeight &lt;= 0) {</span>
+<span class="cstat-no" title="statement not covered" >			Alert.alert('Error', 'Weight must be more than 0g');</span>
+<span class="cstat-no" title="statement not covered" >			return;</span>
+		}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        try {</span>
-            const response = <span class="cstat-no" title="statement not covered" >await logRecipeFood({</span>
-                mealType: title,
-                recipeID: id,
-                totalRecipeWeight: parseInt(inputWeight),
-            });
+<span class="cstat-no" title="statement not covered" >		try {</span>
+			const response = <span class="cstat-no" title="statement not covered" >await logRecipeFood({</span>
+				mealType: title,
+				recipeID: id,
+				totalRecipeWeight: parseInt(inputWeight),
+			});
 &nbsp;
-<span class="cstat-no" title="statement not covered" >            console.log(response);</span>
-        } catch (error) {
-<span class="cstat-no" title="statement not covered" >            console.error("Failed to log recipe", error);</span>
-        }
+<span class="cstat-no" title="statement not covered" >			console.log(response);</span>
+		} catch (error) {
+<span class="cstat-no" title="statement not covered" >			console.error("Failed to log recipe", error);</span>
+		}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        setInputWeight('');</span>
-<span class="cstat-no" title="statement not covered" >        setModalVisible(false);</span>
-    };
+<span class="cstat-no" title="statement not covered" >		setInputWeight('');</span>
+<span class="cstat-no" title="statement not covered" >		setModalVisible(false);</span>
+	};
     
-<span class="cstat-no" title="statement not covered" >    return (</span>
-      &lt;Pressable style={styles.box} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setModalVisible(true)}</span>&gt;
-        &lt;Image source={{ uri: imageUrl }} style={styles.image} /&gt;
-        &lt;View style={styles.titleContainer}&gt;
-          &lt;Text style={styles.title}&gt;{title}&lt;/Text&gt;
-        &lt;/View&gt;
-        &lt;Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >            setModalVisible(!modalVisible);</span>
-          }}
-        &gt;
-          &lt;TouchableWithoutFeedback onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setModalVisible(false)}</span>&gt;
-            &lt;View style={styles.centeredView}&gt;
-              &lt;TouchableWithoutFeedback onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {}}&gt;
-                &lt;View style={styles.modalView}&gt;
-                  &lt;Image source={{ uri: imageUrl }} style={styles.modalImage} /&gt;
-                  &lt;Text style={styles.modalTitle}&gt;{title}&lt;/Text&gt;
-                  &lt;Text style={styles.description}&gt;{description}&lt;/Text&gt;
-                  &lt;Text style={styles.ingredientsTitle}&gt;Ingredients&lt;/Text&gt;
-                  &lt;ScrollView style={styles.dropdown}&gt;
-                    {ingredients.map(<span class="fstat-no" title="function not covered" >(i</span>ngredient) =&gt; (
-<span class="cstat-no" title="statement not covered" >                      &lt;Text</span>
-                        key={`${ingredient.name}:${ingredient.weight}`}
-                        style={styles.ingredient}
-                      &gt;
-                        {ingredient.weight}g of {ingredient.name}
-                      &lt;/Text&gt;
-                    ))}
-                  &lt;/ScrollView&gt;
-                  &lt;TextInput
-                    style={styles.input}
-                    keyboardType="numeric"
-                    value={inputWeight}
-                    onChangeText={setInputWeight}
-                    placeholder="Weight (g)"
-                    placeholderTextColor="darkgrey"
-                    returnKeyType="done"
-                  /&gt;
-                  &lt;Pressable style={styles.logButton} onPress={logRecipe}&gt;
-                    &lt;Text style={styles.logButtonText}&gt;Log&lt;/Text&gt;
-                  &lt;/Pressable&gt;
-                &lt;/View&gt;
-              &lt;/TouchableWithoutFeedback&gt;
-            &lt;/View&gt;
-          &lt;/TouchableWithoutFeedback&gt;
-        &lt;/Modal&gt;
-      &lt;/Pressable&gt;
-    );
+<span class="cstat-no" title="statement not covered" >	return (</span>
+		&lt;Pressable style={styles.box} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setModalVisible(true)}</span>&gt;
+			&lt;Image source={{ uri: imageUrl }} style={styles.image} /&gt;
+			&lt;View style={styles.titleContainer}&gt;
+				&lt;Text style={styles.title}&gt;{title}&lt;/Text&gt;
+			&lt;/View&gt;
+			&lt;Modal
+				animationType="slide"
+				transparent={true}
+				visible={modalVisible}
+				onRequestClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >					setModalVisible(!modalVisible);</span>
+				}}
+			&gt;
+				&lt;TouchableWithoutFeedback onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setModalVisible(false)}</span>&gt;
+					&lt;View style={styles.centeredView}&gt;
+						&lt;TouchableWithoutFeedback onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; {}}&gt;
+							&lt;View style={styles.modalView}&gt;
+								&lt;Image source={{ uri: imageUrl }} style={styles.modalImage} /&gt;
+								&lt;Text style={styles.modalTitle}&gt;{title}&lt;/Text&gt;
+								&lt;Text style={styles.description}&gt;{description}&lt;/Text&gt;
+								&lt;Text style={styles.ingredientsTitle}&gt;Ingredients&lt;/Text&gt;
+								&lt;ScrollView style={styles.dropdown}&gt;
+									{ingredients.map(<span class="fstat-no" title="function not covered" >(i</span>ngredient) =&gt; (
+<span class="cstat-no" title="statement not covered" >										&lt;Text</span>
+											key={`${ingredient.name}:${ingredient.weight}`}
+											style={styles.ingredient}
+										&gt;
+											{ingredient.weight}g of {ingredient.name}
+										&lt;/Text&gt;
+									))}
+								&lt;/ScrollView&gt;
+								&lt;TextInput
+									style={styles.input}
+									keyboardType="numeric"
+									value={inputWeight}
+									onChangeText={setInputWeight}
+									placeholder="Weight (g)"
+									placeholderTextColor="darkgrey"
+									returnKeyType="done"
+								/&gt;
+								&lt;Pressable style={styles.logButton} onPress={logRecipe}&gt;
+									&lt;Text style={styles.logButtonText}&gt;Log&lt;/Text&gt;
+								&lt;/Pressable&gt;
+							&lt;/View&gt;
+						&lt;/TouchableWithoutFeedback&gt;
+					&lt;/View&gt;
+				&lt;/TouchableWithoutFeedback&gt;
+			&lt;/Modal&gt;
+		&lt;/Pressable&gt;
+	);
 }
 &nbsp;
 export default SelectableRecipe;
@@ -763,7 +787,7 @@ SelectableRecipe.propTypes = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-28T00:28:01.090Z
+                at 2024-03-28T01:09:23.436Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

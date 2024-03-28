@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1711585706652" clover="3.2.0">
-  <project timestamp="1711585706652" name="All files">
+<coverage generated="1711588147292" clover="3.2.0">
+  <project timestamp="1711588147293" name="All files">
     <metrics statements="60" coveredstatements="60" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2" elements="64" coveredelements="64" complexity="0" loc="60" ncloc="60" packages="1" files="19" classes="19"/>
     <file name="community.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/backend/models/community.js">
       <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>

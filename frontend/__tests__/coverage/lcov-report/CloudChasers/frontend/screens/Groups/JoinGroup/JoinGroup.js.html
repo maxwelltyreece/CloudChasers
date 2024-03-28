@@ -421,66 +421,66 @@ function <span class="fstat-no" title="function not covered" >JoinGroup(</span>)
 	};
 &nbsp;
 <span class="cstat-no" title="statement not covered" >	return (</span>
-    &lt;View style={styles.container}&gt;
-      &lt;View style={styles.titleContainer}&gt;
-        &lt;Text style={styles.title}&gt;Join a community&lt;/Text&gt;
-        &lt;TextInput
-          style={styles.searchInput}
-          onChangeText={setSearchText}
-          value={searchText}
-          placeholder="Search..."
-        /&gt;
-      &lt;/View&gt;
-      &lt;FlatList
-        data={filteredData}
-        renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
-<span class="cstat-no" title="statement not covered" >          &lt;View style={styles.itemContainer}&gt;</span>
-            &lt;TouchableOpacity
-              style={{ flex: 1 }}
-              onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handlePress(item)}</span>
-            &gt;
-              &lt;Box title={item.name} /&gt;
-            &lt;/TouchableOpacity&gt;
-          &lt;/View&gt;
-        )}
-        numColumns={2}
-        contentContainerStyle={{
-          paddingHorizontal: "2.5%",
-        }}
-      /&gt;
-      &lt;Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
-<span class="cstat-no" title="statement not covered" >          setModalVisible(!modalVisible);</span>
-        }}
-      &gt;
-        &lt;View style={styles.centeredView}&gt;
-          &lt;View style={styles.modalView}&gt;
-            &lt;Text style={styles.modalText}&gt;
-              {selectedCommunity?.joinPrivacy === "private"
-                ? "Request to join"
-                : "Join"}{" "}
-              {selectedCommunity?.name}?
-            &lt;/Text&gt;
-            &lt;View style={styles.buttonContainer}&gt;
-              &lt;TouchableOpacity style={styles.button} onPress={handleJoin}&gt;
-                &lt;Text style={styles.buttonText}&gt;Request to join&lt;/Text&gt;
-              &lt;/TouchableOpacity&gt;
+		&lt;View style={styles.container}&gt;
+			&lt;View style={styles.titleContainer}&gt;
+				&lt;Text style={styles.title}&gt;Join a community&lt;/Text&gt;
+				&lt;TextInput
+					style={styles.searchInput}
+					onChangeText={setSearchText}
+					value={searchText}
+					placeholder="Search..."
+				/&gt;
+			&lt;/View&gt;
+			&lt;FlatList
+				data={filteredData}
+				renderItem={<span class="fstat-no" title="function not covered" >({</span> item }) =&gt; (
+<span class="cstat-no" title="statement not covered" >					&lt;View style={styles.itemContainer}&gt;</span>
+						&lt;TouchableOpacity
+							style={{ flex: 1 }}
+							onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handlePress(item)}</span>
+						&gt;
+							&lt;Box title={item.name} /&gt;
+						&lt;/TouchableOpacity&gt;
+					&lt;/View&gt;
+				)}
+				numColumns={2}
+				contentContainerStyle={{
+					paddingHorizontal: "2.5%",
+				}}
+			/&gt;
+			&lt;Modal
+				animationType="slide"
+				transparent={true}
+				visible={modalVisible}
+				onRequestClose={<span class="fstat-no" title="function not covered" >()</span> =&gt; {
+<span class="cstat-no" title="statement not covered" >					setModalVisible(!modalVisible);</span>
+				}}
+			&gt;
+				&lt;View style={styles.centeredView}&gt;
+					&lt;View style={styles.modalView}&gt;
+						&lt;Text style={styles.modalText}&gt;
+							{selectedCommunity?.joinPrivacy === "private"
+								? "Request to join"
+								: "Join"}{" "}
+							{selectedCommunity?.name}?
+						&lt;/Text&gt;
+						&lt;View style={styles.buttonContainer}&gt;
+							&lt;TouchableOpacity style={styles.button} onPress={handleJoin}&gt;
+								&lt;Text style={styles.buttonText}&gt;Request to join&lt;/Text&gt;
+							&lt;/TouchableOpacity&gt;
 &nbsp;
-              &lt;TouchableOpacity
-                style={styles.button}
-                onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setModalVisible(false)}</span>
-              &gt;
-                &lt;Text style={styles.buttonText}&gt;Cancel&lt;/Text&gt;
-              &lt;/TouchableOpacity&gt;
-            &lt;/View&gt;
-          &lt;/View&gt;
-        &lt;/View&gt;
-      &lt;/Modal&gt;
-    &lt;/View&gt;
-  );
+							&lt;TouchableOpacity
+								style={styles.button}
+								onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >setModalVisible(false)}</span>
+							&gt;
+								&lt;Text style={styles.buttonText}&gt;Cancel&lt;/Text&gt;
+							&lt;/TouchableOpacity&gt;
+						&lt;/View&gt;
+					&lt;/View&gt;
+				&lt;/View&gt;
+			&lt;/Modal&gt;
+		&lt;/View&gt;
+	);
 }
 &nbsp;
 export default JoinGroup;</pre></td></tr></table></pre>
@@ -490,7 +490,7 @@ export default JoinGroup;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-28T00:28:01.090Z
+                at 2024-03-28T01:09:23.436Z
             </div>
         <script src="../../../../../prettify.js"></script>
         <script>

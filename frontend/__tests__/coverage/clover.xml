@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1711585681162" clover="3.2.0">
-  <project timestamp="1711585681162" name="All files">
-    <metrics statements="1872" coveredstatements="1113" conditionals="561" coveredconditionals="257" methods="544" coveredmethods="260" elements="2977" coveredelements="1630" complexity="0" loc="1872" ncloc="1872" packages="45" files="109" classes="109"/>
+<coverage generated="1711588163513" clover="3.2.0">
+  <project timestamp="1711588163513" name="All files">
+    <metrics statements="1939" coveredstatements="1109" conditionals="612" coveredconditionals="261" methods="552" coveredmethods="255" elements="3103" coveredelements="1625" complexity="0" loc="1939" ncloc="1939" packages="45" files="108" classes="108"/>
     <package name="CloudChasers">
       <metrics statements="17" coveredstatements="15" conditionals="8" coveredconditionals="6" methods="4" coveredmethods="4"/>
       <file name="App.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/App.js">
@@ -30,11 +30,11 @@
       <file name="AddButton.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/components/AddButton/AddButton.js">
         <metrics statements="7" coveredstatements="6" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="1"/>
         <line num="16" count="4" type="cond" truecount="2" falsecount="0"/>
-        <line num="17" count="2" type="stmt"/>
-        <line num="19" count="2" type="stmt"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="19" count="3" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
-        <line num="25" count="2" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
         <line num="52" count="4" type="stmt"/>
       </file>
     </package>
@@ -43,23 +43,23 @@
       <file name="AddModal.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/components/AddModal/AddModal.js">
         <metrics statements="21" coveredstatements="11" conditionals="14" coveredconditionals="6" methods="6" coveredmethods="2"/>
         <line num="18" count="4" type="stmt"/>
-        <line num="19" count="3" type="stmt"/>
-        <line num="20" count="3" type="stmt"/>
-        <line num="21" count="3" type="stmt"/>
-        <line num="23" count="3" type="stmt"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="20" count="4" type="stmt"/>
+        <line num="21" count="4" type="stmt"/>
+        <line num="23" count="4" type="stmt"/>
         <line num="24" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="25" count="0" type="stmt"/>
         <line num="26" count="0" type="stmt"/>
         <line num="27" count="0" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
-        <line num="34" count="3" type="stmt"/>
+        <line num="34" count="4" type="stmt"/>
         <line num="35" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="37" count="0" type="stmt"/>
-        <line num="51" count="3" type="stmt"/>
-        <line num="52" count="6" type="cond" truecount="2" falsecount="0"/>
-        <line num="54" count="6" type="stmt"/>
-        <line num="66" count="3" type="stmt"/>
+        <line num="51" count="4" type="stmt"/>
+        <line num="52" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="8" type="stmt"/>
+        <line num="66" count="4" type="stmt"/>
         <line num="85" count="0" type="stmt"/>
         <line num="93" count="0" type="stmt"/>
         <line num="104" count="4" type="stmt"/>
@@ -102,32 +102,42 @@
       </file>
     </package>
     <package name="CloudChasers.frontend.components.RecipeBox">
-      <metrics statements="24" coveredstatements="18" conditionals="2" coveredconditionals="1" methods="11" coveredmethods="6"/>
+      <metrics statements="34" coveredstatements="6" conditionals="4" coveredconditionals="0" methods="15" coveredmethods="1"/>
       <file name="RecipeBox.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/components/RecipeBox/RecipeBox.js">
-        <metrics statements="23" coveredstatements="17" conditionals="2" coveredconditionals="1" methods="11" coveredmethods="6"/>
-        <line num="30" count="5" type="stmt"/>
-        <line num="31" count="5" type="stmt"/>
-        <line num="32" count="5" type="stmt"/>
-        <line num="34" count="5" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="45" count="1" type="stmt"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="50" count="1" type="stmt"/>
-        <line num="54" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="59" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="62" count="1" type="stmt"/>
-        <line num="65" count="0" type="stmt"/>
-        <line num="69" count="1" type="stmt"/>
-        <line num="72" count="5" type="stmt"/>
-        <line num="73" count="2" type="stmt"/>
-        <line num="84" count="0" type="stmt"/>
+        <metrics statements="33" coveredstatements="5" conditionals="4" coveredconditionals="0" methods="15" coveredmethods="1"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
         <line num="88" count="0" type="stmt"/>
-        <line num="98" count="0" type="stmt"/>
-        <line num="117" count="2" type="stmt"/>
+        <line num="91" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="104" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="116" count="0" type="stmt"/>
+        <line num="120" count="0" type="stmt"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="154" count="2" type="stmt"/>
       </file>
       <file name="styles.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/components/RecipeBox/styles.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -161,7 +171,7 @@
       </file>
     </package>
     <package name="CloudChasers.frontend.contexts">
-      <metrics statements="324" coveredstatements="221" conditionals="53" coveredconditionals="19" methods="95" coveredmethods="57"/>
+      <metrics statements="326" coveredstatements="222" conditionals="53" coveredconditionals="19" methods="96" coveredmethods="57"/>
       <file name="AwardsContext.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/contexts/AwardsContext.js">
         <metrics statements="51" coveredstatements="39" conditionals="28" coveredconditionals="13" methods="10" coveredmethods="9"/>
         <line num="5" count="2" type="stmt"/>
@@ -218,7 +228,7 @@
       </file>
       <file name="CommunityContext.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/contexts/CommunityContext.js">
         <metrics statements="83" coveredstatements="37" conditionals="10" coveredconditionals="0" methods="27" coveredmethods="9"/>
-        <line num="11" count="2" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
         <line num="14" count="9" type="stmt"/>
         <line num="19" count="9" type="stmt"/>
         <line num="20" count="5" type="stmt"/>
@@ -300,11 +310,11 @@
         <line num="281" count="9" type="stmt"/>
         <line num="333" count="9" type="stmt"/>
         <line num="340" count="14" type="stmt"/>
-        <line num="342" count="2" type="stmt"/>
+        <line num="342" count="3" type="stmt"/>
       </file>
       <file name="FoodLogContext.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/contexts/FoodLogContext.js">
-        <metrics statements="54" coveredstatements="35" conditionals="3" coveredconditionals="1" methods="21" coveredmethods="7"/>
-        <line num="8" count="3" type="stmt"/>
+        <metrics statements="56" coveredstatements="36" conditionals="3" coveredconditionals="1" methods="22" coveredmethods="7"/>
+        <line num="8" count="4" type="stmt"/>
         <line num="11" count="5" type="stmt"/>
         <line num="17" count="5" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
@@ -353,11 +363,13 @@
         <line num="157" count="0" type="stmt"/>
         <line num="164" count="5" type="stmt"/>
         <line num="165" count="0" type="stmt"/>
-        <line num="167" count="5" type="stmt"/>
         <line num="168" count="5" type="stmt"/>
-        <line num="212" count="5" type="stmt"/>
-        <line num="217" count="7" type="stmt"/>
-        <line num="219" count="3" type="stmt"/>
+        <line num="169" count="0" type="stmt"/>
+        <line num="172" count="5" type="stmt"/>
+        <line num="173" count="5" type="stmt"/>
+        <line num="219" count="5" type="stmt"/>
+        <line num="224" count="8" type="stmt"/>
+        <line num="226" count="4" type="stmt"/>
       </file>
       <file name="GoalsContext.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/contexts/GoalsContext.js">
         <metrics statements="38" coveredstatements="35" conditionals="0" coveredconditionals="0" methods="9" coveredmethods="9"/>
@@ -474,7 +486,7 @@
       </file>
       <file name="UserContext.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/contexts/UserContext.js">
         <metrics statements="32" coveredstatements="11" conditionals="4" coveredconditionals="0" methods="7" coveredmethods="2"/>
-        <line num="9" count="1" type="stmt"/>
+        <line num="9" count="2" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
         <line num="23" count="1" type="stmt"/>
@@ -504,8 +516,8 @@
         <line num="72" count="0" type="stmt"/>
         <line num="76" count="1" type="stmt"/>
         <line num="80" count="1" type="stmt"/>
-        <line num="91" count="1" type="stmt"/>
-        <line num="93" count="1" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+        <line num="93" count="2" type="stmt"/>
       </file>
     </package>
     <package name="CloudChasers.frontend.navigation">
@@ -638,7 +650,7 @@
         <line num="72" count="26" type="stmt"/>
         <line num="74" count="26" type="stmt"/>
         <line num="76" count="1" type="stmt"/>
-        <line num="89" count="173" type="stmt"/>
+        <line num="89" count="188" type="stmt"/>
         <line num="101" count="3" type="stmt"/>
       </file>
       <file name="CommunityStatus.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/Dashboard/DashboardComponents/CommunityStatus.js">
@@ -760,14 +772,14 @@
       </file>
     </package>
     <package name="CloudChasers.frontend.screens.DataEntry">
-      <metrics statements="71" coveredstatements="42" conditionals="14" coveredconditionals="10" methods="25" coveredmethods="11"/>
+      <metrics statements="84" coveredstatements="45" conditionals="24" coveredconditionals="12" methods="25" coveredmethods="11"/>
       <file name="DataEntry.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/DataEntry/DataEntry.js">
         <metrics statements="2" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="5" count="1" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
       </file>
       <file name="FoodEntry.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/DataEntry/FoodEntry.js">
-        <metrics statements="42" coveredstatements="27" conditionals="12" coveredconditionals="9" methods="14" coveredmethods="7"/>
+        <metrics statements="49" coveredstatements="28" conditionals="16" coveredconditionals="9" methods="14" coveredmethods="7"/>
         <line num="14" count="10" type="stmt"/>
         <line num="15" count="9" type="stmt"/>
         <line num="16" count="9" type="stmt"/>
@@ -793,26 +805,33 @@
         <line num="64" count="2" type="stmt"/>
         <line num="67" count="0" type="stmt"/>
         <line num="68" count="0" type="stmt"/>
-        <line num="76" count="9" type="stmt"/>
-        <line num="85" count="2" type="stmt"/>
-        <line num="94" count="0" type="stmt"/>
-        <line num="108" count="0" type="stmt"/>
-        <line num="113" count="0" type="stmt"/>
-        <line num="126" count="1" type="cond" truecount="2" falsecount="3"/>
-        <line num="127" count="1" type="stmt"/>
-        <line num="128" count="1" type="stmt"/>
-        <line num="130" count="0" type="stmt"/>
-        <line num="135" count="0" type="stmt"/>
-        <line num="142" count="0" type="stmt"/>
-        <line num="143" count="0" type="stmt"/>
-        <line num="144" count="0" type="stmt"/>
-        <line num="150" count="0" type="stmt"/>
+        <line num="89" count="9" type="stmt"/>
+        <line num="90" count="1" type="cond" truecount="2" falsecount="3"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="94" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="98" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="99" count="0" type="stmt"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="102" count="0" type="stmt"/>
+        <line num="107" count="0" type="stmt"/>
+        <line num="114" count="0" type="stmt"/>
+        <line num="115" count="0" type="stmt"/>
+        <line num="116" count="0" type="stmt"/>
+        <line num="122" count="0" type="stmt"/>
+        <line num="123" count="0" type="stmt"/>
+        <line num="124" count="0" type="stmt"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="133" count="9" type="stmt"/>
+        <line num="142" count="2" type="stmt"/>
         <line num="151" count="0" type="stmt"/>
-        <line num="152" count="0" type="stmt"/>
-        <line num="153" count="0" type="stmt"/>
+        <line num="165" count="0" type="stmt"/>
+        <line num="170" count="0" type="stmt"/>
       </file>
       <file name="RecipeEntry.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/DataEntry/RecipeEntry.js">
-        <metrics statements="12" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="0"/>
+        <metrics statements="12" coveredstatements="2" conditionals="2" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="0" type="stmt"/>
         <line num="9" count="0" type="stmt"/>
@@ -822,12 +841,12 @@
         <line num="14" count="0" type="stmt"/>
         <line num="17" count="0" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
-        <line num="34" count="1" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
       </file>
       <file name="WaterEntry.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/DataEntry/WaterEntry.js">
-        <metrics statements="13" coveredstatements="10" conditionals="2" coveredconditionals="1" methods="5" coveredmethods="4"/>
+        <metrics statements="19" coveredstatements="12" conditionals="6" coveredconditionals="3" methods="5" coveredmethods="4"/>
         <line num="12" count="6" type="stmt"/>
         <line num="13" count="6" type="stmt"/>
         <line num="14" count="6" type="stmt"/>
@@ -835,12 +854,18 @@
         <line num="20" count="1" type="cond" truecount="1" falsecount="1"/>
         <line num="21" count="0" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
-        <line num="25" count="1" type="stmt"/>
+        <line num="24" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="28" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
         <line num="32" count="1" type="stmt"/>
-        <line num="38" count="0" type="stmt"/>
-        <line num="46" count="6" type="stmt"/>
-        <line num="55" count="2" type="stmt"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="54" count="6" type="stmt"/>
+        <line num="63" count="2" type="stmt"/>
       </file>
       <file name="styles.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/DataEntry/styles.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -849,9 +874,9 @@
       </file>
     </package>
     <package name="CloudChasers.frontend.screens.DataEntry.DataEntryComponents">
-      <metrics statements="21" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="1"/>
+      <metrics statements="32" coveredstatements="13" conditionals="25" coveredconditionals="0" methods="3" coveredmethods="1"/>
       <file name="NewFoodModal.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/DataEntry/DataEntryComponents/NewFoodModal.js">
-        <metrics statements="20" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="1"/>
+        <metrics statements="32" coveredstatements="13" conditionals="25" coveredconditionals="0" methods="3" coveredmethods="1"/>
         <line num="17" count="3" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
         <line num="43" count="3" type="stmt"/>
@@ -863,25 +888,33 @@
         <line num="55" count="9" type="stmt"/>
         <line num="56" count="9" type="stmt"/>
         <line num="61" count="9" type="stmt"/>
+        <line num="62" count="0" type="cond" truecount="0" falsecount="7"/>
         <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="66" count="0" type="cond" truecount="0" falsecount="6"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="70" count="0" type="cond" truecount="0" falsecount="6"/>
         <line num="71" count="0" type="stmt"/>
         <line num="72" count="0" type="stmt"/>
-        <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="cond" truecount="0" falsecount="6"/>
         <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
         <line num="78" count="0" type="stmt"/>
-        <line num="81" count="9" type="stmt"/>
-        <line num="124" count="3" type="stmt"/>
-        <line num="167" count="3" type="stmt"/>
-      </file>
-      <file name="styles.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/DataEntry/DataEntryComponents/styles.js">
-        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="3" count="1" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="96" count="9" type="stmt"/>
+        <line num="139" count="3" type="stmt"/>
+        <line num="182" count="3" type="stmt"/>
       </file>
     </package>
     <package name="CloudChasers.frontend.screens.DataEntry.DataEntryComponents.SelectableRecipe">
-      <metrics statements="37" coveredstatements="2" conditionals="4" coveredconditionals="0" methods="10" coveredmethods="0"/>
+      <metrics statements="43" coveredstatements="2" conditionals="8" coveredconditionals="0" methods="10" coveredmethods="0"/>
       <file name="SelectableRecipe.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/DataEntry/DataEntryComponents/SelectableRecipe/SelectableRecipe.js">
-        <metrics statements="37" coveredstatements="2" conditionals="4" coveredconditionals="0" methods="10" coveredmethods="0"/>
+        <metrics statements="43" coveredstatements="2" conditionals="8" coveredconditionals="0" methods="10" coveredmethods="0"/>
         <line num="11" count="1" type="stmt"/>
         <line num="116" count="0" type="stmt"/>
         <line num="117" count="0" type="stmt"/>
@@ -907,18 +940,24 @@
         <line num="152" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="153" count="0" type="stmt"/>
         <line num="154" count="0" type="stmt"/>
+        <line num="156" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="157" count="0" type="stmt"/>
         <line num="158" count="0" type="stmt"/>
-        <line num="164" count="0" type="stmt"/>
+        <line num="160" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="161" count="0" type="stmt"/>
+        <line num="162" count="0" type="stmt"/>
+        <line num="165" count="0" type="stmt"/>
         <line num="166" count="0" type="stmt"/>
-        <line num="169" count="0" type="stmt"/>
-        <line num="170" count="0" type="stmt"/>
-        <line num="173" count="0" type="stmt"/>
+        <line num="172" count="0" type="stmt"/>
         <line num="174" count="0" type="stmt"/>
-        <line num="184" count="0" type="stmt"/>
-        <line num="187" count="0" type="stmt"/>
-        <line num="197" count="0" type="stmt"/>
-        <line num="229" count="1" type="stmt"/>
+        <line num="177" count="0" type="stmt"/>
+        <line num="178" count="0" type="stmt"/>
+        <line num="181" count="0" type="stmt"/>
+        <line num="182" count="0" type="stmt"/>
+        <line num="192" count="0" type="stmt"/>
+        <line num="195" count="0" type="stmt"/>
+        <line num="205" count="0" type="stmt"/>
+        <line num="237" count="1" type="stmt"/>
       </file>
     </package>
     <package name="CloudChasers.frontend.screens.Groups">
@@ -1205,21 +1244,24 @@
       </file>
     </package>
     <package name="CloudChasers.frontend.screens.Groups.NewPost">
-      <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
+      <metrics statements="16" coveredstatements="14" conditionals="8" coveredconditionals="6" methods="2" coveredmethods="2"/>
       <file name="NewPost.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/Groups/NewPost/NewPost.js">
-        <metrics statements="12" coveredstatements="12" conditionals="4" coveredconditionals="3" methods="2" coveredmethods="2"/>
+        <metrics statements="15" coveredstatements="13" conditionals="8" coveredconditionals="6" methods="2" coveredmethods="2"/>
         <line num="15" count="6" type="stmt"/>
         <line num="16" count="6" type="stmt"/>
         <line num="17" count="6" type="stmt"/>
         <line num="18" count="6" type="stmt"/>
         <line num="23" count="6" type="stmt"/>
-        <line num="24" count="2" type="stmt"/>
-        <line num="31" count="2" type="stmt"/>
-        <line num="32" count="2" type="cond" truecount="2" falsecount="0"/>
-        <line num="33" count="1" type="stmt"/>
-        <line num="35" count="1" type="stmt"/>
-        <line num="39" count="6" type="stmt"/>
-        <line num="67" count="2" type="stmt"/>
+        <line num="24" count="2" type="cond" truecount="3" falsecount="1"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="36" count="2" type="stmt"/>
+        <line num="37" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="1" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="44" count="6" type="stmt"/>
+        <line num="72" count="2" type="stmt"/>
       </file>
       <file name="styles.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/Groups/NewPost/styles.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -1397,7 +1439,7 @@
       </file>
     </package>
     <package name="CloudChasers.frontend.screens.Settings.Subscreens">
-      <metrics statements="35" coveredstatements="15" conditionals="12" coveredconditionals="3" methods="13" coveredmethods="4"/>
+      <metrics statements="46" coveredstatements="18" conditionals="14" coveredconditionals="3" methods="14" coveredmethods="4"/>
       <file name="About.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/Settings/Subscreens/About.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="4" count="2" type="stmt"/>
@@ -1428,17 +1470,28 @@
         <line num="111" count="1" type="stmt"/>
       </file>
       <file name="EditPage.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/Settings/Subscreens/EditPage.js">
-        <metrics statements="10" coveredstatements="9" conditionals="4" coveredconditionals="3" methods="3" coveredmethods="2"/>
-        <line num="8" count="2" type="stmt"/>
+        <metrics statements="21" coveredstatements="12" conditionals="6" coveredconditionals="3" methods="4" coveredmethods="2"/>
+        <line num="9" count="2" type="stmt"/>
         <line num="52" count="3" type="stmt"/>
+        <line num="53" count="3" type="stmt"/>
+        <line num="54" count="3" type="stmt"/>
         <line num="55" count="3" type="stmt"/>
-        <line num="58" count="3" type="cond" truecount="3" falsecount="1"/>
+        <line num="56" count="3" type="cond" truecount="3" falsecount="1"/>
+        <line num="57" count="3" type="stmt"/>
+        <line num="58" count="3" type="stmt"/>
         <line num="60" count="3" type="stmt"/>
-        <line num="62" count="3" type="stmt"/>
+        <line num="61" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="62" count="0" type="stmt"/>
         <line num="63" count="0" type="stmt"/>
-        <line num="66" count="3" type="stmt"/>
-        <line num="77" count="1" type="stmt"/>
-        <line num="90" count="2" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="80" count="3" type="stmt"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="104" count="2" type="stmt"/>
       </file>
       <file name="LearnMore.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/Settings/Subscreens/LearnMore.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
@@ -1725,9 +1778,9 @@
       </file>
     </package>
     <package name="CloudChasers.frontend.screens.UserProfile.Subscreens.Recipes">
-      <metrics statements="20" coveredstatements="1" conditionals="6" coveredconditionals="0" methods="10" coveredmethods="0"/>
+      <metrics statements="22" coveredstatements="1" conditionals="6" coveredconditionals="0" methods="11" coveredmethods="0"/>
       <file name="Recipes.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/UserProfile/Subscreens/Recipes/Recipes.js">
-        <metrics statements="19" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="10" coveredmethods="0"/>
+        <metrics statements="21" coveredstatements="0" conditionals="6" coveredconditionals="0" methods="11" coveredmethods="0"/>
         <line num="18" count="0" type="stmt"/>
         <line num="20" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="32" count="0" type="stmt"/>
@@ -1736,17 +1789,19 @@
         <line num="35" count="0" type="stmt"/>
         <line num="41" count="0" type="stmt"/>
         <line num="42" count="0" type="stmt"/>
-        <line num="46" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
         <line num="47" count="0" type="stmt"/>
-        <line num="49" count="0" type="stmt"/>
-        <line num="56" count="0" type="stmt"/>
-        <line num="59" count="0" type="stmt"/>
-        <line num="62" count="0" type="stmt"/>
-        <line num="64" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
         <line num="67" count="0" type="stmt"/>
-        <line num="88" count="0" type="stmt"/>
-        <line num="95" count="0" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
+        <line num="69" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="112" count="0" type="stmt"/>
       </file>
       <file name="styles.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/UserProfile/Subscreens/Recipes/styles.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -1754,9 +1809,9 @@
       </file>
     </package>
     <package name="CloudChasers.frontend.screens.UserProfile.Subscreens.Recipes.NewRecipe">
-      <metrics statements="122" coveredstatements="3" conditionals="31" coveredconditionals="0" methods="34" coveredmethods="0"/>
+      <metrics statements="128" coveredstatements="3" conditionals="35" coveredconditionals="0" methods="34" coveredmethods="0"/>
       <file name="NewRecipe.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/UserProfile/Subscreens/Recipes/NewRecipe/NewRecipe.js">
-        <metrics statements="120" coveredstatements="1" conditionals="31" coveredconditionals="0" methods="34" coveredmethods="0"/>
+        <metrics statements="126" coveredstatements="1" conditionals="35" coveredconditionals="0" methods="34" coveredmethods="0"/>
         <line num="32" count="1" type="stmt"/>
         <line num="33" count="0" type="stmt"/>
         <line num="34" count="0" type="stmt"/>
@@ -1808,75 +1863,81 @@
         <line num="125" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="126" count="0" type="stmt"/>
         <line num="127" count="0" type="stmt"/>
-        <line num="130" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="129" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="130" count="0" type="stmt"/>
         <line num="131" count="0" type="stmt"/>
-        <line num="132" count="0" type="stmt"/>
-        <line num="135" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="136" count="0" type="stmt"/>
-        <line num="140" count="0" type="stmt"/>
-        <line num="141" count="0" type="stmt"/>
-        <line num="142" count="0" type="stmt"/>
+        <line num="133" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="135" count="0" type="stmt"/>
+        <line num="137" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="138" count="0" type="stmt"/>
+        <line num="139" count="0" type="stmt"/>
+        <line num="142" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="143" count="0" type="stmt"/>
-        <line num="145" count="0" type="stmt"/>
-        <line num="155" count="0" type="stmt"/>
-        <line num="156" count="0" type="stmt"/>
-        <line num="164" count="0" type="stmt"/>
-        <line num="175" count="0" type="stmt"/>
-        <line num="176" count="0" type="stmt"/>
-        <line num="177" count="0" type="stmt"/>
-        <line num="180" count="0" type="stmt"/>
-        <line num="181" count="0" type="stmt"/>
-        <line num="190" count="0" type="stmt"/>
-        <line num="191" count="0" type="stmt"/>
-        <line num="192" count="0" type="stmt"/>
+        <line num="147" count="0" type="stmt"/>
+        <line num="148" count="0" type="stmt"/>
+        <line num="149" count="0" type="stmt"/>
+        <line num="150" count="0" type="stmt"/>
+        <line num="152" count="0" type="stmt"/>
+        <line num="162" count="0" type="stmt"/>
+        <line num="163" count="0" type="stmt"/>
+        <line num="171" count="0" type="stmt"/>
+        <line num="182" count="0" type="stmt"/>
+        <line num="183" count="0" type="stmt"/>
+        <line num="184" count="0" type="stmt"/>
+        <line num="187" count="0" type="stmt"/>
+        <line num="188" count="0" type="stmt"/>
         <line num="197" count="0" type="stmt"/>
+        <line num="198" count="0" type="stmt"/>
         <line num="199" count="0" type="stmt"/>
-        <line num="200" count="0" type="stmt"/>
-        <line num="208" count="0" type="stmt"/>
-        <line num="213" count="0" type="stmt"/>
-        <line num="214" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="204" count="0" type="stmt"/>
+        <line num="206" count="0" type="stmt"/>
+        <line num="207" count="0" type="stmt"/>
         <line num="215" count="0" type="stmt"/>
-        <line num="227" count="0" type="stmt"/>
-        <line num="228" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="229" count="0" type="stmt"/>
-        <line num="230" count="0" type="stmt"/>
-        <line num="232" count="0" type="stmt"/>
+        <line num="220" count="0" type="stmt"/>
+        <line num="221" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="222" count="0" type="stmt"/>
         <line num="234" count="0" type="stmt"/>
-        <line num="239" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="240" count="0" type="stmt"/>
-        <line num="243" count="0" type="stmt"/>
-        <line num="244" count="0" type="stmt"/>
+        <line num="235" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="236" count="0" type="stmt"/>
+        <line num="237" count="0" type="stmt"/>
+        <line num="239" count="0" type="stmt"/>
+        <line num="241" count="0" type="stmt"/>
+        <line num="246" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="247" count="0" type="stmt"/>
+        <line num="250" count="0" type="stmt"/>
         <line num="251" count="0" type="stmt"/>
-        <line num="252" count="0" type="stmt"/>
-        <line num="253" count="0" type="stmt"/>
-        <line num="254" count="0" type="stmt"/>
-        <line num="256" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="257" count="0" type="stmt"/>
+        <line num="258" count="0" type="stmt"/>
+        <line num="259" count="0" type="stmt"/>
         <line num="260" count="0" type="stmt"/>
         <line num="261" count="0" type="stmt"/>
-        <line num="262" count="0" type="stmt"/>
-        <line num="263" count="0" type="stmt"/>
+        <line num="263" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="264" count="0" type="stmt"/>
-        <line num="265" count="0" type="stmt"/>
         <line num="267" count="0" type="stmt"/>
         <line num="268" count="0" type="stmt"/>
+        <line num="269" count="0" type="stmt"/>
+        <line num="270" count="0" type="stmt"/>
+        <line num="271" count="0" type="stmt"/>
         <line num="272" count="0" type="stmt"/>
-        <line num="290" count="0" type="stmt"/>
-        <line num="296" count="0" type="stmt"/>
-        <line num="314" count="0" type="stmt"/>
-        <line num="315" count="0" type="stmt"/>
-        <line num="319" count="0" type="stmt"/>
-        <line num="331" count="0" type="stmt"/>
-        <line num="367" count="0" type="stmt"/>
-        <line num="372" count="0" type="stmt"/>
-        <line num="386" count="0" type="stmt"/>
-        <line num="388" count="0" type="stmt"/>
-        <line num="389" count="0" type="stmt"/>
-        <line num="406" count="0" type="stmt"/>
-        <line num="407" count="0" type="stmt"/>
-        <line num="437" count="0" type="stmt"/>
-        <line num="439" count="0" type="stmt"/>
-        <line num="453" count="0" type="stmt"/>
+        <line num="274" count="0" type="stmt"/>
+        <line num="275" count="0" type="stmt"/>
+        <line num="279" count="0" type="stmt"/>
+        <line num="297" count="0" type="stmt"/>
+        <line num="303" count="0" type="stmt"/>
+        <line num="321" count="0" type="stmt"/>
+        <line num="322" count="0" type="stmt"/>
+        <line num="326" count="0" type="stmt"/>
+        <line num="338" count="0" type="stmt"/>
+        <line num="374" count="0" type="stmt"/>
+        <line num="379" count="0" type="stmt"/>
+        <line num="393" count="0" type="stmt"/>
+        <line num="395" count="0" type="stmt"/>
+        <line num="396" count="0" type="stmt"/>
+        <line num="413" count="0" type="stmt"/>
+        <line num="414" count="0" type="stmt"/>
+        <line num="444" count="0" type="stmt"/>
+        <line num="446" count="0" type="stmt"/>
+        <line num="460" count="0" type="stmt"/>
       </file>
       <file name="styles.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/screens/UserProfile/Subscreens/Recipes/NewRecipe/styles.js">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -1992,7 +2053,7 @@
       </file>
     </package>
     <package name="CloudChasers.frontend.services">
-      <metrics statements="314" coveredstatements="263" conditionals="16" coveredconditionals="6" methods="67" coveredmethods="58"/>
+      <metrics statements="317" coveredstatements="264" conditionals="16" coveredconditionals="6" methods="68" coveredmethods="58"/>
       <file name="AwardsService.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/services/AwardsService.js">
         <metrics statements="21" coveredstatements="21" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="7"/>
         <line num="10" count="2" type="stmt"/>
@@ -2097,72 +2158,75 @@
         <line num="369" count="0" type="stmt"/>
       </file>
       <file name="FoodLogService.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/services/FoodLogService.js">
-        <metrics statements="65" coveredstatements="59" conditionals="0" coveredconditionals="0" methods="18" coveredmethods="17"/>
-        <line num="10" count="3" type="stmt"/>
+        <metrics statements="68" coveredstatements="60" conditionals="0" coveredconditionals="0" methods="19" coveredmethods="17"/>
+        <line num="10" count="4" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="20" count="3" type="stmt"/>
+        <line num="20" count="4" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
-        <line num="30" count="3" type="stmt"/>
+        <line num="30" count="4" type="stmt"/>
         <line num="31" count="2" type="stmt"/>
         <line num="32" count="2" type="stmt"/>
-        <line num="40" count="3" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
         <line num="41" count="2" type="stmt"/>
         <line num="42" count="2" type="stmt"/>
-        <line num="49" count="3" type="stmt"/>
+        <line num="49" count="4" type="stmt"/>
         <line num="50" count="2" type="stmt"/>
         <line num="51" count="2" type="stmt"/>
         <line num="52" count="2" type="stmt"/>
         <line num="53" count="1" type="stmt"/>
         <line num="55" count="1" type="stmt"/>
         <line num="56" count="1" type="stmt"/>
-        <line num="65" count="3" type="stmt"/>
+        <line num="65" count="4" type="stmt"/>
         <line num="66" count="1" type="stmt"/>
         <line num="67" count="1" type="stmt"/>
-        <line num="77" count="3" type="stmt"/>
+        <line num="77" count="4" type="stmt"/>
         <line num="78" count="2" type="stmt"/>
         <line num="79" count="2" type="stmt"/>
-        <line num="86" count="3" type="stmt"/>
+        <line num="86" count="4" type="stmt"/>
         <line num="87" count="1" type="stmt"/>
         <line num="88" count="1" type="stmt"/>
-        <line num="95" count="3" type="stmt"/>
+        <line num="95" count="4" type="stmt"/>
         <line num="96" count="1" type="stmt"/>
         <line num="97" count="1" type="stmt"/>
-        <line num="104" count="3" type="stmt"/>
+        <line num="104" count="4" type="stmt"/>
         <line num="105" count="1" type="stmt"/>
         <line num="106" count="1" type="stmt"/>
-        <line num="114" count="3" type="stmt"/>
+        <line num="114" count="4" type="stmt"/>
         <line num="115" count="1" type="stmt"/>
         <line num="116" count="1" type="stmt"/>
-        <line num="126" count="3" type="stmt"/>
+        <line num="126" count="4" type="stmt"/>
         <line num="127" count="1" type="stmt"/>
         <line num="128" count="1" type="stmt"/>
-        <line num="135" count="3" type="stmt"/>
+        <line num="135" count="4" type="stmt"/>
         <line num="136" count="1" type="stmt"/>
         <line num="137" count="1" type="stmt"/>
-        <line num="145" count="3" type="stmt"/>
+        <line num="145" count="4" type="stmt"/>
         <line num="146" count="1" type="stmt"/>
         <line num="147" count="1" type="stmt"/>
-        <line num="155" count="3" type="stmt"/>
+        <line num="155" count="4" type="stmt"/>
         <line num="156" count="1" type="stmt"/>
         <line num="157" count="1" type="stmt"/>
-        <line num="165" count="3" type="stmt"/>
+        <line num="165" count="4" type="stmt"/>
         <line num="166" count="1" type="stmt"/>
         <line num="167" count="1" type="stmt"/>
-        <line num="170" count="3" type="stmt"/>
-        <line num="171" count="1" type="stmt"/>
-        <line num="172" count="1" type="stmt"/>
-        <line num="173" count="1" type="stmt"/>
-        <line num="174" count="1" type="stmt"/>
-        <line num="175" count="1" type="stmt"/>
-        <line num="178" count="3" type="stmt"/>
-        <line num="179" count="0" type="stmt"/>
-        <line num="180" count="0" type="stmt"/>
-        <line num="181" count="0" type="stmt"/>
-        <line num="182" count="0" type="stmt"/>
-        <line num="184" count="0" type="stmt"/>
-        <line num="185" count="0" type="stmt"/>
+        <line num="175" count="4" type="stmt"/>
+        <line num="176" count="1" type="stmt"/>
+        <line num="177" count="1" type="stmt"/>
+        <line num="178" count="1" type="stmt"/>
+        <line num="179" count="1" type="stmt"/>
+        <line num="180" count="1" type="stmt"/>
+        <line num="188" count="4" type="stmt"/>
+        <line num="189" count="0" type="stmt"/>
+        <line num="190" count="0" type="stmt"/>
+        <line num="191" count="0" type="stmt"/>
+        <line num="192" count="0" type="stmt"/>
+        <line num="194" count="0" type="stmt"/>
+        <line num="195" count="0" type="stmt"/>
+        <line num="204" count="4" type="stmt"/>
+        <line num="205" count="0" type="stmt"/>
+        <line num="206" count="0" type="stmt"/>
       </file>
       <file name="GoalsService.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/services/GoalsService.js">
         <metrics statements="50" coveredstatements="50" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
@@ -2309,7 +2373,7 @@
       </file>
       <file name="UserService.js" path="/Users/lorenzocataldi/Desktop/School/King's College London/YEAR 2/SEG/SEG-Large_Group/CloudChasers/frontend/services/UserService.js">
         <metrics statements="18" coveredstatements="16" conditionals="4" coveredconditionals="4" methods="2" coveredmethods="2"/>
-        <line num="10" count="2" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
         <line num="11" count="4" type="stmt"/>
         <line num="12" count="4" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
@@ -2320,7 +2384,7 @@
         <line num="24" count="1" type="stmt"/>
         <line num="26" count="3" type="stmt"/>
         <line num="27" count="3" type="stmt"/>
-        <line num="36" count="2" type="stmt"/>
+        <line num="36" count="3" type="stmt"/>
         <line num="37" count="1" type="stmt"/>
         <line num="38" count="1" type="stmt"/>
         <line num="39" count="1" type="stmt"/>

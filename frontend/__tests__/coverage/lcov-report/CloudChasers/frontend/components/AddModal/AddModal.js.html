@@ -192,11 +192,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -207,7 +207,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -224,12 +224,10 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -239,7 +237,9 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -303,89 +303,89 @@ import { styles } from './styles';
  * @param {Function} props.toggleModal - Function to toggle the modal
  */
 const AddModal = ({ isVisible, onBackdropPress, navigator, pageNames, toggleModal}) =&gt; {
-    const [highlightedButton, setHighlightedButton] = useState(null);
-    const pulseAnimationFood = useRef(new Animated.Value(0)).current;
-    const pulseAnimationWater = useRef(new Animated.Value(0)).current;
+	const [highlightedButton, setHighlightedButton] = useState(null);
+	const pulseAnimationFood = useRef(new Animated.Value(0)).current;
+	const pulseAnimationWater = useRef(new Animated.Value(0)).current;
 &nbsp;
-    const handleButtonPress = <span class="fstat-no" title="function not covered" >(b</span>uttonType) =&gt; {
-<span class="cstat-no" title="statement not covered" >        if (highlightedButton === buttonType) {</span>
-<span class="cstat-no" title="statement not covered" >            toggleModal();</span>
-<span class="cstat-no" title="statement not covered" >            navigator.navigate(pageNames[buttonType]); </span>// Navigate if pressed twice
-<span class="cstat-no" title="statement not covered" >            setHighlightedButton(null); </span>// Reset if pressed twice
-        } else {
-<span class="cstat-no" title="statement not covered" >            setHighlightedButton(buttonType);</span>
-<span class="cstat-no" title="statement not covered" >            startPulseAnimation(buttonType);</span>
-        }
-    };
+	const handleButtonPress = <span class="fstat-no" title="function not covered" >(b</span>uttonType) =&gt; {
+<span class="cstat-no" title="statement not covered" >		if (highlightedButton === buttonType) {</span>
+<span class="cstat-no" title="statement not covered" >			toggleModal();</span>
+<span class="cstat-no" title="statement not covered" >			navigator.navigate(pageNames[buttonType]); </span>// Navigate if pressed twice
+<span class="cstat-no" title="statement not covered" >			setHighlightedButton(null); </span>// Reset if pressed twice
+		} else {
+<span class="cstat-no" title="statement not covered" >			setHighlightedButton(buttonType);</span>
+<span class="cstat-no" title="statement not covered" >			startPulseAnimation(buttonType);</span>
+		}
+	};
 &nbsp;
-    const startPulseAnimation = <span class="fstat-no" title="function not covered" >(b</span>uttonType) =&gt; {
-        const pulseAnimation = <span class="cstat-no" title="statement not covered" >buttonType === 'food' ? pulseAnimationFood : pulseAnimationWater;</span>
+	const startPulseAnimation = <span class="fstat-no" title="function not covered" >(b</span>uttonType) =&gt; {
+		const pulseAnimation = <span class="cstat-no" title="statement not covered" >buttonType === 'food' ? pulseAnimationFood : pulseAnimationWater;</span>
 &nbsp;
-<span class="cstat-no" title="statement not covered" >        Animated.sequence([</span>
-            Animated.timing(pulseAnimation, {
-                toValue: 1,
-                duration: 300,
-                useNativeDriver: true,
-            }),
-            Animated.timing(pulseAnimation, {
-                toValue: 0,
-                duration: 300,
-                useNativeDriver: true,
-            }),
-        ]).start();
-    };
+<span class="cstat-no" title="statement not covered" >		Animated.sequence([</span>
+			Animated.timing(pulseAnimation, {
+				toValue: 1,
+				duration: 300,
+				useNativeDriver: true,
+			}),
+			Animated.timing(pulseAnimation, {
+				toValue: 0,
+				duration: 300,
+				useNativeDriver: true,
+			}),
+		]).start();
+	};
 &nbsp;
-    const pulseStyle = (buttonType) =&gt; {
-        const pulseAnimation = buttonType === 'food' ? pulseAnimationFood : pulseAnimationWater;
+	const pulseStyle = (buttonType) =&gt; {
+		const pulseAnimation = buttonType === 'food' ? pulseAnimationFood : pulseAnimationWater;
 &nbsp;
-        return {
-            transform: [
-                {
-                    scale: pulseAnimation.interpolate({
-                        inputRange: [0, 0.5, 1],
-                        outputRange: [1, 1.1, 1],
-                    }),
-                },
-            ],
-        };
-    };
+		return {
+			transform: [
+				{
+					scale: pulseAnimation.interpolate({
+						inputRange: [0, 0.5, 1],
+						outputRange: [1, 1.1, 1],
+					}),
+				},
+			],
+		};
+	};
 &nbsp;
-    return (
-        &lt;Modal
-            isVisible={isVisible}
-            onBackdropPress={onBackdropPress}
+	return (
+		&lt;Modal
+			isVisible={isVisible}
+			onBackdropPress={onBackdropPress}
       
-            backdropTransitionOutTiming={0}
-            animationIn="pulse"
-            animationOut="fadeOut"
-            backdropColor="rgba(0,0,0,0.5)"
-            animationInTiming={300}
-            animationOutTiming={200}
-            style={styles.modal}
-        &gt;
-            &lt;View style={styles.bubble}&gt;
-                &lt;Text style={styles.title}&gt;Food or Water?&lt;/Text&gt;
-                &lt;View style={styles.content}&gt;
-                    &lt;Animated.View style={[styles.button, highlightedButton === 'food' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >{ backgroundColor: '#FF815E' },</span> pulseStyle('food')]}&gt;
-                        &lt;Pressable
-                            style={styles.pressable}
-                            onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleButtonPress('food')}</span>
-                        &gt;
-                            &lt;TabBarIcon name="utensils" size={50} color={highlightedButton === 'food' ? <span class="branch-0 cbranch-no" title="branch not covered" >'white' </span>: 'black'} /&gt;
-                        &lt;/Pressable&gt;
-                    &lt;/Animated.View&gt;
-                    &lt;Animated.View style={[styles.button, highlightedButton === 'water' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >{ backgroundColor: '#74c0fc' },</span> pulseStyle('water')]}&gt;
-                        &lt;Pressable
-                            style={styles.pressable}
-                            onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleButtonPress('water')}</span>
-                        &gt;
-                            &lt;TabBarIcon name="tint" size={50} color={highlightedButton === 'water' ? <span class="branch-0 cbranch-no" title="branch not covered" >'white' </span>: 'black'} /&gt;
-                        &lt;/Pressable&gt;
-                    &lt;/Animated.View&gt;
-                &lt;/View&gt;
-            &lt;/View&gt;
-        &lt;/Modal&gt;
-    );
+			backdropTransitionOutTiming={0}
+			animationIn="pulse"
+			animationOut="fadeOut"
+			backdropColor="rgba(0,0,0,0.5)"
+			animationInTiming={300}
+			animationOutTiming={200}
+			style={styles.modal}
+		&gt;
+			&lt;View style={styles.bubble}&gt;
+				&lt;Text style={styles.title}&gt;Food or Water?&lt;/Text&gt;
+				&lt;View style={styles.content}&gt;
+					&lt;Animated.View style={[styles.button, highlightedButton === 'food' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >{ backgroundColor: '#FF815E' },</span> pulseStyle('food')]}&gt;
+						&lt;Pressable
+							style={styles.pressable}
+							onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleButtonPress('food')}</span>
+						&gt;
+							&lt;TabBarIcon name="utensils" size={50} color={highlightedButton === 'food' ? <span class="branch-0 cbranch-no" title="branch not covered" >'white' </span>: 'black'} /&gt;
+						&lt;/Pressable&gt;
+					&lt;/Animated.View&gt;
+					&lt;Animated.View style={[styles.button, highlightedButton === 'water' &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >{ backgroundColor: '#74c0fc' },</span> pulseStyle('water')]}&gt;
+						&lt;Pressable
+							style={styles.pressable}
+							onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >handleButtonPress('water')}</span>
+						&gt;
+							&lt;TabBarIcon name="tint" size={50} color={highlightedButton === 'water' ? <span class="branch-0 cbranch-no" title="branch not covered" >'white' </span>: 'black'} /&gt;
+						&lt;/Pressable&gt;
+					&lt;/Animated.View&gt;
+				&lt;/View&gt;
+			&lt;/View&gt;
+		&lt;/Modal&gt;
+	);
 };
 &nbsp;
 AddModal.propTypes = {
@@ -403,7 +403,7 @@ export default AddModal;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-28T00:28:01.090Z
+                at 2024-03-28T01:09:23.436Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>

@@ -374,134 +374,134 @@ const StatsContext = createContext();
  * @param {React.ReactNode} props.children The children nodes.
  */
 export function StatsProvider({ children }) {
-  const [todayStats, setTodayStats] = useState({});
-  const [streak, setStreak] = useState(0);
-  /**
+	const [todayStats, setTodayStats] = useState({});
+	const [streak, setStreak] = useState(0);
+	/**
    * Updates a specific nutrient stat.
    * @param {Function} nutrientFunction The function to get the nutrient data.
    * @param {string} nutrient The name of the nutrient.
    * @param {string} date The date to get the data for.
    * @returns {Promise&lt;number&gt;} The updated nutrient stat.
    */
-  const updateStat = async (nutrientFunction, nutrient, date) =&gt; {
-    try {
-      const response = await nutrientFunction(date);
-      <span class="missing-if-branch" title="else path not taken" >E</span>if (response.data) {
-        const updatedStats = {
-          ...todayStats,
-          [nutrient]:
+	const updateStat = async (nutrientFunction, nutrient, date) =&gt; {
+		try {
+			const response = await nutrientFunction(date);
+			<span class="missing-if-branch" title="else path not taken" >E</span>if (response.data) {
+				const updatedStats = {
+					...todayStats,
+					[nutrient]:
             response.data[
-              `total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`
+            	`total${nutrient.charAt(0).toUpperCase() + nutrient.slice(1)}`
             ], // Capitalising first letter of nutrient
-        };
-        setTodayStats(updatedStats);
-        return updatedStats[nutrient];
-      }
-    } catch (error) {
-      console.error(`Error fetching daily ${nutrient} intake CONTEXT:`, error);
-    }
-  };
-  /**
+				};
+				setTodayStats(updatedStats);
+				return updatedStats[nutrient];
+			}
+		} catch (error) {
+			console.error(`Error fetching daily ${nutrient} intake CONTEXT:`, error);
+		}
+	};
+	/**
    * Updates the streak stat.
    * @param {string} date The date to get the data for.
    */
-  const updateStreak = async (date) =&gt; {
-    try {
-      const response = await statsService.getStreaks(date);
-      <span class="missing-if-branch" title="else path not taken" >E</span>if (response.streak !== undefined) {
-        <span class="missing-if-branch" title="if path not taken" >I</span>if (response.streak === 0) {
-<span class="cstat-no" title="statement not covered" >          setStreak(1);</span>
-        } else {
-          setStreak(response.streak);
-        }
-      }
-    } catch (error) {
-      console.error("Error fetching streak CONTEXT:", error);
-    }
-  };
+	const updateStreak = async (date) =&gt; {
+		try {
+			const response = await statsService.getStreaks(date);
+			<span class="missing-if-branch" title="else path not taken" >E</span>if (response.streak !== undefined) {
+				<span class="missing-if-branch" title="if path not taken" >I</span>if (response.streak === 0) {
+<span class="cstat-no" title="statement not covered" >					setStreak(1);</span>
+				} else {
+					setStreak(response.streak);
+				}
+			}
+		} catch (error) {
+			console.error("Error fetching streak CONTEXT:", error);
+		}
+	};
 &nbsp;
-  const getDailyCaloricIntake = (date) =&gt;
-    updateStat(statsService.getDailyCaloricIntake, "calories", date);
-  const getDailyWaterIntake = (date) =&gt;
-    updateStat(statsService.getDailyWaterIntake, "water", date);
-  const getDailyProteinIntake = (date) =&gt;
-    updateStat(statsService.getDailyProteinIntake, "protein", date);
-  const getDailyCarbIntake = (date) =&gt;
-    updateStat(statsService.getDailyCarbIntake, "carbs", date);
-  const getDailyFatIntake = (date) =&gt;
-    updateStat(statsService.getDailyFatIntake, "fat", date);
-  const getDailySugarIntake = (date) =&gt;
-    updateStat(statsService.getDailySugarIntake, "sugar", date);
-  const getDailySodiumIntake = (date) =&gt;
-    updateStat(statsService.getDailySodiumIntake, "sodium", date);
-  const getDailyFibreIntake = (date) =&gt;
-    updateStat(statsService.getDailyFibreIntake, "fibre", date);
+	const getDailyCaloricIntake = (date) =&gt;
+		updateStat(statsService.getDailyCaloricIntake, "calories", date);
+	const getDailyWaterIntake = (date) =&gt;
+		updateStat(statsService.getDailyWaterIntake, "water", date);
+	const getDailyProteinIntake = (date) =&gt;
+		updateStat(statsService.getDailyProteinIntake, "protein", date);
+	const getDailyCarbIntake = (date) =&gt;
+		updateStat(statsService.getDailyCarbIntake, "carbs", date);
+	const getDailyFatIntake = (date) =&gt;
+		updateStat(statsService.getDailyFatIntake, "fat", date);
+	const getDailySugarIntake = (date) =&gt;
+		updateStat(statsService.getDailySugarIntake, "sugar", date);
+	const getDailySodiumIntake = (date) =&gt;
+		updateStat(statsService.getDailySodiumIntake, "sodium", date);
+	const getDailyFibreIntake = (date) =&gt;
+		updateStat(statsService.getDailyFibreIntake, "fibre", date);
 &nbsp;
-  /**
+	/**
    * Updates all the stats for today.
    */
-  const updateTodayStats = async () =&gt; {
-    const today = new Date().toISOString().split("T")[0];
-    const nutrientFunctions = [
-      getDailyCaloricIntake,
-      getDailyWaterIntake,
-      getDailyProteinIntake,
-      getDailyCarbIntake,
-      getDailyFatIntake,
-      getDailySugarIntake,
-      getDailySodiumIntake,
-      getDailyFibreIntake,
-    ];
+	const updateTodayStats = async () =&gt; {
+		const today = new Date().toISOString().split("T")[0];
+		const nutrientFunctions = [
+			getDailyCaloricIntake,
+			getDailyWaterIntake,
+			getDailyProteinIntake,
+			getDailyCarbIntake,
+			getDailyFatIntake,
+			getDailySugarIntake,
+			getDailySodiumIntake,
+			getDailyFibreIntake,
+		];
 &nbsp;
-    const nutrientNames = [
-      "calories",
-      "water",
-      "protein",
-      "carbs",
-      "fat",
-      "sugar",
-      "sodium",
-      "fibre",
-    ];
+		const nutrientNames = [
+			"calories",
+			"water",
+			"protein",
+			"carbs",
+			"fat",
+			"sugar",
+			"sodium",
+			"fibre",
+		];
 &nbsp;
-    try {
-      const nutrientData = await Promise.all(
-        nutrientFunctions.map((func) =&gt; func(today))
-      );
-      setTodayStats((prevStats) =&gt; {
-        const newStats = { ...prevStats };
-        nutrientData.forEach((value, index) =&gt; {
-          newStats[nutrientNames[index]] = value;
-        });
-        return newStats;
-      });
-      await updateStreak(today);
-    } catch (error) {
-<span class="cstat-no" title="statement not covered" >      console.error("Error updating today stats:", error);</span>
-    }
-  };
+		try {
+			const nutrientData = await Promise.all(
+				nutrientFunctions.map((func) =&gt; func(today))
+			);
+			setTodayStats((prevStats) =&gt; {
+				const newStats = { ...prevStats };
+				nutrientData.forEach((value, index) =&gt; {
+					newStats[nutrientNames[index]] = value;
+				});
+				return newStats;
+			});
+			await updateStreak(today);
+		} catch (error) {
+<span class="cstat-no" title="statement not covered" >			console.error("Error updating today stats:", error);</span>
+		}
+	};
 &nbsp;
-  const value = useMemo(
-    () =&gt; ({
-      todayStats,
-      streak,
-      updateTodayStats,
-      updateStreak,
-      getDailyCaloricIntake,
-      getDailyWaterIntake,
-      getDailyProteinIntake,
-      getDailyCarbIntake,
-      getDailyFatIntake,
-      getDailySugarIntake,
-      getDailySodiumIntake,
-      getDailyFibreIntake,
-    }),
-    [todayStats]
-  );
+	const value = useMemo(
+		() =&gt; ({
+			todayStats,
+			streak,
+			updateTodayStats,
+			updateStreak,
+			getDailyCaloricIntake,
+			getDailyWaterIntake,
+			getDailyProteinIntake,
+			getDailyCarbIntake,
+			getDailyFatIntake,
+			getDailySugarIntake,
+			getDailySodiumIntake,
+			getDailyFibreIntake,
+		}),
+		[todayStats]
+	);
 &nbsp;
-  return (
-    &lt;StatsContext.Provider value={value}&gt;{children}&lt;/StatsContext.Provider&gt;
-  );
+	return (
+		&lt;StatsContext.Provider value={value}&gt;{children}&lt;/StatsContext.Provider&gt;
+	);
 }
 &nbsp;
 /**
@@ -520,7 +520,7 @@ StatsProvider.propTypes = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-28T00:28:01.090Z
+                at 2024-03-28T01:09:23.436Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
