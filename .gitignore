@@ -44,4 +44,3 @@ error.log
 combined.log
 frontend/screens/IPIndex.js
 node_modules
-__tests__
