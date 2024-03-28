@@ -195,7 +195,7 @@ function Reminders() {
 							{reminder.frequency}
 						</Text>
 						<Pressable onPress={() => toggleActionButtonsVisibility(reminder.id)} style={styles.threeDotsButton}>
-							<Text style={styles.threeDotsText}>...</Text>
+							<Text style={styles.threeDotsText} testID='three-dots'>...</Text>
 						</Pressable>
 						{reminder.showActions && (
 							<View style={styles.reminderActionButtonsSection}>
@@ -203,7 +203,7 @@ function Reminders() {
 									<Text style={styles.actionButtonText}>Edit</Text>
 								</Pressable>
 								<Pressable onPress={() => deleteReminder(reminder.id)} style={styles.deleteButton}>
-									<Text style={styles.actionButtonText}>Delete</Text>
+									<Text style={styles.actionButtonText} testID='delete-reminder'>Delete</Text>
 								</Pressable>
 							</View>
 						)}
@@ -211,7 +211,7 @@ function Reminders() {
 				))}
 			</ScrollView>
 
-			<Pressable style={styles.addReminderButton} onPress={openModalAndResetFields}>
+			<Pressable style={styles.addReminderButton} onPress={openModalAndResetFields} testID='add-reminder-button'>
 				<Text style={styles.addReminderButtonText}>Add Reminder</Text>
 			</Pressable>
 
@@ -235,6 +235,7 @@ function Reminders() {
 								value={description}
 								blurOnSubmit
 								returnKeyType={DONE}
+								testID='description-input'
 							/>
 
 							<Text style={{ fontSize: 16, fontWeight: BOLD }}>Current Time Selected:</Text>
@@ -250,6 +251,7 @@ function Reminders() {
 									display={Platform.OS === IOS ? INLINE : SPINNER}
 									onChange={onChangeTime}
 									is24Hour={false}
+									testID='time-picker-button'
 								/>
 							) : (
 								<Pressable onPress={() => setShowTimePicker(true)} style={styles.timePickerButton}>
@@ -259,7 +261,7 @@ function Reminders() {
 
 							<Text style={styles.selectFreqTitle}>Select Frequency: </Text>
 
-							<View style={styles.frequencySelector}>
+							<View style={styles.frequencySelector} testID='frequency-selector'>
 								{FREQUENCY_OPTIONS.map((option, index) => (
 									<Pressable
 										key={option}
@@ -286,7 +288,7 @@ function Reminders() {
 								</Pressable>
 								<Pressable style={styles.addButton} onPress={handleAddReminder}>
 									{({ pressed }) => (
-										<Text style={[styles.addButtonText, pressed ? styles.pressedText : {}]}>
+										<Text style={[styles.addButtonText, pressed ? styles.pressedText : {}]} testID='done-button'>
                                             Done
 										</Text>
 									)}

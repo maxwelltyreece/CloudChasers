@@ -140,9 +140,9 @@ describe('FoodLogService', () => {
 			const mockIngredients = [{ id: '1', name: 'Tomato', amount: '2 cups' }];
 			axios.get.mockResolvedValue({ data: mockIngredients });
 			const recipeID = '123';
-	
+
 			const result = await FoodLogService.getRecipeIngredients(recipeID);
-	
+
 			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/getRecipeIngredients`, {
 				headers: { Authorization: `Bearer ${token}` },
 				params: { recipeID }
@@ -150,7 +150,7 @@ describe('FoodLogService', () => {
 			expect(result.data).toEqual(mockIngredients);
 		});
 	});
-	
+
 
 	describe('getAllUserRecipes', () => {
 		it('should fetch all user recipes successfully', async () => {
@@ -222,4 +222,71 @@ describe('FoodLogService', () => {
 			expect(result.data).toEqual(mockMacro);
 		})
 	});
+
+
+	describe('addItemToRecipe', () => {
+		it('should add an item to a recipe successfully', async () => {
+			const mockData = { /* ... your data for the item ... */ };
+			const mockResponse = { data: { success: true, message: 'Item added successfully' } };
+			axios.put.mockResolvedValue(mockResponse);
+
+			const result = await FoodLogService.addItemToRecipe(mockData);
+
+			expect(axios.put).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/addItemToRecipe`, mockData, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			expect(result.data).toEqual(mockResponse.data);
+		});
+	});
+
+
+	describe('deleteIngredientFromRecipe', () => {
+		it('should delete an ingredient from a recipe successfully', async () => {
+			const mockData = { /* ... your data for the ingredient ... */ };
+			axios.delete(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, {
+				data: mockData,
+				headers: { Authorization: `Bearer ${token}` },
+			});
+
+			const result = await FoodLogService.deleteIngredientFromRecipe(mockData);
+
+			expect(axios.delete).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, {
+				data: mockData,
+				headers: { Authorization: `Bearer ${token}` },
+			});
+		});
+	});
+
+	describe('logWater', () => {
+		it('should log water intake successfully', async () => {
+			const mockData = { /* ... your data for water intake ... */ };
+			axios.post.mockResolvedValue({ data: { success: true, message: 'Water logged successfully' } });
+
+			const result = await FoodLogService.logWater(mockData);
+
+			expect(axios.post).toHaveBeenCalledWith(`http://${LocalIP}:3000/food/logWater`, mockData, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			expect(result.data.success).toBe(true);
+		});
+	});
+
+
+	describe('getPictureURL', () => {
+		it('should retrieve the picture URL successfully', async () => {
+			const mockRecipeId = 'test-recipe-id';
+			const mockResponse = { data: { url: 'http://example.com/image.jpg' } };
+			axios.get.mockResolvedValue(mockResponse);
+
+			const url = await FoodLogService.getPictureURL(mockRecipeId);
+
+			expect(axios.get).toHaveBeenCalledWith(`http://${LocalIP}:3000/image/getPictureURL?id=${mockRecipeId}&folderName=Recipe_Pictures`, {
+				headers: { Authorization: `Bearer ${token}` },
+			});
+			expect(url).toBe(mockResponse.data.url);
+		});
+	});
+
+
+
 });

@@ -14,45 +14,6 @@
     "test": "npm run test:frontend && npm run test:backend",
     "test:update": "jest --updateSnapshot"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "preset": "jest-expo",
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.js"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/backend/__tests__/"
-    ],
-    "transformIgnorePatterns": [
-      "node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-picker|@react-native-community|@react-native-picker/picker|@react-native-async-storage/async-storage)/"
-    ],
-    "collectCoverageFrom": [
-    	"**/*.{js,jsx}",
-    	"**/frontend/**",
-    	"!**/backend/**",
-    	"!**/node_modules/**",
-    	"!**/jest.setup.js",
-    	"!**/AppEntry.js",
-    	"!**/jest.config.js",
-    	"!**/babel.config.js",
-    	"!**/coverage/**",
-    	"!**/__snapshots__/**",
-    	"!**/eslintrc.js",
-    	"!**/logger.js",
-      "!**/RecipeEntry.js",
-      "!**/Groups.js",
-      "!**/GroupMembers.js",
-      "!**/GroupRecipes.js",
-      "!**/JoinGroup.js",
-      "!**/PendingRequests.js",
-      "!**/Settings.js",
-      "!**/Account.js",
-      "!**/UserProfile.js",
-      "!**/Recipes.js",
-      "!**/NewRecipe.js"
-
-    ]
-  },
   "dependencies": {
     "@expo-google-fonts/montserrat": "^0.2.3",
     "@expo/vector-icons": "^13.0.0",

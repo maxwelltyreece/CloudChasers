@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.84% </span>
+                <span class="strong">90.76% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>48/65</span>
+                <span class='fraction'>59/65</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">72.22% </span>
+                <span class="strong">94.44% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>13/18</span>
+                <span class='fraction'>17/18</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">73.84% </span>
+                <span class="strong">90.76% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>48/65</span>
+                <span class='fraction'>59/65</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line medium'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -394,8 +394,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -404,8 +404,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -414,16 +414,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
@@ -579,9 +579,9 @@ export const getLatestLoggedFood = async () =&gt; {
  * @param {Object} data - The data of the item to add.
  * @returns {Promise} Axios Response Promise with the add operation result.
  */
-export const addItemToRecipe = <span class="fstat-no" title="function not covered" >as</span>ync (data) =&gt; {
-	const token = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem('token');</span>
-<span class="cstat-no" title="statement not covered" >	return await axios.put(`http://${LocalIP}:3000/food/addItemToRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });</span>
+export const addItemToRecipe = async (data) =&gt; {
+	const token = await AsyncStorage.getItem('token');
+	return await axios.put(`http://${LocalIP}:3000/food/addItemToRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 &nbsp;
 /**
@@ -589,9 +589,9 @@ export const addItemToRecipe = <span class="fstat-no" title="function not covere
  * @param {Object} data - The data of the ingredient to delete.
  * @returns {Promise} Axios Response Promise with the delete operation result.
  */
-export const deleteIngredientFromRecipe = <span class="fstat-no" title="function not covered" >as</span>ync (data) =&gt; {
-	const token = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem('token');</span>
-<span class="cstat-no" title="statement not covered" >	return await axios.delete(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });</span>
+export const deleteIngredientFromRecipe = async (data) =&gt; {
+	const token = await AsyncStorage.getItem('token');
+	return await axios.delete(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 &nbsp;
 /**
@@ -599,17 +599,17 @@ export const deleteIngredientFromRecipe = <span class="fstat-no" title="function
  * @param {Object} data - The data of the water intake to log.
  * @returns {Promise} Axios Response Promise with the log operation result.
  */
-export const logWater = <span class="fstat-no" title="function not covered" >as</span>ync (data) =&gt; {
-	const token = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem('token');</span>
-<span class="cstat-no" title="statement not covered" >	return await axios.post(`http://${LocalIP}:3000/food/logWater`, data, { headers: { Authorization: `Bearer ${token}` } });</span>
+export const logWater = async (data) =&gt; {
+	const token = await AsyncStorage.getItem('token');
+	return await axios.post(`http://${LocalIP}:3000/food/logWater`, data, { headers: { Authorization: `Bearer ${token}` } });
 }
 &nbsp;
-export const getPictureURL = <span class="fstat-no" title="function not covered" >as</span>ync (RecipeId) =&gt; {
-<span class="cstat-no" title="statement not covered" >	console.log('RecipeID:' + RecipeId);</span>
-	const token = <span class="cstat-no" title="statement not covered" >await AsyncStorage.getItem('token');</span>
-	const response = <span class="cstat-no" title="statement not covered" >await axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${RecipeId}&amp;folderName=Recipe_Pictures`, { headers: { Authorization: `Bearer ${token}` } });</span>
-	const url =  <span class="cstat-no" title="statement not covered" >response.data.url;</span>
-<span class="cstat-no" title="statement not covered" >	return url;</span>
+export const getPictureURL = async (RecipeId) =&gt; {
+	console.log('RecipeID:' + RecipeId);
+	const token = await AsyncStorage.getItem('token');
+	const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${RecipeId}&amp;folderName=Recipe_Pictures`, { headers: { Authorization: `Bearer ${token}` } });
+	const url =  response.data.url;
+	return url;
 }
 &nbsp;
 export const logManualMacro = <span class="fstat-no" title="function not covered" >as</span>ync (data) =&gt; {
@@ -628,7 +628,7 @@ export const logManualMacro = <span class="fstat-no" title="function not covered
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-03-27T22:03:23.249Z
+                at 2024-03-28T00:21:26.068Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -65,7 +65,6 @@ describe('Goals Screen', () => {
 	});
 
 	it('renders fetched goals correctly', async () => {
-		// Mock fetchGoals to return a predefined set of goals
         
 
 		const { findByText } = renderComponent();

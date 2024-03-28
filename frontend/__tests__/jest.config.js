@@ -1,7 +1,5 @@
 module.exports = {
 	preset: 'jest-expo',
-	testEnvironment: 'node',
-	testSequencer: "@jest/test-sequencer",
 	setupFilesAfterEnv: [
 		'@testing-library/jest-native/extend-expect',
 		"../../jest.setup.js",
@@ -13,16 +11,12 @@ module.exports = {
 		"/__snapshots__/",
 		"\\.snap$",
 	],
-	"transformIgnorePatterns": [
-		"node_modules/(?!(jest-)?react-native|@react-native|@react-navigation|@react-native-community|@react-native-async-storage/async-storage)/"
-	],	  
+	transformIgnorePatterns: [
+		"node_modules/(?!(jest-)?react-native|@react-native-community|@react-navigation|@expo|expo(nent)?|@unimodules|unimodules|react-navigation|@react-native-picker|@react-native-community/datetimepicker)/"
+	],
 	transform: {
 		"^.+\\.[jt]sx?$": ["babel-jest", { configFile: "./babel.config.js" }],
 	},
-	testMatch: [
-        "**/__tests__/**/*.[jt]s?(x)",
-        "**/?(*.)+(spec|test).[tj]s?(x)"
-     ],
 	// collectCoverage: true,
 	// "collectCoverageFrom": [
 	// 	"**/*.{js,jsx}",
