@@ -4,7 +4,6 @@ import Reminders from '../../../../screens/UserProfile/Subscreens/Reminders/Remi
 import { RemindersProvider } from '../../../../contexts/RemindersContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
-import e from 'express';
 
 jest.mock('@react-native-community/datetimepicker', () => 'DateTimePicker');
 
@@ -67,8 +66,6 @@ describe('Reminders', () => {
             expect(AsyncStorage.setItem).toHaveBeenCalledWith('REMINDERS', expect.anything());
         });
     });
-
-
 
     it('opens the modal to add a new reminder', async () => {
         const { getByText, getByTestId } = renderWithProvider(<Reminders />);

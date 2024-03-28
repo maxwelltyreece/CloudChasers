@@ -35,7 +35,7 @@ jest.mock('../../../contexts/GoalsContext', () => ({
 
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
-	getItem: jest.fn(() => Promise.resolve('token')), // Simulate a token present
+	getItem: jest.fn(() => Promise.resolve('token')),
 }));
 
 // Mock navigation
@@ -67,7 +67,6 @@ describe('Stats', () => {
 			</NavigationContainer>
 		);
         
-		// Render again to simulate ring component updating
 		render(
 			<NavigationContainer>
 				<Stack.Navigator>
@@ -104,7 +103,6 @@ describe('Stats', () => {
 			</NavigationContainer>
 		);
 
-		// Expect the loading indicator to be present initially
 		expect(getByTestId('loading-indicator')).toBeTruthy();
 	});
 

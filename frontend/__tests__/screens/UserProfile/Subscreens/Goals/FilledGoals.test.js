@@ -40,7 +40,7 @@ jest.mock('@react-navigation/native', () => {
 	};
 });
 
-// Mock useNavigation just in case you use it in the component
+// Mock useNavigation
 jest.mock('@react-navigation/core', () => ({
 	...jest.requireActual('@react-navigation/core'),
 	useNavigation: () => ({
@@ -85,7 +85,6 @@ describe('Goals Screen', () => {
 	it('renders each nutrient goal with the correct unit displayed', async () => {
 		const { findByText } = renderComponent();
     
-		// Define expected values and units for each nutrient
 		const expectedGoals = [
 			{ measurement: 'Protein', value: 50, unit: 'g' },
 			{ measurement: 'Carbs', value: 300, unit: 'g' },
@@ -97,7 +96,6 @@ describe('Goals Screen', () => {
 			{ measurement: 'Fibre', value: 25, unit: 'g' },
 		];
     
-		// Iterate over each expected goal and verify that its text is rendered correctly
 		await act(async () => {
 			for (const goal of expectedGoals) {
 				const goalText = `${goal.measurement}: ${goal.value}${goal.unit}`;

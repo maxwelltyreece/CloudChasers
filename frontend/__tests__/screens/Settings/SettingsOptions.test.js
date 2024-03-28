@@ -12,7 +12,6 @@ describe('SettingsOptions', () => {
 			{ name: 'Learn More', handler: expect.any(Function) },
 		]);
 
-		// Test that the handler functions call navigate with the expected arguments
 		options.forEach((option, index) => {
 			const expectedRoutes = ['Account', 'About', 'LearnMore'];
 			option.handler();

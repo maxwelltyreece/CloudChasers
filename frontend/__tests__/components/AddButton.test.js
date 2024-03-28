@@ -18,5 +18,14 @@ describe('CustomIcon', () => {
 	it('renders without crashing', () => {
 		render(<CustomIcon />);
 	});
+
+	it('toggles modal visibility on press', () => {
+		const { getByType } = render(<CustomIcon />);
+		const touchable = getByType(TouchableWithoutFeedback);
+
+		fireEvent(touchable, 'press');
 	
+		const modal = getByType(AddModal);
+		expect(modal.props.isVisible).toBeTruthy();
+	});
 });

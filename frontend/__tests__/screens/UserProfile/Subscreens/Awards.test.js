@@ -4,7 +4,6 @@ import { render, fireEvent } from '@testing-library/react-native';
 import Awards from '../../../../screens/UserProfile/Subscreens/Awards/Awards';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-// import { AwardsContextProvider } from '../../../../contexts/AwardsContext';
 
 jest.mock('@react-navigation/native', () => {
 	return {
@@ -76,14 +75,5 @@ describe('Awards Screen', () => {
 		expect(getByText('Make 10 Posts')).toBeTruthy();
 	});
 
-	// it('displays the awards that have been completed', () => {
-	//     const { getByText, queryAllByTestId } = renderComponent();
-
-	//     expect(getByText('5 Day Streak')).toBeTruthy();
-	//     expect(getByText('Join Community')).toBeTruthy();
-	//     expect(queryAllByTestId('icon-section').length).toBe(7);
-
-	// });
-    
 });
 

@@ -28,17 +28,15 @@ function TestConsumer() {
 		fetchNumberOfCompletedAwards,
 	} = useAwards();
 
-	// Helper function to simulate creating a new award
 	const handleCreateAward = () => {
 		createAward({ title: 'New Award' }).then(() => {
 			fetchAwards();
 		});
 	};
 
-	// Helper function to simulate awarding a user
 	const handleAwardUser = () => {
 		awardUser({ userId: 'user1', awardId: 'award1' }).then(() => {
-			fetchUserAwards(); // Refetch user awards to see the update
+			fetchUserAwards();
 		});
 	};
 
@@ -214,7 +212,6 @@ describe('AwardsContext functionality', () => {
 		});
 	});
 
-	// Testing error handling for getNumberOfCompletedAwards
 	it('handles errors gracefully when fetching number of completed awards fails', async () => {
 
 		jest.spyOn(console, 'error').mockImplementation(() => {});

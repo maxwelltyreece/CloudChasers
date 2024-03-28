@@ -226,7 +226,7 @@ describe('FoodLogService', () => {
 
 	describe('addItemToRecipe', () => {
 		it('should add an item to a recipe successfully', async () => {
-			const mockData = { /* ... your data for the item ... */ };
+			const mockData = { };
 			const mockResponse = { data: { success: true, message: 'Item added successfully' } };
 			axios.put.mockResolvedValue(mockResponse);
 
@@ -242,7 +242,7 @@ describe('FoodLogService', () => {
 
 	describe('deleteIngredientFromRecipe', () => {
 		it('should delete an ingredient from a recipe successfully', async () => {
-			const mockData = { /* ... your data for the ingredient ... */ };
+			const mockData = { };
 			axios.delete(`http://${LocalIP}:3000/food/deleteItemFromRecipe`, {
 				data: mockData,
 				headers: { Authorization: `Bearer ${token}` },
@@ -259,7 +259,7 @@ describe('FoodLogService', () => {
 
 	describe('logWater', () => {
 		it('should log water intake successfully', async () => {
-			const mockData = { /* ... your data for water intake ... */ };
+			const mockData = { amount: '1000'};
 			axios.post.mockResolvedValue({ data: { success: true, message: 'Water logged successfully' } });
 
 			const result = await FoodLogService.logWater(mockData);

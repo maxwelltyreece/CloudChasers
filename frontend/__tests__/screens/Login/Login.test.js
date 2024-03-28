@@ -98,10 +98,6 @@ describe('Login Screen', () => {
 			const { getByText } = renderLoginScreen();
 			fireEvent.press(getByText('Log In'));
 
-			// await waitFor(() => {
-			//     expect(console.error).toHaveBeenCalledWith('Error:', expect.any(Error));
-			// });
-
 			expect(AsyncStorage.setItem).not.toHaveBeenCalled();
 		});
 
@@ -113,11 +109,7 @@ describe('Login Screen', () => {
 
 			const { getByText } = renderLoginScreen();
 			fireEvent.press(getByText('Log In'));
-
-			// await waitFor(() => {
-			//     expect(console.error).toHaveBeenCalledWith('Login failed');
-			// });
-
+			
 			expect(AsyncStorage.setItem).not.toHaveBeenCalled();
 		});
 
