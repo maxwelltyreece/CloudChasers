@@ -36,7 +36,7 @@ password: password123
 ---
 
 ### Reference List:
-Use of react native library components to handle image compression and certain components.
+Use of React Native library components to handle image compression and certain components.
 
 ---
 ### Built With:
