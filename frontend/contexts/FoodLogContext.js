@@ -22,7 +22,6 @@ export function FoodLogProvider({ children }) {
     }
     const food = await foodLogService.getLatestLoggedFood();
     setLatestLoggedFood(food.data);
-    console.log("Latest logged food:", food.data);
   };
 
   /**
@@ -30,9 +29,7 @@ export function FoodLogProvider({ children }) {
    * @param {Object} data - Data for the food item to be logged.
    */
   const logDatabaseFood = async (data) => {
-    console.log("Logging food CONTEXT:", data);
     await foodLogService.logDatabaseFood(data);
-    console.log("Food logged response given");
   };
 
 /**

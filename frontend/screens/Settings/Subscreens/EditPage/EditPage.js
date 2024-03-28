@@ -1,58 +1,24 @@
 import React, { useState } from 'react';
 import {
-	View, Text, TextInput, Pressable, StyleSheet, Alert,
+	View, Text, TextInput, Pressable, Alert,
 } from 'react-native';
-import { useUser } from '../../../contexts/UserContext';
+import { useUser } from '../../../../contexts/UserContext';
 import PropTypes from 'prop-types';
 import { useNavigation } from '@react-navigation/native';
+import { styles } from './styles';
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		alignItems: 'center',
-		padding: 20,
-	},
-	title: {
-		fontSize: 30,
-		fontFamily: 'Montserrat_700Bold',
-		marginBottom: 20,
-	},
-	text: {
-		fontSize: 16,
-		fontFamily: 'Montserrat_600SemiBold',
-        marginBottom: 16,
-	},
-	input: {
-		height: 50,
-		width: '100%',
-		backgroundColor: '#F7F7F7',
-		marginBottom: 16,
-		padding: 8,
-		fontFamily: 'Montserrat_600SemiBold',
-		borderRadius: 20,
-		color: '#6B6868',
-	},
-	button: {
-		width: '100%',
-		height: 50,
-		marginTop: 20,
-		borderRadius: 25,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#FF815E',
-	},
-	buttonText: {
-		color: '#FFFFFF',
-		fontFamily: 'Montserrat_700Bold',
-		fontSize: 16,
-	},
-});
-
+/**
+ * EditPage component
+ * @param {Object} props - The properties passed to the component
+ * @param {Object} props.route - The route object from react-navigation
+ * @param {Object} props.route.params - The route parameters
+ * @param {string} props.route.params.field - The field name to be edited
+ * @param {string} props.route.params.realName - The real name of the field to be edited
+ * @returns {JSX.Element} The EditPage component
+ */
 function EditPage({ route }) {
 	const { field, realName } = route.params;
 	const { userDetails, editUserDetails } = useUser();
-    console.log('userDetails:', userDetails);
-    console.log(realName);
 	const fieldValue = userDetails && userDetails ? userDetails[realName] : '';
 	const [newValue, setNewValue] = useState('');
     const navigation = useNavigation();

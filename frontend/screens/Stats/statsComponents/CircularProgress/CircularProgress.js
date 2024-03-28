@@ -1,45 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { CircularProgressBase } from 'react-native-circular-progress-indicator';
-// import { useFocusEffect } from '@react-navigation/native';
 import PropTypes from 'prop-types';
-
-
-const styles = StyleSheet.create({
-	container: {
-		justifyContent: 'center',
-		alignItems: 'center',
-		top: -10,
-	},
-	keyContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-around',
-		paddingTop: 20,
-		width: '100%',
-	},
-	keyText: {
-		marginHorizontal: 5,
-		fontSize: 16,
-		fontFamily: 'Montserrat_700Bold',
-	},
-});
+import { styles } from './styles';
 
 const CircularProgressComponent = ({ todayStats, goals }) => {
 
-	// Initial macro values moved into state
-	// const [currentMacroValues, setCurrentMacroValues] = useState({
-	//   calories: 0,
-	//   water: 0,
-	//   fat: 0,
-	//   sodium: 0,
-	//   carbs: 0,
-	//   protein: 0,
-	//   sugar: 0,
-	//   fibre: 0,
-	// });
-
 	let initialMacroValues = {
-
 		calories: 0,
 		water: 0,
 		fat: 0,
@@ -84,13 +51,6 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
 		water: '#5edcff',
 	};
 
-	// useEffect(() => {
-	//   const newCurrentMacroValues = { ...currentMacroValues, ...todayStats };
-	//   console.log('New Current Macro Values:', newCurrentMacroValues);
-	//   setCurrentMacroValues(newCurrentMacroValues);
-	// }, [todayStats]);
-
-	// Safe divide function to avoid dividing by zero or if filled to 100%
 	const safeDivide = (numerator, denominator) => {
 		const ratio = denominator === 0 ? 0 : numerator / denominator;
 		return ratio >= 1 ? 100 : ratio * 100;
@@ -115,12 +75,6 @@ const CircularProgressComponent = ({ todayStats, goals }) => {
 	useEffect(() => {
 		updateProgressValues();
 	}, [todayStats, goals]);
-
-
-	console.log('Progress Values:', progressValues);
-	console.log('Current Macro Values:', currentMacroValues);
-	console.log('Nutrient Goals:', nutrientGoals);
-	console.log('Today Stats:', todayStats);
 
 	return (
 		<View style={styles.container}>

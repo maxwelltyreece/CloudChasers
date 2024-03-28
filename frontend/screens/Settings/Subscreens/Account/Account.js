@@ -1,55 +1,20 @@
 import React, { useState } from 'react';
 import {
-	View, Text, StyleSheet, FlatList, TouchableOpacity, Image,
+	View, Text, FlatList, TouchableOpacity, Image,
 } from 'react-native';
-import { useUser } from '../../../contexts/UserContext';
-import globalStyles from '../../../styles/global';
+import { useUser } from '../../../../contexts/UserContext';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useFocusEffect } from '@react-navigation/native';
-import { requestImagePermissions, pickImage, uploadImage, getImageLink } from '../../../services/ImageService';
+import {  pickImage, uploadImage, getImageLink } from '../../../../services/ImageService';
+import { styles } from './styles';
 
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		paddingTop: 0,
-	},
-	row: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		paddingHorizontal: 10,
-		paddingVertical: 24,
-	},
-	label: {
-		fontSize: 14,
-		...globalStyles.bold,
-	},
-	separator: {
-		height: 1,
-		backgroundColor: '#A9A9A9',
-		width: '100%',
-	},
-	profilePictureContainer: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		margin: 20,
-	},
-	profilePicture: {
-		width: 150,
-		height: 150,
-		borderRadius: 75,
-		backgroundColor: '#DDDDDD',
-	},
-	cameraIcon: {
-		position: 'absolute',
-		right: 0,
-		bottom: 0,
-		color: 'rgba(0, 0, 0, 0.7)',
-		borderRadius: 15,
-	},
-});
-
+/**
+ * Account component
+ * @param {Object} props - The properties passed to the component
+ * @param {Object} props.navigation - The navigation object from react-navigation
+ * @returns {JSX.Element} The Account component
+ */
 function Account({ navigation }) {
 	const { userDetails } = useUser();
 	const [profilePicture, setProfilePicture] = useState(null);
@@ -65,8 +30,6 @@ function Account({ navigation }) {
 	const handlePickImage = async () => {
 		const imageUri = await pickImage();
 		if (imageUri) {
-			console.log('userDetails._id:', userDetails._id);
-			console.log('imageUri:', imageUri);
 			setProfilePicture(imageUri);
 			await uploadImage(userDetails._id, imageUri, 'Profile_Pictures');
 		}

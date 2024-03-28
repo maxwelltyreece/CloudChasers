@@ -7,25 +7,6 @@ const CommunityUser = require('../models/communityUser');
 const CommunityPost = require('../models/communityPost');
 const JoinRequest = require('../models/request');
 
-// TODO:
-//    ٩(^‿^)۶ 
-//
-// DONE:
-// - Get community members
-// - Get admin status
-// - Get member status
-// - Get list of user communities
-// - Get list of communities
-// - Delete community
-// - Leave community
-// - Update community description
-// - Update community privacy settings
-// - Admin can remove members
-// - Get community posts/recipes
-// - Join private community
-// - Get pending requests
-// - Accept/deny requests
-
 exports.createCommunity = async (req, res) => {
 	const { name, description, recipePrivacy, joinPrivacy } = req.body;
 	try {
@@ -34,7 +15,6 @@ exports.createCommunity = async (req, res) => {
 		if (community) {
 			return res.status(400).send({ message: 'Community already exists' });
 		}
-		// console.log('Creating community');
 		const newCommunity = new Community({
 			name,
 			description,
@@ -44,15 +24,12 @@ exports.createCommunity = async (req, res) => {
 		});
        
 		await newCommunity.save();
-		// console.log('Community created', newCommunity);
 		// Create CommunityUser to join community
 		const newCommunityUser = new CommunityUser({
 			communityID: newCommunity._id,
 			userID: user._id,
 			role: 'admin',
 		});
-		// console.log('Community joined', newCommunityUser);
-
 		await newCommunityUser.save();
 		return res.status(200).json({ success: true, message: 'Community created', data: newCommunity });
 	}
@@ -92,7 +69,6 @@ exports.joinCommunity = async (req, res) => {
 			return res.status(200).json({ success: true, message: 'Request to join sent' });
 		}
 		else {
-			// console.log('Joining community');
 			// Create CommunityUser to join community
 			const newCommunityUser = new CommunityUser({
 				communityID: community._id,
@@ -101,7 +77,6 @@ exports.joinCommunity = async (req, res) => {
 			});
 			await newCommunityUser.save();
 
-			// console.log('Community joined');
 			return res.status(200).json({ success: true, message: 'Community joined', data: newCommunityUser });
             
 		}

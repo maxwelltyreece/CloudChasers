@@ -96,8 +96,7 @@ function Recipes() {
 			{filteredRecipes.length > 0 ? (
 				<FlatList
 					data={filteredRecipes}
-					renderItem={({ item }) => {
-                        console.log(item);
+					renderItem={({ item }) => {;
                         return (
                             <RecipeBox
                                 id={item.id}

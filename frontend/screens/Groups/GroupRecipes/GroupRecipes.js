@@ -5,17 +5,32 @@ import RecipeBox from '../../../components/RecipeBox/RecipeBox';
 import { styles } from './styles';
 import { useCommunity } from '../../../contexts/CommunityContext';
 
+/**
+ * GroupRecipes component
+ * @param {Object} props - The properties passed to the component
+ * @param {Object} props.route - The route object
+ * @param {Object} props.route.params - The route parameters
+ * @param {Object} props.route.params.community - The community data
+ * @returns {JSX.Element} The GroupRecipes component
+ */
 function GroupRecipes({ route }) {
 	const { community } = route.params;
 	const { getCommunityRecipes } = useCommunity();
 	const [search, setSearch] = useState('');
 	const [recipes, setRecipes] = useState([]); 
-
+    
+    /**
+     * Update the search state
+     * @param {string} search - The search string
+     */
 	const updateSearch = (search) => {
 		setSearch(search);
 	};
 
 	useEffect(() => {
+         /**
+         * Fetch the recipes for the community
+         */
 		const fetchRecipes = async () => {
 			const fetchedRecipes = await getCommunityRecipes(community.id);
         
@@ -34,7 +49,8 @@ function GroupRecipes({ route }) {
 
 		fetchRecipes();
 	}, [getCommunityRecipes, community.id]);
-
+    
+    // Filter the recipes based on the search string
 	const filteredRecipes = recipes.filter(recipe =>
 		recipe.title && recipe.title.toLowerCase().includes(search.toLowerCase())
 	);

@@ -36,10 +36,6 @@ function RecipeBox({ id, title, description, creatorId}) {
     const { deleteRecipe } = useFoodLog();
     const { userDetails } = useUser();
 
-    console.log('creatorId:', creatorId);
-    console.log('userDetails:', userDetails._id);
-    console.log(userDetails._id === creatorId);
-
     const handleDeletePress = async () => {
         Alert.alert(
             "Delete Recipe",

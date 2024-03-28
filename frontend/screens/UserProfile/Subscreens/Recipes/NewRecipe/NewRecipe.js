@@ -113,7 +113,6 @@ const NewRecipe = ({}) => {
   const handleCommunitySelection = (community) => {
     setSelectedCommunity(community.id);
     setSelectedCommunityName(community.name); 
-    console.log("Selected community:", community.name);
   };
 
   /**
@@ -201,7 +200,6 @@ const NewRecipe = ({}) => {
 				foodID: food._id,
 				weight: food.weight,
 			};
-			console.log("Payload:", payload);
 
 			try {
 				await axios.put(
@@ -255,8 +253,7 @@ const NewRecipe = ({}) => {
                 headers: { Authorization: `Bearer ${token}` },
             }
         );
-        console.log("Recipe created:", response.data.data._id);
-        console.log("ALL DATA:", recipeData);
+
         const recipeID = response.data.data._id;
         await addItemsToRecipe(recipeID, token);
 

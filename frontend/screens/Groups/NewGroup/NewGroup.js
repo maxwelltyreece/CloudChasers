@@ -4,16 +4,21 @@ import {
 } from 'react-native';
 import { useCommunity } from '../../../contexts/CommunityContext';
 import { useNavigation } from '@react-navigation/native';
-import PropTypes from 'prop-types'; // Import PropTypes
+import PropTypes from 'prop-types';
 import { styles } from './styles';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 import { LocalIP } from '../../IPIndex';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
-
+/**
+ * CustomCheckbox component
+ * @param {Object} props - The properties passed to the component
+ * @param {string} props.label - The label for the checkbox
+ * @param {boolean} props.isChecked - Whether the checkbox is checked
+ * @param {Function} props.onCheck - The function to call when the checkbox is checked
+ * @returns {JSX.Element} The CustomCheckbox component
+ */
 function CustomCheckbox({ label, isChecked, onCheck }) {
 	return (
 		<Pressable onPress={onCheck} style={styles.checkboxContainer}>
@@ -25,12 +30,15 @@ function CustomCheckbox({ label, isChecked, onCheck }) {
 	);
 }
 
+/**
+ * NewGroup component
+ * @returns {JSX.Element} The NewGroup component
+ */
 function NewGroup() {
 	const [communityName, setCommunityName] = useState('');
 	const [communityDescription, setCommunityDescription] = useState('');
 	const [isPrivateCommunity, setIsPrivateCommunity] = useState(false);
 	const [areRecipesPrivate, setAreRecipesPrivate] = useState(false);
-
 	const { createCommunity, getUserCommunities } = useCommunity();
 	const navigation = useNavigation();
 
@@ -45,7 +53,6 @@ function NewGroup() {
 			.then(async (response) => {
 				if (response && response.success) {
 					const communityID = response.data._id;
-					console.log('Community created:', communityID);
 
 					if (image) {
 						const formData = new FormData();
@@ -94,20 +101,14 @@ function NewGroup() {
 			quality: 1,
 		});
     
-    
-    
 		if (!result.canceled) {
 			setImage(result.assets[0].uri);
 		}
-    
 		getFileName(result.assets[0].uri);
-    
 	};
 
 	function getFileName(image){
-		// console.log("RHIS ONGGets to here");
 		const fileName = image.split('/').pop();
-		// console.log(fileName);
 		return fileName;
 	}
 

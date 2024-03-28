@@ -3,7 +3,6 @@ import { Platform, StatusBar } from 'react-native';
 
 export const styles = StyleSheet.create({
 	statsContainer: {
-		// flex: 1,
 		paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0,
 		justifyContent: 'flex-start',
 		alignItems: 'center',
@@ -22,7 +21,6 @@ export const styles = StyleSheet.create({
 		height: '40%',
 	},
 	statsHeader: {
-		// justifyContent: 'flex-start',
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 		alignItems: 'center',
@@ -42,7 +40,6 @@ export const styles = StyleSheet.create({
 		alignItems: 'center',
 		width: '100%',
 		padding: 10,
-		// marginBottom: '5%',
 	},
 	slide: {
 		justifyContent: 'center',

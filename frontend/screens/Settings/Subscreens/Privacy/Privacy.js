@@ -1,19 +1,14 @@
 import React from 'react';
 import {
-	Text, StyleSheet, ScrollView,
+	Text, ScrollView,
 } from 'react-native';
-import globalStyles from '../../../styles/global';
+import globalStyles from '../../../../styles/global';
+import { styles } from './styles';
 
-const styles = StyleSheet.create({
-	container: {
-		marginTop: 24,
-		paddingBottom: 100,
-	},
-	text: {
-		margin: 10,
-	},
-});
-
+/**
+ * Privacy component
+ * @returns {JSX.Element} The Privacy component
+ */
 function Privacy() {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>

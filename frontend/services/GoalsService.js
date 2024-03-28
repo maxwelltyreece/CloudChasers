@@ -111,8 +111,6 @@ const updateMacroGoals = async (nutrient) => {
 			newMinValue: 0, // Min value is always 0
 			newMaxValue: nutrient.value
 		};
-		// console.log('updateMacroGoals SERVICE', payload);
-		// Make sure to include http:// and the correct port if necessary
 		return await axios.post(`http://${LocalIP}:3000/goals/changeGoalMacroValue`, payload, {
 			headers: { Authorization: `Bearer ${token}` }
 		});

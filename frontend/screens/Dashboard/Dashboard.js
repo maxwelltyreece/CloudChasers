@@ -77,7 +77,6 @@ function Dashboard() {
 
     useFocusEffect(
         useCallback(() => {
-            console.log('DASHBOARD FOCUSED');
             setLoading(true);
             updateDashboardData().finally(() => setLoading(false));
         }, [])

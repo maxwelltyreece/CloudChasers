@@ -173,7 +173,6 @@ export const logWater = async (data) => {
  * @returns {Promise} Axios Response Promise with the picture URL.
  */
 export const getPictureURL = async (RecipeId) => {
-	console.log('RecipeID:' + RecipeId);
 	const token = await AsyncStorage.getItem('token');
 	const response = await axios.get(`http://${LocalIP}:3000/image/getPictureURL?id=${RecipeId}&folderName=Recipe_Pictures`, { headers: { Authorization: `Bearer ${token}` } });
 	const url =  response.data.url;

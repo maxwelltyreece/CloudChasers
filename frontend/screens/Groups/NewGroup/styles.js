@@ -47,11 +47,7 @@ export const styles = StyleSheet.create({
 		width: 12,
 		backgroundColor: '#6B6868',
 	},
-	// buttonContainer: {
-	//     marginTop: 24,
-	//     alignItems: 'center',
-	//     width: '100%',
-	// },
+
 	buttonText: {
 		color: 'white',
 		fontFamily: 'Montserrat_600SemiBold',

@@ -7,7 +7,7 @@ import globalStyles from '../../styles/global';
 import styles from './styles';
 import TabBarIcon from '../TabBarIcon/TabBarIcon';
 import {
-	Dashboard, Stats, Groups, DataEntry,
+	Dashboard, Stats, Groups, FoodEntry,
 } from '../../screens';
 import UserNavigator from '../../navigation/UserNavigator';
 
@@ -20,7 +20,7 @@ const Tab = createBottomTabNavigator();
 const screens = [
 	{ name: 'Home', component: Dashboard, icon: 'home' },
 	{ name: 'Groups', component: Groups, icon: 'users' },
-	{ name: '+', component: DataEntry, icon: '+' },
+	{ name: '+', component: FoodEntry, icon: '+' },
 	{ name: 'Stats', component: Stats, icon: 'chart-pie' },
 	{ name: 'You', component: UserNavigator, icon: 'user' },
 ];

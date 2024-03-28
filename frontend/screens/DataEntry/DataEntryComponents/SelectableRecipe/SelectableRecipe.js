@@ -77,8 +77,6 @@ function SelectableRecipe({ id, title, description }) {
                 recipeID: id,
                 totalRecipeWeight: parseInt(inputWeight),
             });
-
-            console.log(response);
         } catch (error) {
             console.error("Failed to log recipe", error);
         }

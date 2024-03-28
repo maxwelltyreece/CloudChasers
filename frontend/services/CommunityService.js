@@ -24,7 +24,6 @@ export async function createCommunity(communityData) {
 
 		const jsonResponse = response.data;
 		if (jsonResponse.success) {
-			// console.log(jsonResponse.message);
 			return jsonResponse;
 		}
 		console.error(jsonResponse.message);

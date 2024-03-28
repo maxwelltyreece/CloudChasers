@@ -81,7 +81,6 @@ export function CommunityProvider({ children }) {
    * @returns {Promise<Object>} The response object from the create operation.
    */
   const createCommunity = async (communityData) => {
-    // console.log('Community Data:', communityData);
     return communityService.createCommunity(communityData);
   };
 

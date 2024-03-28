@@ -1,4 +1,3 @@
-// Settings.js
 import React from 'react';
 import {
 	View, Text, FlatList, Pressable,
@@ -6,18 +5,29 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 import { useUser } from '../../contexts/UserContext';
-import SettingsOptions from './SettingsOptions'; // Import the settings options
+import SettingsOptions from './SettingsOptions';
 import globalStyles from '../../styles/global';
 import LogoutButton from './settingsComponents/LogoutButton';
 import PropTypes from 'prop-types';
 import { styles } from './styles';
 
 const ICON_SIZE = 25;
-
+/**
+ * ItemSeparator component
+ * @returns {JSX.Element} The ItemSeparator component
+ */
 function ItemSeparator() {
 	return <View style={styles.separator} />;
 }
 
+/**
+ * SettingsItem component
+ * @param {Object} props - The properties passed to the component
+ * @param {Object} props.item - The item object
+ * @param {string} props.item.name - The name of the item
+ * @param {Function} props.item.handler - The handler function for the item
+ * @returns {JSX.Element} The SettingsItem component
+ */
 function SettingsItem({ item }) {
 	return (
 		<Pressable onPress={item.handler}>
@@ -29,6 +39,13 @@ function SettingsItem({ item }) {
 	);
 }
 
+/**
+ * SettingsFooter component
+ * @param {Object} props - The properties passed to the component
+ * @param {string} props.userEmail - The email of the user
+ * @param {Object} props.navigation - The navigation object from react-navigation
+ * @returns {JSX.Element} The SettingsFooter component
+ */
 function SettingsFooter({ userEmail, navigation }) {
 	const { logout } = useUser();
 	return (
@@ -44,16 +61,9 @@ function SettingsFooter({ userEmail, navigation }) {
 const keyExtractor = (item) => item.name;
 
 /**
- * Settings is a component that renders a list of settings options in the center of the screen.
- * It also includes a back button in the top left corner that navigates to the previous screen.
- * It uses styles from its own StyleSheet.
- *
- * The list of settings options is rendered using a FlatList, which takes an array of data and
- * a function for rendering each item in the data. The data is provided by the SettingsOptions
- * array, and the renderItem function describes how to render each item.
- *
- * Each item in the list is a TouchableOpacity that displays the name of the setting option and
- * calls the option's handler function when pressed.
+ * Settings is a component that displays a list of settings options.
+ * Each option is a TouchableOpacity that triggers its handler function when pressed.
+ * A back button is also provided for navigation.   
  *
  * @returns {React.Element} The rendered settings screen.
  */

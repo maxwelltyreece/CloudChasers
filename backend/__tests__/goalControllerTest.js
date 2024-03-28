@@ -298,7 +298,6 @@ describe('Award Controller Tests', () => {
                 );
             expect(createGoalRes.statusCode).toEqual(200);
             const newlyCreatedGoalID = await createGoalRes.body.goal._id;
-            console.log(newlyCreatedGoalID);
 
             const res = await request(app)
                 .get('/goals/deleteGoal')
@@ -306,7 +305,6 @@ describe('Award Controller Tests', () => {
                 .send({
                     goalID: newlyCreatedGoalID,
                 });
-            console.log(res);
             expect(res.statusCode).toEqual(200);
             expect(res.body.message).toEqual('Goal deleted');
         });

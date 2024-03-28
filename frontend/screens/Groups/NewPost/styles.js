@@ -7,23 +7,23 @@ export const styles = StyleSheet.create({
 	},
 	input: {
 		height: 40,
-		borderColor: '#E8E8E8', // change the border color to a lighter shade
+		borderColor: '#E8E8E8', 
 		borderWidth: 1,
 		marginBottom: 20,
 		padding: 10,
 		borderRadius: 10,
 		fontFamily: 'Montserrat_600SemiBold',
-		backgroundColor: '#F8F8F8', // add a light background color
+		backgroundColor: '#F8F8F8', 
 	},
 	messageInput: {
 		height: 200,
-		borderColor: '#E8E8E8', // change the border color to a lighter shade
+		borderColor: '#E8E8E8', 
 		borderWidth: 1,
 		marginBottom: 20,
 		padding: 10,
 		borderRadius: 10,
 		fontFamily: 'Montserrat_600SemiBold',
-		backgroundColor: '#F8F8F8', // add a light background color
+		backgroundColor: '#F8F8F8',
 	},
 	button: {
 		alignItems: 'center',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-	View, Text, TextInput, TouchableOpacity,
+	View, Text, TouchableOpacity,
 } from 'react-native';
 import { useCommunity } from '../../../contexts/CommunityContext';
 import { useNavigation } from '@react-navigation/native';
@@ -14,6 +14,14 @@ const USER_ROLES = {
 	MEMBER: 'member',
 };
 
+/**
+ * GroupSettings component
+ * @param {Object} props - The properties passed to the component
+ * @param {Object} props.route - The route object
+ * @param {Object} props.route.params - The route parameters
+ * @param {Object} props.route.params.community - The community data
+ * @returns {JSX.Element} The GroupSettings component
+ */
 function GroupSettings({ route }) {
 	const { community } = route.params;
 	const { getUserRole, deleteCommunity, leaveCommunity, updateCommunityDesc } = useCommunity();
